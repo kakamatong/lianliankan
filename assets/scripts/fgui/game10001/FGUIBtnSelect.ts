@@ -1,0 +1,58 @@
+/** This is an automatically generated class by FairyGUI. Please do not modify it. **/
+
+import { assetManager, AssetManager } from "cc";
+import * as fgui from "fairygui-cc";
+
+import { PackageManager } from "../../frameworks/PackageManager";
+
+export default class FGUIBtnSelect extends fgui.GButton {
+
+	public mask:fgui.GLoader;
+	public static URL:string = "ui://2zsfe53xqaf2f";
+
+	public static packageName:string = "game10001";
+
+	public static instance:any | null = null;
+
+	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
+		if(FGUIBtnSelect.instance) {
+			console.log("allready show");
+			callBack&&callBack(false);
+			return;
+		}
+		PackageManager.instance.loadPackage("fgui", this.packageName).then(()=> {
+
+			const view = fgui.UIPackage.createObject("game10001", "BtnSelect") as FGUIBtnSelect;
+
+			view.makeFullScreen();
+			FGUIBtnSelect.instance = view;
+			fgui.GRoot.inst.addChild(view);
+			view.show && view.show(params);
+			callBack&&callBack(true);
+		}
+		).catch(error=>{console.log("showView error", error);callBack&&callBack(false);return;});
+	}
+
+	protected onDestroy():void {
+		super.onDestroy();
+		FGUIBtnSelect.instance = null;
+	}
+	public static hideView():void {
+		FGUIBtnSelect.instance && FGUIBtnSelect.instance.dispose();
+	}
+
+	show(data?:any):void{};
+
+	public static createInstance():FGUIBtnSelect {
+		return <FGUIBtnSelect>(fgui.UIPackage.createObject("game10001", "BtnSelect"));
+	}
+
+	protected onConstruct():void {
+		this.mask = <fgui.GLoader>(this.getChildAt(0));
+	}
+	scheduleOnce(callback: () => void, delay: number):void{};
+	unscheduleAllCallbacks():void{};
+	unschedule(callback: () => void):void{};
+	schedule(callback: () => void, interval: number):void{};
+}
+fgui.UIObjectFactory.setExtension(FGUIBtnSelect.URL, FGUIBtnSelect);

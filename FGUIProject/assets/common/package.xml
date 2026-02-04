@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="gj0r6g5i">
+  <resources>
+    <component id="cmlt4" name="CompBtnScale.xml" path="/comp/" exported="true"/>
+    <image id="gtlg8" name="headBox.png" path="/imgs/"/>
+    <component id="cvev9" name="CompHead.xml" path="/comp/" exported="true"/>
+    <image id="jin6a" name="mask.png" path="/imgs/" exported="true" scale="9grid" scale9grid="18,12,36,24"/>
+    <image id="muz3c" name="btn2.png" path="/imgs/"/>
+    <image id="muz3d" name="popbg.png" path="/imgs/" exported="true"/>
+    <image id="muz3e" name="btn1.png" path="/imgs/"/>
+    <image id="muz3f" name="btnclose.png" path="/imgs/"/>
+    <component id="muz3g" name="CompPopMessage.xml" path="/comp/"/>
+    <component id="muz3h" name="CompBtnClose.xml" path="/comp/" exported="true"/>
+    <component id="muz3i" name="PopMessageView.xml" path="/" exported="true"/>
+    <component id="ddz1j" name="TipsView.xml" path="/" exported="true"/>
+    <component id="ddz1k" name="CompTips.xml" path="/comp/"/>
+    <component id="is91n" name="CompBtnCommon.xml" path="/comp/" exported="true"/>
+    <component id="is91o" name="LoadingView.xml" path="/" exported="true"/>
+    <image id="is91p" name="back.png" path="/imgs/" exported="true"/>
+    <image id="is91q" name="set.png" path="/imgs/"/>
+    <image id="fnugv" name="select.png" path="/imgs/" exported="true"/>
+    <image id="fnugw" name="select2.png" path="/imgs/" exported="true"/>
+    <component id="fnugx" name="CompBtnCheck.xml" path="/comp/" exported="true"/>
+    <image id="gd4ty" name="strip.png" path="/imgs/" exported="true" scale="9grid" scale9grid="23,17,46,34"/>
+    <component id="nomuz" name="CompBtnSingleCheck.xml" path="/comp/" exported="true"/>
+    <image id="jsve10" name="disband.png" path="/imgs/" exported="true"/>
+    <image id="q5lz13" name="selectC.png" path="/imgs/" exported="true"/>
+    <image id="q5lz14" name="selectC2.png" path="/imgs/" exported="true"/>
+    <sound id="fugr15" name="click.mp3" path="/sound/" exported="true"/>
+    <image id="sexy16" name="zhanli.png" path="/imgs/" exported="true"/>
+    <image id="9rp117" name="shareBtn.png" path="/imgs/" exported="true"/>
+    <image id="pxa518" name="gold40x40.png" path="/imgs/prop/40x40/"/>
+    <image id="pxa519" name="gold80x80.png" path="/imgs/prop/80x80/"/>
+    <image id="bbyt1c" name="ad.png" path="/imgs/" exported="true"/>
+    <component id="pz9v1d" name="CompBtnAdScale.xml" path="/comp/" exported="true"/>
+    <image id="pz9v1e" name="矩形 1.png" path="/imgs/" exported="true" scale="9grid" scale9grid="32,35,27,16"/>
+  </resources>
+  <publish name="" genCode="true"/>
+</packageDescription>

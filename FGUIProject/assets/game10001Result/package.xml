@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="5x18e99v">
+  <resources>
+    <image id="fnugk" name="cup.png" path="/imgs/"/>
+    <image id="fnugj" name="star.png" path="/imgs/"/>
+    <image id="fnugi" name="iconWin.png" path="/imgs/"/>
+    <component id="fnug0" name="ResultView.xml" path="/" exported="true"/>
+    <component id="fnug1" name="CompResultInfo.xml" path="/comp/"/>
+    <component id="fnug2" name="CompAct.xml" path="/comp/"/>
+    <image id="dkp3l" name="iconLose.png" path="/imgs/"/>
+    <image id="dkp3m" name="l.png" path="/imgs/"/>
+    <image id="dkp3o" name="iconDraw.png" path="/imgs/"/>
+    <component id="kv65p" name="TotalResultView.xml" path="/" exported="true"/>
+    <image id="kv65q" name="gameEnd.png" path="/imgs/"/>
+    <component id="kv65r" name="CompTotalResultInfo.xml" path="/comp/"/>
+  </resources>
+  <publish name="" genCode="true"/>
+</packageDescription>

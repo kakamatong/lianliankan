@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="fwundh2c">
+  <resources>
+    <image id="pxa518" name="prop_40x40_2.png" path="/imgs/40x40/" exported="true"/>
+    <component id="pz9v1b" name="ComProp.xml" path="/comp/" exported="true"/>
+    <image id="pz9v1c" name="propBg.png" path="/imgs/" scale="9grid" scale9grid="23,25,18,15"/>
+    <image id="bbyt1" name="prop_120x120_2.png" path="/imgs/120x120/" exported="true"/>
+  </resources>
+  <publish name="" genCode="true"/>
+</packageDescription>

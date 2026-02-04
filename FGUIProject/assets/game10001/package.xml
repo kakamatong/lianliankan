@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="2zsfe53x">
+  <resources>
+    <component id="is911" name="GameView.xml" path="/" exported="true"/>
+    <image id="is912" name="game.jpg" path="/imgs/"/>
+    <component id="folo3" name="CompHand.xml" path="/comp/"/>
+    <image id="qaf24" name="ready.png" path="/imgs/"/>
+    <image id="qaf25" name="clock.png" path="/imgs/"/>
+    <component id="qaf26" name="CompClock.xml" path="/comp/"/>
+    <image id="qaf27" name="think.png" path="/imgs/"/>
+    <component id="qaf28" name="CompThinkAct.xml" path="/comp/"/>
+    <image id="qaf29" name="offline.png" path="/imgs/"/>
+    <component id="qaf2a" name="CompOffline.xml" path="/comp/"/>
+    <image id="qaf2b" name="y1.png" path="/imgs/"/>
+    <image id="qaf2c" name="y2.png" path="/imgs/"/>
+    <image id="qaf2d" name="y3.png" path="/imgs/"/>
+    <component id="qaf2f" name="BtnSelect.xml" path="/comp/"/>
+    <image id="fnugg" name="gameStart.png" path="/imgs/"/>
+    <component id="fnugh" name="CompGameStartAct.xml" path="/comp/"/>
+    <component id="r1yn1" name="CompVoteInfo.xml" path="/comp/"/>
+    <component id="r1yn0" name="CompDisband.xml" path="/comp/"/>
+    <component id="kw9ii" name="CompRoundAct.xml" path="/comp/"/>
+    <component id="gk14j" name="CompPlayerHead.xml" path="/comp/"/>
+    <image id="pxa5m" name="talkbg.png" path="/imgs/" scale="9grid" scale9grid="32,22,50,25"/>
+    <component id="pxa5n" name="CompTalk.xml" path="/comp/"/>
+    <image id="pxa5o" name="talk.png" path="/imgs/"/>
+    <component id="ln74p" name="CompGameMain.xml" path="/comp/"/>
+  </resources>
+  <publish name="" genCode="true"/>
+</packageDescription>

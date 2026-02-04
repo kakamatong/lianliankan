@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="776,1688">
+  <displayList>
+    <component id="n7_7ivz" name="UI_BTN_START" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="273,1185" size="230,99">
+      <relation target="" sidePair="center-center,middle-middle"/>
+      <property target="title" propertyId="0" value="开始游戏"/>
+      <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3c"/>
+    </component>
+    <text id="n8_7ivz" name="n8" xy="22,1558" size="732,104" fontSize="26" color="#ffffff" align="center" strokeColor="#000000" text="健康游戏公告&#xA;抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。&#xA;适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康生活。"/>
+  </displayList>
+</component>
