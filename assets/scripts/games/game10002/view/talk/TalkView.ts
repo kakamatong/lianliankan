@@ -1,9 +1,9 @@
-import FGUICompItem from "db://assets/scripts/fgui/game10001Talk/FGUICompItem";
-import FGUITalkView from "db://assets/scripts/fgui/game10001Talk/FGUITalkView";
+import FGUICompItem from "db://assets/scripts/fgui/game10002Talk/FGUICompItem";
+import FGUITalkView from "db://assets/scripts/fgui/game10002Talk/FGUITalkView";
 import { PackageLoad, ViewClass } from "db://assets/scripts/frameworks/Framework";
 import { GameSocketManager } from "db://assets/scripts/frameworks/GameSocketManager";
 import { TALK_LIST } from "db://assets/scripts/games/game10002/view/talk/TalkConfig";
-import { SprotoTalkUse } from "db://assets/types/protocol/game10001/c2s";
+import { SprotoTalkUse } from "db://assets/types/protocol/game10002/c2s";
 import * as fgui from "fairygui-cc";
 import { DataCenter } from "db://assets/scripts/datacenter/Datacenter";
 import { RICH_TYPE } from "db://assets/scripts/datacenter/InterfaceConfig";

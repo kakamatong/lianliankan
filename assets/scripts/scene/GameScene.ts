@@ -16,6 +16,6 @@ export class GameScene extends Component {
 
         // 加载背景音乐
         SoundManager.instance.init(); // 切场景必须init
-        SoundManager.instance.playSoundMusic("game10001/gamebg");
+        SoundManager.instance.playSoundMusic("game10002/gamebg");
     }
 }

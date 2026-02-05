@@ -1,4 +1,4 @@
-import FGUICompPlayerHead from "../../../../../fgui/game10001/FGUICompPlayerHead";
+import FGUICompPlayerHead from "../../../../../fgui/game10002/FGUICompPlayerHead";
 import * as fgui from "fairygui-cc";
 import { HorizontalTextAlignment } from "cc";
 import { GameData } from "../../../data/Gamedata";

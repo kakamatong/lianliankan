@@ -19,10 +19,10 @@ export interface GAME_PLAYER_INFO {
     province?: string;
     city?: string;
     ext?: string;
-    cp?:number
-    win?:number;
-    lose?:number;
-    draw?:number
+    cp?: number;
+    win?: number;
+    lose?: number;
+    draw?: number;
 }
 
 /**
@@ -31,8 +31,8 @@ export interface GAME_PLAYER_INFO {
  */
 // 投票解散相关接口定义
 export interface VoteInfo {
-    userid: number;      // 用户ID
-    vote: number;        // 投票状态: 1-同意, 0-拒绝, -1-未投票
+    userid: number; // 用户ID
+    vote: number; // 投票状态: 1-同意, 0-拒绝, -1-未投票
 }
 
 /**
@@ -40,11 +40,11 @@ export interface VoteInfo {
  * @description 投票解散开始数据
  */
 export interface VoteDisbandStartData {
-    voteId: number;         // 投票ID
-    initiator: number;      // 发起人 userid
-    reason: string;         // 解散原因
-    timeLeft: number;       // 剩余时间(秒)
-    playerCount: number;    // 房间总人数
+    voteId: number; // 投票ID
+    initiator: number; // 发起人 userid
+    reason: string; // 解散原因
+    timeLeft: number; // 剩余时间(秒)
+    playerCount: number; // 房间总人数
     needAgreeCount: number; // 需要同意人数(60%)
 }
 
@@ -53,11 +53,11 @@ export interface VoteDisbandStartData {
  * @description 投票解散更新数据
  */
 export interface VoteDisbandUpdateData {
-    voteId: number;         // 投票ID
-    votes: VoteInfo[];      // 投票状态列表
-    agreeCount: number;     // 当前同意人数
-    refuseCount: number;    // 当前拒绝人数
-    timeLeft: number;       // 剩余时间(秒)
+    voteId: number; // 投票ID
+    votes: VoteInfo[]; // 投票状态列表
+    agreeCount: number; // 当前同意人数
+    refuseCount: number; // 当前拒绝人数
+    timeLeft: number; // 剩余时间(秒)
 }
 
 /**
@@ -65,12 +65,12 @@ export interface VoteDisbandUpdateData {
  * @description 投票解散结果数据
  */
 export interface VoteDisbandResultData {
-    voteId: number;         // 投票ID
-    result: number;         // 结果: 1-解散成功, 0-解散失败
-    reason: string;         // 结果原因
-    agreeCount: number;     // 最终同意人数
-    refuseCount: number;    // 最终拒绝人数
-    votes: VoteInfo[];      // 最终投票状态
+    voteId: number; // 投票ID
+    result: number; // 结果: 1-解散成功, 0-解散失败
+    reason: string; // 结果原因
+    agreeCount: number; // 最终同意人数
+    refuseCount: number; // 最终拒绝人数
+    votes: VoteInfo[]; // 最终投票状态
 }
 
 /**
@@ -79,9 +79,9 @@ export interface VoteDisbandResultData {
  */
 // 投票状态枚举
 export enum VOTE_STATUS {
-    NOT_VOTED = -1,    // 未投票
-    REFUSE = 0,        // 拒绝
-    AGREE = 1          // 同意
+    NOT_VOTED = -1, // 未投票
+    REFUSE = 0, // 拒绝
+    AGREE = 1, // 同意
 }
 
 /**
@@ -116,16 +116,6 @@ export enum ROOM_TYPE {
 }
 
 /**
- * @enum HAND_FLAG
- * @description 手势类型枚举（石头剪刀布）
- */
-export enum HAND_FLAG  {
-    ROCK= 0x0001, // 石头
-    PAPER= 0x0010, // 布
-    SCISSORS= 0x0100, // 剪刀
-}
-
-/**
  * @enum PLAYER_STATUS
  * @description 玩家状态枚举
  */
@@ -134,8 +124,7 @@ export enum PLAYER_STATUS {
     OFFLINE = 2,
     ONLINE = 3,
     PLAYING = 4,
-    READY = 5
-
+    READY = 5,
 }
 
 /**
@@ -147,8 +136,8 @@ export enum ROOM_END_FLAG {
     GAME_END = 1,
     OUT_TIME_WAITING = 2,
     OUT_TIME_PLAYING = 3,
-    VOTE_DISBAND = 4,        // 投票解散
-    OWNER_DISBAND = 5,        // 房主解散
+    VOTE_DISBAND = 4, // 投票解散
+    OWNER_DISBAND = 5, // 房主解散
 }
 
 /**
@@ -157,18 +146,17 @@ export enum ROOM_END_FLAG {
  */
 // 游戏区按钮控制器显示
 export enum CTRL_BTN_INDEX {
-    NONE = 0,           // 不显示按钮
-    SURE = 1,           // 确定按钮
-    CHANGE = 2,         // 更换按钮
-    CONTINUE = 3,       // 继续按钮
-    READY = 4,        // 准备按钮
-
+    NONE = 0, // 不显示按钮
+    SURE = 1, // 确定按钮
+    CHANGE = 2, // 更换按钮
+    CONTINUE = 3, // 继续按钮
+    READY = 4, // 准备按钮
 }
 
 /**
  * @description 游戏模式文本
  */
-export const GAME_MODE_TXT = ['3局2胜','5局3胜','7局4胜','无限对局']
+export const GAME_MODE_TXT = ["3局2胜", "5局3胜", "7局4胜", "无限对局"];
 
 /**
  * @description 自身本地位置常量
@@ -193,20 +181,11 @@ export interface GAME_DATA {
 }
 
 export const ROOM_PLAYER_INDEX: { [key: number]: number } = {
-    2:0,
-    3:1,
-    4:2
-}
-
-export const HAND_SOUND_NAME: { [key: number]: string } = {
-    [HAND_FLAG.SCISSORS]: "game10001/scissors",
-    [HAND_FLAG.ROCK]: "game10001/rock",
-    [HAND_FLAG.PAPER]: "game10001/paper"
-}
-
-export const HAND_INDEX = [HAND_FLAG.SCISSORS, HAND_FLAG.ROCK, HAND_FLAG.PAPER]
+    2: 0,
+    3: 1,
+    4: 2,
+};
 
 // 消息转发类型
-export enum FORWARD_MESSAGE_TYPE {
-    //TALK = 1, // 聊天
-}
+export enum FORWARD_MESSAGE_TYPE {}
+//TALK = 1, // 聊天
