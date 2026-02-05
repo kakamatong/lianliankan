@@ -101,8 +101,6 @@ export class CompGameMain extends FGUICompGameMain {
     initListeners() {
         GameSocketManager.instance.addServerListen(SprotoRoomInfo, this.onRoomInfo.bind(this));
         GameSocketManager.instance.addServerListen(SprotoStepId, this.onGameStep.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoPlayerAtt, this.onGamePlayerAttitude.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoOutHandInfo, this.onGameOutHand.bind(this));
         GameSocketManager.instance.addServerListen(SprotoRoundResult, this.onGameRoundResult.bind(this));
         GameSocketManager.instance.addServerListen(SprotoRoomEnd, this.onRoomEnd.bind(this));
         GameSocketManager.instance.addServerListen(SprotoPlayerInfos, this.onSvrPlayerInfos.bind(this));
@@ -299,39 +297,6 @@ export class CompGameMain extends FGUICompGameMain {
     onGameStep(data: any): void {
         GameData.instance.gameStep = data.stepid;
     }
-
-    /**
-     * 玩家姿态处理
-     * @param data 姿态数据
-     */
-    onGamePlayerAttitude(data: any): void {
-        const local = GameData.instance.seat2local(data.seat);
-        if (data.att == PLAYER_ATTITUDE.THINKING) {
-            this.onPlayerThinking(local);
-        } else if (data.att == PLAYER_ATTITUDE.READY) {
-            if (local != SELF_LOCAL) {
-                this.showSignReady(local, true);
-                this.showThinking(local, false);
-            }
-        } else if (data.att == PLAYER_ATTITUDE.OUT_HAND) {
-            // 隐藏时钟
-            this.showClock(false);
-            // 隐藏准备标签
-            this.showSignReady(local, false);
-            if (local == SELF_LOCAL) {
-                // 隐藏按钮和选择
-                this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
-            } else {
-                this.showThinking(local, false);
-            }
-        }
-    }
-
-    /**
-     * 游戏出牌处理
-     * @param data 出牌数据
-     */
-    onGameOutHand(data: any): void {}
 
     /**
      * 游戏回合结果处理
