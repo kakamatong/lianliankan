@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="776,600">
+  <displayList>
+    <component id="n0_hs3t" name="n0" src="hs3tr" fileName="comp/map/CompCube.xml" xy="-10,72"/>
+    <component id="n1_hs3t" name="n1" src="hs3tr" fileName="comp/map/CompCube.xml" xy="70,72"/>
+    <component id="n2_hs3t" name="n2" src="hs3tr" fileName="comp/map/CompCube.xml" xy="150,72"/>
+    <component id="n3_hs3t" name="n3" src="hs3tr" fileName="comp/map/CompCube.xml" xy="230,72"/>
+    <component id="n4_hs3t" name="n4" src="hs3tr" fileName="comp/map/CompCube.xml" xy="310,72"/>
+    <component id="n5_hs3t" name="n5" src="hs3tr" fileName="comp/map/CompCube.xml" xy="390,72"/>
+    <component id="n6_hs3t" name="n6" src="hs3tr" fileName="comp/map/CompCube.xml" xy="470,72"/>
+    <component id="n7_hs3t" name="n7" src="hs3tr" fileName="comp/map/CompCube.xml" xy="550,72"/>
+    <component id="n8_hs3t" name="n8" src="hs3tr" fileName="comp/map/CompCube.xml" xy="630,72"/>
+    <component id="n9_hs3t" name="n9" src="hs3tr" fileName="comp/map/CompCube.xml" xy="710,72"/>
+  </displayList>
+</component>

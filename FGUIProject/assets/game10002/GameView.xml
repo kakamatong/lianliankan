@@ -19,7 +19,7 @@
     <image id="n1_is91" name="n1" src="is912" fileName="imgs/game.jpg" xy="0,0">
       <relation target="" sidePair="width-width,height-height"/>
     </image>
-    <component id="n42_jsve" name="UI_COMP_MAIN" src="ln74p" fileName="CompGameMain.xml" xy="13,11">
+    <component id="n42_jsve" name="UI_COMP_MAIN" src="ln74p" fileName="comp/CompGameMain.xml" xy="0,0">
       <relation target="" sidePair="width-width,height-height"/>
     </component>
   </displayList>

@@ -25,6 +25,8 @@
     <component id="pxa5n" name="CompTalk.xml" path="/comp/"/>
     <image id="pxa5o" name="talk.png" path="/imgs/"/>
     <component id="ln74p" name="CompGameMain.xml" path="/comp/"/>
+    <component id="hs3tq" name="CompMap.xml" path="/comp/map/"/>
+    <component id="hs3tr" name="CompCube.xml" path="/comp/map/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

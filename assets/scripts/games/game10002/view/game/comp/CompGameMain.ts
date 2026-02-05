@@ -74,10 +74,10 @@ export class CompGameMain extends FGUICompGameMain {
     onConstruct() {
         super.onConstruct();
         this.init();
-        this.initListeners();
+        //this.initListeners();
 
         // 客户端进入完成
-        GameSocketManager.instance.sendToServer(SprotoClientReady, {});
+        //GameSocketManager.instance.sendToServer(SprotoClientReady, {});
         if (GameData.instance.isPrivateRoom) {
             this.ctrl_roomtype.selectedIndex = ROOM_TYPE.PRIVATE;
         }
