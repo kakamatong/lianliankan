@@ -276,22 +276,22 @@ export class CompMap extends FGUICompMap {
         // 先清理之前的路径线条
         this._clearPathLines();
 
-        // 获取第一个方块作为参考，计算方块中心点间距
-        const firstCube = this._selectedCubes[0]?.cube;
-        if (!firstCube) return;
-
-        const cubeWidth = firstCube.width;
-        const cubeHeight = firstCube.height;
         const lineThickness = 15; // 线条粗细固定
 
         for (const line of lines) {
             const [start, end] = line;
 
-            // 计算起点和终点的像素坐标（方块中心）
-            const startX = start.col * cubeWidth + cubeWidth / 2;
-            const startY = start.row * cubeHeight + cubeHeight / 2;
-            const endX = end.col * cubeWidth + cubeWidth / 2;
-            const endY = end.row * cubeHeight + cubeHeight / 2;
+            // 获取起点和终点对应的方块
+            const startCube = this.getCube(start.row, start.col);
+            const endCube = this.getCube(end.row, end.col);
+
+            if (!startCube || !endCube) continue;
+
+            // 获取方块的实际坐标和尺寸
+            const startX = startCube.x + startCube.width / 2;
+            const startY = startCube.y + startCube.height / 2;
+            const endX = endCube.x + endCube.width / 2;
+            const endY = endCube.y + endCube.height / 2;
 
             // 计算线段差值
             const deltaX = endX - startX;
