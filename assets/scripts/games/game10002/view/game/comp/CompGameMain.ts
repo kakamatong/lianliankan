@@ -113,11 +113,14 @@ export class CompGameMain extends FGUICompGameMain {
         }
 
         // 内部区域为8x8（行1-8，列1-8），需要填充64个格子
-        // 生成32对方块，每对随机类型1-5
+        // 生成32对方块，每对随机类型1-6
+        let pairIndex = 0;
+        const max = 8;
         const pairs: number[] = [];
         for (let i = 0; i < 32; i++) {
-            const type = Math.floor(Math.random() * 5) + 1; // 1-5
+            const type = ++pairIndex;
             pairs.push(type, type); // 添加一对
+            if (pairIndex >= max) pairIndex = 0;
         }
 
         // 打乱顺序
