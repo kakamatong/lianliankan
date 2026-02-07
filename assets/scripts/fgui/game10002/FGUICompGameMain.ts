@@ -2,11 +2,11 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
+import FGUICompMap from "./FGUICompMap";
 import FGUICompPlayerHead from "./FGUICompPlayerHead";
 import FGUICompClock from "./FGUICompClock";
 import FGUICompGameStartAct from "./FGUICompGameStartAct";
 import FGUICompRoundAct from "./FGUICompRoundAct";
-import FGUICompMap from "./FGUICompMap";
 
 import { PackageManager } from "../../frameworks/PackageManager";
 
@@ -18,6 +18,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_DISBAND:fgui.GButton;
 	public UI_BTN_BACK:fgui.GButton;
 	public UI_BTN_INVITE:fgui.GButton;
+	public UI_COMP_MAP:FGUICompMap;
 	public UI_COMP_PLAYER_3:FGUICompPlayerHead;
 	public UI_COMP_PLAYER_2:FGUICompPlayerHead;
 	public UI_COMP_PLAYER_1:FGUICompPlayerHead;
@@ -35,7 +36,6 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_TXT_PROGRESS:fgui.GTextField;
 	public UI_COMP_ROUND_ACT:FGUICompRoundAct;
 	public UI_BTN_TALK:fgui.GButton;
-	public UI_COMP_MAP:FGUICompMap;
 	public static URL:string = "ui://2zsfe53xln74p";
 
 	public static packageName:string = "game10002";
@@ -85,29 +85,29 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_BACK.onClick(this.onBtnBack, this);
 		this.UI_BTN_INVITE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_INVITE.onClick(this.onBtnInvite, this);
-		this.UI_COMP_PLAYER_3 = <FGUICompPlayerHead>(this.getChildAt(3));
-		this.UI_COMP_PLAYER_2 = <FGUICompPlayerHead>(this.getChildAt(4));
-		this.UI_COMP_PLAYER_1 = <FGUICompPlayerHead>(this.getChildAt(5));
-		this.UI_IMG_SIGN_READY_3 = <fgui.GImage>(this.getChildAt(6));
-		this.UI_IMG_SIGN_READY_2 = <fgui.GImage>(this.getChildAt(7));
-		this.UI_IMG_SIGN_READY_1 = <fgui.GImage>(this.getChildAt(8));
-		this.UI_BTN_SURE = <fgui.GButton>(this.getChildAt(9));
+		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(3));
+		this.UI_COMP_PLAYER_3 = <FGUICompPlayerHead>(this.getChildAt(4));
+		this.UI_COMP_PLAYER_2 = <FGUICompPlayerHead>(this.getChildAt(5));
+		this.UI_COMP_PLAYER_1 = <FGUICompPlayerHead>(this.getChildAt(6));
+		this.UI_IMG_SIGN_READY_3 = <fgui.GImage>(this.getChildAt(7));
+		this.UI_IMG_SIGN_READY_2 = <fgui.GImage>(this.getChildAt(8));
+		this.UI_IMG_SIGN_READY_1 = <fgui.GImage>(this.getChildAt(9));
+		this.UI_BTN_SURE = <fgui.GButton>(this.getChildAt(10));
 		this.UI_BTN_SURE.onClick(this.onBtnSure, this);
-		this.UI_BTN_CHANGE = <fgui.GButton>(this.getChildAt(10));
+		this.UI_BTN_CHANGE = <fgui.GButton>(this.getChildAt(11));
 		this.UI_BTN_CHANGE.onClick(this.onBtnChange, this);
-		this.UI_BTN_CONTINUE = <fgui.GButton>(this.getChildAt(11));
+		this.UI_BTN_CONTINUE = <fgui.GButton>(this.getChildAt(12));
 		this.UI_BTN_CONTINUE.onClick(this.onBtnContinue, this);
-		this.UI_BTN_READY = <fgui.GButton>(this.getChildAt(12));
+		this.UI_BTN_READY = <fgui.GButton>(this.getChildAt(13));
 		this.UI_BTN_READY.onClick(this.onBtnReady, this);
-		this.UI_COMP_CLOCK = <FGUICompClock>(this.getChildAt(14));
-		this.UI_COMP_GAME_START = <FGUICompGameStartAct>(this.getChildAt(15));
-		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(17));
-		this.UI_TXT_RULE = <fgui.GTextField>(this.getChildAt(18));
-		this.UI_TXT_PROGRESS = <fgui.GTextField>(this.getChildAt(19));
-		this.UI_COMP_ROUND_ACT = <FGUICompRoundAct>(this.getChildAt(23));
-		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(24));
+		this.UI_COMP_CLOCK = <FGUICompClock>(this.getChildAt(15));
+		this.UI_COMP_GAME_START = <FGUICompGameStartAct>(this.getChildAt(16));
+		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(18));
+		this.UI_TXT_RULE = <fgui.GTextField>(this.getChildAt(19));
+		this.UI_TXT_PROGRESS = <fgui.GTextField>(this.getChildAt(20));
+		this.UI_COMP_ROUND_ACT = <FGUICompRoundAct>(this.getChildAt(24));
+		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(25));
 		this.UI_BTN_TALK.onClick(this.onBtnTalk, this);
-		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(25));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

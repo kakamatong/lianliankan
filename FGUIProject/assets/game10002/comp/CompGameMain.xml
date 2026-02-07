@@ -29,6 +29,9 @@
       <property target="title" propertyId="0" value="邀请好友"/>
       <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3e"/>
     </component>
+    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,513">
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </component>
     <component id="n64_gk14" name="UI_COMP_PLAYER_3" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="368,74" controller="ctrl_pos,0,ctrl_localSeat,3">
       <gearDisplay controller="ctrl_playerCnt" pages="1,2"/>
       <gearXY controller="ctrl_playerCnt" pages="1" values="9,272" default="368,74"/>
@@ -96,9 +99,6 @@
     <component id="n68_pxa5" name="UI_BTN_TALK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="664,1593" size="95,95">
       <relation target="" sidePair="left-right,bottom-bottom"/>
       <property target="icon" propertyId="1" value="ui://2zsfe53xpxa5o"/>
-    </component>
-    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,513">
-      <relation target="" sidePair="center-center,middle-middle"/>
     </component>
   </displayList>
 </component>

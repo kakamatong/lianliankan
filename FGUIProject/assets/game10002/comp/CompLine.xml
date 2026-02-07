@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="107,15">
+  <displayList>
+    <image id="n1_8yj8" name="n1" src="8yj8u" fileName="imgs/line.png" xy="0,0" size="107,15"/>
+  </displayList>
+  <relation target="n1_8yj8" sidePair="width-width,height-height"/>
+</component>
