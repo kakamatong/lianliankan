@@ -60,6 +60,7 @@ import {
 import { SprotoGameRoomReady } from "../../../../../../types/protocol/lobby/s2c";
 import { TALK_LIST } from "../../talk/TalkConfig";
 import { TalkView } from "../../talk/TalkView";
+import { CompMap } from "./CompMap";
 
 /**
  * 游戏主体组件
@@ -93,6 +94,49 @@ export class CompGameMain extends FGUICompGameMain {
         if (DataCenter.instance.shortRoomid) {
             GameData.instance.isPrivateRoom = true;
         }
+
+        this.testRandomMap();
+    }
+
+    /**
+     * 测试随机地图
+     * 生成10x10地图，最外圈为空，内部随机填充1-5的方块（确保成对出现）
+     */
+    testRandomMap() {
+        const rows = 10;
+        const cols = 10;
+        const map: number[][] = [];
+
+        // 初始化地图（全部设为0）
+        for (let i = 0; i < rows; i++) {
+            map[i] = new Array(cols).fill(0);
+        }
+
+        // 内部区域为8x8（行1-8，列1-8），需要填充64个格子
+        // 生成32对方块，每对随机类型1-5
+        const pairs: number[] = [];
+        for (let i = 0; i < 32; i++) {
+            const type = Math.floor(Math.random() * 5) + 1; // 1-5
+            pairs.push(type, type); // 添加一对
+        }
+
+        // 打乱顺序
+        for (let i = pairs.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
+        }
+
+        // 填充到内部区域
+        let index = 0;
+        for (let row = 1; row < rows - 1; row++) {
+            for (let col = 1; col < cols - 1; col++) {
+                map[row][col] = pairs[index++];
+            }
+        }
+
+        // 初始化地图组件
+        (this.UI_COMP_MAP as CompMap).initMap(map, "resEmoji");
+        console.log("随机地图生成完成", map);
     }
 
     /**
@@ -980,6 +1024,14 @@ export class CompGameMain extends FGUICompGameMain {
                 this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.SURE;
             }
         }
+    }
+
+    /**
+     * 获取地图组件
+     * @returns 地图组件
+     */
+    getCompMap(): CompMap {
+        return this.UI_COMP_MAP as CompMap;
     }
 }
 fgui.UIObjectFactory.setExtension(CompGameMain.URL, CompGameMain);

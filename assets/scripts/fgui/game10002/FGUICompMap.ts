@@ -18,7 +18,7 @@ export default class FGUICompMap extends fgui.GComponent {
 	public CUTE_4_7:FGUICompCube;
 	public CUTE_2_3:FGUICompCube;
 	public CUTE_2_7:FGUICompCube;
-	public CUTE_5_3:FGUICompCube;
+	public CUTE_5_0:FGUICompCube;
 	public CUTE_5_9:FGUICompCube;
 	public CUTE_6_4:FGUICompCube;
 	public CUTE_6_7:FGUICompCube;
@@ -28,7 +28,7 @@ export default class FGUICompMap extends fgui.GComponent {
 	public CUTE_4_8:FGUICompCube;
 	public CUTE_3_9:FGUICompCube;
 	public CUTE_2_4:FGUICompCube;
-	public CUTE_5_1:FGUICompCube;
+	public CUTE_5_2:FGUICompCube;
 	public CUTE_5_7:FGUICompCube;
 	public CUTE_7_4:FGUICompCube;
 	public CUTE_6_8:FGUICompCube;
@@ -38,7 +38,7 @@ export default class FGUICompMap extends fgui.GComponent {
 	public CUTE_3_2:FGUICompCube;
 	public CUTE_3_8:FGUICompCube;
 	public CUTE_2_8:FGUICompCube;
-	public CUTE_5_0:FGUICompCube;
+	public CUTE_5_3:FGUICompCube;
 	public CUTE_4_0:FGUICompCube;
 	public CUTE_6_2:FGUICompCube;
 	public CUTE_6_5:FGUICompCube;
@@ -60,7 +60,7 @@ export default class FGUICompMap extends fgui.GComponent {
 	public CUTE_4_9:FGUICompCube;
 	public CUTE_5_4:FGUICompCube;
 	public CUTE_5_6:FGUICompCube;
-	public CUTE_7_1:FGUICompCube;
+	public CUTE_7_0:FGUICompCube;
 	public CUTE_7_5:FGUICompCube;
 	public CUTE_1_1:FGUICompCube;
 	public CUTE_1_4:FGUICompCube;
@@ -70,7 +70,7 @@ export default class FGUICompMap extends fgui.GComponent {
 	public CUTE_7_9:FGUICompCube;
 	public CUTE_6_0:FGUICompCube;
 	public CUTE_5_8:FGUICompCube;
-	public CUTE_7_0:FGUICompCube;
+	public CUTE_7_1:FGUICompCube;
 	public CUTE_7_6:FGUICompCube;
 	public CUTE_6_9:FGUICompCube;
 	public CUTE_1_7:FGUICompCube;
@@ -78,7 +78,7 @@ export default class FGUICompMap extends fgui.GComponent {
 	public CUTE_3_0:FGUICompCube;
 	public CUTE_3_6:FGUICompCube;
 	public CUTE_2_9:FGUICompCube;
-	public CUTE_5_2:FGUICompCube;
+	public CUTE_5_1:FGUICompCube;
 	public CUTE_4_2:FGUICompCube;
 	public CUTE_7_3:FGUICompCube;
 	public CUTE_7_7:FGUICompCube;
@@ -98,9 +98,9 @@ export default class FGUICompMap extends fgui.GComponent {
 	public CUTE_8_7:FGUICompCube;
 	public CUTE_8_8:FGUICompCube;
 	public CUTE_8_9:FGUICompCube;
-	public CUTE_9_2:FGUICompCube;
-	public CUTE_9_1:FGUICompCube;
 	public CUTE_9_0:FGUICompCube;
+	public CUTE_9_1:FGUICompCube;
+	public CUTE_9_2:FGUICompCube;
 	public CUTE_9_3:FGUICompCube;
 	public CUTE_9_4:FGUICompCube;
 	public CUTE_9_5:FGUICompCube;
@@ -158,7 +158,7 @@ export default class FGUICompMap extends fgui.GComponent {
 		this.CUTE_4_7 = <FGUICompCube>(this.getChildAt(7));
 		this.CUTE_2_3 = <FGUICompCube>(this.getChildAt(8));
 		this.CUTE_2_7 = <FGUICompCube>(this.getChildAt(9));
-		this.CUTE_5_3 = <FGUICompCube>(this.getChildAt(10));
+		this.CUTE_5_0 = <FGUICompCube>(this.getChildAt(10));
 		this.CUTE_5_9 = <FGUICompCube>(this.getChildAt(11));
 		this.CUTE_6_4 = <FGUICompCube>(this.getChildAt(12));
 		this.CUTE_6_7 = <FGUICompCube>(this.getChildAt(13));
@@ -168,7 +168,7 @@ export default class FGUICompMap extends fgui.GComponent {
 		this.CUTE_4_8 = <FGUICompCube>(this.getChildAt(17));
 		this.CUTE_3_9 = <FGUICompCube>(this.getChildAt(18));
 		this.CUTE_2_4 = <FGUICompCube>(this.getChildAt(19));
-		this.CUTE_5_1 = <FGUICompCube>(this.getChildAt(20));
+		this.CUTE_5_2 = <FGUICompCube>(this.getChildAt(20));
 		this.CUTE_5_7 = <FGUICompCube>(this.getChildAt(21));
 		this.CUTE_7_4 = <FGUICompCube>(this.getChildAt(22));
 		this.CUTE_6_8 = <FGUICompCube>(this.getChildAt(23));
@@ -178,7 +178,7 @@ export default class FGUICompMap extends fgui.GComponent {
 		this.CUTE_3_2 = <FGUICompCube>(this.getChildAt(27));
 		this.CUTE_3_8 = <FGUICompCube>(this.getChildAt(28));
 		this.CUTE_2_8 = <FGUICompCube>(this.getChildAt(29));
-		this.CUTE_5_0 = <FGUICompCube>(this.getChildAt(30));
+		this.CUTE_5_3 = <FGUICompCube>(this.getChildAt(30));
 		this.CUTE_4_0 = <FGUICompCube>(this.getChildAt(31));
 		this.CUTE_6_2 = <FGUICompCube>(this.getChildAt(32));
 		this.CUTE_6_5 = <FGUICompCube>(this.getChildAt(33));
@@ -200,7 +200,7 @@ export default class FGUICompMap extends fgui.GComponent {
 		this.CUTE_4_9 = <FGUICompCube>(this.getChildAt(49));
 		this.CUTE_5_4 = <FGUICompCube>(this.getChildAt(50));
 		this.CUTE_5_6 = <FGUICompCube>(this.getChildAt(51));
-		this.CUTE_7_1 = <FGUICompCube>(this.getChildAt(52));
+		this.CUTE_7_0 = <FGUICompCube>(this.getChildAt(52));
 		this.CUTE_7_5 = <FGUICompCube>(this.getChildAt(53));
 		this.CUTE_1_1 = <FGUICompCube>(this.getChildAt(54));
 		this.CUTE_1_4 = <FGUICompCube>(this.getChildAt(55));
@@ -210,7 +210,7 @@ export default class FGUICompMap extends fgui.GComponent {
 		this.CUTE_7_9 = <FGUICompCube>(this.getChildAt(59));
 		this.CUTE_6_0 = <FGUICompCube>(this.getChildAt(60));
 		this.CUTE_5_8 = <FGUICompCube>(this.getChildAt(61));
-		this.CUTE_7_0 = <FGUICompCube>(this.getChildAt(62));
+		this.CUTE_7_1 = <FGUICompCube>(this.getChildAt(62));
 		this.CUTE_7_6 = <FGUICompCube>(this.getChildAt(63));
 		this.CUTE_6_9 = <FGUICompCube>(this.getChildAt(64));
 		this.CUTE_1_7 = <FGUICompCube>(this.getChildAt(65));
@@ -218,7 +218,7 @@ export default class FGUICompMap extends fgui.GComponent {
 		this.CUTE_3_0 = <FGUICompCube>(this.getChildAt(67));
 		this.CUTE_3_6 = <FGUICompCube>(this.getChildAt(68));
 		this.CUTE_2_9 = <FGUICompCube>(this.getChildAt(69));
-		this.CUTE_5_2 = <FGUICompCube>(this.getChildAt(70));
+		this.CUTE_5_1 = <FGUICompCube>(this.getChildAt(70));
 		this.CUTE_4_2 = <FGUICompCube>(this.getChildAt(71));
 		this.CUTE_7_3 = <FGUICompCube>(this.getChildAt(72));
 		this.CUTE_7_7 = <FGUICompCube>(this.getChildAt(73));
@@ -238,9 +238,9 @@ export default class FGUICompMap extends fgui.GComponent {
 		this.CUTE_8_7 = <FGUICompCube>(this.getChildAt(87));
 		this.CUTE_8_8 = <FGUICompCube>(this.getChildAt(88));
 		this.CUTE_8_9 = <FGUICompCube>(this.getChildAt(89));
-		this.CUTE_9_2 = <FGUICompCube>(this.getChildAt(90));
+		this.CUTE_9_0 = <FGUICompCube>(this.getChildAt(90));
 		this.CUTE_9_1 = <FGUICompCube>(this.getChildAt(91));
-		this.CUTE_9_0 = <FGUICompCube>(this.getChildAt(92));
+		this.CUTE_9_2 = <FGUICompCube>(this.getChildAt(92));
 		this.CUTE_9_3 = <FGUICompCube>(this.getChildAt(93));
 		this.CUTE_9_4 = <FGUICompCube>(this.getChildAt(94));
 		this.CUTE_9_5 = <FGUICompCube>(this.getChildAt(95));
