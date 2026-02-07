@@ -4,11 +4,13 @@ import * as fgui from "fairygui-cc";
 import { PathFinder } from "../../../logic/PathFinder";
 import { MapManager } from "../../../logic/MapManager";
 import { Point, LineSegment } from "../../../logic/TileMapData";
+import { ViewClass } from "db://assets/scripts/frameworks/Framework";
 
 /**
  * @class CompMap
  * @description 连连看地图组件，管理所有方块
  */
+@ViewClass()
 export class CompMap extends FGUICompMap {
     /**
      * @property {FGUICompCube[][]} _cubeMap
