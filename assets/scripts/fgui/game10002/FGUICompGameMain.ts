@@ -6,6 +6,7 @@ import FGUICompPlayerHead from "./FGUICompPlayerHead";
 import FGUICompClock from "./FGUICompClock";
 import FGUICompGameStartAct from "./FGUICompGameStartAct";
 import FGUICompRoundAct from "./FGUICompRoundAct";
+import FGUICompMap from "./FGUICompMap";
 
 import { PackageManager } from "../../frameworks/PackageManager";
 
@@ -34,7 +35,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_TXT_PROGRESS:fgui.GTextField;
 	public UI_COMP_ROUND_ACT:FGUICompRoundAct;
 	public UI_BTN_TALK:fgui.GButton;
-	public UI_COMP_MAP:fgui.GComponent;
+	public UI_COMP_MAP:FGUICompMap;
 	public static URL:string = "ui://2zsfe53xln74p";
 
 	public static packageName:string = "game10002";
@@ -106,7 +107,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_COMP_ROUND_ACT = <FGUICompRoundAct>(this.getChildAt(23));
 		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(24));
 		this.UI_BTN_TALK.onClick(this.onBtnTalk, this);
-		this.UI_COMP_MAP = <fgui.GComponent>(this.getChildAt(25));
+		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(25));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
