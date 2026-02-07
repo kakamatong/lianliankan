@@ -100,7 +100,7 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * 测试随机地图
-     * 生成10x10地图，最外圈为空，内部随机填充1-5的方块（确保成对出现）
+     * 生成10x10地图，最外圈为空，内部随机填充1-max的方块（确保成对出现）
      */
     testRandomMap() {
         const rows = 10;
@@ -113,9 +113,9 @@ export class CompGameMain extends FGUICompGameMain {
         }
 
         // 内部区域为8x8（行1-8，列1-8），需要填充64个格子
-        // 生成32对方块，每对随机类型1-6
+        // 生成32对方块，每对随机类型1-max
         let pairIndex = 0;
-        const max = 8;
+        const max = 10;
         const pairs: number[] = [];
         for (let i = 0; i < 32; i++) {
             const type = ++pairIndex;

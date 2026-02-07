@@ -21,7 +21,7 @@
       <property target="title" propertyId="0" value="解散"/>
       <property target="icon" propertyId="1" value="ui://gj0r6g5ijsve10"/>
     </component>
-    <component id="n3_is91" name="UI_BTN_BACK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="0,0" size="143,94">
+    <component id="n3_is91" name="UI_BTN_BACK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="9,8" size="143,94">
       <property target="icon" propertyId="1" value="ui://gj0r6g5iis91p"/>
     </component>
     <component id="n53_mwa6" name="UI_BTN_INVITE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="272,1275" size="230,98" visible="false">

@@ -9,6 +9,8 @@
     <image id="hs3t5" name="80_6.png" path="/imgs/" exported="true"/>
     <image id="hs3t6" name="80_7.png" path="/imgs/" exported="true"/>
     <image id="hs3t7" name="80_8.png" path="/imgs/" exported="true"/>
+    <image id="8yj88" name="80_10.png" path="/imgs/" exported="true"/>
+    <image id="8yj89" name="80_9.png" path="/imgs/" exported="true"/>
   </resources>
   <publish name=""/>
 </packageDescription>
