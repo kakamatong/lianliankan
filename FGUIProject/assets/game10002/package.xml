@@ -2,7 +2,6 @@
 <packageDescription id="2zsfe53x">
   <resources>
     <component id="is911" name="GameView.xml" path="/" exported="true"/>
-    <image id="is912" name="game.jpg" path="/imgs/"/>
     <component id="folo3" name="CompHand.xml" path="/comp/"/>
     <image id="qaf24" name="ready.png" path="/imgs/"/>
     <image id="qaf25" name="clock.png" path="/imgs/"/>
@@ -27,6 +26,7 @@
     <component id="ln74p" name="CompGameMain.xml" path="/comp/"/>
     <component id="hs3tq" name="CompMap.xml" path="/comp/map/"/>
     <component id="hs3tr" name="CompCube.xml" path="/comp/map/"/>
+    <image id="8yj8t" name="gamebg.jpg" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
