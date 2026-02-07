@@ -3,7 +3,7 @@ import FGUICompCube from "../../../../../fgui/game10002/FGUICompCube";
 import * as fgui from "fairygui-cc";
 import { PathFinder } from "../../../logic/PathFinder";
 import { MapManager } from "../../../logic/MapManager";
-import { Point } from "../../../logic/TileMapData";
+import { Point, LineSegment } from "../../../logic/TileMapData";
 
 /**
  * @class CompMap
@@ -53,6 +53,13 @@ export class CompMap extends FGUICompMap {
     private _selectedCubes: Array<{ cube: FGUICompCube; row: number; col: number }> = [];
 
     /**
+     * @property {FGUICompLine[]} _pathLines
+     * @description 当前显示的路径线条数组
+     * @private
+     */
+    private _pathLines: fgui.GComponent[] = [];
+
+    /**
      * @property {number} _selectScale
      * @description 选中时的缩放比例
      * @private
@@ -65,6 +72,13 @@ export class CompMap extends FGUICompMap {
      * @private
      */
     private readonly _selectZOrder: number = 999;
+
+    /**
+     * @property {number} _removeDelay
+     * @description 消除延迟时间（秒）
+     * @private
+     */
+    private readonly _removeDelay: number = 0.2;
 
     /**
      * @method onConstruct
@@ -237,8 +251,13 @@ export class CompMap extends FGUICompMap {
         const result = this._pathFinder.canConnect(p1, p2);
 
         if (result.canConnect) {
-            // 可以消除，隐藏两个方块
-            this._removeCubes(first, second, p1, p2);
+            // 可以消除，显示路径线条，然后延迟消除
+            this._showPathLines(result.lines);
+
+            // 延迟0.2秒后执行消除
+            this.scheduleOnce(() => {
+                this._removeCubesWithLines(first, second, p1, p2);
+            }, this._removeDelay);
         } else {
             // 不能消除，取消第一个方块的选中，保留第二个
             this._deselectCube(0);
@@ -246,15 +265,88 @@ export class CompMap extends FGUICompMap {
     }
 
     /**
-     * @method _removeCubes
-     * @description 消除两个方块
+     * @method _showPathLines
+     * @description 显示连接路径线条
+     * @param {LineSegment[]} lines - 路径线段数组
+     * @private
+     */
+    private _showPathLines(lines: LineSegment[]): void {
+        // 先清理之前的路径线条
+        this._clearPathLines();
+
+        // 获取第一个方块作为参考，计算方块中心点间距
+        const firstCube = this._selectedCubes[0]?.cube;
+        if (!firstCube) return;
+
+        const cubeWidth = firstCube.width;
+        const cubeHeight = firstCube.height;
+        const lineThickness = 15; // 线条粗细固定
+
+        for (const line of lines) {
+            const [start, end] = line;
+
+            // 计算起点和终点的像素坐标（方块中心）
+            const startX = start.col * cubeWidth + cubeWidth / 2;
+            const startY = start.row * cubeHeight + cubeHeight / 2;
+            const endX = end.col * cubeWidth + cubeWidth / 2;
+            const endY = end.row * cubeHeight + cubeHeight / 2;
+
+            // 计算线段差值
+            const deltaX = endX - startX;
+            const deltaY = endY - startY;
+
+            // 创建线条节点
+            const lineNode = fgui.UIPackage.createObject("game10002", "CompLine") as fgui.GComponent;
+
+            // 判断是水平线还是垂直线
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // 水平线：通过改变 width 实现
+                lineNode.width = Math.abs(deltaX);
+                lineNode.height = lineThickness;
+                lineNode.x = Math.min(startX, endX);
+                lineNode.y = startY - lineThickness / 2; // 居中对齐
+            } else {
+                // 垂直线：通过改变 height 实现
+                lineNode.width = lineThickness;
+                lineNode.height = Math.abs(deltaY);
+                lineNode.x = startX - lineThickness / 2; // 居中对齐
+                lineNode.y = Math.min(startY, endY);
+            }
+
+            // 设置较高的sortingOrder确保线条显示在方块上方
+            lineNode.sortingOrder = 1000;
+
+            // 添加到地图
+            this.addChild(lineNode);
+            this._pathLines.push(lineNode);
+        }
+    }
+
+    /**
+     * @method _clearPathLines
+     * @description 清理所有路径线条
+     * @private
+     */
+    private _clearPathLines(): void {
+        for (const line of this._pathLines) {
+            if (line && !line.isDisposed) {
+                line.removeFromParent();
+                line.dispose();
+            }
+        }
+        this._pathLines = [];
+    }
+
+    /**
+     * @method _removeCubesWithLines
+     * @description 消除两个方块并清理线条
      * @param {Object} first - 第一个选中的方块信息
      * @param {Object} second - 第二个选中的方块信息
      * @param {Point} p1 - 第一个方块坐标
      * @param {Point} p2 - 第二个方块坐标
      * @private
      */
-    private _removeCubes(
+    private _removeCubesWithLines(
         first: { cube: FGUICompCube; row: number; col: number },
         second: { cube: FGUICompCube; row: number; col: number },
         p1: Point,
@@ -277,6 +369,9 @@ export class CompMap extends FGUICompMap {
         second.cube.sortingOrder = 0;
         second.cube.UI_LOADER_ICOM.url = "";
 
+        // 清理路径线条
+        this._clearPathLines();
+
         // 清空选中数组
         this._selectedCubes = [];
 
@@ -295,8 +390,9 @@ export class CompMap extends FGUICompMap {
             return;
         }
 
-        // 清空之前的选中状态
+        // 清空之前的选中状态和路径线条
         this._clearSelection();
+        this._clearPathLines();
 
         // 初始化MapManager
         this._mapManager.initMap(map);
@@ -368,8 +464,9 @@ export class CompMap extends FGUICompMap {
      * @description 清空整个地图，隐藏所有方块
      */
     clearMap(): void {
-        // 清空选中状态
+        // 清空选中状态和路径线条
         this._clearSelection();
+        this._clearPathLines();
 
         for (let row = 0; row < this._rows; row++) {
             for (let col = 0; col < this._cols; col++) {
