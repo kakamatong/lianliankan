@@ -1,6 +1,9 @@
 import FGUICompMap from "../../../../../fgui/game10002/FGUICompMap";
 import FGUICompCube from "../../../../../fgui/game10002/FGUICompCube";
 import * as fgui from "fairygui-cc";
+import { PathFinder } from "../../../logic/PathFinder";
+import { MapManager } from "../../../logic/MapManager";
+import { Point } from "../../../logic/TileMapData";
 
 /**
  * @class CompMap
@@ -29,6 +32,41 @@ export class CompMap extends FGUICompMap {
     private _cols: number = 0;
 
     /**
+     * @property {MapManager} _mapManager
+     * @description 地图数据管理器
+     * @private
+     */
+    private _mapManager: MapManager = new MapManager();
+
+    /**
+     * @property {PathFinder} _pathFinder
+     * @description 路径查找器
+     * @private
+     */
+    private _pathFinder: PathFinder = new PathFinder();
+
+    /**
+     * @property {Array<{cube: FGUICompCube, row: number, col: number}>} _selectedCubes
+     * @description 当前选中的方块数组（最多2个）
+     * @private
+     */
+    private _selectedCubes: Array<{ cube: FGUICompCube; row: number; col: number }> = [];
+
+    /**
+     * @property {number} _selectScale
+     * @description 选中时的缩放比例
+     * @private
+     */
+    private readonly _selectScale: number = 1.2;
+
+    /**
+     * @property {number} _selectZOrder
+     * @description 选中时的ZOrder值
+     * @private
+     */
+    private readonly _selectZOrder: number = 999;
+
+    /**
      * @method onConstruct
      * @description 组件构造完成时的初始化
      */
@@ -45,7 +83,7 @@ export class CompMap extends FGUICompMap {
     private _initCubeMap(): void {
         // 清空现有数据
         this._cubeMap = [];
-        
+
         // 遍历所有子节点，提取 CUTE_X_Y 格式的方块
         for (let i = 0; i < this.numChildren; i++) {
             const child = this.getChildAt(i) as FGUICompCube;
@@ -54,26 +92,200 @@ export class CompMap extends FGUICompMap {
                 if (parts.length === 3) {
                     const row = parseInt(parts[1]);
                     const col = parseInt(parts[2]);
-                    
+
                     // 确保行数组存在
                     if (!this._cubeMap[row]) {
                         this._cubeMap[row] = [];
                     }
-                    
+
                     // 存储方块引用
                     this._cubeMap[row][col] = child;
-                    
+
                     // 更新地图尺寸
                     if (row >= this._rows) this._rows = row + 1;
                     if (col >= this._cols) this._cols = col + 1;
+
+                    // 绑定点击事件
+                    this._bindCubeClickEvent(child, row, col);
                 }
             }
         }
     }
 
     /**
+     * @method _bindCubeClickEvent
+     * @description 绑定方块的点击事件
+     * @param {FGUICompCube} cube - 方块对象
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @private
+     */
+    private _bindCubeClickEvent(cube: FGUICompCube, row: number, col: number): void {
+        cube.onClick(() => {
+            this._onCubeClick(cube, row, col);
+        }, this);
+    }
+
+    /**
+     * @method _onCubeClick
+     * @description 处理方块点击事件
+     * @param {FGUICompCube} cube - 被点击的方块
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @private
+     */
+    private _onCubeClick(cube: FGUICompCube, row: number, col: number): void {
+        // 检查是否点击了已选中的方块
+        const selectedIndex = this._selectedCubes.findIndex((item) => item.row === row && item.col === col);
+
+        if (selectedIndex >= 0) {
+            // 取消选中
+            this._deselectCube(selectedIndex);
+            return;
+        }
+
+        // 检查是否已经选中了2个方块
+        if (this._selectedCubes.length >= 2) {
+            // 已经有2个选中了，先取消第一个
+            this._deselectCube(0);
+        }
+
+        // 选中新方块
+        this._selectCube(cube, row, col);
+
+        // 如果选中了2个方块，检查是否可以消除
+        if (this._selectedCubes.length === 2) {
+            this._checkAndRemove();
+        }
+    }
+
+    /**
+     * @method _selectCube
+     * @description 选中方块
+     * @param {FGUICompCube} cube - 要选的方块
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @private
+     */
+    private _selectCube(cube: FGUICompCube, row: number, col: number): void {
+        // 记录选中的方块
+        this._selectedCubes.push({ cube, row, col });
+
+        // 设置放大效果
+        cube.setScale(this._selectScale, this._selectScale);
+
+        // 设置最高zOrder
+        cube.sortingOrder = this._selectZOrder;
+    }
+
+    /**
+     * @method _deselectCube
+     * @description 取消选中方块
+     * @param {number} index - 在选中数组中的索引
+     * @private
+     */
+    private _deselectCube(index: number): void {
+        if (index < 0 || index >= this._selectedCubes.length) {
+            return;
+        }
+
+        const selected = this._selectedCubes[index];
+
+        // 恢复方块大小
+        selected.cube.setScale(1, 1);
+
+        // 恢复zOrder
+        selected.cube.sortingOrder = 0;
+
+        // 从选中数组中移除
+        this._selectedCubes.splice(index, 1);
+    }
+
+    /**
+     * @method _clearSelection
+     * @description 清空所有选中状态
+     * @private
+     */
+    private _clearSelection(): void {
+        // 恢复所有选中方块的状态
+        for (const selected of this._selectedCubes) {
+            selected.cube.setScale(1, 1);
+            selected.cube.sortingOrder = 0;
+        }
+
+        // 清空选中数组
+        this._selectedCubes = [];
+    }
+
+    /**
+     * @method _checkAndRemove
+     * @description 检查两个选中方块是否可以消除，并执行消除
+     * @private
+     */
+    private _checkAndRemove(): void {
+        if (this._selectedCubes.length !== 2) {
+            return;
+        }
+
+        const first = this._selectedCubes[0];
+        const second = this._selectedCubes[1];
+
+        const p1: Point = { row: first.row, col: first.col };
+        const p2: Point = { row: second.row, col: second.col };
+
+        // 使用PathFinder检查是否可以连接
+        const result = this._pathFinder.canConnect(p1, p2);
+
+        if (result.canConnect) {
+            // 可以消除，隐藏两个方块
+            this._removeCubes(first, second, p1, p2);
+        } else {
+            // 不能消除，取消第一个方块的选中，保留第二个
+            this._deselectCube(0);
+        }
+    }
+
+    /**
+     * @method _removeCubes
+     * @description 消除两个方块
+     * @param {Object} first - 第一个选中的方块信息
+     * @param {Object} second - 第二个选中的方块信息
+     * @param {Point} p1 - 第一个方块坐标
+     * @param {Point} p2 - 第二个方块坐标
+     * @private
+     */
+    private _removeCubes(
+        first: { cube: FGUICompCube; row: number; col: number },
+        second: { cube: FGUICompCube; row: number; col: number },
+        p1: Point,
+        p2: Point
+    ): void {
+        // 在MapManager中执行消除
+        this._mapManager.removeTiles(p1, p2);
+
+        // 更新PathFinder的地图数据
+        this._pathFinder.setMap(this._mapManager.getMap());
+
+        // 隐藏方块（重置为初始状态）
+        first.cube.visible = false;
+        first.cube.setScale(1, 1);
+        first.cube.sortingOrder = 0;
+        first.cube.UI_LOADER_ICOM.url = "";
+
+        second.cube.visible = false;
+        second.cube.setScale(1, 1);
+        second.cube.sortingOrder = 0;
+        second.cube.UI_LOADER_ICOM.url = "";
+
+        // 清空选中数组
+        this._selectedCubes = [];
+
+        console.log(`消除方块: (${first.row},${first.col}) 和 (${second.row},${second.col})`);
+    }
+
+    /**
      * @method initMap
-     * @description 根据地图数据初始化所有方块资源
+     * @description 根据地图数据初始化所有方块资源，同时设置logic数据
      * @param {number[][]} map - 地图数据，number 代表方块资源 ID，0 表示空方块
      * @param {string} resPath - 资源前缀路径，格式如 "game10002"
      */
@@ -83,12 +295,21 @@ export class CompMap extends FGUICompMap {
             return;
         }
 
+        // 清空之前的选中状态
+        this._clearSelection();
+
+        // 初始化MapManager
+        this._mapManager.initMap(map);
+
+        // 初始化PathFinder
+        this._pathFinder.setMap(map);
+
         // 遍历地图数据设置每个方块的资源
         for (let row = 0; row < map.length; row++) {
             for (let col = 0; col < map[row].length; col++) {
                 const resId = map[row][col];
                 const cube = this.getCube(row, col);
-                
+
                 if (cube) {
                     if (resId === 0) {
                         // 空方块，隐藏或清空
@@ -147,6 +368,9 @@ export class CompMap extends FGUICompMap {
      * @description 清空整个地图，隐藏所有方块
      */
     clearMap(): void {
+        // 清空选中状态
+        this._clearSelection();
+
         for (let row = 0; row < this._rows; row++) {
             for (let col = 0; col < this._cols; col++) {
                 const cube = this.getCube(row, col);
@@ -156,6 +380,9 @@ export class CompMap extends FGUICompMap {
                 }
             }
         }
+
+        // 重置MapManager
+        this._mapManager.reset();
     }
 
     /**
@@ -209,6 +436,42 @@ export class CompMap extends FGUICompMap {
      */
     getAllCubes(): FGUICompCube[][] {
         return this._cubeMap;
+    }
+
+    /**
+     * @method getMapManager
+     * @description 获取地图管理器
+     * @returns {MapManager} 地图管理器实例
+     */
+    getMapManager(): MapManager {
+        return this._mapManager;
+    }
+
+    /**
+     * @method getPathFinder
+     * @description 获取路径查找器
+     * @returns {PathFinder} 路径查找器实例
+     */
+    getPathFinder(): PathFinder {
+        return this._pathFinder;
+    }
+
+    /**
+     * @method hasHint
+     * @description 获取提示，返回一组可以消除的方块
+     * @returns {[Point, Point] | null} 可消除的方块对，如果没有则返回null
+     */
+    hasHint(): [Point, Point] | null {
+        return this._pathFinder.getHint();
+    }
+
+    /**
+     * @method hasAnyValidPair
+     * @description 判断当前地图是否还存在可消除的方块对
+     * @returns {boolean} 是否存在可消除的方块对
+     */
+    hasAnyValidPair(): boolean {
+        return this._pathFinder.hasAnyValidPair();
     }
 }
 fgui.UIObjectFactory.setExtension(CompMap.URL, CompMap);
