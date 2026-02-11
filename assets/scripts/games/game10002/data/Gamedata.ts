@@ -5,7 +5,7 @@
  */
 
 import { DEFAULT_HEADURL } from "../../../datacenter/InterfaceConfig";
-import { GAME_PLAYER_INFO,SELF_LOCAL, ENUM_GAME_STEP, GAME_DATA } from "./InterfaceGameConfig";
+import { GAME_PLAYER_INFO, SELF_LOCAL, ENUM_GAME_STEP, GAME_DATA } from "./InterfaceGameConfig";
 
 /**
  * @class GameData
@@ -24,8 +24,8 @@ export class GameData {
     private _playerInfos: Array<GAME_PLAYER_INFO> = [];
     private _owner = 0;
     private _record: Array<any> = [];
-    private _privateNowCnt:number = 0; // 第几局
-    private _privateMaxCnt:number = 0; // 最大局数
+    private _privateNowCnt: number = 0; // 第几局
+    private _privateMaxCnt: number = 0; // 最大局数
     /** 单例实例 */
     private static _instance: GameData;
 
@@ -40,14 +40,12 @@ export class GameData {
         return this._instance;
     }
 
-    private constructor(){
-
-    }
+    private constructor() {}
 
     /**
      * @description 初始化游戏数据
      */
-    init(){
+    init() {
         this.gameStep = ENUM_GAME_STEP.NONE;
         this.playerList = [];
         this.roomEnd = false;
@@ -62,7 +60,7 @@ export class GameData {
         return this._gameStep;
     }
 
-    set gameStep(step: ENUM_GAME_STEP){
+    set gameStep(step: ENUM_GAME_STEP) {
         this._gameStep = step;
     }
 
@@ -70,7 +68,7 @@ export class GameData {
         return this._maxPlayer;
     }
 
-    set maxPlayer(max: number){
+    set maxPlayer(max: number) {
         this._maxPlayer = max;
     }
 
@@ -82,7 +80,7 @@ export class GameData {
      * @description 设置玩家列表
      * @param list 玩家列表
      */
-    set playerList(list: Array<GAME_PLAYER_INFO>){
+    set playerList(list: Array<GAME_PLAYER_INFO>) {
         this._playerList = list;
     }
 
@@ -90,7 +88,7 @@ export class GameData {
      * @description 获取玩家列表
      * @returns 玩家列表
      */
-    get playerList(): Array<GAME_PLAYER_INFO>{
+    get playerList(): Array<GAME_PLAYER_INFO> {
         return this._playerList;
     }
 
@@ -99,17 +97,17 @@ export class GameData {
      * @param localSeat 本地位置
      * @returns 头像 URL
      */
-    getHeadurl(localSeat:number):string{
+    getHeadurl(localSeat: number): string {
         if (!this._playerList[localSeat].headurl) {
-            return DEFAULT_HEADURL
+            return DEFAULT_HEADURL;
         }
-        return  this._playerList[localSeat].headurl
+        return this._playerList[localSeat].headurl;
     }
 
-    getHeadurlByUserid(userid: number):string{
+    getHeadurlByUserid(userid: number): string {
         const player = this.getPlayerByUserid(userid);
         if (!player) {
-            return DEFAULT_HEADURL
+            return DEFAULT_HEADURL;
         }
         const localSeat = this.seat2local(player.svrSeat);
         return this.getHeadurl(localSeat);
@@ -120,14 +118,13 @@ export class GameData {
         if (selfSeat == seat) {
             return SELF_LOCAL;
         }
-        const selfLocal = SELF_LOCAL
-        const d = (seat - selfSeat);
+        const selfLocal = SELF_LOCAL;
+        const d = seat - selfSeat;
         if (d > 0) {
-            return selfLocal + d
-        }else{
-            return this._maxPlayer + (selfLocal + d)
+            return selfLocal + d;
+        } else {
+            return this._maxPlayer + (selfLocal + d);
         }
-        
     }
 
     local2seat(local: number): number {
@@ -139,8 +136,8 @@ export class GameData {
     }
 
     getPlayerByUserid(userid: number): GAME_PLAYER_INFO | null {
-        for(let i = 0; i < this.playerList.length; i++){
-            if(this.playerList[i] && this.playerList[i].userid == userid){
+        for (let i = 0; i < this.playerList.length; i++) {
+            if (this.playerList[i] && this.playerList[i].userid == userid) {
                 return this.playerList[i];
             }
         }
@@ -152,30 +149,30 @@ export class GameData {
     }
 
     getPlayerCnt(): number {
-        return this.playerList.filter(player => player != null && player != undefined).length;
+        return this.playerList.filter((player) => player != null && player != undefined).length;
     }
 
-    set roomEnd(end: boolean){
+    set roomEnd(end: boolean) {
         this._roomEnd = end;
     }
 
-    get roomEnd(): boolean{
+    get roomEnd(): boolean {
         return this._roomEnd;
     }
 
-    set gameStart(start: boolean){
+    set gameStart(start: boolean) {
         this._gameStart = start;
     }
 
-    get gameStart(): boolean{
+    get gameStart(): boolean {
         return this._gameStart;
     }
 
-    set playerInfos(infos: Array<GAME_PLAYER_INFO>){
+    set playerInfos(infos: Array<GAME_PLAYER_INFO>) {
         this._playerInfos = infos;
     }
 
-    get playerInfos(): Array<GAME_PLAYER_INFO>{
+    get playerInfos(): Array<GAME_PLAYER_INFO> {
         return this._playerInfos;
     }
 
@@ -183,51 +180,51 @@ export class GameData {
         return this.playerInfos.find((player) => player.userid == userid);
     }
 
-    set isPrivateRoom(flag: boolean){
+    set isPrivateRoom(flag: boolean) {
         this._isPrivateRoom = flag;
     }
 
-    get isPrivateRoom(): boolean{
+    get isPrivateRoom(): boolean {
         return this._isPrivateRoom;
     }
 
-    set gameData(data: GAME_DATA | null){
+    set gameData(data: GAME_DATA | null) {
         this._gameData = data;
     }
 
-    get gameData(): GAME_DATA | null{
+    get gameData(): GAME_DATA | null {
         return this._gameData;
     }
 
-    set owner(userid: number){
+    set owner(userid: number) {
         this._owner = userid;
     }
 
-    get owner(): number{
+    get owner(): number {
         return this._owner;
     }
 
-    set record(record: Array<any>){
+    set record(record: Array<any>) {
         this._record = record;
     }
 
-    get record(): Array<any>{
+    get record(): Array<any> {
         return this._record;
     }
 
-    set privateNowCnt(cnt: number){
+    set privateNowCnt(cnt: number) {
         this._privateNowCnt = cnt;
     }
 
-    get privateNowCnt(): number{
+    get privateNowCnt(): number {
         return this._privateNowCnt;
     }
 
-    set privateMaxCnt(cnt: number){
+    set privateMaxCnt(cnt: number) {
         this._privateMaxCnt = cnt;
     }
 
-    get privateMaxCnt(): number{
+    get privateMaxCnt(): number {
         return this._privateMaxCnt;
     }
 }

@@ -1,14 +1,7 @@
 // Auto-generated from sproto files
 // Do not edit manually
 
-/** ResultInfo 结构体定义 */
-export interface ResultInfo {
-    seat: number;
-    outHand: number;
-    endResult: number;
-}
-
-/** PlayerInfo 结构体定义 */
+/** 玩家信息结构 */
 export interface PlayerInfo {
     userid: number;
     nickname: string;
@@ -22,13 +15,23 @@ export interface PlayerInfo {
     ext: string;
 }
 
-/** VoteInfo 结构体定义 */
+/** 投票信息结构 */
 export interface VoteInfo {
     userid: number;
     vote: number;
 }
 
-/** TotalResultInfo 结构体定义 */
+/** 私人房对战记录 */
+export interface Record {
+    index: number;
+    outhand: number[];
+    win: number;
+    startTime: number;
+    endTime: number;
+    round: number;
+}
+
+/** 总结算信息 */
 export interface TotalResultInfo {
     seat: number;
     userid: number;
@@ -39,17 +42,26 @@ export interface TotalResultInfo {
     ext: string;
 }
 
-/** Record 结构体定义 */
-export interface Record {
-    index: number;
-    outhand: number[];
-    win: number;
-    startTime: number;
-    endTime: number;
-    round: number;
+/** 坐标结构 */
+export interface Point {
+    row: number;
+    col: number;
 }
 
-/** svrMsg 协议请求参数 - 请求参数 */
+/** 线段结构（路径） */
+export interface LineSegment {
+    start: Point;
+    end: Point;
+}
+
+/** 游戏结束 */
+export interface RankingInfo {
+    seat: number;
+    usedTime: number;
+    eliminated: number;
+}
+
+/** 服务器消息 - 请求参数 */
 export interface SvrmsgRequest {
     type: string;
     data: string;
@@ -65,55 +77,14 @@ export interface RoominfoRequest {
     owner: number;
 }
 
-/** 步骤id - 请求参数 */
-export interface StepidRequest {
-    step: number;
-}
-
-/** 玩家姿态 - 请求参数 */
-export interface PlayerattRequest {
-    seat: number;
-    att: number;
-}
-
-/** 玩家出招信息 - 请求参数 */
-export interface OuthandinfoRequest {
-    seat: number;
-    flag: number;
-}
-
-/** 一轮游戏结果 - 请求参数 */
-export interface RoundresultRequest {
-    roundNum: number;
-    outHandNum: number;
-    continue: number;
-    info: ResultInfo[];
-    score: string;
-}
-
 /** 房间结束 - 请求参数 */
 export interface RoomendRequest {
     code: number;
 }
 
-/** 玩家信息 - 请求参数 */
+/** 玩家信息列表 - 请求参数 */
 export interface PlayerinfosRequest {
     infos: PlayerInfo[];
-}
-
-/** 游戏开始 - 请求参数 */
-export interface GamestartRequest {
-    roundNum: number;
-    startTime: number;
-    brelink: number;
-    roundData: string;
-}
-
-/** 游戏结束 - 请求参数 */
-export interface GameendRequest {
-    roundNum: number;
-    endTime: number;
-    roundData: string;
 }
 
 /** 玩家加入 - 请求参数 */
@@ -122,7 +93,7 @@ export interface PlayerenterRequest {
     seat: number;
 }
 
-/** 更新玩家状态 - 请求参数 */
+/** 玩家状态更新 - 请求参数 */
 export interface PlayerstatusupdateRequest {
     userid: number;
     status: number;
@@ -134,7 +105,7 @@ export interface PlayerleaveRequest {
     seat: number;
 }
 
-/** 投票解散开始通知 - 请求参数 */
+/** 投票解散开始 - 请求参数 */
 export interface VotedisbandstartRequest {
     voteId: number;
     initiator: number;
@@ -176,6 +147,11 @@ export interface PrivateinfoRequest {
     ext: string;
 }
 
+/** gameRecord 协议请求参数 - 请求参数 */
+export interface GamerecordRequest {
+    record: Record[];
+}
+
 /** 私人房总结算 - 请求参数 */
 export interface TotalresultRequest {
     startTime: number;
@@ -189,12 +165,7 @@ export interface TotalresultRequest {
     totalResultInfo: TotalResultInfo[];
 }
 
-/** 私人房对战记录 - 请求参数 */
-export interface GamerecordRequest {
-    record: Record[];
-}
-
-/** 消息转发协议，服务会下发同名协议 - 请求参数 */
+/** 消息转发 - 请求参数 */
 export interface ForwardmessageRequest {
     type: number;
     from: number;
@@ -205,6 +176,78 @@ export interface ForwardmessageRequest {
 export interface TalkRequest {
     from: number;
     id: number;
+}
+
+/** 游戏开始 - 请求参数 */
+export interface GamestartRequest {
+    roundNum: number;
+    startTime: number;
+    brelink: number;
+    mapData: string;
+    totalBlocks: number;
+}
+
+/** 游戏阶段ID (参考10001) - 请求参数 */
+export interface StepidRequest {
+    step: number;
+}
+
+/** 点击结果响应 - 请求参数 */
+export interface ClickresultRequest {
+    code: number;
+    msg: string;
+    eliminated: number;
+    remaining: number;
+}
+
+/** 方块消除成功通知 - 请求参数 */
+export interface TilesremovedRequest {
+    code: number;
+    p1: Point;
+    p2: Point;
+    lines: LineSegment[];
+    eliminated: number;
+    remaining: number;
+}
+
+/** 玩家完成游戏 - 请求参数 */
+export interface PlayerfinishedRequest {
+    seat: number;
+    usedTime: number;
+    rank: number;
+}
+
+/** gameEnd 协议请求参数 - 请求参数 */
+export interface GameendRequest {
+    roundNum: number;
+    endTime: number;
+    endType: number;
+    rankings: RankingInfo[];
+}
+
+/** 游戏重连恢复 - 请求参数 */
+export interface GamerelinkRequest {
+    startTime: number;
+    mapData: string;
+    eliminated: number;
+    remaining: number;
+    finished: number;
+    usedTime: number;
+}
+
+/** 道具效果通知 (预留) - 请求参数 */
+export interface ItemeffectRequest {
+    seat: number;
+    itemId: number;
+    effect: string;
+}
+
+/** 游戏进度更新 (广播给所有人看其他人的进度) - 请求参数 */
+export interface ProgressupdateRequest {
+    seat: number;
+    eliminated: number;
+    remaining: number;
+    percentage: number;
 }
 
 export namespace SprotoSvrMsg {
@@ -219,30 +262,6 @@ export namespace SprotoRoomInfo {
     export type Response = undefined;  // roomInfo 协议没有响应参数
 }
 
-export namespace SprotoStepId {
-    export const Name = "stepId";
-    export type Request = StepidRequest;
-    export type Response = undefined;  // stepId 协议没有响应参数
-}
-
-export namespace SprotoPlayerAtt {
-    export const Name = "playerAtt";
-    export type Request = PlayerattRequest;
-    export type Response = undefined;  // playerAtt 协议没有响应参数
-}
-
-export namespace SprotoOutHandInfo {
-    export const Name = "outHandInfo";
-    export type Request = OuthandinfoRequest;
-    export type Response = undefined;  // outHandInfo 协议没有响应参数
-}
-
-export namespace SprotoRoundResult {
-    export const Name = "roundResult";
-    export type Request = RoundresultRequest;
-    export type Response = undefined;  // roundResult 协议没有响应参数
-}
-
 export namespace SprotoRoomEnd {
     export const Name = "roomEnd";
     export type Request = RoomendRequest;
@@ -253,18 +272,6 @@ export namespace SprotoPlayerInfos {
     export const Name = "playerInfos";
     export type Request = PlayerinfosRequest;
     export type Response = undefined;  // playerInfos 协议没有响应参数
-}
-
-export namespace SprotoGameStart {
-    export const Name = "gameStart";
-    export type Request = GamestartRequest;
-    export type Response = undefined;  // gameStart 协议没有响应参数
-}
-
-export namespace SprotoGameEnd {
-    export const Name = "gameEnd";
-    export type Request = GameendRequest;
-    export type Response = undefined;  // gameEnd 协议没有响应参数
 }
 
 export namespace SprotoPlayerEnter {
@@ -315,16 +322,16 @@ export namespace SprotoPrivateInfo {
     export type Response = undefined;  // privateInfo 协议没有响应参数
 }
 
-export namespace SprotoTotalResult {
-    export const Name = "totalResult";
-    export type Request = TotalresultRequest;
-    export type Response = undefined;  // totalResult 协议没有响应参数
-}
-
 export namespace SprotoGameRecord {
     export const Name = "gameRecord";
     export type Request = GamerecordRequest;
     export type Response = undefined;  // gameRecord 协议没有响应参数
+}
+
+export namespace SprotoTotalResult {
+    export const Name = "totalResult";
+    export type Request = TotalresultRequest;
+    export type Response = undefined;  // totalResult 协议没有响应参数
 }
 
 export namespace SprotoForwardMessage {
@@ -337,4 +344,58 @@ export namespace SprotoTalk {
     export const Name = "talk";
     export type Request = TalkRequest;
     export type Response = undefined;  // talk 协议没有响应参数
+}
+
+export namespace SprotoGameStart {
+    export const Name = "gameStart";
+    export type Request = GamestartRequest;
+    export type Response = undefined;  // gameStart 协议没有响应参数
+}
+
+export namespace SprotoStepId {
+    export const Name = "stepId";
+    export type Request = StepidRequest;
+    export type Response = undefined;  // stepId 协议没有响应参数
+}
+
+export namespace SprotoClickResult {
+    export const Name = "clickResult";
+    export type Request = ClickresultRequest;
+    export type Response = undefined;  // clickResult 协议没有响应参数
+}
+
+export namespace SprotoTilesRemoved {
+    export const Name = "tilesRemoved";
+    export type Request = TilesremovedRequest;
+    export type Response = undefined;  // tilesRemoved 协议没有响应参数
+}
+
+export namespace SprotoPlayerFinished {
+    export const Name = "playerFinished";
+    export type Request = PlayerfinishedRequest;
+    export type Response = undefined;  // playerFinished 协议没有响应参数
+}
+
+export namespace SprotoGameEnd {
+    export const Name = "gameEnd";
+    export type Request = GameendRequest;
+    export type Response = undefined;  // gameEnd 协议没有响应参数
+}
+
+export namespace SprotoGameRelink {
+    export const Name = "gameRelink";
+    export type Request = GamerelinkRequest;
+    export type Response = undefined;  // gameRelink 协议没有响应参数
+}
+
+export namespace SprotoItemEffect {
+    export const Name = "itemEffect";
+    export type Request = ItemeffectRequest;
+    export type Response = undefined;  // itemEffect 协议没有响应参数
+}
+
+export namespace SprotoProgressUpdate {
+    export const Name = "progressUpdate";
+    export type Request = ProgressupdateRequest;
+    export type Response = undefined;  // progressUpdate 协议没有响应参数
 }

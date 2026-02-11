@@ -1,7 +1,7 @@
 import FGUICompPlayerHead from "../../../../../fgui/game10002/FGUICompPlayerHead";
 import * as fgui from "fairygui-cc";
 import { HorizontalTextAlignment } from "cc";
-import { GameData } from "../../../data/Gamedata";
+import { GameData } from "../../../data/GameData";
 import { PlayerInfoView } from "../../playerInfo/PlayerInfoView";
 import { CompTalk } from "./CompTalk";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";

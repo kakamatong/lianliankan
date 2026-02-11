@@ -1,7 +1,7 @@
 import { UserGameRecord } from "../../../../modules/UserGameRecord";
 import FGUIPlayerInfoView from "../../../../fgui/game10002PlayerInfo/FGUIPlayerInfoView";
 import * as fgui from "fairygui-cc";
-import { GameData } from "../../data/Gamedata";
+import { GameData } from "../../data/GameData";
 import FGUICompHead from "../../../../fgui/common/FGUICompHead";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
 

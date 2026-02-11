@@ -2,7 +2,7 @@ import FGUICompGameMain from "../../../../../fgui/game10002/FGUICompGameMain";
 import { GameSocketManager } from "../../../../../frameworks/GameSocketManager";
 import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "../../../../../frameworks/Framework";
 import { DataCenter } from "../../../../../datacenter/Datacenter";
-import { GameData } from "../../../data/Gamedata";
+import { GameData } from "../../../data/GameData";
 import {
     SELF_LOCAL,
     PLAYER_STATUS,
@@ -29,30 +29,36 @@ import { TotalResultView } from "../../result/TotalResultView";
 import { MiniGameUtils } from "../../../../../frameworks/utils/sdk/MiniGameUtils";
 import { CompPlayerHead } from "./CompPlayerHead";
 import {
+    SprotoClickResult,
     SprotoForwardMessage,
     SprotoGameClock,
     SprotoGameEnd,
     SprotoGameRecord,
+    SprotoGameRelink,
     SprotoGameStart,
-    SprotoOutHandInfo,
-    SprotoPlayerAtt,
+    SprotoItemEffect,
     SprotoPlayerEnter,
+    SprotoPlayerFinished,
     SprotoPlayerInfos,
     SprotoPlayerLeave,
     SprotoPlayerStatusUpdate,
     SprotoPrivateInfo,
+    SprotoProgressUpdate,
     SprotoRoomEnd,
     SprotoRoomInfo,
-    SprotoRoundResult,
-    SprotoStepId,
     SprotoTalk,
+    SprotoTilesRemoved,
     SprotoTotalResult,
+    SprotoVoteDisbandResult,
+    SprotoVoteDisbandStart,
+    SprotoVoteDisbandUpdate,
 } from "../../../../../../types/protocol/game10002/s2c";
 import {
+    SprotoClickTiles,
     SprotoClientReady,
     SprotoGameReady,
     SprotoLeaveRoom,
-    SprotoOutHand,
+    SprotoUseItem,
     SprotoVoteDisbandRoom,
 } from "../../../../../../types/protocol/game10002/c2s";
 import { SprotoGameRoomReady } from "../../../../../../types/protocol/lobby/s2c";
@@ -65,8 +71,6 @@ import { CompMap } from "./CompMap";
  */
 @ViewClass({ curveScreenAdapt: true })
 export class CompGameMain extends FGUICompGameMain {
-    private _selectOutHand: number = -1;
-
     /**
      * 组件构造完成时的初始化
      */
@@ -88,12 +92,11 @@ export class CompGameMain extends FGUICompGameMain {
     init() {
         GameData.instance.init();
         GameData.instance.maxPlayer = 2;
-        this._selectOutHand = -1;
         if (DataCenter.instance.shortRoomid) {
             GameData.instance.isPrivateRoom = true;
         }
 
-        this.testRandomMap();
+        //this.testRandomMap();
     }
 
     /**
@@ -145,8 +148,6 @@ export class CompGameMain extends FGUICompGameMain {
      */
     initListeners() {
         GameSocketManager.instance.addServerListen(SprotoRoomInfo, this.onRoomInfo.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoStepId, this.onGameStep.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoRoundResult, this.onGameRoundResult.bind(this));
         GameSocketManager.instance.addServerListen(SprotoRoomEnd, this.onRoomEnd.bind(this));
         GameSocketManager.instance.addServerListen(SprotoPlayerInfos, this.onSvrPlayerInfos.bind(this));
         GameSocketManager.instance.addServerListen(SprotoGameStart, this.onSvrGameStart.bind(this));
@@ -160,6 +161,16 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoGameRecord, this.onSvrGameRecord.bind(this));
         GameSocketManager.instance.addServerListen(SprotoForwardMessage, this.onSvrForwardMessage.bind(this));
         GameSocketManager.instance.addServerListen(SprotoTalk, this.onSvrTalk.bind(this));
+        // 连连看游戏协议
+        GameSocketManager.instance.addServerListen(SprotoClickResult, this.onSvrClickResult.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoTilesRemoved, this.onSvrTilesRemoved.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoPlayerFinished, this.onSvrPlayerFinished.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoGameRelink, this.onSvrGameRelink.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoProgressUpdate, this.onSvrProgressUpdate.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoItemEffect, this.onSvrItemEffect.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoVoteDisbandStart, this.onSvrVoteDisbandStart.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoVoteDisbandUpdate, this.onSvrVoteDisbandUpdate.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoVoteDisbandResult, this.onSvrVoteDisbandResult.bind(this));
         LobbySocketManager.instance.addServerListen(SprotoGameRoomReady, this.onSvrGameRoomReady.bind(this));
         AddEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect, this);
     }
@@ -177,10 +188,6 @@ export class CompGameMain extends FGUICompGameMain {
      */
     removeListeners(): void {
         GameSocketManager.instance.removeServerListen(SprotoRoomInfo);
-        GameSocketManager.instance.removeServerListen(SprotoStepId);
-        GameSocketManager.instance.removeServerListen(SprotoPlayerAtt);
-        GameSocketManager.instance.removeServerListen(SprotoOutHandInfo);
-        GameSocketManager.instance.removeServerListen(SprotoRoundResult);
         GameSocketManager.instance.removeServerListen(SprotoRoomEnd);
         GameSocketManager.instance.removeServerListen(SprotoPlayerInfos);
         GameSocketManager.instance.removeServerListen(SprotoGameStart);
@@ -192,9 +199,19 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoPrivateInfo);
         GameSocketManager.instance.removeServerListen(SprotoTotalResult);
         GameSocketManager.instance.removeServerListen(SprotoGameRecord);
-        LobbySocketManager.instance.removeServerListen(SprotoGameRoomReady);
         GameSocketManager.instance.removeServerListen(SprotoForwardMessage);
         GameSocketManager.instance.removeServerListen(SprotoTalk);
+        // 连连看游戏协议
+        GameSocketManager.instance.removeServerListen(SprotoClickResult);
+        GameSocketManager.instance.removeServerListen(SprotoTilesRemoved);
+        GameSocketManager.instance.removeServerListen(SprotoPlayerFinished);
+        GameSocketManager.instance.removeServerListen(SprotoGameRelink);
+        GameSocketManager.instance.removeServerListen(SprotoProgressUpdate);
+        GameSocketManager.instance.removeServerListen(SprotoItemEffect);
+        GameSocketManager.instance.removeServerListen(SprotoVoteDisbandStart);
+        GameSocketManager.instance.removeServerListen(SprotoVoteDisbandUpdate);
+        GameSocketManager.instance.removeServerListen(SprotoVoteDisbandResult);
+        LobbySocketManager.instance.removeServerListen(SprotoGameRoomReady);
         RemoveEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect);
     }
 
@@ -335,69 +352,116 @@ export class CompGameMain extends FGUICompGameMain {
         this.showClock(true, data.time);
     }
 
+    // ============================================
+    // 连连看游戏协议处理
+    // ============================================
+
     /**
-     * 游戏步骤处理
-     * @param data 步骤数据
+     * 点击结果响应处理
+     * @param data 点击结果数据
      */
-    onGameStep(data: any): void {
-        GameData.instance.gameStep = data.stepid;
+    onSvrClickResult(data: any): void {
+        console.log("点击结果", data);
+        if (data.code !== 1) {
+            console.log("点击失败:", data.msg);
+            // 可以在这里处理点击失败的情况，比如播放错误音效
+        }
     }
 
     /**
-     * 游戏回合结果处理
-     * @param data 回合结果数据
+     * 方块消除成功通知处理
+     * @param data 消除数据
      */
-    onGameRoundResult(data: any): void {
-        // 有下一回合，不展示结果
-        if (data.continue) {
-            return;
+    onSvrTilesRemoved(data: any): void {
+        console.log("方块消除", data);
+        const compMap = this.getCompMap();
+        if (compMap) {
+            // 通知地图组件消除方块
         }
-        const scoreData: Array<{ userid: number; cpData: any; nickname: string }> = [];
-        if (data.score) {
-            const scores = JSON.parse(data.score);
-            if (GameData.instance.isPrivateRoom) {
-                this.showWinLost(scores);
-            }
-            if (scores && scores.length > 0) {
-                for (let index = 0; index < scores.length; index++) {
-                    const element = scores[index];
-                    const player = GameData.instance.getPlayerBySeat(index + 1);
-                    scoreData.push({
-                        userid: player?.userid ?? 0,
-                        cpData: element,
-                        nickname: player?.nickname ?? "",
-                    });
+    }
 
-                    if (player?.userid === DataCenter.instance.userid && !GameData.instance.isPrivateRoom) {
-                        DataCenter.instance.addRichByType(RICH_TYPE.COMBAT_POWER, element.dcp);
-                    }
-                }
-            }
+    /**
+     * 玩家完成游戏处理
+     * @param data 完成数据
+     */
+    onSvrPlayerFinished(data: any): void {
+        console.log("玩家完成", data);
+        const player = GameData.instance.getPlayerBySeat(data.seat);
+        if (player) {
+            const localSeat = GameData.instance.seat2local(player.svrSeat);
+            // 显示玩家完成状态，如显示排名或用时
+            console.log(`玩家 ${player.nickname} 完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
         }
+    }
 
-        const selfSeat = GameData.instance.getSelfSeat();
-        if (data.info && data.info.length > 0) {
-            for (let i = 0; i < data.info.length; i++) {
-                const info = data.info[i];
-                if (info.seat == selfSeat) {
-                    const func = () => {
-                        this.onBtnContinue();
-                    };
-                    this.scheduleOnce(() => {
-                        ResultView.showView({ flag: info.endResult, continueFunc: func, scores: scoreData });
-                    }, 1);
-                    break;
-                }
-            }
+    /**
+     * 游戏重连恢复处理
+     * @param data 重连数据
+     */
+    onSvrGameRelink(data: any): void {
+        console.log("游戏重连", data);
+        const compMap = this.getCompMap();
+        if (compMap && data.mapData) {
+            const map = JSON.parse(data.mapData);
+            compMap.initMap(map, "resEmoji");
         }
+    }
 
-        UserStatus.instance.req();
+    /**
+     * 游戏进度更新处理
+     * @param data 进度数据
+     */
+    onSvrProgressUpdate(data: any): void {
+        const player = GameData.instance.getPlayerBySeat(data.seat);
+        if (player) {
+            const localSeat = GameData.instance.seat2local(player.svrSeat);
+            // 更新其他玩家的进度显示
+            console.log(`玩家 ${player.nickname} 进度: ${data.percentage}%，剩余: ${data.remaining}`);
+        }
+    }
 
-        // 显示继续游戏
-        if (GameData.instance.isPrivateRoom) {
-            this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
-        } else {
-            this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.CONTINUE;
+    /**
+     * 道具效果通知处理
+     * @param data 道具效果数据
+     */
+    onSvrItemEffect(data: any): void {
+        console.log("道具效果", data);
+        // 预留：处理道具效果
+    }
+
+    /**
+     * 投票解散开始处理
+     * @param data 投票数据
+     */
+    onSvrVoteDisbandStart(data: any): void {
+        console.log("投票解散开始", data);
+        // 显示投票界面
+    }
+
+    /**
+     * 投票状态更新处理
+     * @param data 投票状态数据
+     */
+    onSvrVoteDisbandUpdate(data: any): void {
+        console.log("投票状态更新", data);
+        // 更新投票状态显示
+    }
+
+    /**
+     * 投票解散结果处理
+     * @param data 投票结果数据
+     */
+    onSvrVoteDisbandResult(data: any): void {
+        console.log("投票解散结果", data);
+        if (data.result === 1) {
+            // 解散成功
+            PopMessageView.showView({
+                content: "房间已解散",
+                type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+                sureBack: () => {
+                    this.changeToLobbyScene();
+                },
+            });
         }
     }
 
@@ -406,7 +470,6 @@ export class CompGameMain extends FGUICompGameMain {
      */
     clear(): void {
         this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
-        this._selectOutHand = -1;
     }
 
     /**
@@ -570,6 +633,19 @@ export class CompGameMain extends FGUICompGameMain {
     onSvrGameStart(data: any): void {
         GameData.instance.gameStart = true;
 
+        // 初始化连连看地图数据
+        if (data.mapData) {
+            try {
+                const map = JSON.parse(data.mapData);
+                const compMap = this.getCompMap();
+                if (compMap) {
+                    compMap.initMap(map, "resEmoji");
+                }
+            } catch (e) {
+                console.error("地图数据解析失败:", e);
+            }
+        }
+
         // 非重连情况
         if (!data.brelink) {
             if (data.roundNum == 1) {
@@ -605,6 +681,51 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrGameEnd(data: any): void {
         GameData.instance.gameStart = false;
+
+        // 处理连连看游戏结束数据
+        if (data.rankings && data.rankings.length > 0) {
+            const selfSeat = GameData.instance.getSelfSeat();
+            const selfRank = data.rankings.find((r: any) => r.seat === selfSeat);
+
+            if (selfRank) {
+                const isCompleted = selfRank.usedTime >= 0;
+                const scoreData = data.rankings.map((rank: any) => {
+                    const player = GameData.instance.getPlayerBySeat(rank.seat);
+                    return {
+                        userid: player?.userid ?? 0,
+                        nickname: player?.nickname ?? "",
+                        usedTime: rank.usedTime,
+                        eliminated: rank.eliminated,
+                        rank:
+                            rank.usedTime >= 0
+                                ? data.rankings.filter((r: any) => r.usedTime >= 0 && r.usedTime < rank.usedTime).length + 1
+                                : -1,
+                    };
+                });
+
+                const func = () => {
+                    this.onBtnContinue();
+                };
+
+                this.scheduleOnce(() => {
+                    // 显示结果界面
+                    ResultView.showView({
+                        flag: isCompleted ? 1 : 0,
+                        continueFunc: func,
+                        scores: scoreData,
+                    });
+                }, 1);
+            }
+        }
+
+        UserStatus.instance.req();
+
+        // 显示继续游戏
+        if (GameData.instance.isPrivateRoom) {
+            this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
+        } else {
+            this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.CONTINUE;
+        }
     }
 
     /**
@@ -741,28 +862,6 @@ export class CompGameMain extends FGUICompGameMain {
     }
 
     /**
-     * 显示思考状态
-     * @param localSeat 本地座位号
-     * @param bshow 是否显示
-     */
-    showThinking(localSeat: number, bshow: boolean): void {
-        const playerNode = this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localSeat}`);
-        playerNode.UI_COMP_THINKING.visible = bshow;
-    }
-
-    /**
-     * 玩家思考处理
-     * @param localSeat 本地座位号
-     */
-    onPlayerThinking(localSeat: number): void {
-        if (localSeat == SELF_LOCAL) {
-            this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.SURE;
-        } else {
-            this.showThinking(localSeat, true);
-        }
-    }
-
-    /**
      * 切换到大厅场景
      */
     changeToLobbyScene(): void {
@@ -817,30 +916,40 @@ export class CompGameMain extends FGUICompGameMain {
     }
 
     /**
-     * 更改出牌按钮处理
+     * 发送点击消除方块请求
+     * @param row1 第一个方块行
+     * @param col1 第一个方块列
+     * @param row2 第二个方块行
+     * @param col2 第二个方块列
      */
-    onBtnChange(): void {
-        GameSocketManager.instance.sendToServer(SprotoOutHand, {
-            gameid: DataCenter.instance.gameid,
-            roomid: DataCenter.instance.roomid,
-            flag: 1,
+    sendClickTiles(row1: number, col1: number, row2: number, col2: number): void {
+        GameSocketManager.instance.sendToServer(SprotoClickTiles, {
+            row1: row1,
+            col1: col1,
+            row2: row2,
+            col2: col2,
         });
     }
 
     /**
-     * 剪刀按钮处理
+     * 使用道具
+     * @param itemId 道具ID (1:重排, 2:提示, 3:加时等)
      */
-    onBtnScissors(): void {}
-
-    /**
-     * 石头按钮处理
-     */
-    onBtnRock(): void {}
-
-    /**
-     * 布按钮处理
-     */
-    onBtnPaper(): void {}
+    sendUseItem(itemId: number): void {
+        GameSocketManager.instance.sendToServer(
+            SprotoUseItem,
+            {
+                itemId: itemId,
+            },
+            (response: any) => {
+                if (response && response.code === 1) {
+                    console.log("使用道具成功:", itemId);
+                } else {
+                    console.error("使用道具失败:", response?.msg || "未知错误");
+                }
+            }
+        );
+    }
 
     /**
      * 开始解散房间投票
@@ -890,17 +999,6 @@ export class CompGameMain extends FGUICompGameMain {
                 });
             }
         }
-    }
-
-    /**
-     * 确定按钮处理
-     */
-    onBtnSure(): void {
-        GameSocketManager.instance.sendToServer(SprotoOutHand, {
-            gameid: DataCenter.instance.gameid,
-            roomid: DataCenter.instance.roomid,
-            flag: 1,
-        });
     }
 
     /**
@@ -1011,20 +1109,6 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onBtnTalk(): void {
         TalkView.showView();
-    }
-
-    /**
-     * 选择器变化处理
-     * @param event 变化事件
-     */
-    onChanged(event: any): void {
-        if (event.selectedIndex != this._selectOutHand) {
-            if (this._selectOutHand != -1) {
-                this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.CHANGE;
-            } else {
-                this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.SURE;
-            }
-        }
     }
 
     /**
