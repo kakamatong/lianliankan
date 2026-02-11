@@ -5,7 +5,6 @@ import { DataCenter } from "../../../../../datacenter/Datacenter";
 import { GameData } from "../../../data/Gamedata";
 import {
     SELF_LOCAL,
-    PLAYER_ATTITUDE,
     PLAYER_STATUS,
     ROOM_END_FLAG,
     ROOM_TYPE,
@@ -29,7 +28,6 @@ import FGUICompHead from "../../../../../fgui/common/FGUICompHead";
 import { TotalResultView } from "../../result/TotalResultView";
 import { MiniGameUtils } from "../../../../../frameworks/utils/sdk/MiniGameUtils";
 import { CompPlayerHead } from "./CompPlayerHead";
-import { SoundManager } from "../../../../../frameworks/SoundManager";
 import {
     SprotoForwardMessage,
     SprotoGameClock,

@@ -254,31 +254,29 @@ export class CompLobbyMain extends FGUICompLobbyMain {
      * 点击匹配房间
      */
     onBtnMatchRoom(): void {
-        // const func = (b: boolean, data?: any) => {
-        //     if (b) {
-        //         // 显示匹配view
-        //         MatchView.showView();
-        //     } else {
-        //         if (data && data.gameid && data.roomid) {
-        //             const func2 = () => {
-        //                 //返回房间
-        //                 console.log(LogColors.green("返回房间"));
-        //                 ConnectGameSvr.instance.connectGame(data, (b: boolean) => {
-        //                     b && this.changeToGameScene();
-        //                 });
-        //             };
-        //             PopMessageView.showView({
-        //                 title: "温馨提示",
-        //                 content: "您已经在房间中，是否返回？",
-        //                 type: ENUM_POP_MESSAGE_TYPE.NUM2,
-        //                 sureBack: func2,
-        //             });
-        //         }
-        //     }
-        // };
-        // Match.instance.req(0, func);
-
-        this.changeToGameScene();
+        const func = (b: boolean, data?: any) => {
+            if (b) {
+                // 显示匹配view
+                MatchView.showView();
+            } else {
+                if (data && data.gameid && data.roomid) {
+                    const func2 = () => {
+                        //返回房间
+                        console.log(LogColors.green("返回房间"));
+                        ConnectGameSvr.instance.connectGame(data, (b: boolean) => {
+                            b && this.changeToGameScene();
+                        });
+                    };
+                    PopMessageView.showView({
+                        title: "温馨提示",
+                        content: "您已经在房间中，是否返回？",
+                        type: ENUM_POP_MESSAGE_TYPE.NUM2,
+                        sureBack: func2,
+                    });
+                }
+            }
+        };
+        Match.instance.req(0, func);
     }
 
     /**
