@@ -1,6 +1,6 @@
 import FGUITotalResultView from "../../../../fgui/game10002Result/FGUITotalResultView";
 import * as fgui from "fairygui-cc";
-import { GameData } from "../../data/GameData2";
+import { GameData } from "../../data/GameData";
 import { GameSocketManager } from "../../../../frameworks/GameSocketManager";
 import { ChangeScene, ViewClass } from "../../../../frameworks/Framework";
 
