@@ -2,7 +2,7 @@ import FGUICompGameMain from "../../../../../fgui/game10002/FGUICompGameMain";
 import { GameSocketManager } from "../../../../../frameworks/GameSocketManager";
 import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "../../../../../frameworks/Framework";
 import { DataCenter } from "../../../../../datacenter/Datacenter";
-import { GameData } from "../../../data/GameData";
+import { GameData } from "../../../data/GameData2";
 import {
     SELF_LOCAL,
     PLAYER_STATUS,

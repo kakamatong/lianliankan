@@ -7,7 +7,7 @@ import {
     VoteDisbandUpdateData,
     VoteInfo,
 } from "../../../data/InterfaceGameConfig";
-import { GameData } from "../../../data/GameData";
+import { GameData } from "../../../data/GameData2";
 import { GameSocketManager } from "../../../../../frameworks/GameSocketManager";
 import { DataCenter } from "../../../../../datacenter/Datacenter";
 import { TipsView } from "../../../../../view/common/TipsView";

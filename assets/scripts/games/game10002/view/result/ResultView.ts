@@ -1,6 +1,6 @@
 import FGUIResultView from "../../../../fgui/game10002Result/FGUIResultView";
 import * as fgui from "fairygui-cc";
-import { GameData } from "../../data/GameData";
+import { GameData } from "../../data/GameData2";
 import { SoundManager } from "../../../../frameworks/SoundManager";
 import { MiniGameUtils } from "db://assets/scripts/frameworks/utils/sdk/MiniGameUtils";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
