@@ -37,6 +37,7 @@ import {
     SprotoGameRelink,
     SprotoGameStart,
     SprotoItemEffect,
+    SprotoMapData,
     SprotoPlayerEnter,
     SprotoPlayerFinished,
     SprotoPlayerInfos,
@@ -162,6 +163,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoForwardMessage, this.onSvrForwardMessage.bind(this));
         GameSocketManager.instance.addServerListen(SprotoTalk, this.onSvrTalk.bind(this));
         // 连连看游戏协议
+        GameSocketManager.instance.addServerListen(SprotoMapData, this.onSvrMapData.bind(this));
         GameSocketManager.instance.addServerListen(SprotoClickResult, this.onSvrClickResult.bind(this));
         GameSocketManager.instance.addServerListen(SprotoTilesRemoved, this.onSvrTilesRemoved.bind(this));
         GameSocketManager.instance.addServerListen(SprotoPlayerFinished, this.onSvrPlayerFinished.bind(this));
@@ -202,6 +204,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoForwardMessage);
         GameSocketManager.instance.removeServerListen(SprotoTalk);
         // 连连看游戏协议
+        GameSocketManager.instance.removeServerListen(SprotoMapData);
         GameSocketManager.instance.removeServerListen(SprotoClickResult);
         GameSocketManager.instance.removeServerListen(SprotoTilesRemoved);
         GameSocketManager.instance.removeServerListen(SprotoPlayerFinished);
@@ -357,6 +360,25 @@ export class CompGameMain extends FGUICompGameMain {
     // ============================================
 
     /**
+     * 地图数据处理
+     * @param data 地图数据
+     */
+    onSvrMapData(data: SprotoMapData.Request): void {
+        console.log("地图数据", data);
+        if (data.mapData) {
+            try {
+                const map = JSON.parse(data.mapData);
+                const compMap = this.getCompMap();
+                if (compMap) {
+                    compMap.initMap(map, "resEmoji");
+                }
+            } catch (e) {
+                console.error("地图数据解析失败:", e);
+            }
+        }
+    }
+
+    /**
      * 点击结果响应处理
      * @param data 点击结果数据
      */
@@ -400,11 +422,7 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrGameRelink(data: any): void {
         console.log("游戏重连", data);
-        const compMap = this.getCompMap();
-        if (compMap && data.mapData) {
-            const map = JSON.parse(data.mapData);
-            compMap.initMap(map, "resEmoji");
-        }
+        // 地图数据通过 mapData 协议单独下发
     }
 
     /**
@@ -632,19 +650,6 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrGameStart(data: any): void {
         GameData.instance.gameStart = true;
-
-        // 初始化连连看地图数据
-        if (data.mapData) {
-            try {
-                const map = JSON.parse(data.mapData);
-                const compMap = this.getCompMap();
-                if (compMap) {
-                    compMap.initMap(map, "resEmoji");
-                }
-            } catch (e) {
-                console.error("地图数据解析失败:", e);
-            }
-        }
 
         // 非重连情况
         if (!data.brelink) {

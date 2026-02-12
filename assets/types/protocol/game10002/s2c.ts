@@ -183,8 +183,6 @@ export interface GamestartRequest {
     roundNum: number;
     startTime: number;
     brelink: number;
-    mapData: string;
-    totalBlocks: number;
 }
 
 /** 游戏阶段ID (参考10001) - 请求参数 */
@@ -228,11 +226,6 @@ export interface GameendRequest {
 /** 游戏重连恢复 - 请求参数 */
 export interface GamerelinkRequest {
     startTime: number;
-    mapData: string;
-    eliminated: number;
-    remaining: number;
-    finished: number;
-    usedTime: number;
 }
 
 /** 道具效果通知 (预留) - 请求参数 */
@@ -248,6 +241,14 @@ export interface ProgressupdateRequest {
     eliminated: number;
     remaining: number;
     percentage: number;
+    finished: number;
+    usedTime: number;
+}
+
+/** 地图数据 - 请求参数 */
+export interface MapdataRequest {
+    mapData: string;
+    totalBlocks: number;
 }
 
 export namespace SprotoSvrMsg {
@@ -398,4 +399,10 @@ export namespace SprotoProgressUpdate {
     export const Name = "progressUpdate";
     export type Request = ProgressupdateRequest;
     export type Response = undefined;  // progressUpdate 协议没有响应参数
+}
+
+export namespace SprotoMapData {
+    export const Name = "mapData";
+    export type Request = MapdataRequest;
+    export type Response = undefined;  // mapData 协议没有响应参数
 }
