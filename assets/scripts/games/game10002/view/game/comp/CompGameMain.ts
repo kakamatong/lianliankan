@@ -29,7 +29,6 @@ import { TotalResultView } from "../../result/TotalResultView";
 import { MiniGameUtils } from "../../../../../frameworks/utils/sdk/MiniGameUtils";
 import { CompPlayerHead } from "./CompPlayerHead";
 import {
-    SprotoClickResult,
     SprotoForwardMessage,
     SprotoGameClock,
     SprotoGameEnd,
@@ -55,7 +54,6 @@ import {
     SprotoVoteDisbandUpdate,
 } from "../../../../../../types/protocol/game10002/s2c";
 import {
-    SprotoClickTiles,
     SprotoClientReady,
     SprotoGameReady,
     SprotoLeaveRoom,
@@ -164,7 +162,6 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoTalk, this.onSvrTalk.bind(this));
         // 连连看游戏协议
         GameSocketManager.instance.addServerListen(SprotoMapData, this.onSvrMapData.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoClickResult, this.onSvrClickResult.bind(this));
         GameSocketManager.instance.addServerListen(SprotoTilesRemoved, this.onSvrTilesRemoved.bind(this));
         GameSocketManager.instance.addServerListen(SprotoPlayerFinished, this.onSvrPlayerFinished.bind(this));
         GameSocketManager.instance.addServerListen(SprotoGameRelink, this.onSvrGameRelink.bind(this));
@@ -205,7 +202,6 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoTalk);
         // 连连看游戏协议
         GameSocketManager.instance.removeServerListen(SprotoMapData);
-        GameSocketManager.instance.removeServerListen(SprotoClickResult);
         GameSocketManager.instance.removeServerListen(SprotoTilesRemoved);
         GameSocketManager.instance.removeServerListen(SprotoPlayerFinished);
         GameSocketManager.instance.removeServerListen(SprotoGameRelink);
@@ -375,18 +371,6 @@ export class CompGameMain extends FGUICompGameMain {
             } catch (e) {
                 console.error("地图数据解析失败:", e);
             }
-        }
-    }
-
-    /**
-     * 点击结果响应处理
-     * @param data 点击结果数据
-     */
-    onSvrClickResult(data: any): void {
-        console.log("点击结果", data);
-        if (data.code !== 1) {
-            console.log("点击失败:", data.msg);
-            // 可以在这里处理点击失败的情况，比如播放错误音效
         }
     }
 
@@ -918,22 +902,6 @@ export class CompGameMain extends FGUICompGameMain {
         };
         GameSocketManager.instance.sendToServer(SprotoGameReady, { ready: 1 }, func);
         this.clear();
-    }
-
-    /**
-     * 发送点击消除方块请求
-     * @param row1 第一个方块行
-     * @param col1 第一个方块列
-     * @param row2 第二个方块行
-     * @param col2 第二个方块列
-     */
-    sendClickTiles(row1: number, col1: number, row2: number, col2: number): void {
-        GameSocketManager.instance.sendToServer(SprotoClickTiles, {
-            row1: row1,
-            col1: col1,
-            row2: row2,
-            col2: col2,
-        });
     }
 
     /**

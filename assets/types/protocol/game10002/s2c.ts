@@ -190,14 +190,6 @@ export interface StepidRequest {
     step: number;
 }
 
-/** 点击结果响应 - 请求参数 */
-export interface ClickresultRequest {
-    code: number;
-    msg: string;
-    eliminated: number;
-    remaining: number;
-}
-
 /** 方块消除成功通知 - 请求参数 */
 export interface TilesremovedRequest {
     code: number;
@@ -357,12 +349,6 @@ export namespace SprotoStepId {
     export const Name = "stepId";
     export type Request = StepidRequest;
     export type Response = undefined;  // stepId 协议没有响应参数
-}
-
-export namespace SprotoClickResult {
-    export const Name = "clickResult";
-    export type Request = ClickresultRequest;
-    export type Response = undefined;  // clickResult 协议没有响应参数
 }
 
 export namespace SprotoTilesRemoved {
