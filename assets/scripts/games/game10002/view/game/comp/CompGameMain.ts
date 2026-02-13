@@ -771,10 +771,8 @@ export class CompGameMain extends FGUICompGameMain {
         const playerNode = this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localseat}`);
         const player = GameData.instance.playerList[localseat];
         const nicknanme = playerNode.UI_TXT_NICKNAME;
-        const id = playerNode.UI_TXT_ID;
         const head = playerNode.UI_COMP_HEAD as FGUICompHead;
         nicknanme.text = player.nickname ?? "";
-        id.text = player.userid.toString();
         const headurl = GameData.instance.getHeadurl(localseat);
         head.UI_LOADER_HEAD.url = headurl;
 
@@ -838,7 +836,6 @@ export class CompGameMain extends FGUICompGameMain {
         } else {
             GameData.instance.maxPlayer = data.playerids.length ?? 2;
         }
-        this.ctrl_playerCnt.selectedIndex = ROOM_PLAYER_INDEX[GameData.instance.maxPlayer] || 0;
     }
 
     /**
