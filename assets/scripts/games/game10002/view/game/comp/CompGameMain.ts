@@ -675,7 +675,7 @@ export class CompGameMain extends FGUICompGameMain {
         const selfid = DataCenter.instance.userid;
         // 先存到playerInfos里面
         GameData.instance.playerInfos = data.infos;
-        
+
         for (let i = 0; i < data.infos.length; i++) {
             const info = data.infos[i];
             const player = GameData.instance.getPlayerByUserid(info.userid);
@@ -690,7 +690,7 @@ export class CompGameMain extends FGUICompGameMain {
                 player.ip = info.ip;
                 player.status = info.status;
                 player.cp = info.cp ?? 0;
-                
+
                 if (info.userid === selfid) {
                     // 自己，更新自己的头像
                     const localSeat = GameData.instance.seat2local(player.svrSeat);
@@ -712,7 +712,7 @@ export class CompGameMain extends FGUICompGameMain {
     updateOtherPlayerHead(localSeat: number, player: any): void {
         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
         if (!compPlayers) return;
-        
+
         const headurl = GameData.instance.getHeadurlByUserid(player.userid);
         if (compPlayers.hasPlayer(localSeat)) {
             // 已存在，更新信息
@@ -825,6 +825,7 @@ export class CompGameMain extends FGUICompGameMain {
             let localSeat = 0;
             if (selfid == userid) {
                 localSeat = SELF_LOCAL;
+                GameData.instance.playerList[localSeat] = playerInfo;
                 // 自己使用 UI_COMP_SELFPLAYER
                 this.showPlayerInfoBySeat(localSeat);
             } else {
@@ -885,10 +886,10 @@ export class CompGameMain extends FGUICompGameMain {
         }
         const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
         if (!selfPlayer) return;
-        
+
         const player = GameData.instance.playerList[SELF_LOCAL];
         if (!player) return;
-        
+
         const headurl = GameData.instance.getHeadurl(SELF_LOCAL);
         selfPlayer.updatePlayerInfo(player, true, headurl);
     }
@@ -911,7 +912,7 @@ export class CompGameMain extends FGUICompGameMain {
         const selfid = DataCenter.instance.userid;
         const svrSeat = data.seat;
         const player = GameData.instance.getPlayerBySeat(svrSeat);
-        
+
         if (player && player.userid === selfid) {
             // 自己离开，清理本地座位
             const localSeat = GameData.instance.seat2local(svrSeat);
@@ -925,7 +926,7 @@ export class CompGameMain extends FGUICompGameMain {
                 compPlayers.removeOtherPlayer(localSeat);
             }
         }
-        
+
         this.checkShowInviteBtn();
     }
 
