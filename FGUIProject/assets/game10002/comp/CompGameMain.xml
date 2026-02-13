@@ -9,11 +9,6 @@
     <action type="change_page" fromPage="" toPage="1" objectId="n64_gk14" controller="ctrl_roomtype" targetPage="1"/>
     <action type="change_page" fromPage="" toPage="0" objectId="n64_gk14" controller="ctrl_roomtype" targetPage="0"/>
   </controller>
-  <controller name="ctrl_playerCnt" pages="0,,1,,2," selected="0">
-    <remark page="0" value="2人"/>
-    <remark page="1" value="3人"/>
-    <remark page="2" value="4人"/>
-  </controller>
   <displayList>
     <component id="n42_jsve" name="UI_BTN_DISBAND" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="157,0" size="143,95">
       <gearDisplay controller="ctrl_roomtype" pages="1"/>
@@ -29,33 +24,18 @@
       <property target="title" propertyId="0" value="邀请好友"/>
       <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3e"/>
     </component>
-    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,513">
+    <list id="n71_pgw3" name="UI_LIST_OTHER_PLAYERS" xy="9,150" size="757,330" layout="row" overflow="scroll" colGap="10" defaultItem="ui://2zsfe53xpgw3w" autoClearItems="true">
+      <relation target="" sidePair="width-width,top-top"/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
+    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,575">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n64_gk14" name="UI_COMP_PLAYER_3" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="368,74" controller="ctrl_pos,0,ctrl_localSeat,3">
-      <gearDisplay controller="ctrl_playerCnt" pages="1,2"/>
-      <gearXY controller="ctrl_playerCnt" pages="1" values="9,272" default="368,74"/>
-      <relation target="" sidePair="left-left,top-top"/>
-    </component>
-    <component id="n63_gk14" name="UI_COMP_PLAYER_2" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="394,74" controller="ctrl_pos,1,ctrl_localSeat,2">
-      <gearXY controller="ctrl_playerCnt" pages="0,1" values="394,74|436,272" default="394,74"/>
-      <relation target="" sidePair="right-right,top-top"/>
-    </component>
-    <component id="n62_gk14" name="UI_COMP_PLAYER_1" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="51,1383" controller="ctrl_pos,0,ctrl_localSeat,1">
-      <gearXY controller="ctrl_playerCnt" pages="0" values="51,1383" default="51,1383"/>
+    <component id="n62_gk14" name="UI_COMP_SELFPLAYER" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="18,1503">
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
-    <image id="n65_gk14" name="UI_IMG_SIGN_READY_3" src="qaf24" fileName="imgs/ready.png" xy="314,341" visible="false">
-      <gearXY controller="ctrl_playerCnt" pages="0,1" values="314,341|22,510" default="314,341"/>
-      <relation target="" sidePair="center-center,middle-middle"/>
-    </image>
-    <image id="n25_qaf2" name="UI_IMG_SIGN_READY_2" src="qaf24" fileName="imgs/ready.png" xy="314,341" visible="false">
-      <gearXY controller="ctrl_playerCnt" pages="0,1" values="314,341|599,510" default="314,341"/>
-      <relation target="" sidePair="center-center,middle-middle"/>
-    </image>
-    <image id="n26_qaf2" name="UI_IMG_SIGN_READY_1" src="qaf24" fileName="imgs/ready.png" xy="301,1104" visible="false">
-      <relation target="" sidePair="center-center,middle-middle"/>
-    </image>
     <component id="n21_folo" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,0">
       <gearDisplay controller="ctrl_btn" pages="1"/>
       <property target="title" propertyId="0" value="确定"/>

@@ -7,13 +7,8 @@ import { PackageManager } from "../../frameworks/PackageManager";
 
 export default class FGUICompTalk extends fgui.GComponent {
 
-	public ctrl_pos:fgui.Controller;
 	public UI_BG_0:fgui.GImage;
-	public UI_BG_1:fgui.GImage;
-	public UI_BG_2:fgui.GImage;
 	public UI_TXT_0:fgui.GTextField;
-	public UI_TXT_1:fgui.GTextField;
-	public UI_TXT_2:fgui.GTextField;
 	public static URL:string = "ui://2zsfe53xpxa5n";
 
 	public static packageName:string = "game10002";
@@ -54,13 +49,8 @@ export default class FGUICompTalk extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.ctrl_pos = this.getControllerAt(0);
 		this.UI_BG_0 = <fgui.GImage>(this.getChildAt(0));
-		this.UI_BG_1 = <fgui.GImage>(this.getChildAt(1));
-		this.UI_BG_2 = <fgui.GImage>(this.getChildAt(2));
-		this.UI_TXT_0 = <fgui.GTextField>(this.getChildAt(3));
-		this.UI_TXT_1 = <fgui.GTextField>(this.getChildAt(4));
-		this.UI_TXT_2 = <fgui.GTextField>(this.getChildAt(5));
+		this.UI_TXT_0 = <fgui.GTextField>(this.getChildAt(1));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

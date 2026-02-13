@@ -3,23 +3,19 @@
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
 import FGUICompOffline from "./FGUICompOffline";
-import FGUICompThinkAct from "./FGUICompThinkAct";
 import FGUICompTalk from "./FGUICompTalk";
 
 import { PackageManager } from "../../frameworks/PackageManager";
 
 export default class FGUICompPlayerHead extends fgui.GComponent {
 
-	public ctrl_pos:fgui.Controller;
-	public ctrl_localSeat:fgui.Controller;
 	public ctrl_roomtype:fgui.Controller;
 	public UI_COMP_HEAD:fgui.GComponent;
 	public UI_TXT_WINLOSE:fgui.GTextField;
-	public UI_TXT_NICKNAME:fgui.GTextField;
-	public UI_TXT_ID:fgui.GTextField;
 	public UI_COMP_OFFLINE:FGUICompOffline;
-	public UI_COMP_THINKING:FGUICompThinkAct;
 	public UI_COMP_TALK:FGUICompTalk;
+	public UI_TXT_NICKNAME:fgui.GTextField;
+	public UI_IMG_SIGN_READY:fgui.GImage;
 	public static URL:string = "ui://2zsfe53xgk14j";
 
 	public static packageName:string = "game10002";
@@ -60,16 +56,13 @@ export default class FGUICompPlayerHead extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.ctrl_pos = this.getControllerAt(0);
-		this.ctrl_localSeat = this.getControllerAt(1);
-		this.ctrl_roomtype = this.getControllerAt(2);
-		this.UI_COMP_HEAD = <fgui.GComponent>(this.getChildAt(1));
-		this.UI_TXT_WINLOSE = <fgui.GTextField>(this.getChildAt(2));
-		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(3));
-		this.UI_TXT_ID = <fgui.GTextField>(this.getChildAt(4));
-		this.UI_COMP_OFFLINE = <FGUICompOffline>(this.getChildAt(5));
-		this.UI_COMP_THINKING = <FGUICompThinkAct>(this.getChildAt(6));
-		this.UI_COMP_TALK = <FGUICompTalk>(this.getChildAt(7));
+		this.ctrl_roomtype = this.getControllerAt(0);
+		this.UI_COMP_HEAD = <fgui.GComponent>(this.getChildAt(0));
+		this.UI_TXT_WINLOSE = <fgui.GTextField>(this.getChildAt(1));
+		this.UI_COMP_OFFLINE = <FGUICompOffline>(this.getChildAt(2));
+		this.UI_COMP_TALK = <FGUICompTalk>(this.getChildAt(3));
+		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(5));
+		this.UI_IMG_SIGN_READY = <fgui.GImage>(this.getChildAt(6));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

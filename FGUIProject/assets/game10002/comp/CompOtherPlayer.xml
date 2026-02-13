@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="160,330">
+  <displayList>
+    <component id="n0_pgw3" name="UI_COMP_HEAD" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="0,0"/>
+    <component id="n1_pgw3" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="3,169" aspect="true" scale="0.2,0.2"/>
+  </displayList>
+</component>

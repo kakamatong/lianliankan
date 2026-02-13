@@ -847,7 +847,10 @@ export class CompGameMain extends FGUICompGameMain {
      * @param bshow 是否显示
      */
     showSignReady(localSeat: number, bshow: boolean): void {
-        this.getChild<fgui.GImage>(`UI_IMG_SIGN_READY_${localSeat}`).visible = bshow;
+        const playerNode = this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localSeat}`);
+        if (playerNode) {
+            playerNode.showSignReady(bshow);
+        }
     }
 
     /**
