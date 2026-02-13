@@ -10,7 +10,6 @@ import {
     ROOM_TYPE,
     CTRL_BTN_INDEX,
     GAME_MODE_TXT,
-    SEAT_1,
     ROOM_PLAYER_INDEX,
 } from "../../../data/InterfaceGameConfig";
 import * as fgui from "fairygui-cc";
@@ -24,7 +23,6 @@ import { MatchView } from "../../../../../view/match/MatchView";
 import { Match } from "../../../../../modules/Match";
 import { LobbySocketManager } from "../../../../../frameworks/LobbySocketManager";
 import { AuthGame } from "../../../../../modules/AuthGame";
-import FGUICompHead from "../../../../../fgui/common/FGUICompHead";
 import { TotalResultView } from "../../result/TotalResultView";
 import { MiniGameUtils } from "../../../../../frameworks/utils/sdk/MiniGameUtils";
 import { CompPlayerHead } from "./CompPlayerHead";
@@ -268,14 +266,13 @@ export class CompGameMain extends FGUICompGameMain {
      * 显示胜负战绩
      * @param data 胜负数据
      */
-    showWinLost(data: any) {
-        if (data && data.length > 0) {
-            for (let index = 0; index < data.length; index++) {
-                const element = data[index];
-                const localSeat = GameData.instance.seat2local(index + 1);
-                const playerNode = this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localSeat}`);
-                playerNode.UI_TXT_WINLOSE.text = `胜:${element.win ?? 0}`;
-            }
+    showWinLost(data: any): void {
+        if (!data || data.length === 0) return;
+        for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            const localSeat = GameData.instance.seat2local(index + 1);
+            const playerNode = this.getPlayerHead(localSeat);
+            playerNode.setWinLost(element.win);
         }
     }
 
@@ -339,7 +336,7 @@ export class CompGameMain extends FGUICompGameMain {
         const localSeat = GameData.instance.seat2local(player.svrSeat);
         const talkData = TALK_LIST.find((item) => item.id == id);
         if (!talkData) return;
-        const playerNode = this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localSeat}`);
+        const playerNode = this.getPlayerHead(localSeat);
         playerNode.showMsg(talkData.msg);
     }
 
@@ -768,37 +765,29 @@ export class CompGameMain extends FGUICompGameMain {
      * @param localseat 本地座位号
      */
     showPlayerInfoBySeat(localseat: number): void {
-        const playerNode = this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localseat}`);
+        const playerNode = this.getPlayerHead(localseat);
         const player = GameData.instance.playerList[localseat];
-        const nicknanme = playerNode.UI_TXT_NICKNAME;
-        const head = playerNode.UI_COMP_HEAD as FGUICompHead;
-        nicknanme.text = player.nickname ?? "";
         const headurl = GameData.instance.getHeadurl(localseat);
-        head.UI_LOADER_HEAD.url = headurl;
+        playerNode.updatePlayerInfo(player, localseat === SELF_LOCAL, headurl);
+    }
 
-        if (localseat != SELF_LOCAL) {
-            if (player.status == PLAYER_STATUS.OFFLINE) {
-                playerNode.UI_COMP_OFFLINE.visible = true;
-            } else {
-                playerNode.UI_COMP_OFFLINE.visible = false;
-            }
-            playerNode.visible = true;
-        }
-
-        if (player.status == PLAYER_STATUS.READY) {
-            this.showSignReady(localseat, true);
-        }
+    /**
+     * 获取玩家头像组件
+     * @param localSeat 本地座位号
+     * @returns 玩家头像组件
+     */
+    getPlayerHead(localSeat: number): CompPlayerHead {
+        return this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localSeat}`);
     }
 
     /**
      * 隐藏玩家头像
      * @param localseat 本地座位号
      */
-    hideHead(localseat: number) {
-        const playerNode = this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localseat}`);
-        if (localseat != SEAT_1) {
-            playerNode.visible = false;
-        }
+    hideHead(localseat: number): void {
+        if (localseat === SELF_LOCAL) return;
+        const playerNode = this.getPlayerHead(localseat);
+        playerNode.hide();
     }
 
     /**
