@@ -3,7 +3,7 @@ import { GameData } from "../../../data/GameData";
 import { PlayerInfoView } from "../../playerInfo/PlayerInfoView";
 import { CompTalk } from "./CompTalk";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
-
+import * as fgui from "fairygui-cc";
 @ViewClass()
 export class CompPlayerHead extends FGUICompPlayerHead {
     public localSeat: number = 0;
@@ -14,14 +14,7 @@ export class CompPlayerHead extends FGUICompPlayerHead {
     }
 
     initUI() {
-        this.ctrl_localSeat.onChanged(this.onChangedLocalSeat, this);
         this.UI_COMP_HEAD.onClick(this.onHeadClick, this);
-        this.localSeat = this.ctrl_localSeat.selectedIndex;
-        this.updateTalkSeat(this.localSeat);
-    }
-
-    onChangedLocalSeat(): void {
-        this.localSeat = this.ctrl_localSeat.selectedIndex;
         this.updateTalkSeat(this.localSeat);
     }
 
