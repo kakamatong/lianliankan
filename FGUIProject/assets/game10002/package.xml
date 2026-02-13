@@ -30,6 +30,7 @@
     <image id="8yj8u" name="line.png" path="/imgs/" scale="9grid" scale9grid="6,6,1,1"/>
     <component id="8yj8v" name="CompLine.xml" path="/comp/" exported="true"/>
     <component id="pgw3w" name="CompOtherPlayer.xml" path="/comp/"/>
+    <component id="pgw3x" name="CompPlayers.xml" path="/comp/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

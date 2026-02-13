@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="757,330">
+  <displayList>
+    <list id="n71_pgw3" name="UI_LIST_OTHER_PLAYERS" xy="0,0" size="757,330" layout="row" overflow="scroll" colGap="10" defaultItem="ui://2zsfe53xpgw3w" autoClearItems="true">
+      <relation target="" sidePair="width-width,top-top"/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
+  </displayList>
+</component>

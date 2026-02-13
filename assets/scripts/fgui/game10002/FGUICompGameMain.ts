@@ -2,6 +2,7 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
+import FGUICompPlayers from "./FGUICompPlayers";
 import FGUICompMap from "./FGUICompMap";
 import FGUICompPlayerHead from "./FGUICompPlayerHead";
 import FGUICompClock from "./FGUICompClock";
@@ -17,7 +18,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_DISBAND:fgui.GButton;
 	public UI_BTN_BACK:fgui.GButton;
 	public UI_BTN_INVITE:fgui.GButton;
-	public UI_LIST_OTHER_PLAYERS:fgui.GList;
+	public UI_COMP_PLAYERS:FGUICompPlayers;
 	public UI_COMP_MAP:FGUICompMap;
 	public UI_COMP_SELFPLAYER:FGUICompPlayerHead;
 	public UI_BTN_SURE:fgui.GButton;
@@ -79,7 +80,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_BACK.onClick(this.onBtnBack, this);
 		this.UI_BTN_INVITE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_INVITE.onClick(this.onBtnInvite, this);
-		this.UI_LIST_OTHER_PLAYERS = <fgui.GList>(this.getChildAt(3));
+		this.UI_COMP_PLAYERS = <FGUICompPlayers>(this.getChildAt(3));
 		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(4));
 		this.UI_COMP_SELFPLAYER = <FGUICompPlayerHead>(this.getChildAt(5));
 		this.UI_BTN_SURE = <fgui.GButton>(this.getChildAt(6));

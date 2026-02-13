@@ -24,12 +24,9 @@
       <property target="title" propertyId="0" value="邀请好友"/>
       <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3e"/>
     </component>
-    <list id="n71_pgw3" name="UI_LIST_OTHER_PLAYERS" xy="9,150" size="757,330" layout="row" overflow="scroll" colGap="10" defaultItem="ui://2zsfe53xpgw3w" autoClearItems="true">
+    <component id="n71_pgw3" name="UI_COMP_PLAYERS" src="pgw3x" fileName="comp/CompPlayers.xml" xy="9,150" size="757,330">
       <relation target="" sidePair="width-width,top-top"/>
-      <item/>
-      <item/>
-      <item/>
-    </list>
+    </component>
     <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,575">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
