@@ -865,12 +865,26 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 状态数据
      */
     onSvrPlayerStatusUpdate(data: any): void {
+        const selfid = DataCenter.instance.userid;
         const player = GameData.instance.getPlayerByUserid(data.userid);
-        if (player) {
-            player.status = data.status;
-            this.showPlayerInfoBySeat(GameData.instance.seat2local(player.svrSeat));
-            if (data.userid == DataCenter.instance.userid && data.status == PLAYER_STATUS.ONLINE) {
+        if (!player) return;
+
+        player.status = data.status;
+        const localSeat = GameData.instance.seat2local(player.svrSeat);
+
+        if (data.userid === selfid) {
+            // 自己状态更新
+            this.showPlayerInfoBySeat(localSeat);
+            if (data.status == PLAYER_STATUS.ONLINE) {
                 this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.READY;
+            }
+        } else {
+            // 其他玩家状态更新
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            const otherPlayer = compPlayers?.getOtherPlayer(localSeat);
+            if (otherPlayer) {
+                const headurl = GameData.instance.getHeadurlByUserid(player.userid);
+                otherPlayer.updatePlayerInfo(player, headurl);
             }
         }
     }

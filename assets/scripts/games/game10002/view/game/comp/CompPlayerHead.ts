@@ -82,9 +82,8 @@ export class CompPlayerHead extends FGUICompPlayerHead {
      * @method updateOfflineStatus
      * @description 更新离线状态显示
      * @param {number} status - 玩家状态
-     * @private
      */
-    private updateOfflineStatus(status: number): void {
+    updateOfflineStatus(status: number): void {
         // PLAYER_STATUS.OFFLINE = 0
         this.UI_COMP_OFFLINE.visible = status === 0;
     }
