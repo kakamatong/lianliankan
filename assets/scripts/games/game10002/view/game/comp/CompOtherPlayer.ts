@@ -58,23 +58,23 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     }
 
     /**
-     * @method setSeat
-     * @description 设置服务器座位号
-     * @param {number} seat - 服务器座位号
+     * @method setLocalSeat
+     * @description 设置本地座位号
+     * @param {number} localSeat - 本地座位号
      */
-    setSeat(seat: number): void {
-        this._seat = seat;
+    setLocalSeat(localSeat: number): void {
+        this._seat = localSeat;
         if (this._compHead) {
-            this._compHead.setLocalSeat(seat);
+            this._compHead.setLocalSeat(localSeat);
         }
     }
 
     /**
-     * @method getSeat
-     * @description 获取服务器座位号
-     * @returns {number} 服务器座位号
+     * @method getLocalSeat
+     * @description 获取本地座位号
+     * @returns {number} 本地座位号
      */
-    getSeat(): number {
+    getLocalSeat(): number {
         return this._seat;
     }
 

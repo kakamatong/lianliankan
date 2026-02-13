@@ -282,8 +282,9 @@ export class CompGameMain extends FGUICompGameMain {
                 }
             } else {
                 // 其他玩家，使用 UI_COMP_PLAYERS 列表
+                const localSeat = GameData.instance.seat2local(svrSeat);
                 const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-                const otherPlayer = compPlayers?.getOtherPlayer(svrSeat);
+                const otherPlayer = compPlayers?.getOtherPlayer(localSeat);
                 if (otherPlayer) {
                     otherPlayer.getHeadComponent()?.setWinLost(element.win);
                 }
@@ -360,8 +361,9 @@ export class CompGameMain extends FGUICompGameMain {
             }
         } else {
             // 其他玩家，使用 UI_COMP_PLAYERS 列表
+            const localSeat = GameData.instance.seat2local(player.svrSeat);
             const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-            const otherPlayer = compPlayers?.getOtherPlayer(player.svrSeat);
+            const otherPlayer = compPlayers?.getOtherPlayer(localSeat);
             if (otherPlayer) {
                 otherPlayer.getHeadComponent()?.showMsg(talkData.msg);
             }
@@ -456,26 +458,28 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * 更新其他玩家地图（预留接口）
-     * @param seat 服务器座位号
+     * @param svrSeat 服务器座位号
      * @param mapData 地图数据
      */
-    updateOtherPlayerMap(seat: number, mapData: number[][]): void {
+    updateOtherPlayerMap(svrSeat: number, mapData: number[][]): void {
+        const localSeat = GameData.instance.seat2local(svrSeat);
         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
         if (compPlayers) {
-            compPlayers.updateOtherPlayerMap(seat, mapData);
+            compPlayers.updateOtherPlayerMap(localSeat, mapData);
         }
     }
 
     /**
      * 移除其他玩家的方块（预留接口）
-     * @param seat 服务器座位号
+     * @param svrSeat 服务器座位号
      * @param p1 第一个方块坐标
      * @param p2 第二个方块坐标
      */
-    removeOtherPlayerTiles(seat: number, p1: any, p2: any): void {
+    removeOtherPlayerTiles(svrSeat: number, p1: any, p2: any): void {
+        const localSeat = GameData.instance.seat2local(svrSeat);
         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
         if (compPlayers) {
-            compPlayers.removeOtherPlayerTiles(seat, p1, p2);
+            compPlayers.removeOtherPlayerTiles(localSeat, p1, p2);
         }
     }
 
@@ -693,7 +697,8 @@ export class CompGameMain extends FGUICompGameMain {
                     this.showPlayerInfoBySeat(localSeat);
                 } else {
                     // 其他玩家，更新列表中的头像
-                    this.updateOtherPlayerHead(player.svrSeat, player);
+                    const localSeat = GameData.instance.seat2local(player.svrSeat);
+                    this.updateOtherPlayerHead(localSeat, player);
                 }
             }
         }
@@ -701,17 +706,17 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * 更新其他玩家头像
-     * @param seat 服务器座位号
+     * @param localSeat 本地座位号
      * @param player 玩家信息
      */
-    updateOtherPlayerHead(seat: number, player: any): void {
+    updateOtherPlayerHead(localSeat: number, player: any): void {
         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
         if (!compPlayers) return;
         
         const headurl = GameData.instance.getHeadurlByUserid(player.userid);
-        if (compPlayers.hasPlayer(seat)) {
+        if (compPlayers.hasPlayer(localSeat)) {
             // 已存在，更新信息
-            compPlayers.updateOtherPlayerHead(seat, player, headurl);
+            compPlayers.updateOtherPlayerHead(localSeat, player, headurl);
         }
         // 如果不存在，等待 onSvrPlayerEnter 时创建
     }
@@ -826,7 +831,7 @@ export class CompGameMain extends FGUICompGameMain {
                 localSeat = GameData.instance.seat2local(svrSeat);
                 // 其他玩家使用 UI_COMP_PLAYERS 列表
                 GameData.instance.playerList[localSeat] = playerInfo;
-                this.addOtherPlayer(svrSeat, playerInfo);
+                this.addOtherPlayer(localSeat, playerInfo);
             }
 
             if (GameData.instance.isPrivateRoom) {
@@ -841,17 +846,17 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * 添加其他玩家到列表
-     * @param seat 服务器座位号
+     * @param localSeat 本地座位号
      * @param playerInfo 玩家信息
      */
-    addOtherPlayer(seat: number, playerInfo: any): void {
+    addOtherPlayer(localSeat: number, playerInfo: any): void {
         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
         if (!compPlayers) {
             console.error("UI_COMP_PLAYERS 组件不存在");
             return;
         }
         const headurl = GameData.instance.getHeadurlByUserid(playerInfo.userid);
-        compPlayers.addOtherPlayer(seat, playerInfo, headurl);
+        compPlayers.addOtherPlayer(localSeat, playerInfo, headurl);
     }
 
     /**
@@ -914,9 +919,10 @@ export class CompGameMain extends FGUICompGameMain {
             this.hideSelfPlayer();
         } else {
             // 其他玩家离开，从列表中移除
+            const localSeat = GameData.instance.seat2local(svrSeat);
             const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
             if (compPlayers) {
-                compPlayers.removeOtherPlayer(svrSeat);
+                compPlayers.removeOtherPlayer(localSeat);
             }
         }
         
@@ -963,13 +969,10 @@ export class CompGameMain extends FGUICompGameMain {
             }
         } else {
             // 其他玩家，使用 UI_COMP_PLAYERS 列表
-            const player = GameData.instance.playerList[localSeat];
-            if (player) {
-                const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-                const otherPlayer = compPlayers?.getOtherPlayer(player.svrSeat);
-                if (otherPlayer) {
-                    otherPlayer.getHeadComponent()?.showSignReady(bshow);
-                }
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            const otherPlayer = compPlayers?.getOtherPlayer(localSeat);
+            if (otherPlayer) {
+                otherPlayer.getHeadComponent()?.showSignReady(bshow);
             }
         }
     }
