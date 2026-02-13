@@ -15,7 +15,6 @@ export class CompPlayerHead extends FGUICompPlayerHead {
 
     initUI() {
         this.UI_COMP_HEAD.onClick(this.onHeadClick, this);
-        this.updateTalkSeat(this.localSeat);
     }
 
     onHeadClick(): void {
@@ -27,10 +26,6 @@ export class CompPlayerHead extends FGUICompPlayerHead {
 
     showMsg(msg: string): void {
         (this.UI_COMP_TALK as CompTalk).talkMsg = msg;
-    }
-
-    updateTalkSeat(seat: number): void {
-        (this.UI_COMP_TALK as CompTalk).localSeat = seat;
     }
 
     /**

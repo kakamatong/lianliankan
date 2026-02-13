@@ -27,18 +27,6 @@ export class CompTalk extends FGUICompTalk {
         return this._talkMsg;
     }
 
-    public set localSeat(value: number) {
-        if (!value) return;
-        this._localSeat = value;
-        const index = this.localSeatToIndex(value);
-        this.ctrl_pos.selectedIndex = index;
-        this._txtNode = this.getChild(`UI_TXT_${index}`) as fgui.GTextField;
-    }
-
-    public get localSeat(): number {
-        return this._localSeat;
-    }
-
     localSeatToIndex(value: number): number {
         switch (value) {
             case 1:
