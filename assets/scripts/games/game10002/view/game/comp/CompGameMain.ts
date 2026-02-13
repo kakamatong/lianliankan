@@ -533,11 +533,6 @@ export class CompGameMain extends FGUICompGameMain {
      */
     clear(): void {
         this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
-        // 清理其他玩家列表
-        const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-        if (compPlayers) {
-            compPlayers.clear();
-        }
     }
 
     /**

@@ -73,7 +73,7 @@ export class CompPlayers extends FGUICompPlayers {
 
         // 添加新的列表项
         const index = this.UI_LIST_OTHER_PLAYERS.numChildren;
-        this.UI_LIST_OTHER_PLAYERS.addItem();
+        this.UI_LIST_OTHER_PLAYERS.addItemFromPool();
 
         // 获取刚添加的列表项
         const listItem = this.UI_LIST_OTHER_PLAYERS.getChildAt(index) as CompOtherPlayer;
