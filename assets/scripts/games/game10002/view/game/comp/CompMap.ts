@@ -86,12 +86,37 @@ export class CompMap extends FGUICompMap {
     private readonly _removeDelay: number = 0.2;
 
     /**
+     * @property {boolean} _readonly
+     * @description 是否只读模式（仅显示，不可交互）
+     * @private
+     */
+    private _readonly: boolean = false;
+
+    /**
      * @method onConstruct
      * @description 组件构造完成时的初始化
      */
     onConstruct(): void {
         super.onConstruct();
         this._initCubeMap();
+    }
+
+    /**
+     * @method setReadonly
+     * @description 设置只读模式
+     * @param {boolean} readonly - 是否只读
+     */
+    setReadonly(readonly: boolean): void {
+        this._readonly = readonly;
+    }
+
+    /**
+     * @method isReadonly
+     * @description 获取是否只读模式
+     * @returns {boolean} 是否只读
+     */
+    isReadonly(): boolean {
+        return this._readonly;
     }
 
     /**
@@ -154,6 +179,11 @@ export class CompMap extends FGUICompMap {
      * @private
      */
     private _onCubeClick(cube: FGUICompCube, row: number, col: number): void {
+        // 只读模式下不处理点击事件
+        if (this._readonly) {
+            return;
+        }
+
         // 检查是否点击了已选中的方块
         const selectedIndex = this._selectedCubes.findIndex((item) => item.row === row && item.col === col);
 

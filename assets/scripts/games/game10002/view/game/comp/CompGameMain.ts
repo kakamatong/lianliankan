@@ -26,6 +26,7 @@ import { AuthGame } from "../../../../../modules/AuthGame";
 import { TotalResultView } from "../../result/TotalResultView";
 import { MiniGameUtils } from "../../../../../frameworks/utils/sdk/MiniGameUtils";
 import { CompPlayerHead } from "./CompPlayerHead";
+import { CompPlayers } from "./CompPlayers";
 import {
     SprotoForwardMessage,
     SprotoGameClock,
@@ -270,9 +271,23 @@ export class CompGameMain extends FGUICompGameMain {
         if (!data || data.length === 0) return;
         for (let index = 0; index < data.length; index++) {
             const element = data[index];
-            const localSeat = GameData.instance.seat2local(index + 1);
-            const playerNode = this.getPlayerHead(localSeat);
-            playerNode.setWinLost(element.win);
+            const svrSeat = index + 1; // 服务器座位号从1开始
+            const selfSeat = GameData.instance.getSelfSeat();
+
+            if (svrSeat === selfSeat) {
+                // 自己，使用 UI_COMP_SELFPLAYER
+                const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
+                if (selfPlayer) {
+                    selfPlayer.setWinLost(element.win);
+                }
+            } else {
+                // 其他玩家，使用 UI_COMP_PLAYERS 列表
+                const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+                const otherPlayer = compPlayers?.getOtherPlayer(svrSeat);
+                if (otherPlayer) {
+                    otherPlayer.getHeadComponent()?.setWinLost(element.win);
+                }
+            }
         }
     }
 
@@ -333,11 +348,24 @@ export class CompGameMain extends FGUICompGameMain {
         const userid = data.from;
         const player = GameData.instance.getPlayerByUserid(userid);
         if (!player) return;
-        const localSeat = GameData.instance.seat2local(player.svrSeat);
         const talkData = TALK_LIST.find((item) => item.id == id);
         if (!talkData) return;
-        const playerNode = this.getPlayerHead(localSeat);
-        playerNode.showMsg(talkData.msg);
+
+        const selfid = DataCenter.instance.userid;
+        if (userid === selfid) {
+            // 自己，使用 UI_COMP_SELFPLAYER
+            const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
+            if (selfPlayer) {
+                selfPlayer.showMsg(talkData.msg);
+            }
+        } else {
+            // 其他玩家，使用 UI_COMP_PLAYERS 列表
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            const otherPlayer = compPlayers?.getOtherPlayer(player.svrSeat);
+            if (otherPlayer) {
+                otherPlayer.getHeadComponent()?.showMsg(talkData.msg);
+            }
+        }
     }
 
     /**
@@ -411,11 +439,43 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 进度数据
      */
     onSvrProgressUpdate(data: any): void {
+        const selfSeat = GameData.instance.getSelfSeat();
+        if (data.seat === selfSeat) {
+            // 自己的进度更新，不需要处理
+            return;
+        }
+
         const player = GameData.instance.getPlayerBySeat(data.seat);
         if (player) {
-            const localSeat = GameData.instance.seat2local(player.svrSeat);
             // 更新其他玩家的进度显示
             console.log(`玩家 ${player.nickname} 进度: ${data.percentage}%，剩余: ${data.remaining}`);
+            // TODO: 后续服务器完善接口后，可以更新其他玩家的地图
+            // this.updateOtherPlayerMap(data.seat, mapData);
+        }
+    }
+
+    /**
+     * 更新其他玩家地图（预留接口）
+     * @param seat 服务器座位号
+     * @param mapData 地图数据
+     */
+    updateOtherPlayerMap(seat: number, mapData: number[][]): void {
+        const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+        if (compPlayers) {
+            compPlayers.updateOtherPlayerMap(seat, mapData);
+        }
+    }
+
+    /**
+     * 移除其他玩家的方块（预留接口）
+     * @param seat 服务器座位号
+     * @param p1 第一个方块坐标
+     * @param p2 第二个方块坐标
+     */
+    removeOtherPlayerTiles(seat: number, p1: any, p2: any): void {
+        const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+        if (compPlayers) {
+            compPlayers.removeOtherPlayerTiles(seat, p1, p2);
         }
     }
 
@@ -469,6 +529,11 @@ export class CompGameMain extends FGUICompGameMain {
      */
     clear(): void {
         this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
+        // 清理其他玩家列表
+        const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+        if (compPlayers) {
+            compPlayers.clear();
+        }
     }
 
     /**
@@ -603,13 +668,15 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrPlayerInfos(data: any): void {
         console.log("onSvrPlayerInfos", data);
+        const selfid = DataCenter.instance.userid;
         // 先存到playerInfos里面
-        // enter 的时候在从里面取出来，放到playerlist里面去
         GameData.instance.playerInfos = data.infos;
+        
         for (let i = 0; i < data.infos.length; i++) {
             const info = data.infos[i];
             const player = GameData.instance.getPlayerByUserid(info.userid);
             if (player) {
+                // 更新玩家信息
                 player.nickname = info.nickname;
                 player.headurl = info.headurl;
                 player.sex = info.sex;
@@ -619,10 +686,34 @@ export class CompGameMain extends FGUICompGameMain {
                 player.ip = info.ip;
                 player.status = info.status;
                 player.cp = info.cp ?? 0;
-                const localSeat = GameData.instance.seat2local(player.svrSeat);
-                this.showPlayerInfoBySeat(localSeat);
+                
+                if (info.userid === selfid) {
+                    // 自己，更新自己的头像
+                    const localSeat = GameData.instance.seat2local(player.svrSeat);
+                    this.showPlayerInfoBySeat(localSeat);
+                } else {
+                    // 其他玩家，更新列表中的头像
+                    this.updateOtherPlayerHead(player.svrSeat, player);
+                }
             }
         }
+    }
+
+    /**
+     * 更新其他玩家头像
+     * @param seat 服务器座位号
+     * @param player 玩家信息
+     */
+    updateOtherPlayerHead(seat: number, player: any): void {
+        const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+        if (!compPlayers) return;
+        
+        const headurl = GameData.instance.getHeadurlByUserid(player.userid);
+        if (compPlayers.hasPlayer(seat)) {
+            // 已存在，更新信息
+            compPlayers.updateOtherPlayerHead(seat, player, headurl);
+        }
+        // 如果不存在，等待 onSvrPlayerEnter 时创建
     }
 
     /**
@@ -729,10 +820,14 @@ export class CompGameMain extends FGUICompGameMain {
             let localSeat = 0;
             if (selfid == userid) {
                 localSeat = SELF_LOCAL;
+                // 自己使用 UI_COMP_SELFPLAYER
+                this.showPlayerInfoBySeat(localSeat);
             } else {
                 localSeat = GameData.instance.seat2local(svrSeat);
+                // 其他玩家使用 UI_COMP_PLAYERS 列表
+                GameData.instance.playerList[localSeat] = playerInfo;
+                this.addOtherPlayer(svrSeat, playerInfo);
             }
-            GameData.instance.playerList[localSeat] = playerInfo;
 
             if (GameData.instance.isPrivateRoom) {
                 if (playerInfo.status == PLAYER_STATUS.ONLINE && selfid == userid) {
@@ -741,8 +836,22 @@ export class CompGameMain extends FGUICompGameMain {
 
                 this.checkShowInviteBtn();
             }
-            this.showPlayerInfoBySeat(localSeat);
         }
+    }
+
+    /**
+     * 添加其他玩家到列表
+     * @param seat 服务器座位号
+     * @param playerInfo 玩家信息
+     */
+    addOtherPlayer(seat: number, playerInfo: any): void {
+        const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+        if (!compPlayers) {
+            console.error("UI_COMP_PLAYERS 组件不存在");
+            return;
+        }
+        const headurl = GameData.instance.getHeadurlByUserid(playerInfo.userid);
+        compPlayers.addOtherPlayer(seat, playerInfo, headurl);
     }
 
     /**
@@ -761,33 +870,32 @@ export class CompGameMain extends FGUICompGameMain {
     }
 
     /**
-     * 根据座位显示玩家信息
+     * 根据座位显示玩家信息（仅用于自己）
      * @param localseat 本地座位号
      */
     showPlayerInfoBySeat(localseat: number): void {
-        const playerNode = this.getPlayerHead(localseat);
-        const player = GameData.instance.playerList[localseat];
-        const headurl = GameData.instance.getHeadurl(localseat);
-        playerNode.updatePlayerInfo(player, localseat === SELF_LOCAL, headurl);
+        if (localseat !== SELF_LOCAL) {
+            console.warn("showPlayerInfoBySeat 仅用于自己，其他玩家请使用 CompPlayers");
+            return;
+        }
+        const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
+        if (!selfPlayer) return;
+        
+        const player = GameData.instance.playerList[SELF_LOCAL];
+        if (!player) return;
+        
+        const headurl = GameData.instance.getHeadurl(SELF_LOCAL);
+        selfPlayer.updatePlayerInfo(player, true, headurl);
     }
 
     /**
-     * 获取玩家头像组件
-     * @param localSeat 本地座位号
-     * @returns 玩家头像组件
+     * 隐藏自己头像
      */
-    getPlayerHead(localSeat: number): CompPlayerHead {
-        return this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localSeat}`);
-    }
-
-    /**
-     * 隐藏玩家头像
-     * @param localseat 本地座位号
-     */
-    hideHead(localseat: number): void {
-        if (localseat === SELF_LOCAL) return;
-        const playerNode = this.getPlayerHead(localseat);
-        playerNode.hide();
+    hideSelfPlayer(): void {
+        const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
+        if (selfPlayer) {
+            selfPlayer.hide();
+        }
     }
 
     /**
@@ -795,9 +903,23 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 离开数据
      */
     onSvrPlayerLeave(data: any): void {
-        const localSeat = GameData.instance.seat2local(data.seat);
-        GameData.instance.playerList.splice(localSeat, 1);
-        this.hideHead(localSeat);
+        const selfid = DataCenter.instance.userid;
+        const svrSeat = data.seat;
+        const player = GameData.instance.getPlayerBySeat(svrSeat);
+        
+        if (player && player.userid === selfid) {
+            // 自己离开，清理本地座位
+            const localSeat = GameData.instance.seat2local(svrSeat);
+            GameData.instance.playerList.splice(localSeat, 1);
+            this.hideSelfPlayer();
+        } else {
+            // 其他玩家离开，从列表中移除
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            if (compPlayers) {
+                compPlayers.removeOtherPlayer(svrSeat);
+            }
+        }
+        
         this.checkShowInviteBtn();
     }
 
@@ -833,9 +955,22 @@ export class CompGameMain extends FGUICompGameMain {
      * @param bshow 是否显示
      */
     showSignReady(localSeat: number, bshow: boolean): void {
-        const playerNode = this.getChild<CompPlayerHead>(`UI_COMP_PLAYER_${localSeat}`);
-        if (playerNode) {
-            playerNode.showSignReady(bshow);
+        if (localSeat === SELF_LOCAL) {
+            // 自己，使用 UI_COMP_SELFPLAYER
+            const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
+            if (selfPlayer) {
+                selfPlayer.showSignReady(bshow);
+            }
+        } else {
+            // 其他玩家，使用 UI_COMP_PLAYERS 列表
+            const player = GameData.instance.playerList[localSeat];
+            if (player) {
+                const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+                const otherPlayer = compPlayers?.getOtherPlayer(player.svrSeat);
+                if (otherPlayer) {
+                    otherPlayer.getHeadComponent()?.showSignReady(bshow);
+                }
+            }
         }
     }
 
