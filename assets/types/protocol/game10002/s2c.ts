@@ -198,6 +198,7 @@ export interface TilesremovedRequest {
     lines: LineSegment[];
     eliminated: number;
     remaining: number;
+    seat: number;
 }
 
 /** 玩家完成游戏 - 请求参数 */
@@ -241,6 +242,7 @@ export interface ProgressupdateRequest {
 export interface MapdataRequest {
     mapData: string;
     totalBlocks: number;
+    seat: number;
 }
 
 export namespace SprotoSvrMsg {

@@ -63,6 +63,7 @@ import { SprotoGameRoomReady } from "../../../../../../types/protocol/lobby/s2c"
 import { TALK_LIST } from "../../talk/TalkConfig";
 import { TalkView } from "../../talk/TalkView";
 import { CompMap } from "./CompMap";
+import { LineSegment } from "../../../logic/TileMapData";
 
 /**
  * 游戏主体组件
@@ -388,16 +389,31 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrMapData(data: SprotoMapData.Request): void {
         console.log("地图数据", data);
-        if (data.mapData) {
-            try {
-                const map = JSON.parse(data.mapData);
+        if (!data.mapData) {
+            console.warn("地图数据为空");
+            return;
+        }
+
+        try {
+            const map = JSON.parse(data.mapData);
+            const selfSeat = GameData.instance.getSelfSeat();
+
+            // 保存地图数据到 GameData
+            GameData.instance.setPlayerMapData(data.seat, map, data.totalBlocks);
+
+            if (data.seat === selfSeat) {
+                // 自己的地图，渲染到主地图
                 const compMap = this.getCompMap();
                 if (compMap) {
                     compMap.initMap(map, "resEmoji");
                 }
-            } catch (e) {
-                console.error("地图数据解析失败:", e);
+            } else {
+                // 其他玩家的地图，渲染到对应的小地图
+                const localSeat = GameData.instance.seat2local(data.seat);
+                this.updateOtherPlayerMap(data.seat, map);
             }
+        } catch (e) {
+            console.error("地图数据解析失败:", e);
         }
     }
 
@@ -405,11 +421,25 @@ export class CompGameMain extends FGUICompGameMain {
      * 方块消除成功通知处理
      * @param data 消除数据
      */
-    onSvrTilesRemoved(data: any): void {
+    onSvrTilesRemoved(data: SprotoTilesRemoved.Request): void {
         console.log("方块消除", data);
-        const compMap = this.getCompMap();
-        if (compMap) {
-            // 通知地图组件消除方块
+        const selfSeat = GameData.instance.getSelfSeat();
+
+        if (data.seat === selfSeat) {
+            // 自己的消除，已经在本地处理过了，这里只需更新数据
+            GameData.instance.updatePlayerMapTilesRemoved(data.seat, data.p1.row, data.p1.col, data.p2.row, data.p2.col);
+        } else {
+            // 其他玩家的消除，需要在对应的小地图上显示消除效果
+            const localSeat = GameData.instance.seat2local(data.seat);
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+
+            if (compPlayers) {
+                // 使用更新后的方法，传递连线数据
+                compPlayers.removeOtherPlayerTiles(localSeat, data.p1, data.p2, data.lines as LineSegment[]);
+            }
+
+            // 更新数据中的地图
+            GameData.instance.updatePlayerMapTilesRemoved(data.seat, data.p1.row, data.p1.col, data.p2.row, data.p2.col);
         }
     }
 
@@ -434,6 +464,8 @@ export class CompGameMain extends FGUICompGameMain {
     onSvrGameRelink(data: any): void {
         console.log("游戏重连", data);
         // 地图数据通过 mapData 协议单独下发
+        // 清除本地地图数据缓存，等待 mapData 协议重新下发所有玩家地图
+        GameData.instance.clearAllPlayerMaps();
     }
 
     /**

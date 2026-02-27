@@ -16,11 +16,15 @@ export interface Point {
 }
 
 /**
- * @type LineSegment
- * @description 直线段类型，包含起点和终点
- * 例如：[{row:0, col:0}, {row:0, col:3}] 表示从(0,0)到(0,3)的水平线段
+ * @interface LineSegment
+ * @description 直线段接口，包含起点和终点
+ * @property {Point} start - 起点坐标
+ * @property {Point} end - 终点坐标
  */
-export type LineSegment = [Point, Point];
+export interface LineSegment {
+    start: Point;
+    end: Point;
+}
 
 /**
  * @interface PathResult

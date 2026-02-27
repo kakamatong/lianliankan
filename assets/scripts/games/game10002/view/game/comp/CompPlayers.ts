@@ -2,7 +2,7 @@ import FGUICompPlayers from "../../../../../fgui/game10002/FGUICompPlayers";
 import { CompOtherPlayer } from "./CompOtherPlayer";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
 import { GAME_PLAYER_INFO } from "../../../data/InterfaceGameConfig";
-import { Point } from "../../../logic/TileMapData";
+import { Point, LineSegment } from "../../../logic/TileMapData";
 import * as fgui from "fairygui-cc";
 
 /**
@@ -171,11 +171,12 @@ export class CompPlayers extends FGUICompPlayers {
      * @param {number} localSeat - 本地座位号
      * @param {Point} p1 - 第一个方块坐标
      * @param {Point} p2 - 第二个方块坐标
+     * @param {LineSegment[]} lines - 连接路径，用于显示连线动画
      */
-    removeOtherPlayerTiles(localSeat: number, p1: Point, p2: Point): void {
+    removeOtherPlayerTiles(localSeat: number, p1: Point, p2: Point, lines?: LineSegment[]): void {
         const otherPlayer = this._playerMap.get(localSeat);
         if (otherPlayer) {
-            otherPlayer.removeTiles(p1, p2);
+            otherPlayer.removeTiles(p1, p2, lines);
         } else {
             console.warn(`本地座位 ${localSeat} 的玩家不存在，无法移除方块`);
         }

@@ -312,11 +312,9 @@ export class CompMap extends FGUICompMap {
         const lineThickness = 15; // 线条粗细固定
 
         for (const line of lines) {
-            const [start, end] = line;
-
             // 获取起点和终点对应的方块
-            const startCube = this.getCube(start.row, start.col);
-            const endCube = this.getCube(end.row, end.col);
+            const startCube = this.getCube(line.start.row, line.start.col);
+            const endCube = this.getCube(line.end.row, line.end.col);
 
             if (!startCube || !endCube) continue;
 
@@ -618,6 +616,23 @@ export class CompMap extends FGUICompMap {
      */
     hasAnyValidPair(): boolean {
         return this._pathFinder.hasAnyValidPair();
+    }
+
+    /**
+     * @method showOtherPlayerRemoveAnimation
+     * @description 显示其他玩家消除的连线动画（不判断是否可以消除）
+     * @param {Point} p1 - 第一个方块坐标
+     * @param {Point} p2 - 第二个方块坐标
+     * @param {LineSegment[]} lines - 连接路径
+     */
+    showOtherPlayerRemoveAnimation(p1: Point, p2: Point, lines: LineSegment[]): void {
+        // 显示连线动画
+        this._showPathLines(lines);
+        
+        // 延迟后清除连线
+        this.scheduleOnce(() => {
+            this._clearPathLines();
+        }, this._removeDelay + 0.1);
     }
 }
 fgui.UIObjectFactory.setExtension(CompMap.URL, CompMap);

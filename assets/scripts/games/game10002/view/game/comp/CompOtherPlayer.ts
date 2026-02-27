@@ -3,7 +3,7 @@ import { CompPlayerHead } from "./CompPlayerHead";
 import { CompMap } from "./CompMap";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
 import { GAME_PLAYER_INFO } from "../../../data/InterfaceGameConfig";
-import { Point } from "../../../logic/TileMapData";
+import { Point, LineSegment } from "../../../logic/TileMapData";
 import * as fgui from "fairygui-cc";
 
 /**
@@ -108,9 +108,14 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
      * @description 移除指定位置的方块（其他玩家消除时调用）
      * @param {Point} p1 - 第一个方块坐标
      * @param {Point} p2 - 第二个方块坐标
+     * @param {LineSegment[]} lines - 连接路径，用于显示连线动画
      */
-    removeTiles(p1: Point, p2: Point): void {
+    removeTiles(p1: Point, p2: Point, lines?: LineSegment[]): void {
         if (this._compMap) {
+            // 如果有连线数据，显示连线动画
+            if (lines && lines.length > 0) {
+                this._compMap.showOtherPlayerRemoveAnimation(p1, p2, lines);
+            }
             // 在地图上隐藏这两个方块
             this._compMap.hideCube(p1.row, p1.col);
             this._compMap.hideCube(p2.row, p2.col);

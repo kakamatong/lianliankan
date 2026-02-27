@@ -393,7 +393,10 @@ export class PathFinder {
 
             // 如果是最后一点或方向改变，结束当前线段
             if (isLastPoint || directionWillChange) {
-                lines.push([lineStart, path[i]]);
+                lines.push({
+                    start: lineStart,
+                    end: path[i]
+                });
                 lineStart = path[i];
             }
         }

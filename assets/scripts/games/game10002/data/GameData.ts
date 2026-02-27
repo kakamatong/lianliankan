@@ -1,16 +1,26 @@
 /**
  * @file Gamedata.ts
- * @description 游戏数据：管理游戏 10001 的游戏数据
- * @category 游戏 10001
+ * @description 游戏数据：管理游戏 10002 的游戏数据
+ * @category 游戏 10002
  */
 
 import { DEFAULT_HEADURL } from "../../../datacenter/InterfaceConfig";
 import { GAME_PLAYER_INFO, SELF_LOCAL, ENUM_GAME_STEP, GAME_DATA } from "./InterfaceGameConfig";
 
 /**
+ * @interface PLAYER_MAP_DATA
+ * @description 玩家地图数据结构
+ */
+export interface PLAYER_MAP_DATA {
+    seat: number;
+    mapData: number[][];
+    totalBlocks: number;
+}
+
+/**
  * @class GameData
- * @description 游戏数据类，管理游戏 10001 的游戏数据，使用单例模式
- * @category 游戏 10001
+ * @description 游戏数据类，管理游戏 10002 的游戏数据，使用单例模式
+ * @category 游戏 10002
  * @singleton 单例模式
  */
 export class GameData {
@@ -26,6 +36,8 @@ export class GameData {
     private _record: Array<any> = [];
     private _privateNowCnt: number = 0; // 第几局
     private _privateMaxCnt: number = 0; // 最大局数
+    /** 所有玩家的地图数据，key为服务器座位号 */
+    private _playerMaps: Map<number, PLAYER_MAP_DATA> = new Map();
     /** 单例实例 */
     private static _instance: GameData;
 
@@ -54,6 +66,7 @@ export class GameData {
         this.gameData = null;
         this._owner = 0;
         this._privateNowCnt = 0;
+        this._playerMaps.clear();
     }
 
     get gameStep(): ENUM_GAME_STEP {
@@ -226,5 +239,63 @@ export class GameData {
 
     get privateMaxCnt(): number {
         return this._privateMaxCnt;
+    }
+
+    /**
+     * @description 设置玩家地图数据
+     * @param seat 服务器座位号
+     * @param mapData 地图数据
+     * @param totalBlocks 总方块数
+     */
+    setPlayerMapData(seat: number, mapData: number[][], totalBlocks: number): void {
+        this._playerMaps.set(seat, {
+            seat,
+            mapData,
+            totalBlocks
+        });
+    }
+
+    /**
+     * @description 获取玩家地图数据
+     * @param seat 服务器座位号
+     * @returns 玩家地图数据
+     */
+    getPlayerMapData(seat: number): PLAYER_MAP_DATA | undefined {
+        return this._playerMaps.get(seat);
+    }
+
+    /**
+     * @description 获取所有玩家地图数据
+     * @returns 所有玩家地图数据
+     */
+    getAllPlayerMaps(): Map<number, PLAYER_MAP_DATA> {
+        return this._playerMaps;
+    }
+
+    /**
+     * @description 清除所有玩家地图数据
+     */
+    clearAllPlayerMaps(): void {
+        this._playerMaps.clear();
+    }
+
+    /**
+     * @description 更新玩家地图中的方块（消除）
+     * @param seat 服务器座位号
+     * @param row1 第一个方块的行
+     * @param col1 第一个方块的列
+     * @param row2 第二个方块的行
+     * @param col2 第二个方块的列
+     */
+    updatePlayerMapTilesRemoved(seat: number, row1: number, col1: number, row2: number, col2: number): void {
+        const playerMap = this._playerMaps.get(seat);
+        if (playerMap && playerMap.mapData) {
+            if (row1 >= 0 && row1 < playerMap.mapData.length && col1 >= 0 && col1 < playerMap.mapData[0].length) {
+                playerMap.mapData[row1][col1] = 0;
+            }
+            if (row2 >= 0 && row2 < playerMap.mapData.length && col2 >= 0 && col2 < playerMap.mapData[0].length) {
+                playerMap.mapData[row2][col2] = 0;
+            }
+        }
     }
 }

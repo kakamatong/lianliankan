@@ -237,6 +237,7 @@ tilesRemoved 34 {
         lines 3 : *LineSegment   # 连接路径
         eliminated 4 : integer   # 已消除数量
         remaining 5 : integer    # 剩余方块数
+        seat 6 : integer         # 执行消除的玩家座位号
     }
 }
 
@@ -298,5 +299,6 @@ mapData 40 {
     request {
         mapData 0 : string       # 地图数据JSON
         totalBlocks 1 : integer  # 总方块数
+        seat 2 : integer         # 座位号，标识这是哪个玩家的地图
     }
 }
