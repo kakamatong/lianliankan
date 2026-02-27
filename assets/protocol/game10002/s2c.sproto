@@ -209,7 +209,7 @@ talk 16 {
 # 线段结构（路径）
 .LineSegment {
     start 0 : Point
-    end 1 : Point
+    dest 1 : Point
 }
 
 # 游戏开始

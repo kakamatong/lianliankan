@@ -395,7 +395,7 @@ export class PathFinder {
             if (isLastPoint || directionWillChange) {
                 lines.push({
                     start: lineStart,
-                    end: path[i]
+                    dest: path[i]
                 });
                 lineStart = path[i];
             }

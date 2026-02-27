@@ -314,15 +314,15 @@ export class CompMap extends FGUICompMap {
         for (const line of lines) {
             // 获取起点和终点对应的方块
             const startCube = this.getCube(line.start.row, line.start.col);
-            const endCube = this.getCube(line.end.row, line.end.col);
+            const destCube = this.getCube(line.dest.row, line.dest.col);
 
-            if (!startCube || !endCube) continue;
+            if (!startCube || !destCube) continue;
 
             // 获取方块的实际坐标和尺寸
             const startX = startCube.x + startCube.width / 2;
             const startY = startCube.y + startCube.height / 2;
-            const endX = endCube.x + endCube.width / 2;
-            const endY = endCube.y + endCube.height / 2;
+            const endX = destCube.x + destCube.width / 2;
+            const endY = destCube.y + destCube.height / 2;
 
             // 计算线段差值
             const deltaX = endX - startX;

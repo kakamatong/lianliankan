@@ -51,7 +51,7 @@ export interface Point {
 /** 线段结构（路径） */
 export interface LineSegment {
     start: Point;
-    end: Point;
+    dest: Point;
 }
 
 /** 游戏结束 */

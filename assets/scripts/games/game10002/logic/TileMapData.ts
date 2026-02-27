@@ -19,11 +19,11 @@ export interface Point {
  * @interface LineSegment
  * @description 直线段接口，包含起点和终点
  * @property {Point} start - 起点坐标
- * @property {Point} end - 终点坐标
+ * @property {Point} dest - 终点坐标
  */
 export interface LineSegment {
     start: Point;
-    end: Point;
+    dest: Point;
 }
 
 /**
