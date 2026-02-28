@@ -183,6 +183,21 @@ export class CompPlayers extends FGUICompPlayers {
     }
 
     /**
+     * @method setOtherPlayerComplete
+     * @description 设置其他玩家的完成状态
+     * @param {number} localSeat - 本地座位号
+     * @param {boolean} completed - 是否已完成
+     */
+    setOtherPlayerComplete(localSeat: number, completed: boolean): void {
+        const otherPlayer = this._playerMap.get(localSeat);
+        if (otherPlayer) {
+            otherPlayer.setComplete(completed);
+        } else {
+            console.warn(`本地座位 ${localSeat} 的玩家不存在，无法设置完成状态`);
+        }
+    }
+
+    /**
      * @method clear
      * @description 清空所有其他玩家
      */

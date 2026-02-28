@@ -34,6 +34,13 @@
     <image id="bbyt1c" name="ad.png" path="/imgs/" exported="true"/>
     <component id="pz9v1d" name="CompBtnAdScale.xml" path="/comp/" exported="true"/>
     <image id="pz9v1e" name="矩形 1.png" path="/imgs/" exported="true" scale="9grid" scale9grid="32,35,27,16"/>
+    <image id="eijp11" name="奖牌1.png" path="/imgs/"/>
+    <component id="eijp1f" name="CompMedal.xml" path="/comp/" exported="true"/>
+    <image id="eijp1g" name="奖牌4.png" path="/imgs/"/>
+    <image id="eijp1h" name="奖牌5.png" path="/imgs/"/>
+    <image id="eijp1i" name="奖牌6.png" path="/imgs/"/>
+    <image id="eijp1j" name="奖牌2.png" path="/imgs/"/>
+    <image id="eijp1k" name="奖牌3.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

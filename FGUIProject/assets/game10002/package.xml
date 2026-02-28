@@ -9,9 +9,6 @@
     <component id="qaf28" name="CompThinkAct.xml" path="/comp/"/>
     <image id="qaf29" name="offline.png" path="/imgs/"/>
     <component id="qaf2a" name="CompOffline.xml" path="/comp/"/>
-    <image id="qaf2b" name="y1.png" path="/imgs/"/>
-    <image id="qaf2c" name="y2.png" path="/imgs/"/>
-    <image id="qaf2d" name="y3.png" path="/imgs/"/>
     <component id="qaf2f" name="BtnSelect.xml" path="/comp/"/>
     <image id="fnugg" name="gameStart.png" path="/imgs/"/>
     <component id="fnugh" name="CompGameStartAct.xml" path="/comp/"/>
@@ -30,6 +27,7 @@
     <component id="8yj8v" name="CompLine.xml" path="/comp/" exported="true"/>
     <component id="pgw3w" name="CompOtherPlayer.xml" path="/comp/"/>
     <component id="pgw3x" name="CompPlayers.xml" path="/comp/"/>
+    <image id="eijpz" name="comp.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

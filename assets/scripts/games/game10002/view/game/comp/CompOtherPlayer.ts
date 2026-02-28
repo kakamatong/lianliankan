@@ -139,6 +139,24 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     }
 
     /**
+     * @method setComplete
+     * @description 设置完成状态
+     * @param {boolean} completed - 是否已完成
+     */
+    setComplete(completed: boolean): void {
+        this.ctrl_bComplate.selectedIndex = completed ? 1 : 0;
+    }
+
+    /**
+     * @method isComplete
+     * @description 获取是否已完成
+     * @returns {boolean} 是否已完成
+     */
+    isComplete(): boolean {
+        return this.ctrl_bComplate.selectedIndex === 1;
+    }
+
+    /**
      * @method reset
      * @description 重置组件状态
      */
@@ -150,6 +168,7 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
             this._compMap.clearMap();
         }
         this._seat = 0;
+        this.setComplete(false);
     }
 
     /**

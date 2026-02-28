@@ -449,11 +449,24 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrPlayerFinished(data: any): void {
         console.log("玩家完成", data);
-        const player = GameData.instance.getPlayerBySeat(data.seat);
-        if (player) {
-            const localSeat = GameData.instance.seat2local(player.svrSeat);
-            // 显示玩家完成状态，如显示排名或用时
-            console.log(`玩家 ${player.nickname} 完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
+        const selfSeat = GameData.instance.getSelfSeat();
+
+        if (data.seat === selfSeat) {
+            // 自己完成，更新自己的完成状态
+            // TODO: 如果需要显示自己的完成状态，可以在这里处理
+            console.log(`自己完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
+        } else {
+            // 其他玩家完成，更新完成状态显示
+            const localSeat = GameData.instance.seat2local(data.seat);
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            if (compPlayers) {
+                compPlayers.setOtherPlayerComplete(localSeat, true);
+            }
+
+            const player = GameData.instance.getPlayerBySeat(data.seat);
+            if (player) {
+                console.log(`玩家 ${player.nickname} 完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
+            }
         }
     }
 
