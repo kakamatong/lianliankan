@@ -45,7 +45,6 @@ import {
     SprotoProgressUpdate,
     SprotoRoomEnd,
     SprotoRoomInfo,
-    SprotoTalk,
     SprotoTilesRemoved,
     SprotoTotalResult,
     SprotoVoteDisbandResult,
@@ -60,7 +59,7 @@ import {
     SprotoVoteDisbandRoom,
 } from "../../../../../../types/protocol/game10002/c2s";
 import { SprotoGameRoomReady } from "../../../../../../types/protocol/lobby/s2c";
-import { TALK_LIST } from "../../talk/TalkConfig";
+import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "../../talk/TalkConfig";
 import { TalkView } from "../../talk/TalkView";
 import { CompMap } from "./CompMap";
 import { LineSegment } from "../../../logic/TileMapData";
@@ -163,7 +162,6 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoTotalResult, this.onSvrTotalResult.bind(this));
         GameSocketManager.instance.addServerListen(SprotoGameRecord, this.onSvrGameRecord.bind(this));
         GameSocketManager.instance.addServerListen(SprotoForwardMessage, this.onSvrForwardMessage.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoTalk, this.onSvrTalk.bind(this));
         // 连连看游戏协议
         GameSocketManager.instance.addServerListen(SprotoMapData, this.onSvrMapData.bind(this));
         GameSocketManager.instance.addServerListen(SprotoTilesRemoved, this.onSvrTilesRemoved.bind(this));
@@ -203,7 +201,6 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoTotalResult);
         GameSocketManager.instance.removeServerListen(SprotoGameRecord);
         GameSocketManager.instance.removeServerListen(SprotoForwardMessage);
-        GameSocketManager.instance.removeServerListen(SprotoTalk);
         // 连连看游戏协议
         GameSocketManager.instance.removeServerListen(SprotoMapData);
         GameSocketManager.instance.removeServerListen(SprotoTilesRemoved);
@@ -335,21 +332,33 @@ export class CompGameMain extends FGUICompGameMain {
     // 处理转发协议
     forwardMessage(data: SprotoForwardMessage.Request) {
         const type = data.type;
-    }
-
-    /**
-     * 服务器聊天消息处理
-     * @param data 聊天数据
-     */
-    onSvrTalk(data: SprotoTalk.Request): void {
-        this.showTalk(data);
+        
+        switch (type) {
+            case FORWARD_MESSAGE_TYPE.TALK:
+                // 处理聊天消息
+                try {
+                    const talkData = JSON.parse(data.msg);
+                    if (talkData && talkData.id) {
+                        this.showTalk({
+                            from: data.from,
+                            id: talkData.id
+                        });
+                    }
+                } catch (e) {
+                    console.error("解析聊天消息失败:", e);
+                }
+                break;
+            default:
+                console.log("未处理的消息转发类型:", type);
+                break;
+        }
     }
 
     /**
      * 显示聊天消息
      * @param data 聊天数据
      */
-    showTalk(data: SprotoTalk.Request): void {
+    showTalk(data: { from: number; id: number }): void {
         const id = data.id;
         const userid = data.from;
         const player = GameData.instance.getPlayerByUserid(userid);

@@ -2,12 +2,9 @@ import FGUICompItem from "db://assets/scripts/fgui/game10002Talk/FGUICompItem";
 import FGUITalkView from "db://assets/scripts/fgui/game10002Talk/FGUITalkView";
 import { PackageLoad, ViewClass } from "db://assets/scripts/frameworks/Framework";
 import { GameSocketManager } from "db://assets/scripts/frameworks/GameSocketManager";
-import { TALK_LIST } from "db://assets/scripts/games/game10002/view/talk/TalkConfig";
-import { SprotoTalkUse } from "db://assets/types/protocol/game10002/c2s";
+import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "db://assets/scripts/games/game10002/view/talk/TalkConfig";
+import { SprotoForwardMessage } from "db://assets/types/protocol/game10002/c2s";
 import * as fgui from "fairygui-cc";
-import { DataCenter } from "db://assets/scripts/datacenter/Datacenter";
-import { RICH_TYPE } from "db://assets/scripts/datacenter/InterfaceConfig";
-import { TipsView } from "db://assets/scripts/view/common/TipsView";
 
 @PackageLoad(["props"])
 @ViewClass()
@@ -26,14 +23,8 @@ export class TalkView extends FGUITalkView {
         const data = TALK_LIST[index];
         const node = obj as FGUICompItem;
         node.UI_TXT_TALK.text = data.msg;
-        node.UI_TXT_SPEED.text = `x${data.speed}`;
 
         node.onClick(() => {
-            const rich = DataCenter.instance.getRichByType(RICH_TYPE.SILVER_COIN);
-            if (!rich || rich.richNums < data.speed) {
-                TipsView.showView({ content: `银子不足(每日签到可补充银子)` });
-                return;
-            }
             this.sendTalk(data.id);
         }, this);
     }
@@ -45,14 +36,23 @@ export class TalkView extends FGUITalkView {
      */
     sendTalk(id: number) {
         if (!GameSocketManager.instance.isOpen()) {
-            TipsView.showView({ content: "房间已解散" });
+            console.warn("游戏连接已断开，无法发送聊天");
             return;
         }
-        GameSocketManager.instance.sendToServer(SprotoTalkUse, { id: id }, (data: SprotoTalkUse.Response) => {
-            if (data.code) {
-                DataCenter.instance.updateRichByType(RICH_TYPE.SILVER_COIN, data.richNum);
+        // 使用 forwardMessage 发送聊天消息
+        GameSocketManager.instance.sendToServer(
+            SprotoForwardMessage,
+            {
+                type: FORWARD_MESSAGE_TYPE.TALK,
+                to: [], // 空数组表示发送给所有人
+                msg: JSON.stringify({ id: id }),
+            },
+            (data: SprotoForwardMessage.Response) => {
+                if (data.code !== 0) {
+                    console.warn("发送聊天失败:", data.msg);
+                }
             }
-        });
+        );
     }
 
     /**

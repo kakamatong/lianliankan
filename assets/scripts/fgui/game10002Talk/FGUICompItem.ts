@@ -8,7 +8,6 @@ import { PackageManager } from "../../frameworks/PackageManager";
 export default class FGUICompItem extends fgui.GComponent {
 
 	public UI_TXT_TALK:fgui.GTextField;
-	public UI_TXT_SPEED:fgui.GTextField;
 	public static URL:string = "ui://fznom2fxpxa52";
 
 	public static packageName:string = "game10002Talk";
@@ -50,7 +49,6 @@ export default class FGUICompItem extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_TXT_TALK = <fgui.GTextField>(this.getChildAt(0));
-		this.UI_TXT_SPEED = <fgui.GTextField>(this.getChildAt(2));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
