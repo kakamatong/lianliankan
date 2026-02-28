@@ -140,13 +140,13 @@ export namespace SprotoCall {
 export namespace SprotoSend {
     export const Name = "send";
     export type Request = SendRequest;
-    export type Response = undefined;  // send 协议没有响应参数
+    export type Response = undefined; // send 协议没有响应参数
 }
 
 export namespace SprotoClientReady {
     export const Name = "clientReady";
     export type Request = ClientreadyRequest;
-    export type Response = undefined;  // clientReady 协议没有响应参数
+    export type Response = undefined; // clientReady 协议没有响应参数
 }
 
 export namespace SprotoGameReady {
@@ -157,7 +157,7 @@ export namespace SprotoGameReady {
 
 export namespace SprotoLeaveRoom {
     export const Name = "leaveRoom";
-    export type Request = undefined;  // leaveRoom 协议没有请求参数
+    export type Request = undefined; // leaveRoom 协议没有请求参数
     export type Response = LeaveroomResponse;
 }
 
