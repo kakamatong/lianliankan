@@ -456,11 +456,13 @@ export class CompGameMain extends FGUICompGameMain {
             // TODO: 如果需要显示自己的完成状态，可以在这里处理
             console.log(`自己完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
         } else {
-            // 其他玩家完成，更新完成状态显示
+            // 其他玩家完成，更新完成状态显示和名次
             const localSeat = GameData.instance.seat2local(data.seat);
             const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
             if (compPlayers) {
                 compPlayers.setOtherPlayerComplete(localSeat, true);
+                // 设置名次，服务器返回的rank从1开始
+                compPlayers.setOtherPlayerRank(localSeat, data.rank);
             }
 
             const player = GameData.instance.getPlayerBySeat(data.seat);

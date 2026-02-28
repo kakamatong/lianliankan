@@ -51,7 +51,7 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     private _initComponents(): void {
         // 获取头像组件
         this._compHead = this.UI_COMP_HEAD as CompPlayerHead;
-        
+
         // 获取地图组件并设置为只读模式
         this._compMap = this.UI_COMP_MAP as CompMap;
         this._compMap.setReadonly(true);
@@ -157,6 +157,36 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     }
 
     /**
+     * @method setRank
+     * @description 设置名次显示
+     * @param {number} rank - 名次，0表示不显示，1-6表示名次
+     */
+    setRank(rank: number): void {
+        const ctrl = this.UI_COMP_MEDAL.getController("ctrl_rank");
+        if (!ctrl) {
+            console.warn("奖牌控制器未初始化");
+            return;
+        }
+        // 限制名次范围在0-6之间
+        const safeRank = Math.max(0, Math.min(6, rank));
+        ctrl.selectedIndex = safeRank;
+    }
+
+    /**
+     * @method getRank
+     * @description 获取当前名次
+     * @returns {number} 当前名次，0表示未显示
+     */
+    getRank(): number {
+        const ctrl = this.UI_COMP_MEDAL.getController("ctrl_rank");
+        if (!ctrl) {
+            console.warn("奖牌控制器未初始化");
+            return 0;
+        }
+        return ctrl.selectedIndex;
+    }
+
+    /**
      * @method reset
      * @description 重置组件状态
      */
@@ -169,6 +199,7 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
         }
         this._seat = 0;
         this.setComplete(false);
+        this.setRank(0);
     }
 
     /**

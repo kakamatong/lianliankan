@@ -198,6 +198,21 @@ export class CompPlayers extends FGUICompPlayers {
     }
 
     /**
+     * @method setOtherPlayerRank
+     * @description 设置其他玩家的名次
+     * @param {number} localSeat - 本地座位号
+     * @param {number} rank - 名次，0表示不显示，1-6表示名次
+     */
+    setOtherPlayerRank(localSeat: number, rank: number): void {
+        const otherPlayer = this._playerMap.get(localSeat);
+        if (otherPlayer) {
+            otherPlayer.setRank(rank);
+        } else {
+            console.warn(`本地座位 ${localSeat} 的玩家不存在，无法设置名次`);
+        }
+    }
+
+    /**
      * @method clear
      * @description 清空所有其他玩家
      */

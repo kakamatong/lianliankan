@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="60,51">
-  <controller name="ctrl_rank" exported="true" pages="0,,1,,2,,3,,4,,5,,6," selected="6">
+  <controller name="ctrl_rank" exported="true" pages="0,,1,,2,,3,,4,,5,,6," selected="1">
     <remark page="0" value="不显示"/>
     <remark page="1" value="1"/>
     <remark page="2" value="2"/>
@@ -10,7 +10,7 @@
     <remark page="6" value="6"/>
   </controller>
   <displayList>
-    <loader id="n1_eijp" name="n1" xy="0,0" size="60,51" url="ui://gj0r6g5ieijp1i" autoSize="true">
+    <loader id="n1_eijp" name="n1" xy="0,0" size="60,51" url="ui://gj0r6g5ieijp11" autoSize="true">
       <gearIcon controller="ctrl_rank" pages="0,2,3,4,5,6" values="|ui://gj0r6g5ieijp1j|ui://gj0r6g5ieijp1k|ui://gj0r6g5ieijp1g|ui://gj0r6g5ieijp1h|ui://gj0r6g5ieijp1i" default="ui://gj0r6g5ieijp11"/>
     </loader>
   </displayList>
