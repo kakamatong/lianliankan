@@ -6,7 +6,6 @@ import * as fgui from "fairygui-cc";
 export class CompTalk extends FGUICompTalk {
     private _localSeat: number = 0;
     private _talkMsg: string = "";
-    private _txtNode: fgui.GTextField | null = null;
 
     public set talkMsg(value: string) {
         this._talkMsg = value;
@@ -14,7 +13,10 @@ export class CompTalk extends FGUICompTalk {
 
         this.unscheduleAllCallbacks();
         this.scheduleOnce(() => {
-            this._txtNode && (this._txtNode.text = value);
+            // 使用父类的 UI_TXT_0 文本节点
+            if (this.UI_TXT_0) {
+                this.UI_TXT_0.text = value;
+            }
         }, 0);
 
         this.scheduleOnce(() => {

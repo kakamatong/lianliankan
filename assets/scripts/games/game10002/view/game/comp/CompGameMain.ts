@@ -332,20 +332,25 @@ export class CompGameMain extends FGUICompGameMain {
     // 处理转发协议
     forwardMessage(data: SprotoForwardMessage.Request) {
         const type = data.type;
-        
+
         switch (type) {
             case FORWARD_MESSAGE_TYPE.TALK:
                 // 处理聊天消息
+                console.log("[聊天] 收到消息转发:", data);
                 try {
                     const talkData = JSON.parse(data.msg);
+                    console.log("[聊天] 解析后的数据:", talkData);
                     if (talkData && talkData.id) {
+                        console.log("[聊天] 显示聊天，from:", data.from, "id:", talkData.id);
                         this.showTalk({
                             from: data.from,
                             id: talkData.id
                         });
+                    } else {
+                        console.warn("[聊天] talkData.id 不存在:", talkData);
                     }
                 } catch (e) {
-                    console.error("解析聊天消息失败:", e);
+                    console.error("[聊天] 解析聊天消息失败:", e);
                 }
                 break;
             default:
@@ -359,12 +364,22 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 聊天数据
      */
     showTalk(data: { from: number; id: number }): void {
+        console.log("[聊天] showTalk 被调用:", data);
         const id = data.id;
         const userid = data.from;
+        console.log("[聊天] 查找玩家 userid:", userid);
         const player = GameData.instance.getPlayerByUserid(userid);
-        if (!player) return;
+        if (!player) {
+            console.warn("[聊天] 未找到玩家 userid:", userid);
+            return;
+        }
+        console.log("[聊天] 找到玩家:", player.nickname);
         const talkData = TALK_LIST.find((item) => item.id == id);
-        if (!talkData) return;
+        if (!talkData) {
+            console.warn("[聊天] 未找到聊天配置 id:", id);
+            return;
+        }
+        console.log("[聊天] 显示消息:", talkData.msg);
 
         const selfid = DataCenter.instance.userid;
         if (userid === selfid) {
