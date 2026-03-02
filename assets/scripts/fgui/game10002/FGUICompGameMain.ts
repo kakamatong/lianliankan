@@ -2,10 +2,10 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
+import FGUICompClock from "./FGUICompClock";
 import FGUICompPlayers from "./FGUICompPlayers";
 import FGUICompMap from "./FGUICompMap";
 import FGUICompPlayerHead from "./FGUICompPlayerHead";
-import FGUICompClock from "./FGUICompClock";
 import FGUICompGameStartAct from "./FGUICompGameStartAct";
 import FGUICompRoundAct from "./FGUICompRoundAct";
 
@@ -18,6 +18,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_DISBAND:fgui.GButton;
 	public UI_BTN_BACK:fgui.GButton;
 	public UI_BTN_INVITE:fgui.GButton;
+	public UI_COMP_CLOCK:FGUICompClock;
 	public UI_COMP_PLAYERS:FGUICompPlayers;
 	public UI_COMP_MAP:FGUICompMap;
 	public UI_COMP_SELFPLAYER:FGUICompPlayerHead;
@@ -25,7 +26,6 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_CHANGE:fgui.GButton;
 	public UI_BTN_CONTINUE:fgui.GButton;
 	public UI_BTN_READY:fgui.GButton;
-	public UI_COMP_CLOCK:FGUICompClock;
 	public UI_COMP_GAME_START:FGUICompGameStartAct;
 	public UI_TXT_ROOMID:fgui.GTextField;
 	public UI_TXT_RULE:fgui.GTextField;
@@ -80,18 +80,18 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_BACK.onClick(this.onBtnBack, this);
 		this.UI_BTN_INVITE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_INVITE.onClick(this.onBtnInvite, this);
-		this.UI_COMP_PLAYERS = <FGUICompPlayers>(this.getChildAt(3));
-		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(4));
-		this.UI_COMP_SELFPLAYER = <FGUICompPlayerHead>(this.getChildAt(5));
-		this.UI_BTN_SURE = <fgui.GButton>(this.getChildAt(6));
+		this.UI_COMP_CLOCK = <FGUICompClock>(this.getChildAt(3));
+		this.UI_COMP_PLAYERS = <FGUICompPlayers>(this.getChildAt(4));
+		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(5));
+		this.UI_COMP_SELFPLAYER = <FGUICompPlayerHead>(this.getChildAt(6));
+		this.UI_BTN_SURE = <fgui.GButton>(this.getChildAt(7));
 		this.UI_BTN_SURE.onClick(this.onBtnSure, this);
-		this.UI_BTN_CHANGE = <fgui.GButton>(this.getChildAt(7));
+		this.UI_BTN_CHANGE = <fgui.GButton>(this.getChildAt(8));
 		this.UI_BTN_CHANGE.onClick(this.onBtnChange, this);
-		this.UI_BTN_CONTINUE = <fgui.GButton>(this.getChildAt(8));
+		this.UI_BTN_CONTINUE = <fgui.GButton>(this.getChildAt(9));
 		this.UI_BTN_CONTINUE.onClick(this.onBtnContinue, this);
-		this.UI_BTN_READY = <fgui.GButton>(this.getChildAt(9));
+		this.UI_BTN_READY = <fgui.GButton>(this.getChildAt(10));
 		this.UI_BTN_READY.onClick(this.onBtnReady, this);
-		this.UI_COMP_CLOCK = <FGUICompClock>(this.getChildAt(11));
 		this.UI_COMP_GAME_START = <FGUICompGameStartAct>(this.getChildAt(12));
 		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(14));
 		this.UI_TXT_RULE = <fgui.GTextField>(this.getChildAt(15));

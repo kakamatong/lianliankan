@@ -24,13 +24,16 @@
       <property target="title" propertyId="0" value="邀请好友"/>
       <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3e"/>
     </component>
-    <component id="n71_pgw3" name="UI_COMP_PLAYERS" src="pgw3x" fileName="comp/CompPlayers.xml" xy="9,150" size="757,330">
+    <component id="n36_xr4w" name="UI_COMP_CLOCK" src="qaf26" fileName="comp/CompClock.xml" xy="168,8" visible="false">
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </component>
+    <component id="n71_pgw3" name="UI_COMP_PLAYERS" src="pgw3x" fileName="comp/CompPlayers.xml" xy="9,23" size="757,417">
       <relation target="" sidePair="width-width,top-top"/>
     </component>
     <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,575">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n62_gk14" name="UI_COMP_SELFPLAYER" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="18,1503">
+    <component id="n62_gk14" name="UI_COMP_SELFPLAYER" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="18,1428">
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
     <component id="n21_folo" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,0">
@@ -52,9 +55,6 @@
     <group id="n23_folo" name="n23" xy="526,1474" size="231,100" advanced="true">
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </group>
-    <component id="n36_xr4w" name="UI_COMP_CLOCK" src="qaf26" fileName="comp/CompClock.xml" xy="168,8" visible="false">
-      <relation target="" sidePair="center-center,middle-middle"/>
-    </component>
     <component id="n37_fnug" name="UI_COMP_GAME_START" src="fnugh" fileName="comp/CompGameStartAct.xml" xy="132,625" visible="false">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>

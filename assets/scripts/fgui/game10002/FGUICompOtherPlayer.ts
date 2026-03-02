@@ -8,63 +8,59 @@ import FGUICompMap from "./FGUICompMap";
 import { PackageManager } from "../../frameworks/PackageManager";
 
 export default class FGUICompOtherPlayer extends fgui.GComponent {
-    public ctrl_bComplate: fgui.Controller;
-    public UI_COMP_HEAD: FGUICompPlayerHead;
-    public UI_COMP_MAP: FGUICompMap;
-    public UI_COMP_MEDAL: fgui.GComponent;
-    public static URL: string = "ui://2zsfe53xpgw3w";
 
-    public static packageName: string = "game10002";
+	public ctrl_bComplate:fgui.Controller;
+	public UI_COMP_HEAD:FGUICompPlayerHead;
+	public UI_COMP_MAP:FGUICompMap;
+	public UI_COMP_MEDAL:fgui.GComponent;
+	public static URL:string = "ui://2zsfe53xpgw3w";
 
-    public static instance: any | null = null;
+	public static packageName:string = "game10002";
 
-    public static showView(params?: any, callBack?: (b: boolean) => void): void {
-        if (FGUICompOtherPlayer.instance) {
-            console.log("allready show");
-            callBack && callBack(false);
-            return;
-        }
-        PackageManager.instance
-            .loadPackage("fgui", this.packageName)
-            .then(() => {
-                const view = fgui.UIPackage.createObject("game10002", "CompOtherPlayer") as FGUICompOtherPlayer;
+	public static instance:any | null = null;
 
-                view.makeFullScreen();
-                FGUICompOtherPlayer.instance = view;
-                fgui.GRoot.inst.addChild(view);
-                view.show && view.show(params);
-                callBack && callBack(true);
-            })
-            .catch((error) => {
-                console.log("showView error", error);
-                callBack && callBack(false);
-                return;
-            });
-    }
+	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
+		if(FGUICompOtherPlayer.instance) {
+			console.log("allready show");
+			callBack&&callBack(false);
+			return;
+		}
+		PackageManager.instance.loadPackage("fgui", this.packageName).then(()=> {
 
-    protected onDestroy(): void {
-        super.onDestroy();
-        FGUICompOtherPlayer.instance = null;
-    }
-    public static hideView(): void {
-        FGUICompOtherPlayer.instance && FGUICompOtherPlayer.instance.dispose();
-    }
+			const view = fgui.UIPackage.createObject("game10002", "CompOtherPlayer") as FGUICompOtherPlayer;
 
-    show(data?: any): void {}
+			view.makeFullScreen();
+			FGUICompOtherPlayer.instance = view;
+			fgui.GRoot.inst.addChild(view);
+			view.show && view.show(params);
+			callBack&&callBack(true);
+		}
+		).catch(error=>{console.log("showView error", error);callBack&&callBack(false);return;});
+	}
 
-    public static createInstance(): FGUICompOtherPlayer {
-        return <FGUICompOtherPlayer>fgui.UIPackage.createObject("game10002", "CompOtherPlayer");
-    }
+	protected onDestroy():void {
+		super.onDestroy();
+		FGUICompOtherPlayer.instance = null;
+	}
+	public static hideView():void {
+		FGUICompOtherPlayer.instance && FGUICompOtherPlayer.instance.dispose();
+	}
 
-    protected onConstruct(): void {
-        this.ctrl_bComplate = this.getControllerAt(0);
-        this.UI_COMP_HEAD = <FGUICompPlayerHead>this.getChildAt(0);
-        this.UI_COMP_MAP = <FGUICompMap>this.getChildAt(1);
-        this.UI_COMP_MEDAL = <fgui.GComponent>this.getChildAt(3);
-    }
-    scheduleOnce(callback: () => void, delay: number): void {}
-    unscheduleAllCallbacks(): void {}
-    unschedule(callback: () => void): void {}
-    schedule(callback: () => void, interval: number): void {}
+	show(data?:any):void{};
+
+	public static createInstance():FGUICompOtherPlayer {
+		return <FGUICompOtherPlayer>(fgui.UIPackage.createObject("game10002", "CompOtherPlayer"));
+	}
+
+	protected onConstruct():void {
+		this.ctrl_bComplate = this.getControllerAt(0);
+		this.UI_COMP_HEAD = <FGUICompPlayerHead>(this.getChildAt(0));
+		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(1));
+		this.UI_COMP_MEDAL = <fgui.GComponent>(this.getChildAt(3));
+	}
+	scheduleOnce(callback: () => void, delay: number):void{};
+	unscheduleAllCallbacks():void{};
+	unschedule(callback: () => void):void{};
+	schedule(callback: () => void, interval: number):void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompOtherPlayer.URL, FGUICompOtherPlayer);

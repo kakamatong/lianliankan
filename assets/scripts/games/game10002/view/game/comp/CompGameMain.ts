@@ -390,11 +390,24 @@ export class CompGameMain extends FGUICompGameMain {
             }
         } else {
             // 其他玩家，使用 UI_COMP_PLAYERS 列表
+            console.log("[聊天] 处理其他玩家消息，svrSeat:", player.svrSeat);
             const localSeat = GameData.instance.seat2local(player.svrSeat);
+            console.log("[聊天] 转换后的 localSeat:", localSeat);
             const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            console.log("[聊天] compPlayers:", compPlayers ? "存在" : "不存在");
             const otherPlayer = compPlayers?.getOtherPlayer(localSeat);
+            console.log("[聊天] otherPlayer:", otherPlayer ? "存在" : "不存在");
             if (otherPlayer) {
-                otherPlayer.getHeadComponent()?.showMsg(talkData.msg);
+                const headComp = otherPlayer.getHeadComponent();
+                console.log("[聊天] headComponent:", headComp ? "存在" : "不存在");
+                if (headComp) {
+                    headComp.showMsg(talkData.msg);
+                    console.log("[聊天] 消息已显示");
+                } else {
+                    console.warn("[聊天] headComponent 为空");
+                }
+            } else {
+                console.warn("[聊天] 未找到其他玩家组件，localSeat:", localSeat);
             }
         }
     }
