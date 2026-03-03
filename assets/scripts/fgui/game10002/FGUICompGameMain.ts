@@ -8,6 +8,7 @@ import FGUICompPlayerHead from "./FGUICompPlayerHead";
 import FGUICompGameStartAct from "./FGUICompGameStartAct";
 import FGUICompRoundAct from "./FGUICompRoundAct";
 import FGUICompTimeLeft from "./FGUICompTimeLeft";
+import FGUICompFinshInfo from "./FGUICompFinshInfo";
 
 import { PackageManager } from "../../frameworks/PackageManager";
 
@@ -15,6 +16,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 
 	public ctrl_btn:fgui.Controller;
 	public ctrl_roomtype:fgui.Controller;
+	public ctrl_finshInfo:fgui.Controller;
 	public UI_BTN_DISBAND:fgui.GButton;
 	public UI_BTN_BACK:fgui.GButton;
 	public UI_BTN_INVITE:fgui.GButton;
@@ -33,6 +35,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_COMP_ROUND_ACT:FGUICompRoundAct;
 	public UI_BTN_TALK:fgui.GButton;
 	public UI_COMP_CLOCK:FGUICompTimeLeft;
+	public UI_COMP_FINSH_INFO:FGUICompFinshInfo;
 	public static URL:string = "ui://2zsfe53xln74p";
 
 	public static packageName:string = "game10002";
@@ -75,6 +78,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	protected onConstruct():void {
 		this.ctrl_btn = this.getControllerAt(0);
 		this.ctrl_roomtype = this.getControllerAt(1);
+		this.ctrl_finshInfo = this.getControllerAt(2);
 		this.UI_BTN_DISBAND = <fgui.GButton>(this.getChildAt(0));
 		this.UI_BTN_DISBAND.onClick(this.onBtnDisband, this);
 		this.UI_BTN_BACK = <fgui.GButton>(this.getChildAt(1));
@@ -101,6 +105,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(21));
 		this.UI_BTN_TALK.onClick(this.onBtnTalk, this);
 		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(22));
+		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(23));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

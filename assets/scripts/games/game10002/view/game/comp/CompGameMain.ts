@@ -14,6 +14,7 @@ import {
 } from "../../../data/InterfaceGameConfig";
 import * as fgui from "fairygui-cc";
 import { CompTimeLeft } from "./CompTimeLeft";
+import { CompFinshInfo } from "./CompFinshInfo";
 import { PopMessageView } from "../../../../../view/common/PopMessageView";
 import { ENUM_POP_MESSAGE_TYPE, RICH_TYPE } from "../../../../../datacenter/InterfaceConfig";
 import { FW_EVENT_NAMES } from "../../../../../frameworks/config/Config";
@@ -64,12 +65,14 @@ import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "../../talk/TalkConfig";
 import { TalkView } from "../../talk/TalkView";
 import { CompMap } from "./CompMap";
 import { LineSegment } from "../../../logic/TileMapData";
+import FGUICompMedal from "db://assets/scripts/fgui/common/FGUICompMedal";
 
 /**
  * 游戏主体组件
  */
 @ViewClass({ curveScreenAdapt: true })
 export class CompGameMain extends FGUICompGameMain {
+    public UI_COMP_SELF_MEDAL: FGUICompMedal;
     /**
      * 组件构造完成时的初始化
      */
@@ -347,7 +350,7 @@ export class CompGameMain extends FGUICompGameMain {
                         console.log("[聊天] 显示聊天，from:", data.from, "id:", talkData.id);
                         this.showTalk({
                             from: data.from,
-                            id: talkData.id
+                            id: talkData.id,
                         });
                     } else {
                         console.warn("[聊天] talkData.id 不存在:", talkData);
@@ -511,10 +514,19 @@ export class CompGameMain extends FGUICompGameMain {
         const selfSeat = GameData.instance.getSelfSeat();
 
         if (data.seat === selfSeat) {
-            // 自己完成，显示排名奖牌
+            // 自己完成，显示排名奖牌和完成信息
             console.log(`自己完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
             if (this.UI_COMP_SELF_MEDAL && data.rank > 0) {
                 this.UI_COMP_SELF_MEDAL.ctrl_rank.selectedIndex = data.rank;
+            }
+            // 显示完成信息组件
+            const compFinshInfo = this.UI_COMP_FINSH_INFO as CompFinshInfo;
+            if (compFinshInfo) {
+                compFinshInfo.showFinishInfo(data.rank, data.usedTime);
+            }
+            // 使用控制器显示完成信息
+            if (this.ctrl_finshInfo) {
+                this.ctrl_finshInfo.selectedIndex = 1;
             }
         } else {
             // 其他玩家完成，更新完成状态显示和名次
@@ -641,6 +653,15 @@ export class CompGameMain extends FGUICompGameMain {
      */
     clear(): void {
         this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
+        // 隐藏完成信息组件
+        if (this.ctrl_finshInfo) {
+            this.ctrl_finshInfo.selectedIndex = 0;
+        }
+        // 重置完成信息组件
+        const compFinshInfo = this.UI_COMP_FINSH_INFO as CompFinshInfo;
+        if (compFinshInfo) {
+            compFinshInfo.reset();
+        }
     }
 
     /**

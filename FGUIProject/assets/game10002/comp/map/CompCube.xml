@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="80,80">
   <displayList>
-    <loader id="n1_hs3t" name="UI_LOADER_ICOM" xy="0,0" size="80,80" url="ui://cabf3ccahs3t0" fill="scaleFree" clearOnPublish="true"/>
+    <loader id="n1_hs3t" name="UI_LOADER_ICOM" xy="0,0" size="80,80" fill="scaleFree" clearOnPublish="true"/>
   </displayList>
 </component>
