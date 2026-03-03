@@ -13,7 +13,7 @@ import {
     ROOM_PLAYER_INDEX,
 } from "../../../data/InterfaceGameConfig";
 import * as fgui from "fairygui-cc";
-import { CompClock } from "./CompClock";
+import { CompTimeLeft } from "./CompTimeLeft";
 import { PopMessageView } from "../../../../../view/common/PopMessageView";
 import { ENUM_POP_MESSAGE_TYPE, RICH_TYPE } from "../../../../../datacenter/InterfaceConfig";
 import { FW_EVENT_NAMES } from "../../../../../frameworks/config/Config";
@@ -319,16 +319,16 @@ export class CompGameMain extends FGUICompGameMain {
      * @param clock 倒计时时间
      */
     showClock(bshow: boolean, clock?: number): void {
+        const compTimeLeft = this.UI_COMP_CLOCK as CompTimeLeft;
         if (bshow) {
-            if (clock && clock > 99) {
-                clock = 99;
+            if (clock && clock > 0) {
+                const totalTime = GameData.instance.playingStepTime || clock;
+                compTimeLeft.visible = true;
+                compTimeLeft.start(clock, totalTime);
             }
-            const compClock = this.UI_COMP_CLOCK as CompClock;
-            compClock.visible = true;
-            compClock.start(clock || 10);
         } else {
-            const compClock = this.UI_COMP_CLOCK as CompClock;
-            compClock.visible = false;
+            compTimeLeft.visible = false;
+            compTimeLeft.stop();
         }
     }
 
@@ -431,7 +431,11 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 时钟数据
      */
     onSvrGameClock(data: any): void {
-        this.showClock(true, data.time);
+        if (data.time > 0) {
+            this.showClock(true, data.time);
+        } else {
+            this.showClock(false);
+        }
     }
 
     // ============================================
