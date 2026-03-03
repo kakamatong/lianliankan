@@ -7,8 +7,10 @@ import { PackageManager } from "../../frameworks/PackageManager";
 
 export default class FGUICompTimeLeft extends fgui.GComponent {
 
+	public ctrl_warn:fgui.Controller;
 	public UI_IMG_BAR:fgui.GImage;
 	public UI_TXT_TIME_MSG:fgui.GTextField;
+	public act:fgui.Transition;
 	public static URL:string = "ui://2zsfe53xmnt112";
 
 	public static packageName:string = "game10002";
@@ -49,8 +51,10 @@ export default class FGUICompTimeLeft extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
+		this.ctrl_warn = this.getControllerAt(0);
 		this.UI_IMG_BAR = <fgui.GImage>(this.getChildAt(1));
 		this.UI_TXT_TIME_MSG = <fgui.GTextField>(this.getChildAt(2));
+		this.act = this.getTransitionAt(0);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
