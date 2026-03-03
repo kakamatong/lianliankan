@@ -3,13 +3,13 @@
   <controller name="ctrl_warn" pages="0,,1," selected="0">
     <remark page="0" value="普通"/>
     <remark page="1" value="告警"/>
-    <action type="play_transition" fromPage="" toPage="1" transition="act" repeat="-1" stopOnExit="true"/>
-    <action type="play_transition" fromPage="" toPage="0" transition=""/>
+    <action type="play_transition" fromPage="0" toPage="1" transition="act" repeat="-1" stopOnExit="true"/>
+    <action type="play_transition" fromPage="1" toPage="0" transition=""/>
   </controller>
   <displayList>
     <image id="n7_mnt1" name="n7" src="mnt116" fileName="imgs/barbg.png" xy="0,0"/>
     <image id="n8_mnt1" name="UI_IMG_BAR" src="mnt115" fileName="imgs/bar.png" xy="17,12" size="620,114" fillMethod="hz"/>
-    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="277,42" pivot="0.5,0.5" size="93,54" fontSize="40" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#6699cc" strokeSize="2" text="55秒">
+    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="319,33" pivot="0.5,0.5" size="10,72" fontSize="54" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#6699cc" strokeSize="2" text="">
       <gearColor controller="ctrl_warn" pages="1" values="#ff0000,#6699cc" default="#ffffff,#6699cc"/>
     </text>
   </displayList>

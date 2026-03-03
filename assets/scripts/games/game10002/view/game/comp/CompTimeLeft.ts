@@ -65,6 +65,11 @@ export class CompTimeLeft extends FGUICompTimeLeft {
             const progress = this._totalTime > 0 ? this._remainingTime / this._totalTime : 0;
             this.UI_IMG_BAR.fillAmount = progress;
         }
+
+        // 更新警告状态
+        if (this.ctrl_warn) {
+            this.ctrl_warn.selectedIndex = this._remainingTime <= 15 ? 1 : 0;
+        }
     }
 
     /**
