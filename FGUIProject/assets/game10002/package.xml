@@ -28,6 +28,9 @@
     <component id="pgw3w" name="CompOtherPlayer.xml" path="/comp/"/>
     <component id="pgw3x" name="CompPlayers.xml" path="/comp/"/>
     <image id="eijpz" name="comp.png" path="/imgs/"/>
+    <component id="mnt112" name="CompTimeLeft.xml" path="/comp/"/>
+    <image id="mnt115" name="bar.png" path="/imgs/" scale="9grid" scale9grid="155,31,310,62"/>
+    <image id="mnt116" name="barbg.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
