@@ -38,6 +38,8 @@ export class GameData {
     private _privateMaxCnt: number = 0; // 最大局数
     /** 所有玩家的地图数据，key为服务器座位号 */
     private _playerMaps: Map<number, PLAYER_MAP_DATA> = new Map();
+    /** 对局阶段时间（秒） */
+    private _playingStepTime: number = 0;
     /** 单例实例 */
     private static _instance: GameData;
 
@@ -67,6 +69,7 @@ export class GameData {
         this._owner = 0;
         this._privateNowCnt = 0;
         this._playerMaps.clear();
+        this._playingStepTime = 0;
     }
 
     get gameStep(): ENUM_GAME_STEP {
@@ -297,5 +300,21 @@ export class GameData {
                 playerMap.mapData[row2][col2] = 0;
             }
         }
+    }
+
+    /**
+     * @description 获取对局阶段时间
+     * @returns {number} 对局阶段时间（秒）
+     */
+    get playingStepTime(): number {
+        return this._playingStepTime;
+    }
+
+    /**
+     * @description 设置对局阶段时间
+     * @param {number} value 对局阶段时间（秒）
+     */
+    set playingStepTime(value: number) {
+        this._playingStepTime = value;
     }
 }

@@ -245,6 +245,13 @@ export interface MapdataRequest {
     seat: number;
 }
 
+/** 游戏逻辑信息 - 请求参数 */
+export interface LogicinfoRequest {
+    playerCnt: number;
+    playingStepTime: number;
+    ext: string;
+}
+
 export namespace SprotoSvrMsg {
     export const Name = "svrMsg";
     export type Request = SvrmsgRequest;
@@ -393,4 +400,10 @@ export namespace SprotoMapData {
     export const Name = "mapData";
     export type Request = MapdataRequest;
     export type Response = undefined;  // mapData 协议没有响应参数
+}
+
+export namespace SprotoLogicInfo {
+    export const Name = "logicInfo";
+    export type Request = LogicinfoRequest;
+    export type Response = undefined;  // logicInfo 协议没有响应参数
 }

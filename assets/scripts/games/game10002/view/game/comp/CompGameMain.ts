@@ -35,6 +35,7 @@ import {
     SprotoGameRelink,
     SprotoGameStart,
     SprotoItemEffect,
+    SprotoLogicInfo,
     SprotoMapData,
     SprotoPlayerEnter,
     SprotoPlayerFinished,
@@ -163,6 +164,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoGameRecord, this.onSvrGameRecord.bind(this));
         GameSocketManager.instance.addServerListen(SprotoForwardMessage, this.onSvrForwardMessage.bind(this));
         // 连连看游戏协议
+        GameSocketManager.instance.addServerListen(SprotoLogicInfo, this.onSvrLogicInfo.bind(this));
         GameSocketManager.instance.addServerListen(SprotoMapData, this.onSvrMapData.bind(this));
         GameSocketManager.instance.addServerListen(SprotoTilesRemoved, this.onSvrTilesRemoved.bind(this));
         GameSocketManager.instance.addServerListen(SprotoPlayerFinished, this.onSvrPlayerFinished.bind(this));
@@ -202,6 +204,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoGameRecord);
         GameSocketManager.instance.removeServerListen(SprotoForwardMessage);
         // 连连看游戏协议
+        GameSocketManager.instance.removeServerListen(SprotoLogicInfo);
         GameSocketManager.instance.removeServerListen(SprotoMapData);
         GameSocketManager.instance.removeServerListen(SprotoTilesRemoved);
         GameSocketManager.instance.removeServerListen(SprotoPlayerFinished);
@@ -409,6 +412,17 @@ export class CompGameMain extends FGUICompGameMain {
             } else {
                 console.warn("[聊天] 未找到其他玩家组件，localSeat:", localSeat);
             }
+        }
+    }
+
+    /**
+     * 游戏逻辑信息处理
+     * @param data 逻辑信息数据
+     */
+    onSvrLogicInfo(data: any): void {
+        console.log("游戏逻辑信息", data);
+        if (data.playingStepTime !== undefined) {
+            GameData.instance.playingStepTime = data.playingStepTime;
         }
     }
 
