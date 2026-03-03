@@ -98,8 +98,6 @@ export class CompTimeLeft extends FGUICompTimeLeft {
         if (this._scheduleId) {
             this.unschedule(this._scheduleId);
         }
-        this._remainingTime = 0;
-        this.updateDisplay();
     }
 
     /**

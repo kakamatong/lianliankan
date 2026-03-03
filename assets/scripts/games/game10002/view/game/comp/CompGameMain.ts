@@ -865,6 +865,12 @@ export class CompGameMain extends FGUICompGameMain {
     onSvrGameEnd(data: any): void {
         GameData.instance.gameStart = false;
 
+        // 停止倒计时
+        const compTimeLeft = this.UI_COMP_CLOCK as CompTimeLeft;
+        if (compTimeLeft) {
+            compTimeLeft.stop();
+        }
+
         // 处理连连看游戏结束数据
         if (data.rankings && data.rankings.length > 0) {
             const selfSeat = GameData.instance.getSelfSeat();
