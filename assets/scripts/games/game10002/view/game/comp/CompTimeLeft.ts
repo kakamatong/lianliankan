@@ -57,7 +57,7 @@ export class CompTimeLeft extends FGUICompTimeLeft {
     private updateDisplay(): void {
         // 更新时间文本
         if (this.UI_TXT_TIME_MSG) {
-            this.UI_TXT_TIME_MSG.text = this._remainingTime.toString();
+            this.UI_TXT_TIME_MSG.text = `${this._remainingTime}秒`;
         }
 
         // 更新进度条
@@ -77,7 +77,7 @@ export class CompTimeLeft extends FGUICompTimeLeft {
         this._remainingTime = remainingTime;
         this._totalTime = totalTime;
         this.updateDisplay();
-        
+
         // 确保计时器在运行
         if (this._scheduleId) {
             this.unschedule(this._scheduleId);

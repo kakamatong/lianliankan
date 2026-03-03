@@ -3,6 +3,6 @@
   <displayList>
     <image id="n7_mnt1" name="n7" src="mnt116" fileName="imgs/barbg.png" xy="0,0"/>
     <image id="n8_mnt1" name="UI_IMG_BAR" src="mnt115" fileName="imgs/bar.png" xy="17,12" size="620,114" fillMethod="hz"/>
-    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="266,42" pivot="0.5,0.5" size="117,54" fontSize="40" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#6699cc" strokeSize="2" text="180秒"/>
+    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="319,42" pivot="0.5,0.5" size="10,54" fontSize="40" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#6699cc" strokeSize="2" text=""/>
   </displayList>
 </component>
