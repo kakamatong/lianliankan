@@ -511,9 +511,11 @@ export class CompGameMain extends FGUICompGameMain {
         const selfSeat = GameData.instance.getSelfSeat();
 
         if (data.seat === selfSeat) {
-            // 自己完成，更新自己的完成状态
-            // TODO: 如果需要显示自己的完成状态，可以在这里处理
+            // 自己完成，显示排名奖牌
             console.log(`自己完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
+            if (this.UI_COMP_SELF_MEDAL && data.rank > 0) {
+                this.UI_COMP_SELF_MEDAL.ctrl_rank.selectedIndex = data.rank;
+            }
         } else {
             // 其他玩家完成，更新完成状态显示和名次
             const localSeat = GameData.instance.seat2local(data.seat);

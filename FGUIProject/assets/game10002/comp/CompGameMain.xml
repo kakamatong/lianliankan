@@ -30,9 +30,11 @@
     <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,627">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n62_gk14" name="UI_COMP_SELFPLAYER" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="18,1506">
+    <component id="n62_gk14" name="UI_COMP_SELFPLAYER" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="18,1506" group="n75_mnt1">
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
+    <component id="n74_mnt1" name="UI_COMP_SELF_MEDAL" src="eijp1f" fileName="comp/CompMedal.xml" pkg="gj0r6g5i" xy="123,1501" group="n75_mnt1"/>
+    <group id="n75_mnt1" name="n75" xy="18,1501" size="165,165"/>
     <component id="n21_folo" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,0">
       <gearDisplay controller="ctrl_btn" pages="1"/>
       <property target="title" propertyId="0" value="确定"/>
