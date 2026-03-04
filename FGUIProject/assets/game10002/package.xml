@@ -32,6 +32,7 @@
     <image id="mnt115" name="bar.png" path="/imgs/" scale="9grid" scale9grid="155,31,310,62"/>
     <image id="mnt116" name="barbg.png" path="/imgs/"/>
     <component id="mnt118" name="CompFinshInfo.xml" path="/comp/"/>
+    <image id="rei519" name="unComp.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

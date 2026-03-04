@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="160,324">
-  <controller name="ctrl_bComplate" pages="0,,1," selected="1">
-    <remark page="0" value="未完成"/>
+  <controller name="ctrl_bComplate" pages="0,,1,,2," selected="1">
+    <remark page="0" value="进行中"/>
     <remark page="1" value="已经完成"/>
+    <remark page="2" value="未完成"/>
   </controller>
   <displayList>
     <component id="n0_pgw3" name="UI_COMP_HEAD" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="0,0"/>
@@ -11,5 +12,8 @@
       <gearDisplay controller="ctrl_bComplate" pages="1"/>
     </image>
     <component id="n5_eijp" name="UI_COMP_MEDAL" src="eijp1f" fileName="comp/CompMedal.xml" pkg="gj0r6g5i" xy="107,-2" controller="ctrl_rank,0"/>
+    <image id="n6_rei5" name="n6" src="rei519" fileName="imgs/unComp.png" xy="-5,216" size="170,71" aspect="true">
+      <gearDisplay controller="ctrl_bComplate" pages="2"/>
+    </image>
   </displayList>
 </component>
