@@ -59,6 +59,7 @@ export interface RankingInfo {
     seat: number;
     usedTime: number;
     eliminated: number;
+    rank: number;
 }
 
 /** 服务器消息 - 请求参数 */

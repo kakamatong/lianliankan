@@ -885,7 +885,7 @@ export class CompGameMain extends FGUICompGameMain {
      * 游戏结束处理
      * @param data 游戏结束数据
      */
-    onSvrGameEnd(data: any): void {
+    onSvrGameEnd(data: SprotoGameEnd.Request): void {
         GameData.instance.gameStart = false;
 
         // 停止倒计时
