@@ -13,7 +13,7 @@ export class CompFinshInfo extends FGUICompFinshInfo {
      * @method showFinishInfo
      * @description 显示完成信息
      * @param {number} rank - 排名
-     * @param {number} usedTime - 用时（秒）
+     * @param {number} usedTime - 用时（毫秒）
      */
     showFinishInfo(rank: number, usedTime: number): void {
         // 更新排名文本
@@ -21,9 +21,10 @@ export class CompFinshInfo extends FGUICompFinshInfo {
             this.UI_TXT_RANK.text = rank.toString();
         }
 
-        // 更新时间文本
+        // 更新时间文本（毫秒转秒，保留三位小数）
         if (this.UI_TXT_TIME) {
-            this.UI_TXT_TIME.text = `${usedTime}秒`;
+            const timeInSeconds = (usedTime / 1000).toFixed(3);
+            this.UI_TXT_TIME.text = `${timeInSeconds}秒`;
         }
     }
 
