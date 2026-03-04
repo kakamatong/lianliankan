@@ -10,8 +10,8 @@
     <remark page="6" value="6"/>
   </controller>
   <displayList>
-    <loader id="n1_eijp" name="n1" xy="0,0" size="60,51" url="ui://gj0r6g5ieijp11" autoSize="true">
-      <gearIcon controller="ctrl_rank" pages="0,2,3,4,5,6" values="|ui://gj0r6g5ieijp1j|ui://gj0r6g5ieijp1k|ui://gj0r6g5ieijp1g|ui://gj0r6g5ieijp1h|ui://gj0r6g5ieijp1i" default="ui://gj0r6g5ieijp11"/>
+    <loader id="n1_eijp" name="n1" xy="0,0" size="60,51" url="ui://so20wr0weijp11" autoSize="true">
+      <gearIcon controller="ctrl_rank" pages="0,2,3,4,5,6" values="|ui://so20wr0weijp1j|ui://so20wr0weijp1k|ui://so20wr0weijp1g|ui://so20wr0weijp1h|ui://so20wr0weijp1i" default="ui://so20wr0weijp11"/>
     </loader>
   </displayList>
 </component>

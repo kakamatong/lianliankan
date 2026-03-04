@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="so20wr0w">
+  <resources>
+    <image id="eijp11" name="奖牌1.png" path="/imgs/"/>
+    <image id="eijp1j" name="奖牌2.png" path="/imgs/"/>
+    <image id="eijp1k" name="奖牌3.png" path="/imgs/"/>
+    <image id="eijp1g" name="奖牌4.png" path="/imgs/"/>
+    <image id="eijp1h" name="奖牌5.png" path="/imgs/"/>
+    <image id="eijp1i" name="奖牌6.png" path="/imgs/"/>
+    <component id="eijp1f" name="CompMedal.xml" path="/comp/" exported="true"/>
+  </resources>
+  <publish name="" genCode="true"/>
+</packageDescription>

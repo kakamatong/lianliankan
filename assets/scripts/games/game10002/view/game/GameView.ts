@@ -5,7 +5,7 @@ import * as fgui from "fairygui-cc";
  * 游戏视图 - 只处理背景显示
  */
 @ViewClass()
-@PackageLoad(["resEmoji"])
+@PackageLoad(["resEmoji", "gameCommon"])
 export class GameView extends FGUIGameView {}
 
 fgui.UIObjectFactory.setExtension(GameView.URL, GameView);

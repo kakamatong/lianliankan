@@ -8,9 +8,9 @@ import { PackageManager } from "../../frameworks/PackageManager";
 export default class FGUICompMedal extends fgui.GComponent {
 
 	public ctrl_rank:fgui.Controller;
-	public static URL:string = "ui://gj0r6g5ieijp1f";
+	public static URL:string = "ui://so20wr0weijp1f";
 
-	public static packageName:string = "common";
+	public static packageName:string = "gameCommon";
 
 	public static instance:any | null = null;
 
@@ -22,7 +22,7 @@ export default class FGUICompMedal extends fgui.GComponent {
 		}
 		PackageManager.instance.loadPackage("fgui", this.packageName).then(()=> {
 
-			const view = fgui.UIPackage.createObject("common", "CompMedal") as FGUICompMedal;
+			const view = fgui.UIPackage.createObject("gameCommon", "CompMedal") as FGUICompMedal;
 
 			view.makeFullScreen();
 			FGUICompMedal.instance = view;
@@ -44,7 +44,7 @@ export default class FGUICompMedal extends fgui.GComponent {
 	show(data?:any):void{};
 
 	public static createInstance():FGUICompMedal {
-		return <FGUICompMedal>(fgui.UIPackage.createObject("common", "CompMedal"));
+		return <FGUICompMedal>(fgui.UIPackage.createObject("gameCommon", "CompMedal"));
 	}
 
 	protected onConstruct():void {
