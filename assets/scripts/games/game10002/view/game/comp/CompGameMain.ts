@@ -899,6 +899,17 @@ export class CompGameMain extends FGUICompGameMain {
             const selfSeat = GameData.instance.getSelfSeat();
             const selfRank = data.rankings.find((r: any) => r.seat === selfSeat);
 
+            // 处理未完成的其他玩家
+            const completedSeats = data.rankings
+                .filter((r: any) => r.usedTime >= 0)
+                .map((r: any) => r.seat);
+            
+            // 设置所有未完成玩家状态
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            if (compPlayers) {
+                compPlayers.setAllPlayersIncomplete(completedSeats);
+            }
+
             if (selfRank) {
                 const isCompleted = selfRank.usedTime >= 0;
                 const scoreData = data.rankings.map((rank: any) => {

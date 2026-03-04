@@ -7,6 +7,24 @@ import { Point, LineSegment } from "../../../logic/TileMapData";
 import * as fgui from "fairygui-cc";
 
 /**
+ * @typedef PlayerCompleteStatus
+ * @description 玩家完成状态类型
+ * @category 游戏 10002 - 连连看
+ */
+export type PlayerCompleteStatus = "playing" | "completed" | "incomplete";
+
+/**
+ * @constant PLAYER_STATUS_MAP
+ * @description 玩家状态到控制器索引的映射
+ * @category 游戏 10002 - 连连看
+ */
+export const PLAYER_STATUS_MAP: Record<PlayerCompleteStatus, number> = {
+    "playing": 0, // 进行中
+    "completed": 1, // 完成
+    "incomplete": 2, // 未完成
+};
+
+/**
  * @class CompOtherPlayer
  * @description 其他玩家组件，包含头像和小地图预览
  * @category 游戏 10002 - 连连看
@@ -139,12 +157,38 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     }
 
     /**
-     * @method setComplete
+     * @method setCompleteStatus
      * @description 设置完成状态
+     * @param {PlayerCompleteStatus} status - 状态：playing=进行中(0), completed=完成(1), incomplete=未完成(2)
+     */
+    setCompleteStatus(status: PlayerCompleteStatus): void {
+        this.ctrl_bComplate.selectedIndex = PLAYER_STATUS_MAP[status];
+    }
+
+    /**
+     * @method setComplete
+     * @description 设置完成状态（兼容旧接口）
      * @param {boolean} completed - 是否已完成
      */
     setComplete(completed: boolean): void {
-        this.ctrl_bComplate.selectedIndex = completed ? 1 : 0;
+        this.setCompleteStatus(completed ? "completed" : "playing");
+    }
+
+    /**
+     * @method setIncomplete
+     * @description 设置未完成状态
+     */
+    setIncomplete(): void {
+        this.ctrl_bComplate.selectedIndex = 2;
+    }
+
+    /**
+     * @method getCompleteStatus
+     * @description 获取完成状态
+     * @returns {number} 0=进行中, 1=完成, 2=未完成
+     */
+    getCompleteStatus(): number {
+        return this.ctrl_bComplate.selectedIndex;
     }
 
     /**
@@ -198,7 +242,7 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
             this._compMap.clearMap();
         }
         this._seat = 0;
-        this.setComplete(false);
+        this.setCompleteStatus("playing");
         this.setRank(0);
     }
 

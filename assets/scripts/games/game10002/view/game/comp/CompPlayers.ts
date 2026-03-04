@@ -213,6 +213,35 @@ export class CompPlayers extends FGUICompPlayers {
     }
 
     /**
+     * @method setOtherPlayerIncomplete
+     * @description 设置其他玩家为未完成状态
+     * @param {number} localSeat - 本地座位号
+     */
+    setOtherPlayerIncomplete(localSeat: number): void {
+        const otherPlayer = this._playerMap.get(localSeat);
+        if (otherPlayer) {
+            otherPlayer.setIncomplete();
+        } else {
+            console.warn(`本地座位 ${localSeat} 的玩家不存在，无法设置未完成状态`);
+        }
+    }
+
+    /**
+     * @method setAllPlayersIncomplete
+     * @description 设置所有未完成玩家为未完成状态
+     * @param {number[]} completedSeats - 已完成玩家的服务器座位号列表
+     */
+    setAllPlayersIncomplete(completedSeats: number[]): void {
+        for (const [localSeat, otherPlayer] of this._playerMap) {
+            // 如果该玩家不在已完成列表中，设置为未完成
+            const player = otherPlayer as any;
+            if (player && player.getCompleteStatus() !== 1) {
+                otherPlayer.setIncomplete();
+            }
+        }
+    }
+
+    /**
      * @method clear
      * @description 清空所有其他玩家
      */
