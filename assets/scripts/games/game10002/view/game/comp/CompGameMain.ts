@@ -65,7 +65,7 @@ import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "../../talk/TalkConfig";
 import { TalkView } from "../../talk/TalkView";
 import { CompMap } from "./CompMap";
 import { LineSegment } from "../../../logic/TileMapData";
-import FGUICompMedal from "db://assets/scripts/fgui/common/FGUICompMedal";
+import FGUICompMedal from "../../../../../fgui/gameCommon/FGUICompMedal";
 
 /**
  * 游戏主体组件
@@ -908,35 +908,31 @@ export class CompGameMain extends FGUICompGameMain {
                 compPlayers.setAllPlayersIncomplete(completedSeats);
             }
 
-            if (selfRank) {
-                const isCompleted = selfRank.usedTime >= 0;
-                const scoreData = data.rankings.map((rank: any) => {
-                    const player = GameData.instance.getPlayerBySeat(rank.seat);
-                    return {
-                        userid: player?.userid ?? 0,
-                        nickname: player?.nickname ?? "",
-                        usedTime: rank.usedTime,
-                        eliminated: rank.eliminated,
-                        rank:
-                            rank.usedTime >= 0
-                                ? data.rankings.filter((r: any) => r.usedTime >= 0 && r.usedTime < rank.usedTime).length + 1
-                                : -1,
-                    };
-                });
-
-                const func = () => {
-                    this.onBtnContinue();
+            // 组装用户数据
+            const scoreData = data.rankings.map((rank: any) => {
+                const player = GameData.instance.getPlayerBySeat(rank.seat);
+                return {
+                    userid: player?.userid ?? 0,
+                    nickname: player?.nickname ?? "",
+                    usedTime: rank.usedTime,
+                    eliminated: rank.eliminated,
+                    rank: rank.rank,
                 };
+            });
 
-                this.scheduleOnce(() => {
-                    // 显示结果界面
-                    ResultView.showView({
-                        flag: isCompleted ? 1 : 0,
-                        continueFunc: func,
-                        scores: scoreData,
-                    });
-                }, 0.3);
-            }
+            scoreData.sort((a: any, b: any) => b.rank - a.rank);
+
+            const func = () => {
+                this.onBtnContinue();
+            };
+
+            this.scheduleOnce(() => {
+                // 显示结果界面
+                ResultView.showView({
+                    continueFunc: func,
+                    scores: scoreData,
+                });
+            }, 0.3);
         }
 
         UserStatus.instance.req();

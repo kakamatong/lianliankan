@@ -6,7 +6,6 @@
     <action type="change_page" fromPage="" toPage="2" objectId="n9_fnug" controller="ctrl_sign" targetPage="2"/>
   </controller>
   <controller name="ctrl_btn" pages="0,返回继续,1,返回" selected="0"/>
-  <controller name="ctrl_roomType" pages="0,匹配房,1,私人房" selected="0"/>
   <displayList>
     <graph id="n10_mifd" name="n10" xy="0,0" size="776,1688" type="rect" lineSize="0" lineColor="#00000000" fillColor="#b2000000">
       <relation target="" sidePair="width-width,height-height"/>

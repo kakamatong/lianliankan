@@ -8,16 +8,15 @@ import { ViewClass } from "db://assets/scripts/frameworks/Framework";
 @ViewClass()
 export class ResultView extends FGUIResultView {
     private _continueFunc: (() => void) | null = null;
-    private _scoreData: Array<{ userid: number; cpData: any; nickname: string }> = [];
+    private _scoreData: Array<{ userid: number; usedTime: number; rank: number; eliminated: number; nickname: string }> = [];
     show(data?: any) {
-        const flag = data?.flag ?? 0;
+        const flag = 1;
         this.ctrl_flag.selectedIndex = flag;
         if (flag === 1) {
             SoundManager.instance.playSoundEffect("game10002/win");
         } else if (flag === 0) {
             SoundManager.instance.playSoundEffect("game10002/lose");
         }
-        this.ctrl_roomType.selectedIndex = GameData.instance.isPrivateRoom ? 1 : 0;
 
         this._continueFunc = data?.continueFunc;
         this.act.play(() => {
@@ -28,21 +27,11 @@ export class ResultView extends FGUIResultView {
         if (data.scores && data.scores.length > 0) {
             this._scoreData = data.scores;
             this.UI_LV_GAME_INFO.itemRenderer = this.itemRenderer.bind(this);
-            this.UI_LV_GAME_INFO.numItems = data.scores.length;
+            this.UI_LV_GAME_INFO.numItems = this._scoreData.length;
         }
     }
 
-    itemRenderer(index: number, item: fgui.GObject) {
-        const itemData = this._scoreData[index];
-        item.asCom.getChild("UI_TXT_NICKNAME").text = itemData.nickname;
-        item.asCom.getChild("UI_TXT_ID").text = `${itemData.userid}`;
-        if (GameData.instance.isPrivateRoom) {
-            const msg = `胜${itemData.cpData.win ?? 0}`;
-            item.asCom.getChild("UI_TXT_SCORE").text = msg;
-        } else {
-            item.asCom.getChild("UI_TXT_SCORE").text = `${itemData.cpData.dcp > 0 ? "+" : ""}${itemData.cpData.dcp}`;
-        }
-    }
+    itemRenderer(index: number, item: fgui.GObject) {}
 
     onBtnBack(): void {
         ResultView.hideView();
