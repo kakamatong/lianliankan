@@ -4,11 +4,16 @@ import { GameData } from "../../data/GameData";
 import { SoundManager } from "../../../../frameworks/SoundManager";
 import { MiniGameUtils } from "db://assets/scripts/frameworks/utils/sdk/MiniGameUtils";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
+import FGUICompResultInfo from "../../../../fgui/game10002Result/FGUICompResultInfo";
+import FGUICompHead from "../../../../fgui/common/FGUICompHead";
+import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
+import { DataCenter } from "db://assets/scripts/datacenter/Datacenter";
 
 @ViewClass()
 export class ResultView extends FGUIResultView {
     private _continueFunc: (() => void) | null = null;
-    private _scoreData: Array<{ userid: number; usedTime: number; rank: number; eliminated: number; nickname: string }> = [];
+    private _scoreData: Array<{ userid: number; usedTime: number; rank: number; eliminated: number; nickname: string; headurl: string }> =
+        [];
     show(data?: any) {
         const flag = 1;
         this.ctrl_flag.selectedIndex = flag;
@@ -20,7 +25,6 @@ export class ResultView extends FGUIResultView {
 
         this._continueFunc = data?.continueFunc;
         this.act.play(() => {
-            this.UI_COMP_ACT.ctrl_show.selectedIndex = 1;
             MiniGameUtils.instance.showInterstitialAd("adunit-5189637d1c76ffbc");
         });
 
@@ -31,7 +35,28 @@ export class ResultView extends FGUIResultView {
         }
     }
 
-    itemRenderer(index: number, item: fgui.GObject) {}
+    itemRenderer(index: number, item: fgui.GObject) {
+        const data = this._scoreData[index];
+        const node = item as FGUICompResultInfo;
+        const head = node.UI_COMP_HEAD as FGUICompHead;
+        head.UI_LOADER_HEAD.url = data.headurl;
+        node.UI_TXT_NICKNAME.text = data.nickname;
+        if (data.usedTime > 0) {
+            const timeInSeconds = (data.usedTime / 1000).toFixed(3);
+            node.UI_TXT_USE_TIME.text = `${timeInSeconds}秒`;
+            node.ctrl_uncomp.selectedIndex = 0;
+            const medal = node.UI_COMP_MEDAL as FGUICompMedal;
+            medal.ctrl_rank.selectedIndex = data.rank;
+        } else {
+            node.ctrl_uncomp.selectedIndex = 1;
+            node.UI_TXT_USE_TIME.text = "未完成";
+        }
+
+        const selfid = DataCenter.instance.userid;
+        if (data.userid === selfid) {
+            node.ctrl_self.selectedIndex = 1;
+        }
+    }
 
     onBtnBack(): void {
         ResultView.hideView();

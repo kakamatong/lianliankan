@@ -2,7 +2,6 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
-import FGUICompAct from "./FGUICompAct";
 
 import { PackageManager } from "../../frameworks/PackageManager";
 
@@ -10,12 +9,10 @@ export default class FGUIResultView extends fgui.GComponent {
 
 	public ctrl_flag:fgui.Controller;
 	public ctrl_btn:fgui.Controller;
-	public ctrl_roomType:fgui.Controller;
 	public UI_BTN_CON:fgui.GButton;
 	public UI_BTN_BACK:fgui.GButton;
 	public UI_LV_GAME_INFO:fgui.GList;
 	public UI_GROP_RESULT:fgui.GGroup;
-	public UI_COMP_ACT:FGUICompAct;
 	public act:fgui.Transition;
 	public static URL:string = "ui://5x18e99vfnug0";
 
@@ -59,14 +56,12 @@ export default class FGUIResultView extends fgui.GComponent {
 	protected onConstruct():void {
 		this.ctrl_flag = this.getControllerAt(0);
 		this.ctrl_btn = this.getControllerAt(1);
-		this.ctrl_roomType = this.getControllerAt(2);
 		this.UI_BTN_CON = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_CON.onClick(this.onBtnCon, this);
 		this.UI_BTN_BACK = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_BACK.onClick(this.onBtnBack, this);
 		this.UI_LV_GAME_INFO = <fgui.GList>(this.getChildAt(5));
 		this.UI_GROP_RESULT = <fgui.GGroup>(this.getChildAt(8));
-		this.UI_COMP_ACT = <FGUICompAct>(this.getChildAt(9));
 		this.act = this.getTransitionAt(0);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

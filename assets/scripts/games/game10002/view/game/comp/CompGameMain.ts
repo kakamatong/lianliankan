@@ -911,16 +911,26 @@ export class CompGameMain extends FGUICompGameMain {
             // 组装用户数据
             const scoreData = data.rankings.map((rank: any) => {
                 const player = GameData.instance.getPlayerBySeat(rank.seat);
+                const headurl = GameData.instance.getHeadurlByUserid(player.userid);
                 return {
                     userid: player?.userid ?? 0,
                     nickname: player?.nickname ?? "",
                     usedTime: rank.usedTime,
                     eliminated: rank.eliminated,
                     rank: rank.rank,
+                    headurl: headurl,
                 };
             });
 
-            scoreData.sort((a: any, b: any) => b.rank - a.rank);
+            scoreData.sort((a: any, b: any) => {
+                if (a.usedTime == -1) {
+                    return 1;
+                }
+                if (b.usedTime == -1) {
+                    return -1;
+                }
+                return a.rank - b.rank;
+            });
 
             const func = () => {
                 this.onBtnContinue();
