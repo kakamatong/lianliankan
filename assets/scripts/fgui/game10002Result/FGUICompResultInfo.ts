@@ -7,9 +7,12 @@ import { PackageManager } from "../../frameworks/PackageManager";
 
 export default class FGUICompResultInfo extends fgui.GComponent {
 
+	public ctrl_self:fgui.Controller;
+	public ctrl_uncomp:fgui.Controller;
+	public UI_COMP_HEAD:fgui.GComponent;
 	public UI_TXT_NICKNAME:fgui.GTextField;
-	public UI_TXT_SCORE:fgui.GTextField;
-	public UI_TXT_ID:fgui.GTextField;
+	public UI_COMP_MEDAL:fgui.GComponent;
+	public UI_TXT_USE_TIME:fgui.GTextField;
 	public static URL:string = "ui://5x18e99vfnug1";
 
 	public static packageName:string = "game10002Result";
@@ -50,9 +53,12 @@ export default class FGUICompResultInfo extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(0));
-		this.UI_TXT_SCORE = <fgui.GTextField>(this.getChildAt(1));
-		this.UI_TXT_ID = <fgui.GTextField>(this.getChildAt(2));
+		this.ctrl_self = this.getControllerAt(0);
+		this.ctrl_uncomp = this.getControllerAt(1);
+		this.UI_COMP_HEAD = <fgui.GComponent>(this.getChildAt(0));
+		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(2));
+		this.UI_COMP_MEDAL = <fgui.GComponent>(this.getChildAt(3));
+		this.UI_TXT_USE_TIME = <fgui.GTextField>(this.getChildAt(4));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

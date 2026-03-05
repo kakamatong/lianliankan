@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="540,100">
+<component size="540,120">
+  <controller name="ctrl_self" pages="0,,1," selected="0">
+    <remark page="0" value="不是自己"/>
+    <remark page="1" value="是自己"/>
+  </controller>
+  <controller name="ctrl_uncomp" pages="0,,1," selected="1">
+    <remark page="0" value="完成"/>
+    <remark page="1" value="未完成"/>
+  </controller>
   <displayList>
-    <text id="n0_fnug" name="UI_TXT_NICKNAME" xy="1,24" size="271,49" fontSize="36" color="#ffffff" vAlign="middle" autoSize="ellipsis" strokeColor="#000000" strokeSize="2" singleLine="true" text="昵称"/>
-    <text id="n1_fnug" name="UI_TXT_SCORE" xy="389,24" size="149,49" fontSize="36" color="#ffffff" align="right" vAlign="middle" autoSize="none" strokeColor="#000000" strokeSize="2" text="战力"/>
-    <text id="n2_nomu" name="UI_TXT_ID" xy="217,24" size="162,49" visible="false" fontSize="36" color="#ffffff" vAlign="middle" autoSize="none" strokeColor="#000000" strokeSize="2" text="ID"/>
+    <component id="n3_rei5" name="UI_COMP_HEAD" src="cvev9" fileName="comp/CompHead.xml" pkg="gj0r6g5i" xy="0,0" size="120,120" aspect="true"/>
+    <image id="n4_rei5" name="n4" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="1,81" size="118,36" group="n6_rei5"/>
+    <text id="n5_rei5" name="UI_TXT_NICKNAME" xy="3,84" size="114,32" group="n6_rei5" fontSize="22" color="#ffffff" align="center" vAlign="middle" autoSize="ellipsis" text="迪迦奥特曼"/>
+    <group id="n6_rei5" name="n6" xy="1,81" size="118,36"/>
+    <component id="n7_rei5" name="UI_COMP_MEDAL" src="eijp1f" fileName="comp/CompMedal.xml" pkg="so20wr0w" xy="452,37" controller="ctrl_rank,1">
+      <gearDisplay controller="ctrl_uncomp" pages="0"/>
+    </component>
+    <text id="n8_rei5" name="UI_TXT_USE_TIME" xy="259,44" pivot="0.5,0.5" size="51,42" fontSize="30" color="#666666" align="center" vAlign="middle" singleLine="true" text="0秒">
+      <gearColor controller="ctrl_uncomp" pages="0,1" values="#ff0000,#000000|#666666,#000000"/>
+    </text>
+    <image id="n9_rei5" name="n9" src="pz9v1e" fileName="imgs/矩形 1.png" pkg="gj0r6g5i" xy="-7,-4" size="554,125">
+      <gearDisplay controller="ctrl_self" pages="1"/>
+    </image>
+    <text id="n10_rei5" name="n10" xy="460,40" size="43,42" fontSize="30" color="#666666" align="center" autoSize="none" text="--">
+      <gearDisplay controller="ctrl_uncomp" pages="1"/>
+    </text>
   </displayList>
 </component>
