@@ -242,6 +242,18 @@ export class CompPlayers extends FGUICompPlayers {
     }
 
     /**
+     * @method resetAllPlayers
+     * @description 重置所有其他玩家状态（不清空列表，用于私人房下一局）
+     */
+    resetAllPlayers(): void {
+        // 重置所有玩家状态（完成状态、名次等标签）
+        for (const [localSeat, otherPlayer] of this._playerMap) {
+            otherPlayer.reset();
+        }
+        console.log("重置所有其他玩家状态");
+    }
+
+    /**
      * @method clear
      * @description 清空所有其他玩家
      */

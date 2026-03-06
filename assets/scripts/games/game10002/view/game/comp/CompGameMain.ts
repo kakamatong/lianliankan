@@ -672,6 +672,18 @@ export class CompGameMain extends FGUICompGameMain {
             return;
         }
 
+        // 清理其他玩家组件
+        const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+        if (compPlayers) {
+            if (GameData.instance.isPrivateRoom) {
+                // 私人房：只重置状态，不清空列表（第二局不下发头像信息）
+                compPlayers.resetAllPlayers();
+            } else {
+                // 匹配房：直接清空列表
+                compPlayers.clear();
+            }
+        }
+
         if (GameData.instance.isPrivateRoom) {
             this.onBtnReady();
         } else {
