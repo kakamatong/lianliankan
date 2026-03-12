@@ -80,7 +80,7 @@
       <relation target="" sidePair="left-right,bottom-bottom"/>
       <property target="icon" propertyId="1" value="ui://2zsfe53xpxa5o"/>
     </component>
-    <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,479"/>
+    <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,479" visible="false"/>
     <component id="n76_mnt1" name="UI_COMP_FINSH_INFO" src="mnt118" fileName="comp/CompFinshInfo.xml" xy="208,801">
       <gearDisplay controller="ctrl_finshInfo" pages="1"/>
       <relation target="" sidePair="center-center,middle-middle"/>

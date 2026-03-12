@@ -81,6 +81,9 @@ export class CompGameMain extends FGUICompGameMain {
         this.init();
         this.initListeners();
 
+        // 默认隐藏时钟组件，收到时钟协议后再显示
+        this.UI_COMP_CLOCK.visible = false;
+
         // 客户端进入完成
         if (GameData.instance.isPrivateRoom) {
             this.ctrl_roomtype.selectedIndex = ROOM_TYPE.PRIVATE;
