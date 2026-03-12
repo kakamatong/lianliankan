@@ -58,13 +58,13 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 		this.ctrl_cnt = this.getControllerAt(1);
 		this.UI_BTN_CREATE = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_CREATE.onClick(this.onBtnCreate, this);
-		this.UI_BTN_JU3 = <fgui.GButton>(this.getChildAt(5));
+		this.UI_BTN_JU3 = <fgui.GButton>(this.getChildAt(6));
 		this.UI_BTN_JU3.onClick(this.onBtnJu3, this);
-		this.UI_BTN_JU5 = <fgui.GButton>(this.getChildAt(6));
+		this.UI_BTN_JU5 = <fgui.GButton>(this.getChildAt(7));
 		this.UI_BTN_JU5.onClick(this.onBtnJu5, this);
-		this.UI_BTN_JU7 = <fgui.GButton>(this.getChildAt(7));
+		this.UI_BTN_JU7 = <fgui.GButton>(this.getChildAt(8));
 		this.UI_BTN_JU7.onClick(this.onBtnJu7, this);
-		this.UI_BTN_JU0 = <fgui.GButton>(this.getChildAt(8));
+		this.UI_BTN_JU0 = <fgui.GButton>(this.getChildAt(9));
 		this.UI_BTN_JU0.onClick(this.onBtnJu0, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
