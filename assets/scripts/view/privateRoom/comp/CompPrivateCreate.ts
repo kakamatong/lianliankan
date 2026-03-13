@@ -43,7 +43,6 @@ export class CompPrivateCreate extends FGUICompPrivateCreate {
      */
     initUI(rule: any): void {
         this.ctrl_mode.selectedPage = `${rule.playNum}`;
-        this.ctrl_cnt.selectedPage = `${rule.playerCnt}`;
     }
 
     /**
@@ -58,7 +57,6 @@ export class CompPrivateCreate extends FGUICompPrivateCreate {
      */
     onBtnCreate(): void {
         const gameRule = {
-            playerCnt: Number(this.ctrl_cnt.selectedPage),
             playNum: Number(this.ctrl_mode.selectedPage),
         };
         const func = (result: any) => {

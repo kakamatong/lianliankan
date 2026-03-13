@@ -10,7 +10,7 @@ export interface Point {
 /** LineSegment 结构体定义 */
 export interface LineSegment {
     start: Point;
-    end: Point;
+    dest: Point;
 }
 
 /** 调用接口 - 请求参数 */
@@ -47,6 +47,13 @@ export interface GamereadyRequest {
 export interface GamereadyResponse {
     code: number;
     msg: string;
+}
+
+/** 房主开始游戏 - 响应参数 */
+export interface OwnerstartgameResponse {
+    code: number;
+    msg: string;
+    notReadyUserids: number[];
 }
 
 /** 离开房间 - 响应参数 */
@@ -153,6 +160,12 @@ export namespace SprotoGameReady {
     export const Name = "gameReady";
     export type Request = GamereadyRequest;
     export type Response = GamereadyResponse;
+}
+
+export namespace SprotoOwnerStartGame {
+    export const Name = "ownerStartGame";
+    export type Request = undefined;  // ownerStartGame 协议没有请求参数
+    export type Response = OwnerstartgameResponse;
 }
 
 export namespace SprotoLeaveRoom {

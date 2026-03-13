@@ -6,56 +6,29 @@
     <remark page="2" value="10局"/>
     <remark page="3" value="无限对局"/>
   </controller>
-  <controller name="ctrl_cnt" pages="0,2,1,3,4,4,5,5,6,6" selected="4">
-    <remark page="0" value="2人"/>
-    <remark page="1" value="3人"/>
-    <remark page="2" value="4人"/>
-    <remark page="3" value="5人"/>
-    <remark page="4" value="6人"/>
-  </controller>
   <displayList>
     <image id="n8_q5lz" name="n8" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="16,53" size="569,346"/>
     <component id="n0_nomu" name="UI_BTN_CREATE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="185,437" size="230,98">
       <property target="title" propertyId="0" value="创建"/>
       <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3e"/>
     </component>
-    <text id="n1_ba3d" name="n1" xy="26,79" size="94,42" fontSize="30" color="#cc9933" strokeColor="#000000" text="人数："/>
-    <text id="n2_ba3d" name="n2" xy="26,247" size="94,42" fontSize="30" color="#cc9933" strokeColor="#000000" text="局数："/>
-    <component id="n4_q5lz" name="n4" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="122,72" size="120,56">
-      <Button controller="ctrl_cnt" page="0"/>
-      <property target="title" propertyId="0" value="2人"/>
-    </component>
-    <component id="n11_ddol" name="n11" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="442,72" size="120,56">
-      <Button controller="ctrl_cnt" page="4"/>
-      <property target="title" propertyId="0" value="4人"/>
-    </component>
-    <component id="n5_q5lz" name="UI_BTN_JU3" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="122,241" size="121,56">
+    <text id="n2_ba3d" name="n2" xy="26,83" size="94,42" fontSize="30" color="#cc9933" strokeColor="#000000" text="局数："/>
+    <component id="n5_q5lz" name="UI_BTN_JU3" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="122,77" size="121,56">
       <Button checked="true" controller="ctrl_mode" page="0"/>
       <property target="title" propertyId="0" value="3局"/>
     </component>
-    <component id="n6_q5lz" name="UI_BTN_JU5" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="282,243" size="118,56">
+    <component id="n6_q5lz" name="UI_BTN_JU5" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="282,79" size="118,56">
       <Button controller="ctrl_mode" page="1"/>
       <property target="title" propertyId="0" value="5局"/>
     </component>
-    <component id="n7_q5lz" name="UI_BTN_JU7" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="442,243" size="142,56">
+    <component id="n7_q5lz" name="UI_BTN_JU7" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="442,79" size="142,56">
       <Button controller="ctrl_mode" page="2"/>
       <property target="title" propertyId="0" value="10局"/>
     </component>
-    <component id="n9_idb1" name="UI_BTN_JU0" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="122,314" size="200,56">
+    <component id="n9_idb1" name="UI_BTN_JU0" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="122,150" size="200,56">
       <Button controller="ctrl_mode" page="3"/>
       <property target="title" propertyId="0" value="无限对局"/>
     </component>
-    <component id="n10_gk14" name="n10" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="282,72" size="120,56">
-      <Button controller="ctrl_cnt" page="1"/>
-      <property target="title" propertyId="0" value="3人"/>
-    </component>
-    <component id="n12_ddol" name="n12" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="122,153" size="120,56">
-      <Button controller="ctrl_cnt" page="5"/>
-      <property target="title" propertyId="0" value="5人"/>
-    </component>
-    <component id="n13_ddol" name="n13" src="q5lz4" fileName="comp/CompBtnItem.xml" xy="282,153" size="120,56">
-      <Button checked="true" controller="ctrl_cnt" page="6"/>
-      <property target="title" propertyId="0" value="6人"/>
-    </component>
+    <text id="n14_ouez" name="n14" xy="37,333" size="529,49" fontSize="36" color="#ffffff" strokeColor="#000000" text="您可以最多邀请5个好友一起游戏"/>
   </displayList>
 </component>

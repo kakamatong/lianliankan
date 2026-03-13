@@ -59,6 +59,7 @@ import {
     SprotoLeaveRoom,
     SprotoUseItem,
     SprotoVoteDisbandRoom,
+    SprotoOwnerStartGame,
 } from "../../../../../../types/protocol/game10002/c2s";
 import { SprotoGameRoomReady } from "../../../../../../types/protocol/lobby/s2c";
 import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "../../talk/TalkConfig";
@@ -271,6 +272,8 @@ export class CompGameMain extends FGUICompGameMain {
 
             //this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = `${GAME_MODE_TXT[data.mode]}`
             this.showWinLost(JSON.parse(data.ext));
+
+            this.checkShowStartGameBtn();
         }
     }
 
@@ -867,6 +870,9 @@ export class CompGameMain extends FGUICompGameMain {
     onSvrGameStart(data: any): void {
         GameData.instance.gameStart = true;
 
+        // 隐藏开始游戏按钮
+        this.showStartGameBtn(false);
+
         // 非重连情况
         if (!data.brelink) {
             if (data.roundNum == 1) {
@@ -1001,6 +1007,7 @@ export class CompGameMain extends FGUICompGameMain {
                 }
 
                 this.checkShowInviteBtn();
+                this.checkShowStartGameBtn();
             }
         }
     }
@@ -1046,6 +1053,10 @@ export class CompGameMain extends FGUICompGameMain {
                 const headurl = GameData.instance.getHeadurlByUserid(player.userid);
                 otherPlayer.updatePlayerInfo(player, headurl);
             }
+        }
+
+        if (GameData.instance.isPrivateRoom) {
+            this.checkShowStartGameBtn();
         }
     }
 
@@ -1102,6 +1113,7 @@ export class CompGameMain extends FGUICompGameMain {
         }
 
         this.checkShowInviteBtn();
+        this.checkShowStartGameBtn();
     }
 
     /**
@@ -1133,6 +1145,8 @@ export class CompGameMain extends FGUICompGameMain {
         } else {
             GameData.instance.maxPlayer = data.playerids.length ?? 2;
         }
+
+        this.checkShowStartGameBtn();
     }
 
     /**
@@ -1315,6 +1329,76 @@ export class CompGameMain extends FGUICompGameMain {
             return;
         }
         this.showInviteBtn(true);
+    }
+
+    /**
+     * 显示开始游戏按钮
+     * @param bshow 是否显示
+     */
+    showStartGameBtn(bshow: boolean): void {
+        this.UI_BTN_START_GAME.visible = bshow;
+    }
+
+    /**
+     * 检测是否显示开始游戏按钮
+     * 显示条件：好友房、房主、游戏未开始、privateNowCnt = 0
+     */
+    checkShowStartGameBtn(): void {
+        if (!GameData.instance.isPrivateRoom) {
+            this.showStartGameBtn(false);
+            return;
+        }
+
+        if (GameData.instance.owner !== DataCenter.instance.userid) {
+            this.showStartGameBtn(false);
+            return;
+        }
+
+        if (GameData.instance.gameStart) {
+            this.showStartGameBtn(false);
+            return;
+        }
+
+        if (GameData.instance.privateNowCnt > 0) {
+            this.showStartGameBtn(false);
+            return;
+        }
+
+        this.showStartGameBtn(true);
+    }
+
+    /**
+     * 开始游戏按钮处理
+     */
+    onBtnStartGame(): void {
+        GameSocketManager.instance.sendToServer(SprotoOwnerStartGame, {}, (response: any) => {
+            if (response) {
+                if (response.code === 1) {
+                    console.log("开始游戏成功");
+                } else if (response.code === 0) {
+                    if (response.notReadyUserids && response.notReadyUserids.length > 0) {
+                        const nicknames: string[] = [];
+                        for (const userid of response.notReadyUserids) {
+                            const player = GameData.instance.getPlayerByUserid(userid);
+                            if (player && player.nickname) {
+                                nicknames.push(player.nickname);
+                            }
+                        }
+                        if (nicknames.length > 0) {
+                            PopMessageView.showView({
+                                content: `${nicknames.join("，")} 未准备，无法开始游戏`,
+                                type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+                            });
+                        }
+                    } else if (response.msg) {
+                        PopMessageView.showView({
+                            content: response.msg,
+                            type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+                        });
+                    }
+                }
+            }
+        });
     }
 
     /**
