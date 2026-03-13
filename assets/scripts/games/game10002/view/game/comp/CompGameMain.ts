@@ -1003,7 +1003,11 @@ export class CompGameMain extends FGUICompGameMain {
 
             if (GameData.instance.isPrivateRoom) {
                 if (playerInfo.status == PLAYER_STATUS.ONLINE && selfid == userid) {
-                    this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.READY;
+                    // 房主在第一局开始前(privateNowCnt=0)不显示准备按钮
+                    const isOwner = GameData.instance.owner === selfid;
+                    if (!isOwner || GameData.instance.privateNowCnt > 0) {
+                        this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.READY;
+                    }
                 }
 
                 this.checkShowInviteBtn();
@@ -1043,7 +1047,11 @@ export class CompGameMain extends FGUICompGameMain {
             // 自己状态更新
             this.showPlayerInfoBySeat(localSeat);
             if (data.status == PLAYER_STATUS.ONLINE) {
-                this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.READY;
+                // 房主在第一局开始前(privateNowCnt=0)不显示准备按钮
+                const isOwner = GameData.instance.owner === selfid;
+                if (!isOwner || GameData.instance.privateNowCnt > 0) {
+                    this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.READY;
+                }
             }
         } else {
             // 其他玩家状态更新
