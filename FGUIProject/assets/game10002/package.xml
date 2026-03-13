@@ -33,6 +33,7 @@
     <image id="mnt116" name="barbg.png" path="/imgs/"/>
     <component id="mnt118" name="CompFinshInfo.xml" path="/comp/"/>
     <image id="rei519" name="unComp.png" path="/imgs/"/>
+    <component id="ouez1a" name="CompPirvateInfo.xml" path="/comp/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

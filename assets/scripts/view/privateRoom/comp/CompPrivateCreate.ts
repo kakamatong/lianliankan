@@ -8,7 +8,7 @@ import FGUICompPrivateCreate from "../../../fgui/privateRoom/FGUICompPrivateCrea
 import * as fgui from "fairygui-cc";
 import { LobbySocketManager } from "../../../frameworks/LobbySocketManager";
 import { PopMessageView } from "../../common/PopMessageView";
-import { CREATE_ROOM_PLAYER_CNT, ENUM_POP_MESSAGE_TYPE, LOCAL_KEY } from "../../../datacenter/InterfaceConfig";
+import { ENUM_POP_MESSAGE_TYPE, LOCAL_KEY } from "../../../datacenter/InterfaceConfig";
 import { TipsView } from "../../common/TipsView";
 import { sys } from "cc";
 import { ConnectGameSvr } from "../../../modules/ConnectGameSvr";

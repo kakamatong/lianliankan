@@ -6,6 +6,7 @@ import FGUICompPlayers from "./FGUICompPlayers";
 import FGUICompMap from "./FGUICompMap";
 import FGUICompPlayerHead from "./FGUICompPlayerHead";
 import FGUICompGameStartAct from "./FGUICompGameStartAct";
+import FGUICompPirvateInfo from "./FGUICompPirvateInfo";
 import FGUICompRoundAct from "./FGUICompRoundAct";
 import FGUICompTimeLeft from "./FGUICompTimeLeft";
 import FGUICompFinshInfo from "./FGUICompFinshInfo";
@@ -29,9 +30,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_CONTINUE:fgui.GButton;
 	public UI_BTN_READY:fgui.GButton;
 	public UI_COMP_GAME_START:FGUICompGameStartAct;
-	public UI_TXT_ROOMID:fgui.GTextField;
-	public UI_TXT_RULE:fgui.GTextField;
-	public UI_TXT_PROGRESS:fgui.GTextField;
+	public UI_COMP_PRIVITE_INFO:FGUICompPirvateInfo;
 	public UI_COMP_ROUND_ACT:FGUICompRoundAct;
 	public UI_BTN_TALK:fgui.GButton;
 	public UI_COMP_CLOCK:FGUICompTimeLeft;
@@ -98,14 +97,12 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_READY = <fgui.GButton>(this.getChildAt(10));
 		this.UI_BTN_READY.onClick(this.onBtnReady, this);
 		this.UI_COMP_GAME_START = <FGUICompGameStartAct>(this.getChildAt(12));
-		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(14));
-		this.UI_TXT_RULE = <fgui.GTextField>(this.getChildAt(15));
-		this.UI_TXT_PROGRESS = <fgui.GTextField>(this.getChildAt(16));
-		this.UI_COMP_ROUND_ACT = <FGUICompRoundAct>(this.getChildAt(20));
-		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(21));
+		this.UI_COMP_PRIVITE_INFO = <FGUICompPirvateInfo>(this.getChildAt(13));
+		this.UI_COMP_ROUND_ACT = <FGUICompRoundAct>(this.getChildAt(15));
+		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(16));
 		this.UI_BTN_TALK.onClick(this.onBtnTalk, this);
-		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(22));
-		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(23));
+		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(17));
+		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(18));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

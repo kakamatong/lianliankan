@@ -262,14 +262,14 @@ export class CompGameMain extends FGUICompGameMain {
         }
         if (GameData.instance.isPrivateRoom) {
             if (data.maxCnt === 9999) {
-                this.UI_TXT_PROGRESS.text = `第${data.nowCnt ?? 0}局 无限局`;
+                this.UI_COMP_PRIVITE_INFO.UI_TXT_PROGRESS.text = `第${data.nowCnt ?? 0}局 无限局`;
             } else {
-                this.UI_TXT_PROGRESS.text = `第${data.nowCnt ?? 0}局 共${data.maxCnt ?? 0}局`;
+                this.UI_COMP_PRIVITE_INFO.UI_TXT_PROGRESS.text = `第${data.nowCnt ?? 0}局 共${data.maxCnt ?? 0}局`;
             }
             GameData.instance.privateMaxCnt = data.maxCnt;
             GameData.instance.privateNowCnt = data.nowCnt;
 
-            //this.UI_TXT_RULE.text = `${GAME_MODE_TXT[data.mode]}`
+            //this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = `${GAME_MODE_TXT[data.mode]}`
             this.showWinLost(JSON.parse(data.ext));
         }
     }
@@ -1114,14 +1114,19 @@ export class CompGameMain extends FGUICompGameMain {
         // 展示好友房信息
         if (data.shortRoomid) {
             const shortRoomid = `${data.shortRoomid}`;
-            this.UI_TXT_ROOMID.text = "房间号:" + shortRoomid.padStart(6, "0");
+            this.UI_COMP_PRIVITE_INFO.UI_TXT_ROOMID.text = "房间号:" + shortRoomid.padStart(6, "0");
         }
 
         if (GameData.instance.isPrivateRoom && data.gameData && data.gameData != "") {
             const gameData = JSON.parse(data.gameData);
             if (gameData && gameData.rule != "") {
                 const rule = JSON.parse(gameData.rule);
-                this.UI_TXT_RULE.text = `${GAME_MODE_TXT[rule.mode]}`;
+                if (rule.mode) {
+                    this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = `${GAME_MODE_TXT[rule.mode]}`;
+                } else {
+                    this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = "排名模式";
+                }
+
                 // 重新赋值房间人数
                 GameData.instance.maxPlayer = rule.playerCnt;
             }

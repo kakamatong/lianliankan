@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
   <controller name="ctrl_btn" pages="0,都不显示,1,确定,2,更换,3,继续游戏,4,准备" selected="0"/>
-  <controller name="ctrl_roomtype" pages="0,普通房,1,私人房" selected="0">
+  <controller name="ctrl_roomtype" pages="0,普通房,1,私人房" selected="1">
     <action type="change_page" fromPage="" toPage="1" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="1"/>
     <action type="change_page" fromPage="" toPage="0" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="0"/>
     <action type="change_page" fromPage="" toPage="1" objectId="n63_gk14" controller="ctrl_roomtype" targetPage="1"/>
@@ -14,7 +14,7 @@
     <remark page="1" value="显示"/>
   </controller>
   <displayList>
-    <component id="n42_jsve" name="UI_BTN_DISBAND" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="157,0" size="143,95">
+    <component id="n42_jsve" name="UI_BTN_DISBAND" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="157,9" size="143,95">
       <gearDisplay controller="ctrl_roomtype" pages="1"/>
       <relation target="" sidePair="left-left,top-top"/>
       <property target="title" propertyId="0" value="解散"/>
@@ -61,15 +61,10 @@
     <component id="n37_fnug" name="UI_COMP_GAME_START" src="fnugh" fileName="comp/CompGameStartAct.xml" xy="132,625" visible="false">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <image id="n39_jsve" name="n39" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="8,113" size="221,161" group="n41_jsve"/>
-    <text id="n40_jsve" name="UI_TXT_ROOMID" xy="16,120" size="205,49" group="n49_ncy2" fontSize="30" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="房间号:000000"/>
-    <text id="n46_ncy2" name="UI_TXT_RULE" xy="17,169" size="205,49" group="n49_ncy2" fontSize="30" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="3局2胜"/>
-    <text id="n47_ncy2" name="UI_TXT_PROGRESS" xy="15,218" size="205,49" group="n49_ncy2" fontSize="30" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="第0轮 共5轮"/>
-    <group id="n49_ncy2" name="n49" xy="15,120" size="207,147" group="n41_jsve" advanced="true" layout="vt" excludeInvisibles="true"/>
-    <group id="n41_jsve" name="n41" xy="8,113" size="221,161" advanced="true">
+    <component id="n39_jsve" name="UI_COMP_PRIVITE_INFO" src="ouez1a" fileName="comp/CompPirvateInfo.xml" xy="412,12">
       <gearDisplay controller="ctrl_roomtype" pages="1"/>
-      <relation target="" sidePair="left-left,top-top"/>
-    </group>
+      <relation target="" sidePair="right-right,top-top"/>
+    </component>
     <component id="n45_j9v1" name="n45" src="r1yn0" fileName="comp/CompDisband.xml" xy="13,0" visible="false">
       <relation target="" sidePair="center-center,top-top"/>
     </component>
