@@ -13,7 +13,7 @@
       <gearColor controller="ctrl_warn" pages="1" values="#ff0000,#6699cc" default="#ffffff,#6699cc"/>
     </text>
   </displayList>
-  <transition name="act">
+  <transition name="act" options="4">
     <item time="0" type="Rotation" target="n9_mnt1" tween="true" startValue="0" endValue="10" duration="3"/>
     <item time="3" type="Rotation" target="n9_mnt1" tween="true" startValue="10" endValue="0" duration="3"/>
     <item time="6" type="Rotation" target="n9_mnt1" tween="true" startValue="0" endValue="-10" duration="3"/>

@@ -689,6 +689,8 @@ export class CompGameMain extends FGUICompGameMain {
                 compPlayers.clear();
             }
         }
+        // 隐藏计时器
+        this.UI_COMP_CLOCK.visible = false;
 
         if (GameData.instance.isPrivateRoom) {
             this.onBtnReady();
@@ -875,23 +877,10 @@ export class CompGameMain extends FGUICompGameMain {
 
         // 非重连情况
         if (!data.brelink) {
-            if (data.roundNum == 1) {
-                this.UI_COMP_GAME_START.act.play(() => {
-                    this.UI_COMP_GAME_START.visible = false;
-                    this.UI_COMP_ROUND_ACT.title.text = `Round ${data.roundNum}`;
-                    this.UI_COMP_ROUND_ACT.visible = true;
-                    this.UI_COMP_ROUND_ACT.act.play(() => {
-                        this.UI_COMP_ROUND_ACT.visible = false;
-                    });
-                });
-                this.UI_COMP_GAME_START.visible = true;
-            } else {
-                this.UI_COMP_ROUND_ACT.title.text = `Round ${data.roundNum}`;
-                this.UI_COMP_ROUND_ACT.visible = true;
-                this.UI_COMP_ROUND_ACT.act2.play(() => {
-                    this.UI_COMP_ROUND_ACT.visible = false;
-                });
-            }
+            this.UI_COMP_GAME_START.visible = true;
+            this.UI_COMP_GAME_START.act.play(() => {
+                this.UI_COMP_GAME_START.visible = false;
+            });
 
             // 第几回合
             this.clear();

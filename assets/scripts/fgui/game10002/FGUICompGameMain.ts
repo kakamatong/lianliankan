@@ -7,7 +7,6 @@ import FGUICompMap from "./FGUICompMap";
 import FGUICompPlayerHead from "./FGUICompPlayerHead";
 import FGUICompGameStartAct from "./FGUICompGameStartAct";
 import FGUICompPirvateInfo from "./FGUICompPirvateInfo";
-import FGUICompRoundAct from "./FGUICompRoundAct";
 import FGUICompTimeLeft from "./FGUICompTimeLeft";
 import FGUICompFinshInfo from "./FGUICompFinshInfo";
 
@@ -32,7 +31,6 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_READY:fgui.GButton;
 	public UI_COMP_GAME_START:FGUICompGameStartAct;
 	public UI_COMP_PRIVITE_INFO:FGUICompPirvateInfo;
-	public UI_COMP_ROUND_ACT:FGUICompRoundAct;
 	public UI_BTN_TALK:fgui.GButton;
 	public UI_COMP_CLOCK:FGUICompTimeLeft;
 	public UI_COMP_FINSH_INFO:FGUICompFinshInfo;
@@ -101,11 +99,10 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_READY.onClick(this.onBtnReady, this);
 		this.UI_COMP_GAME_START = <FGUICompGameStartAct>(this.getChildAt(14));
 		this.UI_COMP_PRIVITE_INFO = <FGUICompPirvateInfo>(this.getChildAt(15));
-		this.UI_COMP_ROUND_ACT = <FGUICompRoundAct>(this.getChildAt(17));
-		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(18));
+		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(17));
 		this.UI_BTN_TALK.onClick(this.onBtnTalk, this);
-		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(19));
-		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(20));
+		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(18));
+		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(19));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
