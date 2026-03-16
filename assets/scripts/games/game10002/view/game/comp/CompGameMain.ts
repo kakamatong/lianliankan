@@ -872,8 +872,11 @@ export class CompGameMain extends FGUICompGameMain {
     onSvrGameStart(data: any): void {
         GameData.instance.gameStart = true;
 
-        // 隐藏开始游戏按钮
-        this.showStartGameBtn(false);
+        // 隐藏开始,邀请游戏按钮
+        if (GameData.instance.isPrivateRoom) {
+            this.showStartGameBtn(false);
+            this.showInviteBtn(false);
+        }
 
         // 非重连情况
         if (!data.brelink) {
