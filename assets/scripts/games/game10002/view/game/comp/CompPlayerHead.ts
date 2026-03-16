@@ -3,7 +3,7 @@ import { GameData } from "../../../data/GameData";
 import { PlayerInfoView } from "../../playerInfo/PlayerInfoView";
 import { CompTalk } from "./CompTalk";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
-import { GAME_PLAYER_INFO } from "../../../data/InterfaceGameConfig";
+import { GAME_PLAYER_INFO, PLAYER_STATUS } from "../../../data/InterfaceGameConfig";
 import FGUICompHead from "../../../../../fgui/common/FGUICompHead";
 import * as fgui from "fairygui-cc";
 /**
@@ -72,9 +72,10 @@ export class CompPlayerHead extends FGUICompPlayerHead {
         }
 
         // 根据状态显示准备标识
-        if (player.status === 2) {
-            // PLAYER_STATUS.READY = 2
+        if (player.status === PLAYER_STATUS.READY) {
             this.showSignReady(true);
+        } else {
+            this.showSignReady(false);
         }
     }
 
