@@ -24,7 +24,7 @@ export interface PLAYER_MAP_DATA {
  * @singleton 单例模式
  */
 export class GameData {
-    private _playerMap: Map<number, GAME_PLAYER_INFO> = new Map();
+    private _playerInfoMap: Map<number, GAME_PLAYER_INFO> = new Map();
     private _selfSeat: number = 0;
     private _maxPlayer = 2;
     private _gameStep: ENUM_GAME_STEP = ENUM_GAME_STEP.NONE;
@@ -62,7 +62,7 @@ export class GameData {
      */
     init() {
         this.gameStep = ENUM_GAME_STEP.NONE;
-        this._playerMap.clear();
+        this._playerInfoMap.clear();
         this._selfSeat = 0;
         this.roomEnd = false;
         this.gameStart = false;
@@ -103,10 +103,10 @@ export class GameData {
      * @param list 玩家列表
      */
     set playerList(list: Array<GAME_PLAYER_INFO>) {
-        this._playerMap.clear();
+        this._playerInfoMap.clear();
         for (const player of list) {
             if (player && player.svrSeat) {
-                this._playerMap.set(player.svrSeat, player);
+                this._playerInfoMap.set(player.svrSeat, player);
             }
         }
     }
@@ -116,7 +116,7 @@ export class GameData {
      * @returns 玩家列表
      */
     get playerList(): Array<GAME_PLAYER_INFO> {
-        return Array.from(this._playerMap.values());
+        return Array.from(this._playerInfoMap.values());
     }
 
     /**
@@ -125,7 +125,7 @@ export class GameData {
      */
     addPlayer(player: GAME_PLAYER_INFO): void {
         if (player && player.svrSeat) {
-            this._playerMap.set(player.svrSeat, player);
+            this._playerInfoMap.set(player.svrSeat, player);
         }
     }
 
@@ -134,7 +134,7 @@ export class GameData {
      * @param svrSeat 服务器座位号
      */
     removePlayerBySeat(svrSeat: number): void {
-        this._playerMap.delete(svrSeat);
+        this._playerInfoMap.delete(svrSeat);
     }
 
     /**
@@ -143,7 +143,7 @@ export class GameData {
      * @returns 头像 URL
      */
     getHeadurl(svrSeat: number): string {
-        const player = this._playerMap.get(svrSeat);
+        const player = this._playerInfoMap.get(svrSeat);
         if (!player || !player.headurl) {
             return DEFAULT_HEADURL;
         }
@@ -159,11 +159,11 @@ export class GameData {
     }
 
     getPlayerBySeat(seat: number): GAME_PLAYER_INFO | null {
-        return this._playerMap.get(seat) || null;
+        return this._playerInfoMap.get(seat) || null;
     }
 
     getPlayerByUserid(userid: number): GAME_PLAYER_INFO | null {
-        for (const player of this._playerMap.values()) {
+        for (const player of this._playerInfoMap.values()) {
             if (player.userid === userid) {
                 return player;
             }
@@ -172,7 +172,7 @@ export class GameData {
     }
 
     getPlayerCnt(): number {
-        return this._playerMap.size;
+        return this._playerInfoMap.size;
     }
 
     set roomEnd(end: boolean) {
@@ -189,18 +189,6 @@ export class GameData {
 
     get gameStart(): boolean {
         return this._gameStart;
-    }
-
-    set playerInfos(infos: Array<GAME_PLAYER_INFO>) {
-        this._playerInfos = infos;
-    }
-
-    get playerInfos(): Array<GAME_PLAYER_INFO> {
-        return this._playerInfos;
-    }
-
-    getPlayerInfo(userid: number) {
-        return this.playerInfos.find((player) => player.userid == userid);
     }
 
     set isPrivateRoom(flag: boolean) {
@@ -261,7 +249,7 @@ export class GameData {
         this._playerMaps.set(seat, {
             seat,
             mapData,
-            totalBlocks
+            totalBlocks,
         });
     }
 

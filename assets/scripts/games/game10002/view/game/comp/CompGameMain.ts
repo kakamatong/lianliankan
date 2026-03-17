@@ -10,6 +10,7 @@ import {
     CTRL_BTN_INDEX,
     GAME_MODE_TXT,
     ROOM_PLAYER_INDEX,
+    GAME_PLAYER_INFO,
 } from "../../../data/InterfaceGameConfig";
 import * as fgui from "fairygui-cc";
 import { CompTimeLeft } from "./CompTimeLeft";
@@ -808,27 +809,30 @@ export class CompGameMain extends FGUICompGameMain {
      * 玩家信息处理
      * @param data 玩家信息数据
      */
-    onSvrPlayerInfos(data: any): void {
+    onSvrPlayerInfos(data: SprotoPlayerInfos.Request): void {
         console.log("onSvrPlayerInfos", data);
         const selfid = DataCenter.instance.userid;
-        // 先存到playerInfos里面
-        GameData.instance.playerInfos = data.infos;
-
         for (let i = 0; i < data.infos.length; i++) {
             const info = data.infos[i];
-            const player = GameData.instance.getPlayerByUserid(info.userid);
-            if (player) {
-                // 更新玩家信息
-                player.nickname = info.nickname;
-                player.headurl = info.headurl;
-                player.sex = info.sex;
-                player.province = info.province;
-                player.city = info.city;
-                player.ext = info.ext;
-                player.ip = info.ip;
-                player.status = info.status;
-                player.cp = info.cp ?? 0;
+            const player: GAME_PLAYER_INFO = {
+                nickname: info.nickname,
+                headurl: info.headurl,
+                sex: info.sex,
+                province: info.province,
+                city: info.city,
+                ext: info.ext,
+                ip: info.ip,
+                status: info.status,
+                cp: info.cp ?? 0,
+                svrSeat: i + 1,
+                userid: info.userid,
+            };
 
+            GameData.instance.addPlayer(player);
+
+            // 更新玩家信息
+
+            if (player) {
                 if (info.userid === selfid) {
                     // 自己，更新自己的头像
                     this.showPlayerInfoBySeat(player.svrSeat);
@@ -901,9 +905,6 @@ export class CompGameMain extends FGUICompGameMain {
 
         // 处理连连看游戏结束数据
         if (data.rankings && data.rankings.length > 0) {
-            const selfSeat = GameData.instance.getSelfSeat();
-            const selfRank = data.rankings.find((r: any) => r.seat === selfSeat);
-
             // 处理未完成的其他玩家
             const completedSeats = data.rankings.filter((r: any) => r.usedTime >= 0).map((r: any) => r.seat);
 
@@ -968,10 +969,8 @@ export class CompGameMain extends FGUICompGameMain {
         const selfid = DataCenter.instance.userid;
         const svrSeat = data.seat;
         const userid = data.userid;
-        const playerInfo = GameData.instance.getPlayerInfo(userid);
+        const playerInfo = GameData.instance.getPlayerByUserid(userid);
         if (playerInfo) {
-            playerInfo.svrSeat = svrSeat;
-            playerInfo.userid = userid;
             if (selfid == userid) {
                 // 设置自己的服务器座位号
                 GameData.instance.setSelfSeat(svrSeat);
