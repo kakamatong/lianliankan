@@ -14,7 +14,7 @@ import * as fgui from "fairygui-cc";
 export class CompPlayers extends FGUICompPlayers {
     /**
      * @property {Map<number, CompOtherPlayer>} _playerMap
-     * @description 本地座位号到其他玩家组件的映射
+     * @description 服务器座位号到其他玩家组件的映射
      * @private
      */
     private _playerMap: Map<number, CompOtherPlayer> = new Map();
@@ -57,16 +57,16 @@ export class CompPlayers extends FGUICompPlayers {
     /**
      * @method addOtherPlayer
      * @description 添加其他玩家
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      * @param {GAME_PLAYER_INFO} player - 玩家信息
      * @param {string} headurl - 头像URL
      * @returns {CompOtherPlayer} 创建的其他玩家组件
      */
-    addOtherPlayer(localSeat: number, player: GAME_PLAYER_INFO, headurl: string): CompOtherPlayer {
+    addOtherPlayer(svrSeat: number, player: GAME_PLAYER_INFO, headurl: string): CompOtherPlayer {
         // 检查是否已存在
-        if (this._playerMap.has(localSeat)) {
-            console.warn(`本地座位 ${localSeat} 的玩家已存在，更新信息`);
-            const existingPlayer = this._playerMap.get(localSeat)!;
+        if (this._playerMap.has(svrSeat)) {
+            console.warn(`服务器座位 ${svrSeat} 的玩家已存在，更新信息`);
+            const existingPlayer = this._playerMap.get(svrSeat)!;
             existingPlayer.updatePlayerInfo(player, headurl);
             return existingPlayer;
         }
@@ -82,27 +82,27 @@ export class CompPlayers extends FGUICompPlayers {
             return null;
         }
 
-        // 设置本地座位号并更新信息
-        listItem.setLocalSeat(localSeat);
+        // 设置服务器座位号并更新信息
+        listItem.setSvrSeat(svrSeat);
         listItem.updatePlayerInfo(player, headurl);
         listItem.show();
 
         // 保存到映射表
-        this._playerMap.set(localSeat, listItem);
+        this._playerMap.set(svrSeat, listItem);
 
-        console.log(`添加其他玩家，本地座位: ${localSeat}, 列表索引: ${index}`);
+        console.log(`添加其他玩家，服务器座位: ${svrSeat}, 列表索引: ${index}`);
         return listItem;
     }
 
     /**
      * @method removeOtherPlayer
      * @description 移除其他玩家
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      */
-    removeOtherPlayer(localSeat: number): void {
-        const otherPlayer = this._playerMap.get(localSeat);
+    removeOtherPlayer(svrSeat: number): void {
+        const otherPlayer = this._playerMap.get(svrSeat);
         if (!otherPlayer) {
-            console.warn(`本地座位 ${localSeat} 的玩家不存在`);
+            console.warn(`服务器座位 ${svrSeat} 的玩家不存在`);
             return;
         }
 
@@ -117,112 +117,112 @@ export class CompPlayers extends FGUICompPlayers {
         otherPlayer.reset();
 
         // 从映射表中移除
-        this._playerMap.delete(localSeat);
+        this._playerMap.delete(svrSeat);
 
-        console.log(`移除其他玩家，本地座位: ${localSeat}`);
+        console.log(`移除其他玩家，服务器座位: ${svrSeat}`);
     }
 
     /**
      * @method getOtherPlayer
      * @description 获取其他玩家组件
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      * @returns {CompOtherPlayer | null} 其他玩家组件，不存在返回 null
      */
-    getOtherPlayer(localSeat: number): CompOtherPlayer | null {
-        return this._playerMap.get(localSeat) || null;
+    getOtherPlayer(svrSeat: number): CompOtherPlayer | null {
+        return this._playerMap.get(svrSeat) || null;
     }
 
     /**
      * @method updateOtherPlayerHead
      * @description 更新其他玩家头像
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      * @param {GAME_PLAYER_INFO} player - 玩家信息
      * @param {string} headurl - 头像URL
      */
-    updateOtherPlayerHead(localSeat: number, player: GAME_PLAYER_INFO, headurl: string): void {
-        const otherPlayer = this._playerMap.get(localSeat);
+    updateOtherPlayerHead(svrSeat: number, player: GAME_PLAYER_INFO, headurl: string): void {
+        const otherPlayer = this._playerMap.get(svrSeat);
         if (otherPlayer) {
             otherPlayer.updatePlayerInfo(player, headurl);
         } else {
             // 如果不存在则创建
-            this.addOtherPlayer(localSeat, player, headurl);
+            this.addOtherPlayer(svrSeat, player, headurl);
         }
     }
 
     /**
      * @method updateOtherPlayerMap
      * @description 更新其他玩家地图
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      * @param {number[][]} mapData - 地图数据
      * @param {string} resPath - 资源路径
      */
-    updateOtherPlayerMap(localSeat: number, mapData: number[][], resPath: string = "resEmoji"): void {
-        const otherPlayer = this._playerMap.get(localSeat);
+    updateOtherPlayerMap(svrSeat: number, mapData: number[][], resPath: string = "resEmoji"): void {
+        const otherPlayer = this._playerMap.get(svrSeat);
         if (otherPlayer) {
             otherPlayer.updateMap(mapData, resPath);
         } else {
-            console.warn(`本地座位 ${localSeat} 的玩家不存在，无法更新地图`);
+            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法更新地图`);
         }
     }
 
     /**
      * @method removeOtherPlayerTiles
      * @description 移除其他玩家的方块（其他玩家消除时调用）
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      * @param {Point} p1 - 第一个方块坐标
      * @param {Point} p2 - 第二个方块坐标
      * @param {LineSegment[]} lines - 连接路径，用于显示连线动画
      */
-    removeOtherPlayerTiles(localSeat: number, p1: Point, p2: Point, lines?: LineSegment[]): void {
-        const otherPlayer = this._playerMap.get(localSeat);
+    removeOtherPlayerTiles(svrSeat: number, p1: Point, p2: Point, lines?: LineSegment[]): void {
+        const otherPlayer = this._playerMap.get(svrSeat);
         if (otherPlayer) {
             otherPlayer.removeTiles(p1, p2, lines);
         } else {
-            console.warn(`本地座位 ${localSeat} 的玩家不存在，无法移除方块`);
+            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法移除方块`);
         }
     }
 
     /**
      * @method setOtherPlayerComplete
      * @description 设置其他玩家的完成状态
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      * @param {boolean} completed - 是否已完成
      */
-    setOtherPlayerComplete(localSeat: number, completed: boolean): void {
-        const otherPlayer = this._playerMap.get(localSeat);
+    setOtherPlayerComplete(svrSeat: number, completed: boolean): void {
+        const otherPlayer = this._playerMap.get(svrSeat);
         if (otherPlayer) {
             otherPlayer.setComplete(completed);
         } else {
-            console.warn(`本地座位 ${localSeat} 的玩家不存在，无法设置完成状态`);
+            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置完成状态`);
         }
     }
 
     /**
      * @method setOtherPlayerRank
      * @description 设置其他玩家的名次
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      * @param {number} rank - 名次，0表示不显示，1-6表示名次
      */
-    setOtherPlayerRank(localSeat: number, rank: number): void {
-        const otherPlayer = this._playerMap.get(localSeat);
+    setOtherPlayerRank(svrSeat: number, rank: number): void {
+        const otherPlayer = this._playerMap.get(svrSeat);
         if (otherPlayer) {
             otherPlayer.setRank(rank);
         } else {
-            console.warn(`本地座位 ${localSeat} 的玩家不存在，无法设置名次`);
+            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置名次`);
         }
     }
 
     /**
      * @method setOtherPlayerIncomplete
      * @description 设置其他玩家为未完成状态
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      */
-    setOtherPlayerIncomplete(localSeat: number): void {
-        const otherPlayer = this._playerMap.get(localSeat);
+    setOtherPlayerIncomplete(svrSeat: number): void {
+        const otherPlayer = this._playerMap.get(svrSeat);
         if (otherPlayer) {
             otherPlayer.setIncomplete();
         } else {
-            console.warn(`本地座位 ${localSeat} 的玩家不存在，无法设置未完成状态`);
+            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置未完成状态`);
         }
     }
 
@@ -232,7 +232,7 @@ export class CompPlayers extends FGUICompPlayers {
      * @param {number[]} completedSeats - 已完成玩家的服务器座位号列表
      */
     setAllPlayersIncomplete(completedSeats: number[]): void {
-        for (const [localSeat, otherPlayer] of this._playerMap) {
+        for (const [svrSeat, otherPlayer] of this._playerMap) {
             // 如果该玩家不在已完成列表中，设置为未完成
             const player = otherPlayer as any;
             if (player && player.getCompleteStatus() !== 1) {
@@ -247,7 +247,7 @@ export class CompPlayers extends FGUICompPlayers {
      */
     resetAllPlayers(): void {
         // 重置所有玩家状态（完成状态、名次等标签）
-        for (const [localSeat, otherPlayer] of this._playerMap) {
+        for (const [svrSeat, otherPlayer] of this._playerMap) {
             otherPlayer.reset();
         }
         console.log("重置所有其他玩家状态");
@@ -259,7 +259,7 @@ export class CompPlayers extends FGUICompPlayers {
      */
     clear(): void {
         // 重置所有玩家
-        for (const [localSeat, otherPlayer] of this._playerMap) {
+        for (const [svrSeat, otherPlayer] of this._playerMap) {
             otherPlayer.reset();
         }
 
@@ -284,11 +284,11 @@ export class CompPlayers extends FGUICompPlayers {
     /**
      * @method hasPlayer
      * @description 检查是否存在指定座位的玩家
-     * @param {number} localSeat - 本地座位号
+     * @param {number} svrSeat - 服务器座位号
      * @returns {boolean} 是否存在
      */
-    hasPlayer(localSeat: number): boolean {
-        return this._playerMap.has(localSeat);
+    hasPlayer(svrSeat: number): boolean {
+        return this._playerMap.has(svrSeat);
     }
 }
 fgui.UIObjectFactory.setExtension(CompPlayers.URL, CompPlayers);

@@ -5,7 +5,7 @@
  */
 
 import { DEFAULT_HEADURL } from "../../../datacenter/InterfaceConfig";
-import { GAME_PLAYER_INFO, SELF_LOCAL, ENUM_GAME_STEP, GAME_DATA } from "./InterfaceGameConfig";
+import { GAME_PLAYER_INFO, ENUM_GAME_STEP, GAME_DATA } from "./InterfaceGameConfig";
 
 /**
  * @interface PLAYER_MAP_DATA
@@ -24,7 +24,8 @@ export interface PLAYER_MAP_DATA {
  * @singleton 单例模式
  */
 export class GameData {
-    private _playerList: Array<GAME_PLAYER_INFO> = [];
+    private _playerMap: Map<number, GAME_PLAYER_INFO> = new Map();
+    private _selfSeat: number = 0;
     private _maxPlayer = 2;
     private _gameStep: ENUM_GAME_STEP = ENUM_GAME_STEP.NONE;
     private _roomEnd: boolean = false;
@@ -61,7 +62,8 @@ export class GameData {
      */
     init() {
         this.gameStep = ENUM_GAME_STEP.NONE;
-        this.playerList = [];
+        this._playerMap.clear();
+        this._selfSeat = 0;
         this.roomEnd = false;
         this.gameStart = false;
         this.isPrivateRoom = false;
@@ -89,7 +91,11 @@ export class GameData {
     }
 
     getSelfSeat(): number {
-        return this._playerList[SELF_LOCAL].svrSeat;
+        return this._selfSeat;
+    }
+
+    setSelfSeat(seat: number): void {
+        this._selfSeat = seat;
     }
 
     /**
@@ -97,27 +103,51 @@ export class GameData {
      * @param list 玩家列表
      */
     set playerList(list: Array<GAME_PLAYER_INFO>) {
-        this._playerList = list;
+        this._playerMap.clear();
+        for (const player of list) {
+            if (player && player.svrSeat) {
+                this._playerMap.set(player.svrSeat, player);
+            }
+        }
     }
 
     /**
-     * @description 获取玩家列表
+     * @description 获取所有玩家列表
      * @returns 玩家列表
      */
     get playerList(): Array<GAME_PLAYER_INFO> {
-        return this._playerList;
+        return Array.from(this._playerMap.values());
     }
 
     /**
-     * @description 获取指定本地位置的玩家头像
-     * @param localSeat 本地位置
+     * @description 添加玩家到列表
+     * @param player 玩家信息
+     */
+    addPlayer(player: GAME_PLAYER_INFO): void {
+        if (player && player.svrSeat) {
+            this._playerMap.set(player.svrSeat, player);
+        }
+    }
+
+    /**
+     * @description 根据服务器座位号移除玩家
+     * @param svrSeat 服务器座位号
+     */
+    removePlayerBySeat(svrSeat: number): void {
+        this._playerMap.delete(svrSeat);
+    }
+
+    /**
+     * @description 获取指定服务器座位的玩家头像
+     * @param svrSeat 服务器座位号
      * @returns 头像 URL
      */
-    getHeadurl(localSeat: number): string {
-        if (!this._playerList[localSeat].headurl) {
+    getHeadurl(svrSeat: number): string {
+        const player = this._playerMap.get(svrSeat);
+        if (!player || !player.headurl) {
             return DEFAULT_HEADURL;
         }
-        return this._playerList[localSeat].headurl;
+        return player.headurl;
     }
 
     getHeadurlByUserid(userid: number): string {
@@ -125,47 +155,24 @@ export class GameData {
         if (!player) {
             return DEFAULT_HEADURL;
         }
-        const localSeat = this.seat2local(player.svrSeat);
-        return this.getHeadurl(localSeat);
+        return this.getHeadurl(player.svrSeat);
     }
 
-    seat2local(seat: number): number {
-        const selfSeat = this.getSelfSeat();
-        if (selfSeat == seat) {
-            return SELF_LOCAL;
-        }
-        const selfLocal = SELF_LOCAL;
-        const d = seat - selfSeat;
-        if (d > 0) {
-            return selfLocal + d;
-        } else {
-            return this._maxPlayer + (selfLocal + d);
-        }
-    }
-
-    local2seat(local: number): number {
-        return this.playerList[local].svrSeat;
-    }
-
-    getPlayerBySeat(seat: number): GAME_PLAYER_INFO {
-        return this.playerList[this.seat2local(seat)];
+    getPlayerBySeat(seat: number): GAME_PLAYER_INFO | null {
+        return this._playerMap.get(seat) || null;
     }
 
     getPlayerByUserid(userid: number): GAME_PLAYER_INFO | null {
-        for (let i = 0; i < this.playerList.length; i++) {
-            if (this.playerList[i] && this.playerList[i].userid == userid) {
-                return this.playerList[i];
+        for (const player of this._playerMap.values()) {
+            if (player.userid === userid) {
+                return player;
             }
         }
         return null;
     }
 
-    getPlayerByLocal(local: number): GAME_PLAYER_INFO {
-        return this.playerList[local];
-    }
-
     getPlayerCnt(): number {
-        return this.playerList.filter((player) => player != null && player != undefined).length;
+        return this._playerMap.size;
     }
 
     set roomEnd(end: boolean) {

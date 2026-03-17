@@ -46,11 +46,11 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     private _compMap: CompMap;
 
     /**
-     * @property {number} _seat
+     * @property {number} _svrSeat
      * @description 服务器座位号
      * @private
      */
-    private _seat: number = 0;
+    private _svrSeat: number = 0;
 
     /**
      * @method onConstruct
@@ -76,24 +76,24 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     }
 
     /**
-     * @method setLocalSeat
-     * @description 设置本地座位号
-     * @param {number} localSeat - 本地座位号
+     * @method setSvrSeat
+     * @description 设置服务器座位号
+     * @param {number} svrSeat - 服务器座位号
      */
-    setLocalSeat(localSeat: number): void {
-        this._seat = localSeat;
+    setSvrSeat(svrSeat: number): void {
+        this._svrSeat = svrSeat;
         if (this._compHead) {
-            this._compHead.setLocalSeat(localSeat);
+            this._compHead.setSvrSeat(svrSeat);
         }
     }
 
     /**
-     * @method getLocalSeat
-     * @description 获取本地座位号
-     * @returns {number} 本地座位号
+     * @method getSvrSeat
+     * @description 获取服务器座位号
+     * @returns {number} 服务器座位号
      */
-    getLocalSeat(): number {
-        return this._seat;
+    getSvrSeat(): number {
+        return this._svrSeat;
     }
 
     /**
@@ -241,7 +241,7 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
         if (this._compMap) {
             this._compMap.clearMap();
         }
-        this._seat = 0;
+        this._svrSeat = 0;
         this.setCompleteStatus("playing");
         this.setRank(0);
     }

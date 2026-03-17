@@ -13,7 +13,7 @@ import * as fgui from "fairygui-cc";
  */
 @ViewClass()
 export class CompPlayerHead extends FGUICompPlayerHead {
-    public localSeat: number = 0;
+    public svrSeat: number = 0;
 
     protected onConstruct() {
         super.onConstruct();
@@ -35,19 +35,19 @@ export class CompPlayerHead extends FGUICompPlayerHead {
      * @private
      */
     private onHeadClick(): void {
-        const player = GameData.instance.getPlayerByLocal(this.localSeat);
+        const player = GameData.instance.getPlayerBySeat(this.svrSeat);
         if (player) {
             PlayerInfoView.showView({ userid: player.userid, cp: player.cp });
         }
     }
 
     /**
-     * @method setLocalSeat
-     * @description 设置本地座位号
-     * @param {number} seat - 本地座位号
+     * @method setSvrSeat
+     * @description 设置服务器座位号
+     * @param {number} seat - 服务器座位号
      */
-    setLocalSeat(seat: number): void {
-        this.localSeat = seat;
+    setSvrSeat(seat: number): void {
+        this.svrSeat = seat;
     }
 
     /**

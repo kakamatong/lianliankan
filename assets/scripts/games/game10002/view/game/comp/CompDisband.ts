@@ -68,7 +68,7 @@ export class CompDisband extends FGUICompDisband {
             item.asCom.getChild("UI_TXT_NICKNAME").text = player.nickname || `玩家${player.userid}`;
             const headNode = item.asCom.getChild("UI_COMP_HEAD");
             const head = headNode.asCom.getChild("UI_LOADER_HEAD") as fgui.GLoader;
-            head.url = GameData.instance.getHeadurl(GameData.instance.local2seat(player.svrSeat));
+            head.url = GameData.instance.getHeadurl(player.svrSeat);
             if (this._initiator == data.userid) {
                 item.asCom.getController("ctrl_result").selectedIndex = 3;
             } else {
