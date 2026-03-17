@@ -4,6 +4,7 @@ import * as fgui from "fairygui-cc";
 import { GameData } from "../../data/GameData";
 import FGUICompHead from "../../../../fgui/common/FGUICompHead";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
+import { truncateString } from "../../../../frameworks/utils/Utils";
 
 @ViewClass()
 export class PlayerInfoView extends FGUIPlayerInfoView {
@@ -21,7 +22,7 @@ export class PlayerInfoView extends FGUIPlayerInfoView {
         if (!player) {
             return;
         }
-        this.UI_TXT_NICKNAME.text = player?.nickname ?? "";
+        this.UI_TXT_NICKNAME.text = truncateString(player?.nickname ?? "", 8);
         this.UI_TXT_USERID.text = `${this._userid}`;
         (this.UI_COMP_HEAD as FGUICompHead).UI_LOADER_HEAD.url = GameData.instance.getHeadurlByUserid(this._userid);
         this.UI_TXT_CP.text = `${this._cp}`;

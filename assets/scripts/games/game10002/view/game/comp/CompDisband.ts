@@ -17,6 +17,7 @@ import { Color } from "cc";
 import { SprotoVoteDisbandResult, SprotoVoteDisbandStart, SprotoVoteDisbandUpdate } from "../../../../../../types/protocol/game10002/s2c";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
 import { SprotoVoteDisbandResponse } from "db://assets/types/protocol/game10002/c2s";
+import { truncateString } from "../../../../../frameworks/utils/Utils";
 
 /**
  * 解散房间投票组件
@@ -65,7 +66,7 @@ export class CompDisband extends FGUICompDisband {
         const data = this._currentVotes[index];
         const player = GameData.instance.getPlayerByUserid(data.userid);
         if (player) {
-            item.asCom.getChild("UI_TXT_NICKNAME").text = player.nickname || `玩家${player.userid}`;
+            item.asCom.getChild("UI_TXT_NICKNAME").text = truncateString(player.nickname || `玩家${player.userid}`, 8);
             const headNode = item.asCom.getChild("UI_COMP_HEAD");
             const head = headNode.asCom.getChild("UI_LOADER_HEAD") as fgui.GLoader;
             head.url = GameData.instance.getHeadurl(player.svrSeat);

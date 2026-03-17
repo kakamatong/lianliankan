@@ -1011,3 +1011,64 @@ export const DecodeURLRecursive = (data: any): any => {
 
     return data;
 };
+
+/**
+ * 获取单个字符的显示宽度
+ * @param char 字符
+ * @returns 显示宽度
+ */
+const getCharWidth = (char: string): number => {
+    const code = char.codePointAt(0) ?? 0;
+    // ASCII字符 (0-127)
+    if (code <= 0x7F) {
+        return 1;
+    }
+    // 中文、日文、韩文等 CJK 统一表意文字 (4E00-9FFF)
+    if (code >= 0x4E00 && code <= 0x9FFF) {
+        return 2;
+    }
+    // 日文平假名、片假名 (3040-30FF)
+    if (code >= 0x3040 && code <= 0x30FF) {
+        return 2;
+    }
+    // 韩文 (AC00-D7AF)
+    if (code >= 0xAC00 && code <= 0xD7AF) {
+        return 2;
+    }
+    // 表情符号和其他多字节字符，通常占2个宽度
+    return 2;
+};
+
+/**
+ * 字符串截取，支持中文、日文、表情等变宽字符
+ * @param str 要截取的字符串
+ * @param maxWidth 最大显示宽度
+ * @returns 截取后的字符串
+ */
+export const truncateString = (str: string, maxWidth: number): string => {
+    if (!str || maxWidth <= 0) {
+        return "";
+    }
+
+    // 如果字符串宽度小于等于截取长度，直接返回
+    const chars = Array.from(str);
+    let totalWidth = 0;
+    let endIndex = 0;
+
+    for (const char of chars) {
+        const charWidth = getCharWidth(char);
+        if (totalWidth + charWidth > maxWidth) {
+            break;
+        }
+        totalWidth += charWidth;
+        endIndex++;
+    }
+
+    // 没有截断，返回原字符串
+    if (endIndex >= chars.length) {
+        return str;
+    }
+
+    // 截断并添加省略号
+    return chars.slice(0, endIndex).join("") + "...";
+};

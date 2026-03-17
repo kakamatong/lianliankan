@@ -5,6 +5,7 @@ import { CompTalk } from "./CompTalk";
 import { ViewClass } from "db://assets/scripts/frameworks/Framework";
 import { GAME_PLAYER_INFO, PLAYER_STATUS } from "../../../data/InterfaceGameConfig";
 import FGUICompHead from "../../../../../fgui/common/FGUICompHead";
+import { truncateString } from "../../../../../frameworks/utils/Utils";
 import * as fgui from "fairygui-cc";
 /**
  * @class CompPlayerHead
@@ -59,7 +60,7 @@ export class CompPlayerHead extends FGUICompPlayerHead {
      */
     updatePlayerInfo(player: GAME_PLAYER_INFO, isSelf: boolean, headurl: string): void {
         // 设置昵称
-        this.UI_TXT_NICKNAME.text = player.nickname ?? "";
+        this.UI_TXT_NICKNAME.text = truncateString(player.nickname ?? "", 8);
 
         // 设置头像
         const head = this.UI_COMP_HEAD as FGUICompHead;

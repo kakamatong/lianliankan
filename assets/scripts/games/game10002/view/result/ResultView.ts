@@ -8,6 +8,7 @@ import FGUICompResultInfo from "../../../../fgui/game10002Result/FGUICompResultI
 import FGUICompHead from "../../../../fgui/common/FGUICompHead";
 import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
 import { DataCenter } from "db://assets/scripts/datacenter/Datacenter";
+import { truncateString } from "../../../../frameworks/utils/Utils";
 
 @ViewClass()
 export class ResultView extends FGUIResultView {
@@ -40,7 +41,7 @@ export class ResultView extends FGUIResultView {
         const node = item as FGUICompResultInfo;
         const head = node.UI_COMP_HEAD as FGUICompHead;
         head.UI_LOADER_HEAD.url = data.headurl;
-        node.UI_TXT_NICKNAME.text = data.nickname;
+        node.UI_TXT_NICKNAME.text = truncateString(data.nickname, 8);
         if (data.usedTime > 0) {
             const timeInSeconds = (data.usedTime / 1000).toFixed(3);
             node.UI_TXT_USE_TIME.text = `${timeInSeconds}秒`;
