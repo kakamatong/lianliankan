@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
-  <controller name="ctrl_btn" pages="0,都不显示,1,确定,2,更换,3,继续游戏,4,准备" selected="4"/>
+  <controller name="ctrl_btn" pages="0,都不显示,1,确定,2,更换,3,继续游戏,4,准备" selected="0"/>
   <controller name="ctrl_roomtype" pages="0,普通房,1,私人房" selected="1">
     <action type="change_page" fromPage="" toPage="1" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="1"/>
     <action type="change_page" fromPage="" toPage="0" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="0"/>
@@ -9,7 +9,7 @@
     <action type="change_page" fromPage="" toPage="1" objectId="n64_gk14" controller="ctrl_roomtype" targetPage="1"/>
     <action type="change_page" fromPage="" toPage="0" objectId="n64_gk14" controller="ctrl_roomtype" targetPage="0"/>
   </controller>
-  <controller name="ctrl_finshInfo" pages="0,,1," selected="1">
+  <controller name="ctrl_finshInfo" pages="0,,1," selected="0">
     <remark page="0" value="不显示"/>
     <remark page="1" value="显示"/>
   </controller>
@@ -34,7 +34,6 @@
       <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3e"/>
     </component>
     <component id="n77_ouez" name="UI_BTN_START_GAME" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="736,1323" size="230,99" group="n78_ouez" visible="false">
-      <relation target="" sidePair="center-center,bottom-bottom"/>
       <property target="title" propertyId="0" value="开始游戏"/>
       <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3c"/>
     </component>
@@ -80,7 +79,9 @@
       <relation target="" sidePair="left-right,bottom-bottom"/>
       <property target="icon" propertyId="1" value="ui://2zsfe53xpxa5o"/>
     </component>
-    <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,479" visible="false"/>
+    <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,479" visible="false">
+      <relation target="" sidePair="center-center,top-top"/>
+    </component>
     <component id="n76_mnt1" name="UI_COMP_FINSH_INFO" src="mnt118" fileName="comp/CompFinshInfo.xml" xy="208,801">
       <gearDisplay controller="ctrl_finshInfo" pages="1"/>
       <relation target="" sidePair="center-center,middle-middle"/>
