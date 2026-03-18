@@ -23,6 +23,10 @@
     <component id="n3_is91" name="UI_BTN_BACK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="9,8" size="143,94">
       <property target="icon" propertyId="1" value="ui://gj0r6g5iis91p"/>
     </component>
+    <component id="n39_jsve" name="UI_COMP_PRIVITE_INFO" src="ouez1a" fileName="comp/CompPirvateInfo.xml" xy="412,12">
+      <gearDisplay controller="ctrl_roomtype" pages="1"/>
+      <relation target="" sidePair="right-right,top-top"/>
+    </component>
     <component id="n71_pgw3" name="UI_COMP_PLAYERS" src="pgw3x" fileName="comp/CompPlayers.xml" xy="9,20">
       <relation target="" sidePair="width-width,top-top"/>
     </component>
@@ -67,10 +71,6 @@
     </group>
     <component id="n37_fnug" name="UI_COMP_GAME_START" src="fnugh" fileName="comp/CompGameStartAct.xml" xy="132,625" visible="false">
       <relation target="" sidePair="center-center,middle-middle"/>
-    </component>
-    <component id="n39_jsve" name="UI_COMP_PRIVITE_INFO" src="ouez1a" fileName="comp/CompPirvateInfo.xml" xy="412,12">
-      <gearDisplay controller="ctrl_roomtype" pages="1"/>
-      <relation target="" sidePair="right-right,top-top"/>
     </component>
     <component id="n45_j9v1" name="n45" src="r1yn0" fileName="comp/CompDisband.xml" xy="13,0" visible="false">
       <relation target="" sidePair="center-center,top-top"/>
