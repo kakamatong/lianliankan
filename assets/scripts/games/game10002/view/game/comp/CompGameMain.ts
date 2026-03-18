@@ -618,6 +618,10 @@ export class CompGameMain extends FGUICompGameMain {
         if (compFinshInfo) {
             compFinshInfo.reset();
         }
+        // 清理自己的奖牌
+        if (this.UI_COMP_SELF_MEDAL) {
+            this.UI_COMP_SELF_MEDAL.ctrl_rank.selectedIndex = 0;
+        }
     }
 
     /**
