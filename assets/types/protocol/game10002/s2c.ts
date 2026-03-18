@@ -62,6 +62,13 @@ export interface RankingInfo {
     rank: number;
 }
 
+/** 分数信息 */
+export interface ScoreInfo {
+    seat: number;
+    newScore: number;
+    delta: number;
+}
+
 /** 服务器消息 - 请求参数 */
 export interface SvrmsgRequest {
     type: string;
@@ -215,6 +222,7 @@ export interface GameendRequest {
     endTime: number;
     endType: number;
     rankings: RankingInfo[];
+    scores: ScoreInfo[];
 }
 
 /** 游戏重连恢复 - 请求参数 */
