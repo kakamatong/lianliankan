@@ -42,7 +42,8 @@ export class ResultView extends FGUIResultView {
         const head = node.UI_COMP_HEAD as FGUICompHead;
         head.UI_LOADER_HEAD.url = data.headurl;
         node.UI_TXT_NICKNAME.text = truncateString(data.nickname, 8);
-        node.UI_TXT_SCORE.text = data.score?.toString() ?? "0";
+        const score = data.score ?? 0;
+        node.UI_TXT_SCORE.text = score > 0 ? `+${score}` : score.toString();
         if (data.usedTime > 0) {
             const timeInSeconds = (data.usedTime / 1000).toFixed(3);
             node.UI_TXT_USE_TIME.text = `${timeInSeconds}秒`;
