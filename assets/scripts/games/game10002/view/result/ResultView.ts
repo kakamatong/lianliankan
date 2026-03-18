@@ -3,7 +3,7 @@ import * as fgui from "fairygui-cc";
 import { GameData } from "../../data/GameData";
 import { SoundManager } from "../../../../frameworks/SoundManager";
 import { MiniGameUtils } from "db://assets/scripts/frameworks/utils/sdk/MiniGameUtils";
-import { ViewClass } from "db://assets/scripts/frameworks/Framework";
+import { PackageLoad, ViewClass } from "db://assets/scripts/frameworks/Framework";
 import FGUICompResultInfo from "../../../../fgui/game10002Result/FGUICompResultInfo";
 import FGUICompHead from "../../../../fgui/common/FGUICompHead";
 import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
@@ -11,10 +11,18 @@ import { DataCenter } from "db://assets/scripts/datacenter/Datacenter";
 import { truncateString } from "../../../../frameworks/utils/Utils";
 
 @ViewClass()
+@PackageLoad(["gameCommon"])
 export class ResultView extends FGUIResultView {
     private _continueFunc: (() => void) | null = null;
-    private _scoreData: Array<{ userid: number; usedTime: number; rank: number; eliminated: number; nickname: string; headurl: string; score: number }> =
-        [];
+    private _scoreData: Array<{
+        userid: number;
+        usedTime: number;
+        rank: number;
+        eliminated: number;
+        nickname: string;
+        headurl: string;
+        score: number;
+    }> = [];
     show(data?: any) {
         const flag = 1;
         this.ctrl_flag.selectedIndex = flag;

@@ -2,13 +2,17 @@ import FGUITotalResultView from "../../../../fgui/game10002Result/FGUITotalResul
 import * as fgui from "fairygui-cc";
 import { GameData } from "../../data/GameData";
 import { GameSocketManager } from "../../../../frameworks/GameSocketManager";
-import { ChangeScene, ViewClass } from "../../../../frameworks/Framework";
+import { ChangeScene, PackageLoad, ViewClass } from "../../../../frameworks/Framework";
 import { truncateString } from "../../../../frameworks/utils/Utils";
+import { SprotoTotalResult } from "db://assets/types/protocol/game10002/s2c";
+import FGUICompTotalResultInfo from "db://assets/scripts/fgui/game10002Result/FGUICompTotalResultInfo";
+import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
 
 @ViewClass()
+@PackageLoad(["gameCommon"])
 export class TotalResultView extends FGUITotalResultView {
     private _data: any | null = null;
-    show(data?: any) {
+    show(data?: SprotoTotalResult.Request) {
         this.UI_LV_INFO.itemRenderer = this.itemRenderer.bind(this);
         this._data = data;
         if (this._data) {
@@ -22,13 +26,16 @@ export class TotalResultView extends FGUITotalResultView {
         const dataItem = this._data?.totalResultInfo[index];
         if (dataItem) {
             const player = GameData.instance.getPlayerByUserid(dataItem.userid);
-            item.asCom.getChild("UI_TXT_NICKNAME").text = truncateString(player?.nickname ?? "", 8);
-            item.asCom.getChild("UI_TXT_ID").text = `${dataItem.userid}`;
-            item.asCom.getChild("UI_TXT_WIN").text = `${dataItem.win}`;
-            item.asCom.getChild("UI_TXT_LOSE").text = `${dataItem.lose}`;
+            const node = item as FGUICompTotalResultInfo;
+            node.UI_TXT_NICKNAME.text = truncateString(player?.nickname ?? "", 8);
+            node.UI_TXT_ID.text = `${dataItem.userid}`;
+            node.UI_TXT_SCORE.text = `${dataItem.score}`;
             const headurl = GameData.instance.getHeadurlByUserid(dataItem.userid);
-            const headNode = item.asCom.getChild("UI_COMP_HEAD").asCom.getChild("UI_LOADER_HEAD") as fgui.GLoader;
+            const headNode = node.UI_COMP_HEAD.getChild("UI_LOADER_HEAD") as fgui.GLoader;
             headNode.url = headurl;
+
+            const medal = node.UI_COMP_MEDAL as FGUICompMedal;
+            medal.ctrl_rank.selectedIndex = dataItem.rank;
         }
     }
 

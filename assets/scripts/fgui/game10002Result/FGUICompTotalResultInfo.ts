@@ -10,8 +10,8 @@ export default class FGUICompTotalResultInfo extends fgui.GComponent {
 	public UI_COMP_HEAD:fgui.GComponent;
 	public UI_TXT_NICKNAME:fgui.GTextField;
 	public UI_TXT_ID:fgui.GTextField;
-	public UI_TXT_WIN:fgui.GTextField;
-	public UI_TXT_LOSE:fgui.GTextField;
+	public UI_TXT_SCORE:fgui.GTextField;
+	public UI_COMP_MEDAL:fgui.GComponent;
 	public static URL:string = "ui://5x18e99vkv65r";
 
 	public static packageName:string = "game10002Result";
@@ -55,8 +55,8 @@ export default class FGUICompTotalResultInfo extends fgui.GComponent {
 		this.UI_COMP_HEAD = <fgui.GComponent>(this.getChildAt(1));
 		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(2));
 		this.UI_TXT_ID = <fgui.GTextField>(this.getChildAt(3));
-		this.UI_TXT_WIN = <fgui.GTextField>(this.getChildAt(6));
-		this.UI_TXT_LOSE = <fgui.GTextField>(this.getChildAt(7));
+		this.UI_TXT_SCORE = <fgui.GTextField>(this.getChildAt(5));
+		this.UI_COMP_MEDAL = <fgui.GComponent>(this.getChildAt(6));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

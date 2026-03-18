@@ -39,6 +39,7 @@ export interface TotalResultInfo {
     win: number;
     lose: number;
     draw: number;
+    rank: number;
     ext: string;
 }
 
