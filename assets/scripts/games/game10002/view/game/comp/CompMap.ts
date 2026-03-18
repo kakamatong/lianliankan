@@ -8,6 +8,8 @@ import { ViewClass } from "db://assets/scripts/frameworks/Framework";
 import { GameSocketManager } from "../../../../../frameworks/GameSocketManager";
 import { SprotoClickTiles } from "../../../../../../types/protocol/game10002/c2s";
 import { TipsView } from "../../../../../view/common/TipsView";
+import { GameData } from "../../../data/GameData";
+import { ENUM_GAME_STEP } from "../../../data/InterfaceGameConfig";
 
 /**
  * @class CompMap
@@ -181,6 +183,11 @@ export class CompMap extends FGUICompMap {
     private _onCubeClick(cube: FGUICompCube, row: number, col: number): void {
         // 只读模式下不处理点击事件
         if (this._readonly) {
+            return;
+        }
+
+        // 非 playing 阶段不处理点击事件
+        if (GameData.instance.gameStep !== ENUM_GAME_STEP.PLAYING) {
             return;
         }
 
@@ -411,18 +418,22 @@ export class CompMap extends FGUICompMap {
         console.log(`消除方块: (${first.row},${first.col}) 和 (${second.row},${second.col})`);
 
         // 发送消除请求给服务器
-        GameSocketManager.instance.sendToServer(SprotoClickTiles, {
-            row1: first.row,
-            col1: first.col,
-            row2: second.row,
-            col2: second.col,
-        }, (response: any) => {
-            if (response && response.code === 0) {
-                // 服务器返回错误，显示提示
-                TipsView.showView({ content: response.msg || "消除失败" });
+        GameSocketManager.instance.sendToServer(
+            SprotoClickTiles,
+            {
+                row1: first.row,
+                col1: first.col,
+                row2: second.row,
+                col2: second.col,
+            },
+            (response: any) => {
+                if (response && response.code === 0) {
+                    // 服务器返回错误，显示提示
+                    TipsView.showView({ content: response.msg || "消除失败" });
+                }
+                // 成功时不处理，客户端自己管理消除逻辑
             }
-            // 成功时不处理，客户端自己管理消除逻辑
-        });
+        );
     }
 
     /**
@@ -628,7 +639,7 @@ export class CompMap extends FGUICompMap {
     showOtherPlayerRemoveAnimation(p1: Point, p2: Point, lines: LineSegment[]): void {
         // 显示连线动画
         this._showPathLines(lines);
-        
+
         // 延迟后清除连线
         this.scheduleOnce(() => {
             this._clearPathLines();

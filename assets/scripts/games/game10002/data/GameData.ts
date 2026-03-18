@@ -32,7 +32,6 @@ export class GameData {
     private _gameStart = false;
     private _isPrivateRoom = false;
     private _gameData: GAME_DATA | null = null;
-    private _playerInfos: Array<GAME_PLAYER_INFO> = [];
     private _owner = 0;
     private _record: Array<any> = [];
     private _privateNowCnt: number = 0; // 第几局

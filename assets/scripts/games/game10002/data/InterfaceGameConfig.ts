@@ -91,9 +91,8 @@ export enum VOTE_STATUS {
 export enum ENUM_GAME_STEP {
     NONE = 0,
     START = 1,
-    OUT_HAND = 2,
-    ROUND_END = 3,
-    GAME_END = 4,
+    PLAYING = 2,
+    END = 3,
 }
 
 /**

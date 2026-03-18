@@ -47,6 +47,7 @@ import {
     SprotoProgressUpdate,
     SprotoRoomEnd,
     SprotoRoomInfo,
+    SprotoStepId,
     SprotoTilesRemoved,
     SprotoTotalResult,
 } from "../../../../../../types/protocol/game10002/s2c";
@@ -167,6 +168,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoTotalResult, this.onSvrTotalResult.bind(this));
         GameSocketManager.instance.addServerListen(SprotoGameRecord, this.onSvrGameRecord.bind(this));
         GameSocketManager.instance.addServerListen(SprotoForwardMessage, this.onSvrForwardMessage.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoStepId, this.onSvrStepId.bind(this));
         // 连连看游戏协议
         GameSocketManager.instance.addServerListen(SprotoLogicInfo, this.onSvrLogicInfo.bind(this));
         GameSocketManager.instance.addServerListen(SprotoMapData, this.onSvrMapData.bind(this));
@@ -204,6 +206,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoTotalResult);
         GameSocketManager.instance.removeServerListen(SprotoGameRecord);
         GameSocketManager.instance.removeServerListen(SprotoForwardMessage);
+        GameSocketManager.instance.removeServerListen(SprotoStepId);
         // 连连看游戏协议
         GameSocketManager.instance.removeServerListen(SprotoLogicInfo);
         GameSocketManager.instance.removeServerListen(SprotoMapData);
@@ -223,6 +226,14 @@ export class CompGameMain extends FGUICompGameMain {
     onSvrForwardMessage(data: SprotoForwardMessage.Request) {
         console.log(data);
         this.forwardMessage(data);
+    }
+
+    /**
+     * 步骤ID处理
+     * @param data 步骤ID数据
+     */
+    onSvrStepId(data: SprotoStepId.Request) {
+        GameData.instance.gameStep = data.step;
     }
 
     /**
