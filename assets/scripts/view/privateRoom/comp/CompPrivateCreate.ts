@@ -8,7 +8,7 @@ import FGUICompPrivateCreate from "../../../fgui/privateRoom/FGUICompPrivateCrea
 import * as fgui from "fairygui-cc";
 import { LobbySocketManager } from "../../../frameworks/LobbySocketManager";
 import { PopMessageView } from "../../common/PopMessageView";
-import { ENUM_POP_MESSAGE_TYPE, LOCAL_KEY } from "../../../datacenter/InterfaceConfig";
+import { ENUM_POP_MESSAGE_TYPE, LOCAL_KEY, MAIN_GAME_ID } from "../../../datacenter/InterfaceConfig";
 import { TipsView } from "../../common/TipsView";
 import { sys } from "cc";
 import { ConnectGameSvr } from "../../../modules/ConnectGameSvr";
@@ -86,7 +86,7 @@ export class CompPrivateCreate extends FGUICompPrivateCreate {
 
         const strRule = JSON.stringify(gameRule);
         sys.localStorage.setItem(LOCAL_KEY.PRIVATE_RULE, strRule);
-        const reqData = { gameid: 10002, rule: strRule };
+        const reqData = { gameid: MAIN_GAME_ID, rule: strRule };
         LobbySocketManager.instance.sendToServer(SprotoCreatePrivateRoom, reqData, func);
     }
 }

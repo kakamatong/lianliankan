@@ -15,7 +15,7 @@ export interface LOGIN_INFO {
     server: string;
     loginType: string;
     token: string;
-    subid:number;
+    subid: number;
 }
 
 // nickname 0 : string
@@ -55,7 +55,7 @@ export interface USER_DATA {
  * @description 用户状态枚举
  */
 export enum ENUM_USER_STATUS {
-    OFFLINE = 0, 
+    OFFLINE = 0,
     ONLINE = 1,
     MATCHING = 2,
     READY = 3,
@@ -80,12 +80,12 @@ export interface USER_STATUS {
  * @description 本地存储键值枚举
  */
 export enum LOCAL_KEY {
-    LOGIN_INFO = 'loginInfo',
-    MATCH_AUTO_JOIN = 'matchAutoJoin',
-    AGREE_PRIVACY = 'agreePrivacy',
-    PRIVATE_RULE = 'privateRule',
-    AUTO_SHOW_SIGNIN = 'autoShowSignIn',
-    AD_NOTICE_DATE = 'adNoticeDate',
+    LOGIN_INFO = "loginInfo",
+    MATCH_AUTO_JOIN = "matchAutoJoin",
+    AGREE_PRIVACY = "agreePrivacy",
+    PRIVATE_RULE = "privateRule",
+    AUTO_SHOW_SIGNIN = "autoShowSignIn",
+    AD_NOTICE_DATE = "adNoticeDate",
 }
 
 /**
@@ -104,14 +104,14 @@ export enum ENUM_POP_MESSAGE_TYPE {
  * @description 渠道 ID 枚举
  */
 export enum ENUM_CHANNEL_ID {
-    MINIGAME_WECHAT = 'wechatMiniGame',
-    ACCOUNT = 'account',
+    MINIGAME_WECHAT = "wechatMiniGame",
+    ACCOUNT = "account",
 }
 
 export const LOGIN_TYPE = {
-    [ENUM_CHANNEL_ID.MINIGAME_WECHAT] : 'wechatMiniGame',
-    [ENUM_CHANNEL_ID.ACCOUNT] : 'account',
-}
+    [ENUM_CHANNEL_ID.MINIGAME_WECHAT]: "wechatMiniGame",
+    [ENUM_CHANNEL_ID.ACCOUNT]: "account",
+};
 
 /**
  * @interface GAME_RECORD
@@ -120,7 +120,7 @@ export const LOGIN_TYPE = {
 export interface GAME_RECORD {
     gameid: number;
     win: number;
-    lose:number;
+    lose: number;
     draw?: number;
 }
 
@@ -129,16 +129,16 @@ export interface GAME_RECORD {
  * @description 环境类型枚举
  */
 export enum ENUM_ENV {
-    DEV = 'dev',
-    TEST = 'test',
-    PROD = 'prod',
+    DEV = "dev",
+    TEST = "test",
+    PROD = "prod",
 }
 
 /**
  * @enum RICH_TYPE
  * @description 财富类型枚举
  */
-export enum RICH_TYPE  {
+export enum RICH_TYPE {
     NONE = 0,
     GOLD_COIN = 1, // 金币（一级货币）
     SILVER_COIN = 2, // 银子（二级货币）
@@ -173,8 +173,8 @@ export interface AD_RECEIVE_REWARD_RESULT {
     maxDailyRewardCount: number;
 }
 
-export const CREATE_ROOM_PLAYER_CNT = [2, 3, 4]
+export const CREATE_ROOM_PLAYER_CNT = [2, 3, 4];
 
-export const DEFAULT_HEADURL = 'https://qiudaoyu-miniapp.oss-cn-hangzhou.aliyuncs.com/head/ji.png'
-export const LOBBY_SHARE_PIC_URL = 'https://qiudaoyu-miniapp.oss-cn-hangzhou.aliyuncs.com/share/10001/sharePic.jpg'
-export const MAIN_GAME_ID = 10001
+export const DEFAULT_HEADURL = "https://qiudaoyu-miniapp.oss-cn-hangzhou.aliyuncs.com/head/ji.png";
+export const LOBBY_SHARE_PIC_URL = "https://qiudaoyu-miniapp.oss-cn-hangzhou.aliyuncs.com/share/10001/sharePic.jpg";
+export const MAIN_GAME_ID = 10002;

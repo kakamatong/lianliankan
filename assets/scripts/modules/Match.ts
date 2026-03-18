@@ -8,6 +8,7 @@ import { LogColors } from "../frameworks/Framework";
 import { UserStatus } from "./UserStatus";
 import { SprotoMatchJoin, SprotoMatchLeave } from "../../types/protocol/lobby/c2s";
 import { BaseModule } from "../frameworks/base/BaseModule";
+import { MAIN_GAME_ID } from "../datacenter/InterfaceConfig";
 
 /**
  * @class Match
@@ -31,7 +32,7 @@ export class Match extends BaseModule {
         if (callBack) {
             this._callBack = callBack;
         }
-        this.reqLobby(SprotoMatchJoin, { gameid: 10002, queueid: 1 }, this.resp.bind(this));
+        this.reqLobby(SprotoMatchJoin, { gameid: MAIN_GAME_ID, queueid: 1 }, this.resp.bind(this));
     }
 
     /**
@@ -58,7 +59,7 @@ export class Match extends BaseModule {
         if (callBack) {
             this._callBack = callBack;
         }
-        this.reqLobby(SprotoMatchLeave, { gameid: 10001, queueid: 1 }, this.respLeave.bind(this));
+        this.reqLobby(SprotoMatchLeave, { gameid: MAIN_GAME_ID, queueid: 1 }, this.respLeave.bind(this));
     }
 
     /**
