@@ -49,9 +49,6 @@ import {
     SprotoRoomInfo,
     SprotoTilesRemoved,
     SprotoTotalResult,
-    SprotoVoteDisbandResult,
-    SprotoVoteDisbandStart,
-    SprotoVoteDisbandUpdate,
 } from "../../../../../../types/protocol/game10002/s2c";
 import {
     SprotoClientReady,
@@ -178,9 +175,6 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoGameRelink, this.onSvrGameRelink.bind(this));
         GameSocketManager.instance.addServerListen(SprotoProgressUpdate, this.onSvrProgressUpdate.bind(this));
         GameSocketManager.instance.addServerListen(SprotoItemEffect, this.onSvrItemEffect.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoVoteDisbandStart, this.onSvrVoteDisbandStart.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoVoteDisbandUpdate, this.onSvrVoteDisbandUpdate.bind(this));
-        GameSocketManager.instance.addServerListen(SprotoVoteDisbandResult, this.onSvrVoteDisbandResult.bind(this));
         LobbySocketManager.instance.addServerListen(SprotoGameRoomReady, this.onSvrGameRoomReady.bind(this));
         AddEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect, this);
     }
@@ -218,9 +212,6 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoGameRelink);
         GameSocketManager.instance.removeServerListen(SprotoProgressUpdate);
         GameSocketManager.instance.removeServerListen(SprotoItemEffect);
-        GameSocketManager.instance.removeServerListen(SprotoVoteDisbandStart);
-        GameSocketManager.instance.removeServerListen(SprotoVoteDisbandUpdate);
-        GameSocketManager.instance.removeServerListen(SprotoVoteDisbandResult);
         LobbySocketManager.instance.removeServerListen(SprotoGameRoomReady);
         RemoveEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect);
     }
@@ -611,42 +602,6 @@ export class CompGameMain extends FGUICompGameMain {
     onSvrItemEffect(data: any): void {
         console.log("道具效果", data);
         // 预留：处理道具效果
-    }
-
-    /**
-     * 投票解散开始处理
-     * @param data 投票数据
-     */
-    onSvrVoteDisbandStart(data: any): void {
-        console.log("投票解散开始", data);
-        // 显示投票界面
-    }
-
-    /**
-     * 投票状态更新处理
-     * @param data 投票状态数据
-     */
-    onSvrVoteDisbandUpdate(data: any): void {
-        console.log("投票状态更新", data);
-        // 更新投票状态显示
-    }
-
-    /**
-     * 投票解散结果处理
-     * @param data 投票结果数据
-     */
-    onSvrVoteDisbandResult(data: any): void {
-        console.log("投票解散结果", data);
-        if (data.result === 1) {
-            // 解散成功
-            PopMessageView.showView({
-                content: "房间已解散",
-                type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
-                sureBack: () => {
-                    this.changeToLobbyScene();
-                },
-            });
-        }
     }
 
     /**
