@@ -4,7 +4,7 @@
     <remark page="0" value="不是自己"/>
     <remark page="1" value="是自己"/>
   </controller>
-  <controller name="ctrl_uncomp" pages="0,,1," selected="1">
+  <controller name="ctrl_uncomp" pages="0,,1," selected="0">
     <remark page="0" value="完成"/>
     <remark page="1" value="未完成"/>
   </controller>
@@ -16,7 +16,7 @@
     <component id="n7_rei5" name="UI_COMP_MEDAL" src="eijp1f" fileName="comp/CompMedal.xml" pkg="so20wr0w" xy="452,37" controller="ctrl_rank,1">
       <gearDisplay controller="ctrl_uncomp" pages="0"/>
     </component>
-    <text id="n8_rei5" name="UI_TXT_USE_TIME" xy="259,44" pivot="0.5,0.5" size="51,42" fontSize="30" color="#666666" align="center" vAlign="middle" singleLine="true" text="0秒">
+    <text id="n8_rei5" name="UI_TXT_USE_TIME" xy="180,44" pivot="0.5,0.5" size="51,42" fontSize="30" color="#ff0000" align="center" vAlign="middle" singleLine="true" text="0秒">
       <gearColor controller="ctrl_uncomp" pages="0,1" values="#ff0000,#000000|#666666,#000000"/>
     </text>
     <image id="n9_rei5" name="n9" src="pz9v1e" fileName="imgs/矩形 1.png" pkg="gj0r6g5i" xy="-7,-4" size="554,125">
@@ -24,6 +24,9 @@
     </image>
     <text id="n10_rei5" name="n10" xy="460,40" size="43,42" fontSize="30" color="#666666" align="center" autoSize="none" text="--">
       <gearDisplay controller="ctrl_uncomp" pages="1"/>
+    </text>
+    <text id="n11_jqb6" name="UI_TXT_SCORE" xy="340,44" pivot="0.5,0.5" size="38,42" fontSize="30" color="#ff0000" align="center" vAlign="middle" singleLine="true" text="10">
+      <gearColor controller="ctrl_uncomp" pages="0,1" values="#ff0000,#000000|#666666,#000000"/>
     </text>
   </displayList>
 </component>

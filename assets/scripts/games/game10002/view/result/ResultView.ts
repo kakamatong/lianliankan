@@ -13,7 +13,7 @@ import { truncateString } from "../../../../frameworks/utils/Utils";
 @ViewClass()
 export class ResultView extends FGUIResultView {
     private _continueFunc: (() => void) | null = null;
-    private _scoreData: Array<{ userid: number; usedTime: number; rank: number; eliminated: number; nickname: string; headurl: string }> =
+    private _scoreData: Array<{ userid: number; usedTime: number; rank: number; eliminated: number; nickname: string; headurl: string; score: number }> =
         [];
     show(data?: any) {
         const flag = 1;
@@ -42,6 +42,7 @@ export class ResultView extends FGUIResultView {
         const head = node.UI_COMP_HEAD as FGUICompHead;
         head.UI_LOADER_HEAD.url = data.headurl;
         node.UI_TXT_NICKNAME.text = truncateString(data.nickname, 8);
+        node.UI_TXT_SCORE.text = data.score?.toString() ?? "0";
         if (data.usedTime > 0) {
             const timeInSeconds = (data.usedTime / 1000).toFixed(3);
             node.UI_TXT_USE_TIME.text = `${timeInSeconds}秒`;

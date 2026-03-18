@@ -871,6 +871,7 @@ export class CompGameMain extends FGUICompGameMain {
 
             // 组装用户数据
             const scoreData = data.rankings.map((rank: any) => {
+                const key = data.rankings.indexOf(rank);
                 const player = GameData.instance.getPlayerBySeat(rank.seat);
                 const headurl = GameData.instance.getHeadurlByUserid(player.userid);
                 return {
@@ -880,6 +881,7 @@ export class CompGameMain extends FGUICompGameMain {
                     eliminated: rank.eliminated,
                     rank: rank.rank,
                     headurl: headurl,
+                    score: data.scores[key].delta,
                 };
             });
 
