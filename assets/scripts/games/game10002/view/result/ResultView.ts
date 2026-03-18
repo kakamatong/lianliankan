@@ -52,6 +52,11 @@ export class ResultView extends FGUIResultView {
         node.UI_TXT_NICKNAME.text = truncateString(data.nickname, 8);
         const score = data.score ?? 0;
         node.UI_TXT_SCORE.text = score > 0 ? `+${score}` : score.toString();
+        if (score >= 0) {
+            node.ctrl_color.selectedIndex = 0;
+        } else {
+            node.ctrl_color.selectedIndex = 1;
+        }
         if (data.usedTime > 0) {
             const timeInSeconds = (data.usedTime / 1000).toFixed(3);
             node.UI_TXT_USE_TIME.text = `${timeInSeconds}秒`;

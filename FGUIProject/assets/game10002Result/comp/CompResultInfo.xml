@@ -8,6 +8,10 @@
     <remark page="0" value="完成"/>
     <remark page="1" value="未完成"/>
   </controller>
+  <controller name="ctrl_color" pages="0,,1," selected="1">
+    <remark page="0" value="红色"/>
+    <remark page="1" value="蓝色"/>
+  </controller>
   <displayList>
     <component id="n3_rei5" name="UI_COMP_HEAD" src="cvev9" fileName="comp/CompHead.xml" pkg="gj0r6g5i" xy="0,0" size="120,120" aspect="true"/>
     <image id="n4_rei5" name="n4" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="1,81" size="118,36" group="n6_rei5"/>
@@ -25,8 +29,8 @@
     <text id="n10_rei5" name="n10" xy="460,40" size="43,42" fontSize="30" color="#666666" align="center" autoSize="none" text="--">
       <gearDisplay controller="ctrl_uncomp" pages="1"/>
     </text>
-    <text id="n11_jqb6" name="UI_TXT_SCORE" xy="340,44" pivot="0.5,0.5" size="38,42" fontSize="30" color="#ff0000" align="center" vAlign="middle" singleLine="true" text="10">
-      <gearColor controller="ctrl_uncomp" pages="0,1" values="#ff0000,#000000|#666666,#000000"/>
+    <text id="n11_jqb6" name="UI_TXT_SCORE" xy="340,44" pivot="0.5,0.5" size="38,42" fontSize="30" color="#0000ff" align="center" vAlign="middle" singleLine="true" text="10">
+      <gearColor controller="ctrl_color" pages="1" values="#0000ff,#000000" default="#ff0000,#000000"/>
     </text>
   </displayList>
 </component>
