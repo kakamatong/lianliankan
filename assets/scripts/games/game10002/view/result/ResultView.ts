@@ -42,6 +42,10 @@ export class ResultView extends FGUIResultView {
             this.UI_LV_GAME_INFO.itemRenderer = this.itemRenderer.bind(this);
             this.UI_LV_GAME_INFO.numItems = this._scoreData.length;
         }
+
+        if (GameData.instance.roomEnd) {
+            this.ctrl_btn.selectedIndex = 1;
+        }
     }
 
     itemRenderer(index: number, item: fgui.GObject) {

@@ -727,6 +727,7 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 结束数据
      */
     onRoomEnd(data: any): void {
+        GameData.instance.roomEnd = true;
         const msg = "房间销毁";
         if (data.code == ROOM_END_FLAG.GAME_END) {
             console.log("游戏结束 " + msg);
