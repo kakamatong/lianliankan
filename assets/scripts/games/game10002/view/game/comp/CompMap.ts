@@ -10,6 +10,7 @@ import { SprotoClickTiles } from "../../../../../../types/protocol/game10002/c2s
 import { TipsView } from "../../../../../view/common/TipsView";
 import { GameData } from "../../../data/GameData";
 import { ENUM_GAME_STEP } from "../../../data/InterfaceGameConfig";
+import { SpinePlay } from "../../../../../frameworks/utils/Utils";
 
 /**
  * @class CompMap
@@ -295,7 +296,10 @@ export class CompMap extends FGUICompMap {
         if (result.canConnect) {
             // 可以消除，显示路径线条，然后延迟消除
             this._showPathLines(result.lines);
-
+            first.cube.UI_SP_ANI.visible = true;
+            second.cube.UI_SP_ANI.visible = true;
+            SpinePlay(first.cube.UI_SP_ANI, "action", false);
+            SpinePlay(second.cube.UI_SP_ANI, "action", false);
             // 延迟0.2秒后执行消除
             this.scheduleOnce(() => {
                 this._removeCubesWithLines(first, second, p1, p2);
