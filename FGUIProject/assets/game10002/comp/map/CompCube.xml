@@ -2,5 +2,6 @@
 <component size="80,80">
   <displayList>
     <loader id="n1_hs3t" name="UI_LOADER_ICOM" xy="0,0" size="80,80" fill="scaleFree" clearOnPublish="true"/>
+    <loader3D id="n2_ef2d" name="UI_SP_ANI" xy="-50,-46" size="360,360" scale="0.5,0.5" visible="false" touchable="false" url="ui://2zsfe53xqcd3l" animation="action" skin="" playing="false"/>
   </displayList>
 </component>

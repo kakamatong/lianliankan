@@ -8,6 +8,7 @@ import { PackageManager } from "../../frameworks/PackageManager";
 export default class FGUICompCube extends fgui.GComponent {
 
 	public UI_LOADER_ICOM:fgui.GLoader;
+	public UI_SP_ANI:fgui.GLoader3D;
 	public static URL:string = "ui://2zsfe53xhs3tr";
 
 	public static packageName:string = "game10002";
@@ -49,6 +50,7 @@ export default class FGUICompCube extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_LOADER_ICOM = <fgui.GLoader>(this.getChildAt(0));
+		this.UI_SP_ANI = <fgui.GLoader3D>(this.getChildAt(1));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

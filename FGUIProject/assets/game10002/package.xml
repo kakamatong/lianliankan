@@ -34,6 +34,9 @@
     <component id="mnt118" name="CompFinshInfo.xml" path="/comp/"/>
     <image id="rei519" name="unComp.png" path="/imgs/"/>
     <component id="ouez1a" name="CompPirvateInfo.xml" path="/comp/"/>
+    <misc id="qcd3m" name="E54011.atlas" path="/spine/"/>
+    <image id="qcd3n" name="E54011.png" path="/spine/"/>
+    <spine id="qcd3l" name="E54011.json" path="/spine/" exported="true" width="360" height="360" require="qcd3m,qcd3n" atlasNames="E54011" anchor="180,180"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
