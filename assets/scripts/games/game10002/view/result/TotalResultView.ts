@@ -3,7 +3,7 @@ import * as fgui from "fairygui-cc";
 import { GameData } from "../../data/GameData";
 import { GameSocketManager } from "../../../../frameworks/GameSocketManager";
 import { ChangeScene, PackageLoad, ViewClass } from "../../../../frameworks/Framework";
-import { truncateString } from "../../../../frameworks/utils/Utils";
+import { TruncateString } from "../../../../frameworks/utils/Utils";
 import { SprotoTotalResult } from "db://assets/types/protocol/game10002/s2c";
 import FGUICompTotalResultInfo from "db://assets/scripts/fgui/game10002Result/FGUICompTotalResultInfo";
 import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
@@ -27,7 +27,7 @@ export class TotalResultView extends FGUITotalResultView {
         if (dataItem) {
             const player = GameData.instance.getPlayerByUserid(dataItem.userid);
             const node = item as FGUICompTotalResultInfo;
-            node.UI_TXT_NICKNAME.text = truncateString(player?.nickname ?? "", 8);
+            node.UI_TXT_NICKNAME.text = TruncateString(player?.nickname ?? "", 8);
             node.UI_TXT_ID.text = `${dataItem.userid}`;
             node.UI_TXT_SCORE.text = `${dataItem.score}`;
             const headurl = GameData.instance.getHeadurlByUserid(dataItem.userid);

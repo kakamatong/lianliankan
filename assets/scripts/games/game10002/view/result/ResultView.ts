@@ -8,7 +8,7 @@ import FGUICompResultInfo from "../../../../fgui/game10002Result/FGUICompResultI
 import FGUICompHead from "../../../../fgui/common/FGUICompHead";
 import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
 import { DataCenter } from "db://assets/scripts/datacenter/Datacenter";
-import { truncateString } from "../../../../frameworks/utils/Utils";
+import { TruncateString } from "../../../../frameworks/utils/Utils";
 
 @ViewClass()
 @PackageLoad(["gameCommon"])
@@ -53,7 +53,7 @@ export class ResultView extends FGUIResultView {
         const node = item as FGUICompResultInfo;
         const head = node.UI_COMP_HEAD as FGUICompHead;
         head.UI_LOADER_HEAD.url = data.headurl;
-        node.UI_TXT_NICKNAME.text = truncateString(data.nickname, 8);
+        node.UI_TXT_NICKNAME.text = TruncateString(data.nickname, 8);
         const score = data.score ?? 0;
         node.UI_TXT_SCORE.text = score > 0 ? `+${score}` : score.toString();
         if (score >= 0) {

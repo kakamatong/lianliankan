@@ -976,7 +976,7 @@ const getCharWidth = (char: string): number => {
  * @param maxWidth 最大显示宽度
  * @returns 截取后的字符串
  */
-export const truncateString = (str: string, maxWidth: number): string => {
+export const TruncateString = (str: string, maxWidth: number): string => {
     if (!str || maxWidth <= 0) {
         return "";
     }

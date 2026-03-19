@@ -4,11 +4,11 @@
  * @category 排行榜视图
  */
 
-import { _decorator} from 'cc';
+import { _decorator } from "cc";
 import FGUICompRankInfo from "../../../fgui/rank/FGUICompRankInfo";
 import * as fgui from "fairygui-cc";
-import { ViewClass } from '../../../frameworks/Framework';
-import { truncateString } from '../../../frameworks/utils/Utils';
+import { ViewClass } from "../../../frameworks/Framework";
+import { TruncateString } from "../../../frameworks/utils/Utils";
 
 /**
  * @class CompRankInfo
@@ -21,8 +21,8 @@ export class CompRankInfo extends FGUICompRankInfo {
      * @description 显示排名信息
      * @param data 排名数据
      */
-    show(data?:any){
-        this.UI_TXT_NAME.text = truncateString(data.nickname ?? "", 8);
+    show(data?: any) {
+        this.UI_TXT_NAME.text = TruncateString(data.nickname ?? "", 8);
         this.UI_TXT_RANK.text = data.rank ?? "";
         this.UI_TXT_SCORE.text = data.score ?? "";
     }
