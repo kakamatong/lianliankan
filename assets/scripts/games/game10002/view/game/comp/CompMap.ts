@@ -476,6 +476,7 @@ export class CompMap extends FGUICompMap {
                     } else {
                         // 设置资源路径，格式: ui://resPath/80_resId
                         cube.visible = true;
+                        cube.UI_SP_ANI.visible = false;
                         cube.UI_LOADER_ICOM.url = `ui://${resPath}/80_${resId}`;
                     }
                 }
