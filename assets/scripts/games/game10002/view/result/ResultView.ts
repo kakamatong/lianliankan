@@ -43,7 +43,7 @@ export class ResultView extends FGUIResultView {
             this.UI_LV_GAME_INFO.numItems = this._scoreData.length;
         }
 
-        if (GameData.instance.roomEnd) {
+        if (GameData.instance.roomEnd && GameData.instance.isPrivateRoom) {
             this.ctrl_btn.selectedIndex = 1;
         }
     }

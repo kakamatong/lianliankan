@@ -262,6 +262,12 @@ export interface LogicinfoRequest {
     ext: string;
 }
 
+/** 地图打乱/重新生成通知 - 请求参数 */
+export interface MapshuffledRequest {
+    seat: number;
+    reason: number;
+}
+
 export namespace SprotoSvrMsg {
     export const Name = "svrMsg";
     export type Request = SvrmsgRequest;
@@ -416,4 +422,10 @@ export namespace SprotoLogicInfo {
     export const Name = "logicInfo";
     export type Request = LogicinfoRequest;
     export type Response = undefined;  // logicInfo 协议没有响应参数
+}
+
+export namespace SprotoMapShuffled {
+    export const Name = "mapShuffled";
+    export type Request = MapshuffledRequest;
+    export type Response = undefined;  // mapShuffled 协议没有响应参数
 }
