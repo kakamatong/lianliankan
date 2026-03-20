@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
   <controller name="ctrl_btn" pages="0,都不显示,1,确定,2,更换,3,继续游戏,4,准备" selected="0"/>
-  <controller name="ctrl_roomtype" pages="0,普通房,1,私人房" selected="1">
+  <controller name="ctrl_roomtype" pages="0,普通房,1,私人房" selected="0">
     <action type="change_page" fromPage="" toPage="1" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="1"/>
     <action type="change_page" fromPage="" toPage="0" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="0"/>
     <action type="change_page" fromPage="" toPage="1" objectId="n63_gk14" controller="ctrl_roomtype" targetPage="1"/>
@@ -48,7 +48,9 @@
     <component id="n62_gk14" name="UI_COMP_SELFPLAYER" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="18,1506" group="n75_mnt1">
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
-    <component id="n74_mnt1" name="UI_COMP_SELF_MEDAL" src="eijp1f" fileName="comp/CompMedal.xml" pkg="so20wr0w" xy="123,1501" group="n75_mnt1"/>
+    <component id="n74_mnt1" name="UI_COMP_SELF_MEDAL" src="eijp1f" fileName="comp/CompMedal.xml" pkg="so20wr0w" xy="123,1501" group="n75_mnt1">
+      <relation target="" sidePair="left-left,bottom-bottom"/>
+    </component>
     <group id="n75_mnt1" name="n75" xy="18,1501" size="165,166"/>
     <component id="n21_folo" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,0">
       <gearDisplay controller="ctrl_btn" pages="1"/>
