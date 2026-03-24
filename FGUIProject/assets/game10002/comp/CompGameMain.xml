@@ -30,7 +30,7 @@
     <component id="n71_pgw3" name="UI_COMP_PLAYERS" src="pgw3x" fileName="comp/CompPlayers.xml" xy="9,20">
       <relation target="" sidePair="width-width,top-top"/>
     </component>
-    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,627">
+    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,627" pivot="0.5,0.5">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
     <component id="n53_mwa6" name="UI_BTN_INVITE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="387,1324" size="230,98" group="n78_ouez" visible="false">
