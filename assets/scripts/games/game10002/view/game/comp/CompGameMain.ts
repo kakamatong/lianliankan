@@ -466,12 +466,14 @@ export class CompGameMain extends FGUICompGameMain {
             const selfSeat = GameData.instance.getSelfSeat();
 
             // 保存地图数据到 GameData
-            GameData.instance.setPlayerMapData(data.seat, map, data.totalBlocks);
+            GameData.instance.setPlayerMapData(data.seat, map, data.totalBlocks, data.col, data.row);
 
             if (data.seat === selfSeat) {
                 // 自己的地图，渲染到主地图
                 const compMap = this.getCompMap();
                 if (compMap) {
+                    const scale = data.row <= 6 && data.col <= 6 ? 1.2 : 1.0;
+                    compMap.node.setScale(scale, scale);
                     compMap.initMap(map, "resEmoji");
                 }
             } else {

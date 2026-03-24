@@ -253,6 +253,8 @@ export interface MapdataRequest {
     mapData: string;
     totalBlocks: number;
     seat: number;
+    col: number;
+    row: number;
 }
 
 /** 游戏逻辑信息 - 请求参数 */

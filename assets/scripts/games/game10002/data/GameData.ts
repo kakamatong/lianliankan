@@ -15,6 +15,8 @@ export interface PLAYER_MAP_DATA {
     seat: number;
     mapData: number[][];
     totalBlocks: number;
+    col: number;
+    row: number;
 }
 
 /**
@@ -244,11 +246,13 @@ export class GameData {
      * @param mapData 地图数据
      * @param totalBlocks 总方块数
      */
-    setPlayerMapData(seat: number, mapData: number[][], totalBlocks: number): void {
+    setPlayerMapData(seat: number, mapData: number[][], totalBlocks: number, col: number, row: number): void {
         this._playerMaps.set(seat, {
             seat,
             mapData,
             totalBlocks,
+            col,
+            row,
         });
     }
 
