@@ -7,10 +7,10 @@
 import FGUIMatchView from "@fgui/match/FGUIMatchView";
 import * as fgui from "fairygui-cc";
 import { Match } from "@modules/Match";
-import { ENUM_POP_MESSAGE_TYPE, LOCAL_KEY } from "../../datacenter/InterfaceConfig";
+import { ENUM_POP_MESSAGE_TYPE, LOCAL_KEY } from "@datacenter/InterfaceConfig";
 import { PopMessageView } from "../common/PopMessageView";
 import { LobbySocketManager } from "@frameworks/LobbySocketManager";
-import { DataCenter } from "../../datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { LogColors, ViewClass } from "@frameworks/Framework";
 import { TipsView } from "../common/TipsView";
 import { CompMatchAct } from "./comp/CompMatchAct";

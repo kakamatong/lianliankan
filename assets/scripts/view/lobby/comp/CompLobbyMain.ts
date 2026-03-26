@@ -1,11 +1,11 @@
 import FGUICompLobbyMain from "@fgui/lobby/FGUICompLobbyMain";
 import { ViewClass, AddEventListener, ChangeScene, LogColors, RemoveEventListener } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
-import { DataCenter } from "../../../datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { ConnectSvr } from "@modules/ConnectSvr";
 import { PopMessageView } from "../../common/PopMessageView";
-import { ENUM_POP_MESSAGE_TYPE, ENUM_USER_STATUS, LOBBY_SHARE_PIC_URL, LOCAL_KEY, RICH_TYPE } from "../../../datacenter/InterfaceConfig";
-import { EVENT_NAMES } from "../../../datacenter/CommonConfig";
+import { ENUM_POP_MESSAGE_TYPE, ENUM_USER_STATUS, LOBBY_SHARE_PIC_URL, LOCAL_KEY, RICH_TYPE } from "@datacenter/InterfaceConfig";
+import { EVENT_NAMES } from "@datacenter/CommonConfig";
 import { FW_EVENT_NAMES } from "@frameworks/config/Config";
 import { TipsView } from "../../common/TipsView";
 import { LobbySocketManager } from "@frameworks/LobbySocketManager";

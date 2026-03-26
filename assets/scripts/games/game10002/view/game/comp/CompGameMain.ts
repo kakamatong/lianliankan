@@ -1,7 +1,7 @@
 import FGUICompGameMain from "@fgui/game10002/FGUICompGameMain";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "@frameworks/Framework";
-import { DataCenter } from "../../../../../datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { GameData } from "../../../data/GameData";
 import {
     PLAYER_STATUS,
@@ -15,7 +15,7 @@ import * as fgui from "fairygui-cc";
 import { CompTimeLeft } from "./CompTimeLeft";
 import { CompFinshInfo } from "./CompFinshInfo";
 import { PopMessageView } from "../../../../../view/common/PopMessageView";
-import { ENUM_POP_MESSAGE_TYPE } from "../../../../../datacenter/InterfaceConfig";
+import { ENUM_POP_MESSAGE_TYPE } from "@datacenter/InterfaceConfig";
 import { FW_EVENT_NAMES } from "@frameworks/config/Config";
 import { ResultView } from "../../result/ResultView";
 import { UserStatus } from "@modules/UserStatus";

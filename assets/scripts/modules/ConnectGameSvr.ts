@@ -5,7 +5,7 @@
  */
 
 import { SprotoJoinPrivateRoom } from "../../types/protocol/lobby/c2s";
-import { DataCenter } from "../datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { LogColors } from "@frameworks/Framework";
 import { AuthGame } from "./AuthGame";
 import { BaseModule } from "@frameworks/base/BaseModule";

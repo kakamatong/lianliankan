@@ -4,10 +4,10 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from "../datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { DispatchEvent } from "@frameworks/Framework";
 import { SprotoUpdateUserNameAndHeadurl, SprotoUserData } from "../../types/protocol/lobby/c2s";
-import { EVENT_NAMES } from "../datacenter/CommonConfig";
+import { EVENT_NAMES } from "@datacenter/CommonConfig";
 import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**

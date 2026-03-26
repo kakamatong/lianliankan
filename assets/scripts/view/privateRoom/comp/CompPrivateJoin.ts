@@ -7,7 +7,7 @@
 import FGUICompPrivateJoin from "@fgui/privateRoom/FGUICompPrivateJoin";
 import * as fgui from "fairygui-cc";
 import { PopMessageView } from "../../common/PopMessageView";
-import { ENUM_POP_MESSAGE_TYPE } from "../../../datacenter/InterfaceConfig";
+import { ENUM_POP_MESSAGE_TYPE } from "@datacenter/InterfaceConfig";
 import { TipsView } from "../../common/TipsView";
 import { ConnectGameSvr } from "@modules/ConnectGameSvr";
 import { ViewClass } from "@frameworks/Framework";

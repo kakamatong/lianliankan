@@ -6,8 +6,8 @@
 
 import { SprotoCallActivityFunc } from "../../types/protocol/lobby/c2s";
 import { LogColors } from "@frameworks/Framework";
-import { DataCenter } from "../datacenter/Datacenter";
-import { AD_REWARD_INFO, AD_RECEIVE_REWARD_RESULT } from "../datacenter/InterfaceConfig";
+import { DataCenter } from "@datacenter/Datacenter";
+import { AD_REWARD_INFO, AD_RECEIVE_REWARD_RESULT } from "@datacenter/InterfaceConfig";
 import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**

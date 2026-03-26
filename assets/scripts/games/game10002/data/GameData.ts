@@ -4,7 +4,7 @@
  * @category 游戏 10002
  */
 
-import { DEFAULT_HEADURL } from "../../../datacenter/InterfaceConfig";
+import { DEFAULT_HEADURL } from "@datacenter/InterfaceConfig";
 import { GAME_PLAYER_INFO, ENUM_GAME_STEP, GAME_DATA } from "./InterfaceGameConfig";
 
 /**

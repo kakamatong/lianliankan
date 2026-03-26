@@ -4,8 +4,8 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from "../datacenter/Datacenter";
-import { ENUM_CHANNEL_ID, LOGIN_TYPE } from "../datacenter/InterfaceConfig";
+import { DataCenter } from "@datacenter/Datacenter";
+import { ENUM_CHANNEL_ID, LOGIN_TYPE } from "@datacenter/InterfaceConfig";
 import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import { ACCOUNT_INFO, Login } from "@frameworks/login/Login";
 import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";

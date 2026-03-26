@@ -4,7 +4,7 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from "../datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { SprotoGetAwardNotice, SprotoSetAwardNoticeRead } from "../../types/protocol/lobby/c2s";
 import { BaseModule } from "@frameworks/base/BaseModule";
 

@@ -4,7 +4,7 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from "../datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { LogColors } from "@frameworks/Framework";
 import { HttpPostWithDefaultJWT } from "@frameworks/utils/Utils";
 import { BaseModule } from "@frameworks/base/BaseModule";

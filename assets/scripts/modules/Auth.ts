@@ -5,7 +5,7 @@
  */
 
 import CryptoJS from "crypto-js";
-import { DataCenter } from "../datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { LogColors } from "@frameworks/Framework";
 import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import { UserData } from "./UserData";

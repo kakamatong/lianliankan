@@ -4,8 +4,8 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from "../datacenter/Datacenter";
-import { MAIN_GAME_ID } from "../datacenter/InterfaceConfig";
+import { DataCenter } from "@datacenter/Datacenter";
+import { MAIN_GAME_ID } from "@datacenter/InterfaceConfig";
 import { SprotoUserGameRecord } from "../../types/protocol/lobby/c2s";
 import { BaseModule } from "@frameworks/base/BaseModule";
 
