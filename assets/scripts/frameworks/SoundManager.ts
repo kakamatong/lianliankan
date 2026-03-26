@@ -178,6 +178,20 @@ export class SoundManager {
     }
 
     /**
+     * @method adCloseMusicPlay
+     * @description 广告关闭时恢复播放背景音乐
+     */
+    adCloseMusicPlay() {
+        const isOpen = this.getSoundMusicOpen();
+        if (isOpen) {
+            const newAs = fgui.GRoot.inst.node.addComponent(AudioSourceComponent);
+            if (!newAs) return;
+            newAs.pause();
+            newAs.play();
+        }
+    }
+
+    /**
      * @method openSoundEffect
      * @description 开启音效
      */
