@@ -4,7 +4,7 @@ import { GameData } from "../../data/GameData";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { ChangeScene, PackageLoad, ViewClass } from "@frameworks/Framework";
 import { TruncateString } from "@frameworks/utils/Utils";
-import { SprotoTotalResult } from "@types/protocol/game10002/s2c";
+import { SprotoTotalResult } from "../../../../../../types/protocol/game10002/s2c";
 import FGUICompTotalResultInfo from "db://assets/scripts/fgui/game10002Result/FGUICompTotalResultInfo";
 import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
 

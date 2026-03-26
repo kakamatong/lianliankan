@@ -4,7 +4,7 @@
  * @category 网络请求模块
  */
 
-import { SprotoJoinPrivateRoom } from "@types/protocol/lobby/c2s";
+import { SprotoJoinPrivateRoom } from "../../types/protocol/lobby/c2s";
 import { DataCenter } from "../datacenter/Datacenter";
 import { LogColors } from "@frameworks/Framework";
 import { AuthGame } from "./AuthGame";

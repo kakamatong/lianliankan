@@ -6,7 +6,7 @@ import { MapManager } from "../../../logic/MapManager";
 import { Point, LineSegment } from "../../../logic/TileMapData";
 import { ViewClass } from "@frameworks/Framework";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
-import { SprotoClickTiles } from "@types/protocol/game10002/c2s";
+import { SprotoClickTiles } from "../../../../../../types/protocol/game10002/c2s";
 import { TipsView } from "../../../../../view/common/TipsView";
 import { GameData } from "../../../data/GameData";
 import { ENUM_GAME_STEP } from "../../../data/InterfaceGameConfig";

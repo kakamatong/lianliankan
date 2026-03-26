@@ -4,7 +4,7 @@
  * @category 网络请求模块
  */
 
-import { SprotoUserRiches } from "@types/protocol/lobby/c2s";
+import { SprotoUserRiches } from "../../types/protocol/lobby/c2s";
 import { DataCenter } from "../datacenter/Datacenter";
 import { DispatchEvent } from "@frameworks/Framework";
 import { EVENT_NAMES } from "../datacenter/CommonConfig";

@@ -4,9 +4,8 @@
  * @category 网络请求模块
  */
 
-import { CancelrevokeaccResponse, RevokeaccResponse } from "@types/protocol/lobby/c2s";
 import { DataCenter } from "../datacenter/Datacenter";
-import { SprotoRevokeAcc, SprotoCancelRevokeAcc } from "@types/protocol/lobby/c2s";
+import { SprotoRevokeAcc, SprotoCancelRevokeAcc } from "../../types/protocol/lobby/c2s";
 import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**

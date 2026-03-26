@@ -15,7 +15,7 @@ import { LogColors, ViewClass } from "@frameworks/Framework";
 import { TipsView } from "../common/TipsView";
 import { CompMatchAct } from "./comp/CompMatchAct";
 import { sys } from "cc";
-import { SprotoMatchOnSure, SprotoMatchOnSureFail } from "@types/protocol/lobby/s2c";
+import { SprotoMatchOnSure, SprotoMatchOnSureFail } from "../../../types/protocol/lobby/s2c";
 
 /**
  * @class MatchView

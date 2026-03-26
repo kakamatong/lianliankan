@@ -6,7 +6,7 @@
 
 import { DataCenter } from "../datacenter/Datacenter";
 import { MAIN_GAME_ID } from "../datacenter/InterfaceConfig";
-import { SprotoUserGameRecord } from "@types/protocol/lobby/c2s";
+import { SprotoUserGameRecord } from "../../types/protocol/lobby/c2s";
 import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**

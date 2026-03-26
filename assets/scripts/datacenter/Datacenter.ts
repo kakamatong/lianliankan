@@ -4,7 +4,7 @@
  * @category 数据中心
  */
 
-import { UserdataResponse, UserstatusResponse } from "@types/protocol/lobby/c2s";
+import { UserdataResponse, UserstatusResponse } from "../../types/protocol/lobby/c2s";
 import {
     LOGIN_INFO,
     USER_STATUS,
