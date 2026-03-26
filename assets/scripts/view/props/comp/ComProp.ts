@@ -2,7 +2,7 @@ import FGUIComProp from "@fgui/props/FGUIComProp";
 import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { PropInfo } from "../data/PropConfig";
-import { Prop } from "../../../modules/Prop";
+import { Prop } from "@modules/Prop";
 
 /**
  * 道具组件类

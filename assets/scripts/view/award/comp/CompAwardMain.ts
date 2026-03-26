@@ -3,7 +3,7 @@ import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { AwardConfig } from "../data/AwardConfig";
 import { ComProp } from "../../props/comp/ComProp";
-import { AwardNotices } from "../../../modules/AwardNotices";
+import { AwardNotices } from "@modules/AwardNotices";
 
 @ViewClass()
 export class CompAwardMain extends FGUICompAwardMain {
