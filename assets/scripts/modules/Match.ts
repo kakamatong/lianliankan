@@ -6,7 +6,7 @@
 
 import { LogColors } from "@frameworks/Framework";
 import { UserStatus } from "./UserStatus";
-import { SprotoMatchJoin, SprotoMatchLeave } from "../../types/protocol/lobby/c2s";
+import { SprotoMatchJoin, SprotoMatchLeave } from "@types/protocol/lobby/c2s";
 import { BaseModule } from "@frameworks/base/BaseModule";
 import { MAIN_GAME_ID } from "../datacenter/InterfaceConfig";
 

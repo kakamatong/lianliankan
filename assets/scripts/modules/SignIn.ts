@@ -4,7 +4,7 @@
  * @category 网络请求模块
  */
 
-import { SprotoCallActivityFunc } from "../../types/protocol/lobby/c2s";
+import { SprotoCallActivityFunc } from "@types/protocol/lobby/c2s";
 import { LogColors } from "@frameworks/Framework";
 import { BaseModule } from "@frameworks/base/BaseModule";
 

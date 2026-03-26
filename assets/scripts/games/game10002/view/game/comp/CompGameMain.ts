@@ -49,7 +49,7 @@ import {
     SprotoStepId,
     SprotoTilesRemoved,
     SprotoTotalResult,
-} from "../../../../../../types/protocol/game10002/s2c";
+} from "@types/protocol/game10002/s2c";
 import {
     SprotoClientReady,
     SprotoGameReady,
@@ -57,8 +57,8 @@ import {
     SprotoUseItem,
     SprotoVoteDisbandRoom,
     SprotoOwnerStartGame,
-} from "../../../../../../types/protocol/game10002/c2s";
-import { SprotoGameRoomReady } from "../../../../../../types/protocol/lobby/s2c";
+} from "@types/protocol/game10002/c2s";
+import { SprotoGameRoomReady } from "@types/protocol/lobby/s2c";
 import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "../../talk/TalkConfig";
 import { TalkView } from "../../talk/TalkView";
 import { CompMap } from "./CompMap";
