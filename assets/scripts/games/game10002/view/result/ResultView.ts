@@ -7,7 +7,7 @@ import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import FGUICompResultInfo from "@fgui/game10002Result/FGUICompResultInfo";
 import FGUICompHead from "@fgui/common/FGUICompHead";
 import FGUICompMedal from "@fgui/gameCommon/FGUICompMedal";
-import { DataCenter } from "db://assets/scripts/datacenter/Datacenter";
+import { DataCenter } from "@datacenter/Datacenter";
 import { TruncateString } from "@frameworks/utils/Utils";
 
 @ViewClass()

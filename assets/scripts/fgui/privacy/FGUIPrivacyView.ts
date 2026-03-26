@@ -4,6 +4,7 @@ import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
 
 import { PackageManager } from "@frameworks/PackageManager";
+import { Logger } from "@frameworks/utils/Utils";
 
 export default class FGUIPrivacyView extends fgui.GComponent {
 
@@ -33,7 +34,7 @@ export default class FGUIPrivacyView extends fgui.GComponent {
 			view.show && view.show(params);
 			callBack&&callBack(true);
 		}
-		).catch(error=>{console.log("showView error", error);callBack&&callBack(false);return;});
+		).catch(error=>{Logger.error("showView error", error);callBack&&callBack(false);return;});
 	}
 
 	protected onDestroy():void {

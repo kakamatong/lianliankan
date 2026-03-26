@@ -64,6 +64,7 @@ import { TalkView } from "../../talk/TalkView";
 import { CompMap } from "./CompMap";
 import { LineSegment } from "../../../logic/TileMapData";
 import FGUICompMedal from "@fgui/gameCommon/FGUICompMedal";
+import { Logger } from "@frameworks/utils/Utils";
 
 /**
  * 游戏主体组件
@@ -147,7 +148,7 @@ export class CompGameMain extends FGUICompGameMain {
 
         // 初始化地图组件
         (this.UI_COMP_MAP as CompMap).initMap(map, "resEmoji");
-        console.log("随机地图生成完成", map);
+        Logger.log("随机地图生成完成", map);
     }
 
     /**
@@ -223,7 +224,7 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 转发消息数据
      */
     onSvrForwardMessage(data: SprotoForwardMessage.Request) {
-        console.log(data);
+        Logger.log(data);
         this.forwardMessage(data);
     }
 
@@ -348,25 +349,25 @@ export class CompGameMain extends FGUICompGameMain {
         switch (type) {
             case FORWARD_MESSAGE_TYPE.TALK:
                 // 处理聊天消息
-                console.log("[聊天] 收到消息转发:", data);
+                Logger.log("[聊天] 收到消息转发:", data);
                 try {
                     const talkData = JSON.parse(data.msg);
-                    console.log("[聊天] 解析后的数据:", talkData);
+                    Logger.log("[聊天] 解析后的数据:", talkData);
                     if (talkData && talkData.id) {
-                        console.log("[聊天] 显示聊天，from:", data.from, "id:", talkData.id);
+                        Logger.log("[聊天] 显示聊天，from:", data.from, "id:", talkData.id);
                         this.showTalk({
                             from: data.from,
                             id: talkData.id,
                         });
                     } else {
-                        console.warn("[聊天] talkData.id 不存在:", talkData);
+                        Logger.warn("[聊天] talkData.id 不存在:", talkData);
                     }
                 } catch (e) {
-                    console.error("[聊天] 解析聊天消息失败:", e);
+                    Logger.error("[聊天] 解析聊天消息失败:", e);
                 }
                 break;
             default:
-                console.log("未处理的消息转发类型:", type);
+                Logger.log("未处理的消息转发类型:", type);
                 break;
         }
     }
@@ -376,22 +377,22 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 聊天数据
      */
     showTalk(data: { from: number; id: number }): void {
-        console.log("[聊天] showTalk 被调用:", data);
+        Logger.log("[聊天] showTalk 被调用:", data);
         const id = data.id;
         const userid = data.from;
-        console.log("[聊天] 查找玩家 userid:", userid);
+        Logger.log("[聊天] 查找玩家 userid:", userid);
         const player = GameData.instance.getPlayerByUserid(userid);
         if (!player) {
-            console.warn("[聊天] 未找到玩家 userid:", userid);
+            Logger.warn("[聊天] 未找到玩家 userid:", userid);
             return;
         }
-        console.log("[聊天] 找到玩家:", player.nickname);
+        Logger.log("[聊天] 找到玩家:", player.nickname);
         const talkData = TALK_LIST.find((item) => item.id == id);
         if (!talkData) {
-            console.warn("[聊天] 未找到聊天配置 id:", id);
+            Logger.warn("[聊天] 未找到聊天配置 id:", id);
             return;
         }
-        console.log("[聊天] 显示消息:", talkData.msg);
+        Logger.log("[聊天] 显示消息:", talkData.msg);
 
         const selfid = DataCenter.instance.userid;
         if (userid === selfid) {
@@ -402,22 +403,22 @@ export class CompGameMain extends FGUICompGameMain {
             }
         } else {
             // 其他玩家，使用 UI_COMP_PLAYERS 列表
-            console.log("[聊天] 处理其他玩家消息，svrSeat:", player.svrSeat);
+            Logger.log("[聊天] 处理其他玩家消息，svrSeat:", player.svrSeat);
             const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-            console.log("[聊天] compPlayers:", compPlayers ? "存在" : "不存在");
+            Logger.log("[聊天] compPlayers:", compPlayers ? "存在" : "不存在");
             const otherPlayer = compPlayers?.getOtherPlayer(player.svrSeat);
-            console.log("[聊天] otherPlayer:", otherPlayer ? "存在" : "不存在");
+            Logger.log("[聊天] otherPlayer:", otherPlayer ? "存在" : "不存在");
             if (otherPlayer) {
                 const headComp = otherPlayer.getHeadComponent();
-                console.log("[聊天] headComponent:", headComp ? "存在" : "不存在");
+                Logger.log("[聊天] headComponent:", headComp ? "存在" : "不存在");
                 if (headComp) {
                     headComp.showMsg(talkData.msg);
-                    console.log("[聊天] 消息已显示");
+                    Logger.log("[聊天] 消息已显示");
                 } else {
-                    console.warn("[聊天] headComponent 为空");
+                    Logger.warn("[聊天] headComponent 为空");
                 }
             } else {
-                console.warn("[聊天] 未找到其他玩家组件，svrSeat:", player.svrSeat);
+                Logger.warn("[聊天] 未找到其他玩家组件，svrSeat:", player.svrSeat);
             }
         }
     }
@@ -427,7 +428,7 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 逻辑信息数据
      */
     onSvrLogicInfo(data: any): void {
-        console.log("游戏逻辑信息", data);
+        Logger.log("游戏逻辑信息", data);
         if (data.playingStepTime !== undefined) {
             GameData.instance.playingStepTime = data.playingStepTime;
         }
@@ -454,9 +455,9 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 地图数据
      */
     onSvrMapData(data: SprotoMapData.Request): void {
-        console.log("地图数据", data);
+        Logger.log("地图数据", data);
         if (!data.mapData) {
-            console.warn("地图数据为空");
+            Logger.warn("地图数据为空");
             return;
         }
 
@@ -480,7 +481,7 @@ export class CompGameMain extends FGUICompGameMain {
                 this.updateOtherPlayerMap(data.seat, map);
             }
         } catch (e) {
-            console.error("地图数据解析失败:", e);
+            Logger.error("地图数据解析失败:", e);
         }
     }
 
@@ -489,7 +490,7 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 消除数据
      */
     onSvrTilesRemoved(data: SprotoTilesRemoved.Request): void {
-        console.log("方块消除", data);
+        Logger.log("方块消除", data);
         const selfSeat = GameData.instance.getSelfSeat();
 
         if (data.seat === selfSeat) {
@@ -514,12 +515,12 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 完成数据
      */
     onSvrPlayerFinished(data: any): void {
-        console.log("玩家完成", data);
+        Logger.log("玩家完成", data);
         const selfSeat = GameData.instance.getSelfSeat();
 
         if (data.seat === selfSeat) {
             // 自己完成，显示排名奖牌和完成信息
-            console.log(`自己完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
+            Logger.log(`自己完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
             if (this.UI_COMP_SELF_MEDAL && data.rank > 0) {
                 this.UI_COMP_SELF_MEDAL.ctrl_rank.selectedIndex = data.rank;
             }
@@ -543,7 +544,7 @@ export class CompGameMain extends FGUICompGameMain {
 
             const player = GameData.instance.getPlayerBySeat(data.seat);
             if (player) {
-                console.log(`玩家 ${player.nickname} 完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
+                Logger.log(`玩家 ${player.nickname} 完成游戏，排名: ${data.rank}，用时: ${data.usedTime}秒`);
             }
         }
     }
@@ -553,7 +554,7 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 重连数据
      */
     onSvrGameRelink(data: any): void {
-        console.log("游戏重连", data);
+        Logger.log("游戏重连", data);
         GameData.instance.gameStart = true;
         this.showStartGameBtn(false);
         this.showInviteBtn(false);
@@ -576,7 +577,7 @@ export class CompGameMain extends FGUICompGameMain {
         const player = GameData.instance.getPlayerBySeat(data.seat);
         if (player) {
             // 更新其他玩家的进度显示
-            console.log(`玩家 ${player.nickname} 进度: ${data.percentage}%，剩余: ${data.remaining}`);
+            Logger.log(`玩家 ${player.nickname} 进度: ${data.percentage}%，剩余: ${data.remaining}`);
             // TODO: 后续服务器完善接口后，可以更新其他玩家的地图
             // this.updateOtherPlayerMap(data.seat, mapData);
         }
@@ -612,7 +613,7 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 道具效果数据
      */
     onSvrItemEffect(data: any): void {
-        console.log("道具效果", data);
+        Logger.log("道具效果", data);
         // 预留：处理道具效果
     }
 
@@ -713,13 +714,13 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 房间数据
      */
     onSvrGameRoomReady(data: any): void {
-        console.log("gameRoomReady", data);
+        Logger.log("gameRoomReady", data);
         MatchView.hideView();
         DataCenter.instance.gameid = data.gameid;
         DataCenter.instance.roomid = data.roomid;
         DataCenter.instance.gameAddr = data.addr;
         DataCenter.instance.shortRoomid = 0; // 匹配房
-        console.log(LogColors.green("游戏房间准备完成"));
+        Logger.log(LogColors.green("游戏房间准备完成"));
         this.connectToGame(data.addr, data.gameid, data.roomid);
     }
 
@@ -731,9 +732,9 @@ export class CompGameMain extends FGUICompGameMain {
         GameData.instance.roomEnd = true;
         const msg = "房间销毁";
         if (data.code == ROOM_END_FLAG.GAME_END) {
-            console.log("游戏结束 " + msg);
+            Logger.log("游戏结束 " + msg);
         } else if (data.code == ROOM_END_FLAG.OUT_TIME_WAITING) {
-            console.log("等待超时 " + msg);
+            Logger.log("等待超时 " + msg);
             PopMessageView.showView({
                 content: "等待超时",
                 type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
@@ -745,7 +746,7 @@ export class CompGameMain extends FGUICompGameMain {
                 },
             });
         } else if (data.code == ROOM_END_FLAG.OUT_TIME_PLAYING) {
-            console.log("游戏超时 " + msg);
+            Logger.log("游戏超时 " + msg);
             PopMessageView.showView({
                 content: "游戏超时",
                 type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
@@ -772,7 +773,7 @@ export class CompGameMain extends FGUICompGameMain {
                 },
             });
         } else if (data.code == ROOM_END_FLAG.VOTE_DISBAND) {
-            console.log("投票解散 " + msg);
+            Logger.log("投票解散 " + msg);
             //this.onBtnClose()
         }
     }
@@ -782,7 +783,7 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 玩家信息数据
      */
     onSvrPlayerInfos(data: SprotoPlayerInfos.Request): void {
-        console.log("onSvrPlayerInfos", data);
+        Logger.log("onSvrPlayerInfos", data);
         const selfid = DataCenter.instance.userid;
         for (let i = 0; i < data.infos.length; i++) {
             const info = data.infos[i];
@@ -978,7 +979,7 @@ export class CompGameMain extends FGUICompGameMain {
     addOtherPlayer(svrSeat: number, playerInfo: any): void {
         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
         if (!compPlayers) {
-            console.error("UI_COMP_PLAYERS 组件不存在");
+            Logger.error("UI_COMP_PLAYERS 组件不存在");
             return;
         }
         const headurl = GameData.instance.getHeadurlByUserid(playerInfo.userid);
@@ -1027,7 +1028,7 @@ export class CompGameMain extends FGUICompGameMain {
      */
     showPlayerInfoBySeat(svrSeat: number): void {
         if (svrSeat !== GameData.instance.getSelfSeat()) {
-            console.warn("showPlayerInfoBySeat 仅用于自己，其他玩家请使用 CompPlayers");
+            Logger.warn("showPlayerInfoBySeat 仅用于自己，其他玩家请使用 CompPlayers");
             return;
         }
         const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
@@ -1082,7 +1083,7 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 房间数据
      */
     onRoomInfo(data: any): void {
-        console.log(data);
+        Logger.log(data);
         GameData.instance.owner = data.owner;
         // 展示好友房信息
         if (data.shortRoomid) {
@@ -1154,7 +1155,7 @@ export class CompGameMain extends FGUICompGameMain {
         if (GameData.instance.isPrivateRoom) {
             if (!GameData.instance.roomEnd) {
                 if (GameData.instance.gameStart) {
-                    console.log("游戏中无法退出");
+                    Logger.log("游戏中无法退出");
                 } else {
                     GameSocketManager.instance.sendToServer(SprotoLeaveRoom, { flag: 1 });
                 }
@@ -1177,7 +1178,7 @@ export class CompGameMain extends FGUICompGameMain {
     onBtnReady(): void {
         const func = (res: any) => {
             if (res.code) {
-                console.log(res.msg);
+                Logger.log(res.msg);
                 //this.UI_BTN_READY.visible = false;
                 this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
             }
@@ -1198,9 +1199,9 @@ export class CompGameMain extends FGUICompGameMain {
             },
             (response: any) => {
                 if (response && response.code === 1) {
-                    console.log("使用道具成功:", itemId);
+                    Logger.log("使用道具成功:", itemId);
                 } else {
-                    console.error("使用道具失败:", response?.msg || "未知错误");
+                    Logger.error("使用道具失败:", response?.msg || "未知错误");
                 }
             }
         );
@@ -1217,9 +1218,9 @@ export class CompGameMain extends FGUICompGameMain {
 
         GameSocketManager.instance.sendToServer(SprotoVoteDisbandRoom, data, (response: any) => {
             if (response && response.code === 1) {
-                console.log("发起解散投票成功");
+                Logger.log("发起解散投票成功");
             } else {
-                console.error("发起解散投票失败:", response?.msg || "未知错误");
+                Logger.error("发起解散投票失败:", response?.msg || "未知错误");
             }
         });
     }
@@ -1335,7 +1336,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.sendToServer(SprotoOwnerStartGame, {}, (response: any) => {
             if (response) {
                 if (response.code === 1) {
-                    console.log("开始游戏成功");
+                    Logger.log("开始游戏成功");
                 } else if (response.code === 0) {
                     if (response.notReadyUserids && response.notReadyUserids.length > 0) {
                         const nicknames: string[] = [];
@@ -1403,7 +1404,7 @@ export class CompGameMain extends FGUICompGameMain {
             MiniGameUtils.instance
                 .makeCanvasImage({ filename: "invite" })
                 .then((res: string) => {
-                    console.log(res);
+                    Logger.log(res);
                     resolve(res);
                 })
                 .catch((err: any) => {
@@ -1425,7 +1426,7 @@ export class CompGameMain extends FGUICompGameMain {
                 });
             })
             .catch((err: any) => {
-                console.log(err);
+                Logger.log(err);
             });
     }
 

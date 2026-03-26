@@ -173,7 +173,7 @@ Sproto
 
 SprotoBody
 = blank0 body:(Type / Protocol / Comment) blank0 {
-    // console.log('SprotoBody: ', JSON.stringify(body, null, 2));
+    // Logger.log('SprotoBody: ', JSON.stringify(body, null, 2));
     return body;
 }
 
@@ -217,7 +217,7 @@ Field
         tag: tag,
         type: type,
     }
-    // console.log("fileld name:", name, "array:", array, "extra:", extra);
+    // Logger.log("fileld name:", name, "array:", array, "extra:", extra);
     if (array){
         field.array = true;
         if (typeof extra == 'number'){
@@ -261,7 +261,7 @@ Protocol
         name : name,
         tag : tag,
     }
-    // console.log('Protocol: ', JSON.stringify(struct, null, 2));
+    // Logger.log('Protocol: ', JSON.stringify(struct, null, 2));
     for (let item of struct){
         if (item.name === 'request'){
             protocolInfo.request = item;
@@ -285,7 +285,7 @@ ProtocolStructBody
 
 RequestBody
 = 'request' blank0 requestBody:(Struct / TypeName / 'nil') {
-    // console.log('requestBody: ', JSON.stringify(requestBody, null, 2));
+    // Logger.log('requestBody: ', JSON.stringify(requestBody, null, 2));
     if (typeof requestBody === 'string'){
         if (requestBody === 'nil'){
             return {
@@ -313,7 +313,7 @@ RequestBody
 
 ResponseBody
 = 'response' blank0 responseBody:(Struct / TypeName / 'nil') {
-    // console.log('responseBody: ', responseBody);
+    // Logger.log('responseBody: ', responseBody);
     if (typeof responseBody === 'string'){
         if (responseBody === 'nil'){
             return {

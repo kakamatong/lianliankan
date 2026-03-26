@@ -5,6 +5,7 @@ import { ViewClass } from "@frameworks/Framework";
 import { GAME_PLAYER_INFO } from "../../../data/InterfaceGameConfig";
 import { Point, LineSegment } from "../../../logic/TileMapData";
 import * as fgui from "fairygui-cc";
+import { Logger } from "@frameworks/utils/Utils";
 
 /**
  * @typedef PlayerCompleteStatus
@@ -208,7 +209,7 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     setRank(rank: number): void {
         const ctrl = this.UI_COMP_MEDAL.getController("ctrl_rank");
         if (!ctrl) {
-            console.warn("奖牌控制器未初始化");
+            Logger.warn("奖牌控制器未初始化");
             return;
         }
         // 限制名次范围在0-6之间
@@ -224,7 +225,7 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
     getRank(): number {
         const ctrl = this.UI_COMP_MEDAL.getController("ctrl_rank");
         if (!ctrl) {
-            console.warn("奖牌控制器未初始化");
+            Logger.warn("奖牌控制器未初始化");
             return 0;
         }
         return ctrl.selectedIndex;

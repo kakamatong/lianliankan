@@ -6,6 +6,7 @@
 
 import { AssetManager, assetManager } from "cc";
 import * as fgui from "fairygui-cc";
+import { Logger } from "./utils/Utils";
 
 /**
  * @class PackageManager
@@ -14,12 +15,11 @@ import * as fgui from "fairygui-cc";
  * @singleton 单例模式
  */
 export class PackageManager {
-
-     /**
-      * @property {PackageManager} _instance - PackageManager单例实例
-      * @private
-      * @static
-      */
+    /**
+     * @property {PackageManager} _instance - PackageManager单例实例
+     * @private
+     * @static
+     */
     private static _instance: PackageManager;
 
     /**
@@ -45,16 +45,14 @@ export class PackageManager {
      * @constructor
      * @description 创建一个PackageManager的实例
      */
-    constructor() {
-
-    }
+    constructor() {}
 
     /**
      * @method hasPackage
      * @description 检查包是否存在
      * @param {string} bundleName - bundle包名
      * @param {string} packageName - 包含的包名
-     * @returns {boolean} 
+     * @returns {boolean}
      */
     hasPackage(bundleName: string, packageName: string): boolean {
         return this._packages[bundleName] && this._packages[bundleName].includes(packageName);
@@ -64,7 +62,7 @@ export class PackageManager {
      * @method hasBundle
      * @description 检查bundle是否存在
      * @param {string} bundleName - bundle包名
-     * @returns {boolean} 
+     * @returns {boolean}
      */
     hasBundle(bundleName: string): boolean {
         return this._packages[bundleName] !== undefined;
@@ -75,40 +73,38 @@ export class PackageManager {
      * @description 加载包
      * @param {string} bundleName - bundle包名
      * @param {string} packageName - 包含的包名
-     * @returns {Promise<void>} 
+     * @returns {Promise<void>}
      */
     async loadPackage(bundleName: string, packageName: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            if(this.hasPackage(bundleName, packageName)){
+            if (this.hasPackage(bundleName, packageName)) {
                 return resolve();
             }
             const load = () => {
                 const bundle = assetManager.getBundle(bundleName) as AssetManager.Bundle;
-                fgui.UIPackage.loadPackage(bundle, packageName, (error, pkg)=>{
-                    if(error){
-                        console.log('loadPackage error', error);
+                fgui.UIPackage.loadPackage(bundle, packageName, (error, pkg) => {
+                    if (error) {
+                        Logger.error("loadPackage error", error);
                         return reject(error);
                     }
 
                     this._packages[bundleName].push(packageName);
                     resolve();
-                })
+                });
             };
 
-            if(this.hasBundle(bundleName)){
+            if (this.hasBundle(bundleName)) {
                 load();
                 return;
             }
             assetManager.loadBundle(bundleName, (error, bundle) => {
-                if(error){
-                    console.log('loadBundle error', error);
+                if (error) {
+                    Logger.error("loadBundle error", error);
                     return reject(error);
                 }
                 this._packages[bundleName] = this._packages[bundleName] || [];
                 load();
             });
-
-
         });
     }
 
@@ -117,11 +113,11 @@ export class PackageManager {
      * @description 加载多个包
      * @param {string} bundleName - bundle包名
      * @param {string[]} packageNames - 包含的包名
-     * @returns {Promise<void>} 
+     * @returns {Promise<void>}
      */
     async loadPackages(bundleName: string, packageNames: string[]): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            Promise.all(packageNames.map(packageName => this.loadPackage(bundleName, packageName)))
+            Promise.all(packageNames.map((packageName) => this.loadPackage(bundleName, packageName)))
                 .then(() => resolve())
                 .catch(reject);
         });

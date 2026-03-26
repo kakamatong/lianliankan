@@ -6,13 +6,8 @@
 
 import { DataCenter } from "@datacenter/Datacenter";
 import { LogColors } from "@frameworks/Framework";
-import { HttpPostWithDefaultJWT } from "@frameworks/utils/Utils";
+import { HttpPostWithDefaultJWT, Logger } from "@frameworks/utils/Utils";
 import { BaseModule } from "@frameworks/base/BaseModule";
-
-/**
- * @description 添加console.log别名，方便使用日志颜色
- */
-const log = console.log;
 
 /**
  * @class Mail
@@ -106,12 +101,12 @@ export class Mail extends BaseModule {
      */
     req(url: string, body?: any, callBack?: (success: boolean, data?: any) => void) {
         if (!url) {
-            log(LogColors.red("authList URL not configured!"));
+            Logger.warn(LogColors.red("authList URL not configured!"));
             callBack && callBack(false);
             return;
         }
 
-        log(LogColors.blue(`Sending POST request to: ${url}`));
+        Logger.log(LogColors.blue(`Sending POST request to: ${url}`));
 
         const payload = {
             "userid": DataCenter.instance.userid,
@@ -120,14 +115,14 @@ export class Mail extends BaseModule {
 
         HttpPostWithDefaultJWT(url, body, payload)
             .then((data) => {
-                log(LogColors.green("mail request successful!"));
+                Logger.log(LogColors.green("mail request successful!"));
                 // 将认证列表数据存储到DataCenter
                 if (data && data.data) {
                 }
                 callBack && callBack(true, data.data);
             })
             .catch((error) => {
-                log(LogColors.red(`mail request failed: ${error.message}`));
+                Logger.warn(LogColors.red(`mail request failed: ${error.message}`));
                 callBack && callBack(false, error);
             });
     }

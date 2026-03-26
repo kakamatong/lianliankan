@@ -11,6 +11,7 @@ import FGUICompTimeLeft from "./FGUICompTimeLeft";
 import FGUICompFinshInfo from "./FGUICompFinshInfo";
 
 import { PackageManager } from "@frameworks/PackageManager";
+import { Logger } from "@frameworks/utils/Utils";
 
 export default class FGUICompGameMain extends fgui.GComponent {
 
@@ -56,7 +57,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 			view.show && view.show(params);
 			callBack&&callBack(true);
 		}
-		).catch(error=>{console.log("showView error", error);callBack&&callBack(false);return;});
+		).catch(error=>{Logger.error("showView error", error);callBack&&callBack(false);return;});
 	}
 
 	protected onDestroy():void {

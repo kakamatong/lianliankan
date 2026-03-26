@@ -16,6 +16,7 @@ import { TipsView } from "../common/TipsView";
 import { CompMatchAct } from "./comp/CompMatchAct";
 import { sys } from "cc";
 import { SprotoMatchOnSure, SprotoMatchOnSureFail } from "../../../types/protocol/lobby/s2c";
+import { Logger } from "@frameworks/utils/Utils";
 
 /**
  * @class MatchView
@@ -99,7 +100,7 @@ export class MatchView extends FGUIMatchView {
             for (let i = 0; i < data.readys.length; i++) {
                 const userid = data.readys[i];
                 if (userid == DataCenter.instance.userid) {
-                    console.log(LogColors.red("已准备"));
+                    Logger.log(LogColors.red("已准备"));
                     selfReady = true;
                     this.ctrl_enter.selectedIndex = 1;
                     this.stopAct();

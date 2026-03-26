@@ -4,6 +4,7 @@ import { ViewClass } from "@frameworks/Framework";
 import { GAME_PLAYER_INFO } from "../../../data/InterfaceGameConfig";
 import { Point, LineSegment } from "../../../logic/TileMapData";
 import * as fgui from "fairygui-cc";
+import { Logger } from "@frameworks/utils/Utils";
 
 /**
  * @class CompPlayers
@@ -49,7 +50,7 @@ export class CompPlayers extends FGUICompPlayers {
         // 列表项已经是 CompOtherPlayer 类型
         const otherPlayer = obj as CompOtherPlayer;
         if (!otherPlayer) {
-            console.error(`列表项 ${index} 不是 CompOtherPlayer 类型`);
+            Logger.error(`列表项 ${index} 不是 CompOtherPlayer 类型`);
             return;
         }
     }
@@ -65,7 +66,7 @@ export class CompPlayers extends FGUICompPlayers {
     addOtherPlayer(svrSeat: number, player: GAME_PLAYER_INFO, headurl: string): CompOtherPlayer {
         // 检查是否已存在
         if (this._playerMap.has(svrSeat)) {
-            console.warn(`服务器座位 ${svrSeat} 的玩家已存在，更新信息`);
+            Logger.warn(`服务器座位 ${svrSeat} 的玩家已存在，更新信息`);
             const existingPlayer = this._playerMap.get(svrSeat)!;
             existingPlayer.updatePlayerInfo(player, headurl);
             return existingPlayer;
@@ -78,7 +79,7 @@ export class CompPlayers extends FGUICompPlayers {
         // 获取刚添加的列表项
         const listItem = this.UI_LIST_OTHER_PLAYERS.getChildAt(index) as CompOtherPlayer;
         if (!listItem) {
-            console.error(`无法获取列表项 ${index}`);
+            Logger.error(`无法获取列表项 ${index}`);
             return null;
         }
 
@@ -90,7 +91,7 @@ export class CompPlayers extends FGUICompPlayers {
         // 保存到映射表
         this._playerMap.set(svrSeat, listItem);
 
-        console.log(`添加其他玩家，服务器座位: ${svrSeat}, 列表索引: ${index}`);
+        Logger.log(`添加其他玩家，服务器座位: ${svrSeat}, 列表索引: ${index}`);
         return listItem;
     }
 
@@ -102,7 +103,7 @@ export class CompPlayers extends FGUICompPlayers {
     removeOtherPlayer(svrSeat: number): void {
         const otherPlayer = this._playerMap.get(svrSeat);
         if (!otherPlayer) {
-            console.warn(`服务器座位 ${svrSeat} 的玩家不存在`);
+            Logger.warn(`服务器座位 ${svrSeat} 的玩家不存在`);
             return;
         }
 
@@ -119,7 +120,7 @@ export class CompPlayers extends FGUICompPlayers {
         // 从映射表中移除
         this._playerMap.delete(svrSeat);
 
-        console.log(`移除其他玩家，服务器座位: ${svrSeat}`);
+        Logger.log(`移除其他玩家，服务器座位: ${svrSeat}`);
     }
 
     /**
@@ -161,7 +162,7 @@ export class CompPlayers extends FGUICompPlayers {
         if (otherPlayer) {
             otherPlayer.updateMap(mapData, resPath);
         } else {
-            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法更新地图`);
+            Logger.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法更新地图`);
         }
     }
 
@@ -178,7 +179,7 @@ export class CompPlayers extends FGUICompPlayers {
         if (otherPlayer) {
             otherPlayer.removeTiles(p1, p2, lines);
         } else {
-            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法移除方块`);
+            Logger.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法移除方块`);
         }
     }
 
@@ -193,7 +194,7 @@ export class CompPlayers extends FGUICompPlayers {
         if (otherPlayer) {
             otherPlayer.setComplete(completed);
         } else {
-            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置完成状态`);
+            Logger.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置完成状态`);
         }
     }
 
@@ -208,7 +209,7 @@ export class CompPlayers extends FGUICompPlayers {
         if (otherPlayer) {
             otherPlayer.setRank(rank);
         } else {
-            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置名次`);
+            Logger.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置名次`);
         }
     }
 
@@ -222,7 +223,7 @@ export class CompPlayers extends FGUICompPlayers {
         if (otherPlayer) {
             otherPlayer.setIncomplete();
         } else {
-            console.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置未完成状态`);
+            Logger.warn(`服务器座位 ${svrSeat} 的玩家不存在，无法设置未完成状态`);
         }
     }
 
@@ -250,7 +251,7 @@ export class CompPlayers extends FGUICompPlayers {
         for (const [svrSeat, otherPlayer] of this._playerMap) {
             otherPlayer.reset();
         }
-        console.log("重置所有其他玩家状态");
+        Logger.log("重置所有其他玩家状态");
     }
 
     /**
@@ -269,7 +270,7 @@ export class CompPlayers extends FGUICompPlayers {
         // 清空列表
         this.UI_LIST_OTHER_PLAYERS.removeChildrenToPool();
 
-        console.log("清空所有其他玩家");
+        Logger.log("清空所有其他玩家");
     }
 
     /**

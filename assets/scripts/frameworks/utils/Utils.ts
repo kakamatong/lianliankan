@@ -171,10 +171,10 @@ export const hmac64 = (key: CryptoJS.WordArray, message: CryptoJS.WordArray): Cr
 
     // 执行压缩并处理结果
     const [A, B, C, D] = digestMD5(w);
-    // console.log('A:', A);
-    // console.log('B:', B);
-    // console.log('C:', C);
-    // console.log('D:', D);
+    // Logger.log('A:', A);
+    // Logger.log('B:', B);
+    // Logger.log('C:', C);
+    // Logger.log('D:', D);
     const result = new Uint32Array([
         (C ^ D) >>> 0, // 小端序低位
         (A ^ B) >>> 0, // 小端序高位
@@ -243,9 +243,9 @@ export const desencode = (data: CryptoJS.WordArray, key: CryptoJS.WordArray): Cr
 
     // 加密所有块
     const encryptedBlocks = blocks.map((block) => {
-        //console.log("encryptedBlocks1:",block[0], block[1]);
+        //Logger.log("encryptedBlocks1:",block[0], block[1]);
         let [X, Y] = DES_IP(block[0], block[1]);
-        //console.log("encryptedBlocks2:",X, Y);
+        //Logger.log("encryptedBlocks2:",X, Y);
         // 严格按C语言宏展开顺序执行16轮加密
         [Y, X] = DES_ROUND(Y, X, subkeys[0], subkeys[1]); // Round 1
         [X, Y] = DES_ROUND(X, Y, subkeys[2], subkeys[3]); // Round 2
@@ -263,9 +263,9 @@ export const desencode = (data: CryptoJS.WordArray, key: CryptoJS.WordArray): Cr
         [X, Y] = DES_ROUND(X, Y, subkeys[26], subkeys[27]); // Round 14
         [Y, X] = DES_ROUND(Y, X, subkeys[28], subkeys[29]); // Round 15
         [X, Y] = DES_ROUND(X, Y, subkeys[30], subkeys[31]); // Round 16
-        //console.log("encryptedBlocks3:",X, Y);
+        //Logger.log("encryptedBlocks3:",X, Y);
         [Y, X] = DES_FP(Y, X);
-        //console.log("encryptedBlocks4:",X, Y);
+        //Logger.log("encryptedBlocks4:",X, Y);
 
         return [Y, X];
     });
@@ -291,7 +291,7 @@ export const desencode = (data: CryptoJS.WordArray, key: CryptoJS.WordArray): Cr
     //     tmp.push(result);
     //     result = element[1] & 0xFF;
     //     tmp.push(result);
-    //     console.log(tmp);
+    //     Logger.log(tmp);
     // }
 
     return mergeBlocks(encryptedBlocks);
@@ -462,8 +462,8 @@ const generateSubkeys = (key: CryptoJS.WordArray): number[] => {
     // 确保32位无符号整型
     let X = ((keyBytes[0] << 24) | (keyBytes[1] << 16) | (keyBytes[2] << 8) | keyBytes[3]) >>> 0;
     let Y = ((keyBytes[4] << 24) | (keyBytes[5] << 16) | (keyBytes[6] << 8) | keyBytes[7]) >>> 0;
-    // console.log('X:', X);
-    // console.log('Y:', Y);
+    // Logger.log('X:', X);
+    // Logger.log('Y:', Y);
 
     // PC1置换（添加调试日志）
     let T = ((Y >>> 4) ^ X) & 0x0f0f0f0f;
@@ -472,7 +472,7 @@ const generateSubkeys = (key: CryptoJS.WordArray): number[] => {
     T = (Y ^ X) & 0x10101010;
     X ^= T;
     Y ^= T;
-    //console.log('PC1后 X:', X.toString(16), 'Y:', Y.toString(16));
+    //Logger.log('PC1后 X:', X.toString(16), 'Y:', Y.toString(16));
 
     // 应用置换表（强制转换为uint32）
     X =
@@ -496,7 +496,7 @@ const generateSubkeys = (key: CryptoJS.WordArray): number[] => {
             (RHs[(Y >>> 20) & 0xf] << 5) |
             (RHs[(Y >>> 28) & 0xf] << 4)) >>>
         0;
-    //console.log('置换表后 X:', X,   'Y:', Y);
+    //Logger.log('置换表后 X:', X,   'Y:', Y);
 
     // 掩码处理（28位）
     X &= 0x0fffffff;
@@ -513,8 +513,8 @@ const generateSubkeys = (key: CryptoJS.WordArray): number[] => {
             Y = ((Y << 2) | (Y >>> 26)) & (0x0fffffff >>> 0);
         }
 
-        //console.log('X:', X);
-        //console.log('Y:', Y);
+        //Logger.log('X:', X);
+        //Logger.log('Y:', Y);
 
         // 生成子密钥（强制32位无符号）
         subkeys[i * 2] =
@@ -568,7 +568,7 @@ const generateSubkeys = (key: CryptoJS.WordArray): number[] => {
             0;
     }
     // for(let i = 0; i < 32; i++) {
-    //     console.log(`subkeys[${i}]:`, subkeys[i]);
+    //     Logger.log(`subkeys[${i}]:`, subkeys[i]);
     // }
     return subkeys;
 };
@@ -665,7 +665,7 @@ export const CustomDESEncrypt = (data: string, key: CryptoJS.WordArray): number[
     const dataWA = CryptoJS.enc.Utf8.parse(data);
     const encrypted = desencode(dataWA, key);
     const tokenB64 = CryptoJS.enc.Base64.stringify(encrypted);
-    //console.log('tokenB64:', tokenB64);
+    //Logger.log('tokenB64:', tokenB64);
     const tokenB64Bytes = StringToUint8Array(tokenB64);
     const tokenB64Array = Array.from(tokenB64Bytes);
     return tokenB64Array;
@@ -878,7 +878,7 @@ export class JWTUtils {
 export const HttpPost = (url: string, body: any, payload: object, secretKey: string, expireTime: number = 3600): Promise<any> => {
     // 生成JWT令牌
     const token = JWTUtils.generateToken(payload, secretKey, expireTime);
-    console.log("JWT token:", token);
+    Logger.log("JWT token:", token);
 
     const defaultHeaders = {
         "Content-Type": "application/json",
@@ -921,7 +921,7 @@ export const DecodeURLRecursive = (data: any): any => {
         try {
             return decodeURIComponent(data);
         } catch (e) {
-            console.log(LogColors.yellow(`Failed to decode URL: ${data}, error: ${(e as Error).message}`));
+            Logger.log(LogColors.yellow(`Failed to decode URL: ${data}, error: ${(e as Error).message}`));
             return data; // 解码失败时返回原始字符串
         }
     }

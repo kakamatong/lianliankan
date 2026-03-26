@@ -10,7 +10,7 @@ import { SprotoClickTiles } from "../../../../../../types/protocol/game10002/c2s
 import { TipsView } from "@view/common/TipsView";
 import { GameData } from "../../../data/GameData";
 import { ENUM_GAME_STEP } from "../../../data/InterfaceGameConfig";
-import { SpinePlay } from "@frameworks/utils/Utils";
+import { Logger, SpinePlay } from "@frameworks/utils/Utils";
 
 /**
  * @class CompMap
@@ -419,7 +419,7 @@ export class CompMap extends FGUICompMap {
         // 清空选中数组
         this._selectedCubes = [];
 
-        console.log(`消除方块: (${first.row},${first.col}) 和 (${second.row},${second.col})`);
+        Logger.log(`消除方块: (${first.row},${first.col}) 和 (${second.row},${second.col})`);
 
         // 发送消除请求给服务器
         GameSocketManager.instance.sendToServer(
@@ -448,7 +448,7 @@ export class CompMap extends FGUICompMap {
      */
     initMap(map: number[][], resPath: string): void {
         if (!map || map.length === 0) {
-            console.log("地图数据为空");
+            Logger.log("地图数据为空");
             return;
         }
 
@@ -509,7 +509,7 @@ export class CompMap extends FGUICompMap {
     setCube(row: number, col: number, resId: number, resPath: string): void {
         const cube = this.getCube(row, col);
         if (!cube) {
-            console.log(`方块位置 [${row}, ${col}] 不存在`);
+            Logger.log(`方块位置 [${row}, ${col}] 不存在`);
             return;
         }
 

@@ -2,9 +2,10 @@ import FGUICompItem from "@fgui/game10002Talk/FGUICompItem";
 import FGUITalkView from "@fgui/game10002Talk/FGUITalkView";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
-import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "db://assets/scripts/games/game10002/view/talk/TalkConfig";
+import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "../../view/talk/TalkConfig";
 import { SprotoForwardMessage } from "../../../../../types/protocol/game10002/c2s";
 import * as fgui from "fairygui-cc";
+import { Logger } from "@frameworks/utils/Utils";
 
 @PackageLoad(["props"])
 @ViewClass()
@@ -36,7 +37,7 @@ export class TalkView extends FGUITalkView {
      */
     sendTalk(id: number) {
         if (!GameSocketManager.instance.isOpen()) {
-            console.warn("游戏连接已断开，无法发送聊天");
+            Logger.warn("游戏连接已断开，无法发送聊天");
             return;
         }
         // 使用 forwardMessage 发送聊天消息
@@ -49,7 +50,7 @@ export class TalkView extends FGUITalkView {
             },
             (data: SprotoForwardMessage.Response) => {
                 if (data.code !== 0) {
-                    console.warn("发送聊天失败:", data.msg);
+                    Logger.warn("发送聊天失败:", data.msg);
                 }
             }
         );

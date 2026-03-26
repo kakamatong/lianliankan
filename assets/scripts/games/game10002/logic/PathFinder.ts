@@ -4,15 +4,8 @@
  * @category 游戏 10002 - 连连看
  */
 
-import {
-    Point,
-    LineSegment,
-    PathResult,
-    TileUtils,
-    DIRECTION,
-    DIRECTION_DELTAS,
-    SearchState,
-} from "./TileMapData";
+import { Logger } from "@frameworks/utils/Utils";
+import { Point, LineSegment, PathResult, TileUtils, DIRECTION, DIRECTION_DELTAS, SearchState } from "./TileMapData";
 
 /**
  * @class PathFinder
@@ -53,7 +46,7 @@ export class PathFinder {
      */
     public setMap(map: number[][]): void {
         if (!map || map.length === 0 || !map[0] || map[0].length === 0) {
-            console.error("[PathFinder] 地图数据无效");
+            Logger.error("[PathFinder] 地图数据无效");
             return;
         }
 
@@ -395,7 +388,7 @@ export class PathFinder {
             if (isLastPoint || directionWillChange) {
                 lines.push({
                     start: lineStart,
-                    dest: path[i]
+                    dest: path[i],
                 });
                 lineStart = path[i];
             }

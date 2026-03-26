@@ -7,6 +7,7 @@
 import { SprotoCallActivityFunc } from "../../types/protocol/lobby/c2s";
 import { LogColors } from "@frameworks/Framework";
 import { BaseModule } from "@frameworks/base/BaseModule";
+import { Logger } from "@frameworks/utils/Utils";
 
 /**
  * @class SignIn
@@ -46,7 +47,7 @@ export class SignIn extends BaseModule {
         if (result && result.code == 1) {
             const res = JSON.parse(result.result);
             if (res.error) {
-                console.log(LogColors.red(res.error));
+                Logger.log(LogColors.red(res.error));
                 this._signDataCallBack && this._signDataCallBack(false, res);
             } else {
                 this._signDataCallBack && this._signDataCallBack(true, res);
@@ -78,7 +79,7 @@ export class SignIn extends BaseModule {
         if (result && result.code == 1) {
             const res = JSON.parse(result.result);
             if (res.error) {
-                console.log(LogColors.red(res.error));
+                Logger.log(LogColors.red(res.error));
                 this._signInCallBack && this._signInCallBack(false, res);
             } else {
                 this._signInCallBack && this._signInCallBack(true, res);
@@ -110,7 +111,7 @@ export class SignIn extends BaseModule {
         if (result && result.code == 1) {
             const res = JSON.parse(result.result);
             if (res.error) {
-                console.log(LogColors.red(res.error));
+                Logger.log(LogColors.red(res.error));
                 this._fillSignInCallBack && this._fillSignInCallBack(false, res);
             } else {
                 this._fillSignInCallBack && this._fillSignInCallBack(true, res);

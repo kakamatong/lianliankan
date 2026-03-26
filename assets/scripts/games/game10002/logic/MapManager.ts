@@ -4,6 +4,7 @@
  * @category 游戏 10002 - 连连看
  */
 
+import { Logger } from "@frameworks/utils/Utils";
 import { Point, TileUtils } from "./TileMapData";
 
 /**
@@ -38,7 +39,7 @@ export class MapManager {
      */
     public initMap(map: number[][]): void {
         if (!map || map.length === 0 || !map[0] || map[0].length === 0) {
-            console.error("[MapManager] 地图数据无效");
+            Logger.error("[MapManager] 地图数据无效");
             return;
         }
 
@@ -47,7 +48,7 @@ export class MapManager {
         this._rows = map.length;
         this._cols = map[0].length;
 
-        console.log(`[MapManager] 地图初始化完成，尺寸: ${this._rows}x${this._cols}`);
+        Logger.log(`[MapManager] 地图初始化完成，尺寸: ${this._rows}x${this._cols}`);
     }
 
     /**
@@ -68,7 +69,7 @@ export class MapManager {
      */
     public getTile(row: number, col: number): number {
         if (!this._isValidPosition(row, col)) {
-            console.warn(`[MapManager] 坐标越界: (${row}, ${col})`);
+            Logger.warn(`[MapManager] 坐标越界: (${row}, ${col})`);
             return -1;
         }
         return this._map[row][col];
@@ -84,7 +85,7 @@ export class MapManager {
      */
     public setTile(row: number, col: number, value: number): boolean {
         if (!this._isValidPosition(row, col)) {
-            console.warn(`[MapManager] 坐标越界，无法更新: (${row}, ${col})`);
+            Logger.warn(`[MapManager] 坐标越界，无法更新: (${row}, ${col})`);
             return false;
         }
 
@@ -101,7 +102,7 @@ export class MapManager {
      */
     public removeTiles(p1: Point, p2: Point): boolean {
         if (!this._isValidPosition(p1.row, p1.col) || !this._isValidPosition(p2.row, p2.col)) {
-            console.warn("[MapManager] 消除失败，坐标越界");
+            Logger.warn("[MapManager] 消除失败，坐标越界");
             return false;
         }
 
@@ -109,12 +110,12 @@ export class MapManager {
         const value2 = this._map[p2.row][p2.col];
 
         if (!TileUtils.isBlock(value1) || !TileUtils.isBlock(value2)) {
-            console.warn("[MapManager] 消除失败，选择的不是可消除方块");
+            Logger.warn("[MapManager] 消除失败，选择的不是可消除方块");
             return false;
         }
 
         if (value1 !== value2) {
-            console.warn("[MapManager] 消除失败，两个方块类型不同");
+            Logger.warn("[MapManager] 消除失败，两个方块类型不同");
             return false;
         }
 
@@ -122,7 +123,7 @@ export class MapManager {
         this._map[p1.row][p1.col] = 0;
         this._map[p2.row][p2.col] = 0;
 
-        console.log(`[MapManager] 消除方块: (${p1.row},${p1.col}) 和 (${p2.row},${p2.col})`);
+        Logger.log(`[MapManager] 消除方块: (${p1.row},${p1.col}) 和 (${p2.row},${p2.col})`);
         return true;
     }
 
@@ -240,7 +241,7 @@ export class MapManager {
         this._map = [];
         this._rows = 0;
         this._cols = 0;
-        console.log("[MapManager] 地图管理器已重置");
+        Logger.log("[MapManager] 地图管理器已重置");
     }
 
     /**

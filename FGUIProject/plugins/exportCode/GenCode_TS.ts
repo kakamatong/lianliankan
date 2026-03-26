@@ -32,6 +32,7 @@ function genCode(handler: FairyEditor.PublishHandler) {
             if (refCount == 0) writer.writeln();
         }
         writer.writeln('import { PackageManager } from "@/frameworks/PackageManager";');
+        writer.writeln('import { Logger } from "@frameworks/utils/Utils";');
         writer.writeln();
 
         if (refCount > 0) {
@@ -87,7 +88,7 @@ function genCode(handler: FairyEditor.PublishHandler) {
         writer.writeln("view.show && view.show(params);");
         writer.writeln("callBack&&callBack(true);");
         writer.endBlock();
-        writer.writeln(').catch(error=>{console.log("showView error", error);callBack&&callBack(false);return;});');
+        writer.writeln(').catch(error=>{Logger.error("showView error", error);callBack&&callBack(false);return;});');
         writer.endBlock();
         writer.writeln();
 
