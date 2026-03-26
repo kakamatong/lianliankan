@@ -3,7 +3,7 @@ import FGUITalkView from "db://assets/scripts/fgui/game10002Talk/FGUITalkView";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "db://assets/scripts/games/game10002/view/talk/TalkConfig";
-import { SprotoForwardMessage } from "db://assets/types/protocol/game10002/c2s";
+import { SprotoForwardMessage } from "@types/protocol/game10002/c2s";
 import * as fgui from "fairygui-cc";
 
 @PackageLoad(["props"])

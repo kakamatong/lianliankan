@@ -21,7 +21,7 @@ import { PrivateRoomView } from "../../privateRoom/PrivateRoomView";
 import { UserCenterView } from "../../userCenter/UserCenterView";
 import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 import { ConnectGameSvr } from "../../../modules/ConnectGameSvr";
-import { SprotoGameRoomReady } from "db://assets/types/protocol/lobby/s2c";
+import { SprotoGameRoomReady } from "@types/protocol/lobby/s2c";
 import { SignInView } from "../../signIn/SignInView";
 import { sys } from "cc";
 import { AdReward } from "../../../modules/AdReward";

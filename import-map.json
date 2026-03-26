@@ -1,5 +1,6 @@
 {
     "imports": {
-        "@frameworks/": "./assets/scripts/frameworks/"
+        "@frameworks/": "./assets/scripts/frameworks/",
+        "@types/": "./assets/types/"
     }
 }

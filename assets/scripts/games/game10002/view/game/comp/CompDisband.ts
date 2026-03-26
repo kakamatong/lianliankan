@@ -16,7 +16,7 @@ import { ENUM_POP_MESSAGE_TYPE } from "../../../../../datacenter/InterfaceConfig
 import { Color } from "cc";
 import { SprotoVoteDisbandResult, SprotoVoteDisbandStart, SprotoVoteDisbandUpdate } from "../../../../../../types/protocol/game10002/s2c";
 import { ViewClass } from "@frameworks/Framework";
-import { SprotoVoteDisbandResponse } from "db://assets/types/protocol/game10002/c2s";
+import { SprotoVoteDisbandResponse } from "@types/protocol/game10002/c2s";
 import { TruncateString } from "@frameworks/utils/Utils";
 
 /**

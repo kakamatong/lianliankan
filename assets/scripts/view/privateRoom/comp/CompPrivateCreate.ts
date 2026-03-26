@@ -13,7 +13,7 @@ import { TipsView } from "../../common/TipsView";
 import { sys } from "cc";
 import { ConnectGameSvr } from "../../../modules/ConnectGameSvr";
 import { ViewClass } from "@frameworks/Framework";
-import { SprotoCreatePrivateRoom } from "db://assets/types/protocol/lobby/c2s";
+import { SprotoCreatePrivateRoom } from "@types/protocol/lobby/c2s";
 
 /**
  * @class CompPrivateCreate
