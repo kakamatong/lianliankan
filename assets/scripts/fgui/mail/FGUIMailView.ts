@@ -4,7 +4,7 @@ import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
 import FGUICompMailContent from "./FGUICompMailContent";
 
-import { PackageManager } from "../../frameworks/PackageManager";
+import { PackageManager } from "@frameworks/PackageManager";
 
 export default class FGUIMailView extends fgui.GComponent {
 

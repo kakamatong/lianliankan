@@ -10,7 +10,7 @@ import { PopMessageView } from "../../common/PopMessageView";
 import { ENUM_POP_MESSAGE_TYPE } from "../../../datacenter/InterfaceConfig";
 import { TipsView } from "../../common/TipsView";
 import { ConnectGameSvr } from "../../../modules/ConnectGameSvr";
-import { ViewClass } from "../../../frameworks/Framework";
+import { ViewClass } from "@frameworks/Framework";
 
 /**
  * @class CompPrivateJoin
@@ -20,13 +20,13 @@ import { ViewClass } from "../../../frameworks/Framework";
 @ViewClass()
 export class CompPrivateJoin extends FGUICompPrivateJoin {
     /** 视图数据 */
-    private _data:any|null = null;
+    private _data: any | null = null;
 
     /**
      * @description 显示加入私密房间界面
      * @param data 视图数据
      */
-    show(data?:any){
+    show(data?: any) {
         this._data = data;
     }
 
@@ -34,7 +34,7 @@ export class CompPrivateJoin extends FGUICompPrivateJoin {
      * @description 关闭按钮点击事件
      */
     onBtnClose(): void {
-        CompPrivateJoin.hideView()
+        CompPrivateJoin.hideView();
     }
 
     /**
@@ -42,32 +42,32 @@ export class CompPrivateJoin extends FGUICompPrivateJoin {
      */
     onBtnJoin(): void {
         if (this.UI_TXT_ROOMID.text == "") {
-            TipsView.showView({content:"请输入房间号"})
-            return
+            TipsView.showView({ content: "请输入房间号" });
+            return;
         }
         const roomid = Number(this.UI_TXT_ROOMID.text);
-        const func = (b:boolean, result:any)=>{
+        const func = (b: boolean, result: any) => {
             if (b) {
-                this._data && (this._data.changeToGameScene && this._data.changeToGameScene())
-            }else if (!b && result && result.code == 0 && result.gameid > 0) {
+                this._data && this._data.changeToGameScene && this._data.changeToGameScene();
+            } else if (!b && result && result.code == 0 && result.gameid > 0) {
                 PopMessageView.showView({
-                    content:'您已在游戏中,是否返回',
-                    type:ENUM_POP_MESSAGE_TYPE.NUM2,
-                    sureBack:()=>{
-                        ConnectGameSvr.instance.connectGame(result,(b:boolean)=>{
+                    content: "您已在游戏中,是否返回",
+                    type: ENUM_POP_MESSAGE_TYPE.NUM2,
+                    sureBack: () => {
+                        ConnectGameSvr.instance.connectGame(result, (b: boolean) => {
                             if (b) {
-                                this._data && (this._data.changeToGameScene && this._data.changeToGameScene())
+                                this._data && this._data.changeToGameScene && this._data.changeToGameScene();
                             }
-                        })
-                    }
-                })
-            }else if(!b){
-                const msg = result && result.msg ? result.msg : '未知错误';
-                TipsView.showView({content:msg})
+                        });
+                    },
+                });
+            } else if (!b) {
+                const msg = result && result.msg ? result.msg : "未知错误";
+                TipsView.showView({ content: msg });
             }
-        }
+        };
 
-        ConnectGameSvr.instance.joinPrivateRoom(roomid, func)
+        ConnectGameSvr.instance.joinPrivateRoom(roomid, func);
     }
 
     /**
@@ -144,14 +144,14 @@ export class CompPrivateJoin extends FGUICompPrivateJoin {
      * @description 输入数字到房间号
      * @param n 数字
      */
-    input(n:number):void{
+    input(n: number): void {
         if (this.UI_TXT_ROOMID.text?.length && this.UI_TXT_ROOMID.text?.length >= 6) {
-            return
+            return;
         }
 
-        this.UI_TXT_ROOMID.text = (this.UI_TXT_ROOMID.text ?? '') + `${n}`;
+        this.UI_TXT_ROOMID.text = (this.UI_TXT_ROOMID.text ?? "") + `${n}`;
         if (this.UI_TXT_ROOMID.text.length === 6) {
-            this.onBtnJoin()
+            this.onBtnJoin();
         }
     }
 
@@ -159,8 +159,7 @@ export class CompPrivateJoin extends FGUICompPrivateJoin {
      * @description 清除房间号按钮点击事件
      */
     onBtnJoinClear(): void {
-        this.UI_TXT_ROOMID.text = ''
+        this.UI_TXT_ROOMID.text = "";
     }
-
 }
 fgui.UIObjectFactory.setExtension(CompPrivateJoin.URL, CompPrivateJoin);

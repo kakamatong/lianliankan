@@ -3,17 +3,17 @@ import * as fgui from "fairygui-cc";
 import { UserGameRecord } from "../../modules/UserGameRecord";
 import FGUICompHead from "../../fgui/common/FGUICompHead";
 import { DataCenter } from "../../datacenter/Datacenter";
-import { MiniGameUtils } from "../../frameworks/utils/sdk/MiniGameUtils";
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 import { TipsView } from "../common/TipsView";
 import { UserData } from "../../modules/UserData";
-import { DispatchEvent, ViewClass } from "../../frameworks/Framework";
+import { DispatchEvent, ViewClass } from "@frameworks/Framework";
 import { ENUM_POP_MESSAGE_TYPE, RICH_TYPE } from "../../datacenter/InterfaceConfig";
 import { EVENT_NAMES } from "../../datacenter/CommonConfig";
 import { PopMessageView } from "../common/PopMessageView";
 import { RevokeAccount } from "../../modules/RevokeAccount";
-import { LobbySocketManager } from "../../frameworks/LobbySocketManager";
-import { SoundManager } from "../../frameworks/SoundManager";
-import { TruncateString } from "../../frameworks/utils/Utils";
+import { LobbySocketManager } from "@frameworks/LobbySocketManager";
+import { SoundManager } from "@frameworks/SoundManager";
+import { TruncateString } from "@frameworks/utils/Utils";
 
 /**
  * @class UserCenterView

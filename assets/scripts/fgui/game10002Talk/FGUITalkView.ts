@@ -4,7 +4,7 @@ import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
 import FGUICompMainTalk from "./FGUICompMainTalk";
 
-import { PackageManager } from "../../frameworks/PackageManager";
+import { PackageManager } from "@frameworks/PackageManager";
 
 export default class FGUITalkView extends fgui.GComponent {
 

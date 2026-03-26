@@ -6,10 +6,10 @@
 
 import CryptoJS from "crypto-js";
 import { DataCenter } from "../datacenter/Datacenter";
-import { LogColors } from "../frameworks/Framework";
-import { GameSocketManager } from "../frameworks/GameSocketManager";
-import { CustomDESEncryptStr } from "../frameworks/utils/Utils";
-import { BaseModule } from "../frameworks/base/BaseModule";
+import { LogColors } from "@frameworks/Framework";
+import { GameSocketManager } from "@frameworks/GameSocketManager";
+import { CustomDESEncryptStr } from "@frameworks/utils/Utils";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**
  * @class AuthGame

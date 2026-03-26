@@ -4,11 +4,11 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from '../datacenter/Datacenter';
-import { DispatchEvent } from '../frameworks/Framework';
-import { SprotoUpdateUserNameAndHeadurl, SprotoUserData } from '../../types/protocol/lobby/c2s';
-import { EVENT_NAMES } from '../datacenter/CommonConfig';
-import { BaseModule } from '../frameworks/base/BaseModule';
+import { DataCenter } from "../datacenter/Datacenter";
+import { DispatchEvent } from "@frameworks/Framework";
+import { SprotoUpdateUserNameAndHeadurl, SprotoUserData } from "../../types/protocol/lobby/c2s";
+import { EVENT_NAMES } from "../datacenter/CommonConfig";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**
  * @class UserData
@@ -24,7 +24,7 @@ export class UserData extends BaseModule {
      * @description 请求用户数据，向服务器发送用户数据请求
      */
     req() {
-        this.reqLobby(SprotoUserData, { userid: DataCenter.instance.userid }, this.resp.bind(this))
+        this.reqLobby(SprotoUserData, { userid: DataCenter.instance.userid }, this.resp.bind(this));
     }
 
     /**
@@ -34,7 +34,7 @@ export class UserData extends BaseModule {
      */
     resp(data: SprotoUserData.Response) {
         DataCenter.instance.userData = data;
-        DispatchEvent(EVENT_NAMES.USER_DATA,data)
+        DispatchEvent(EVENT_NAMES.USER_DATA, data);
     }
 
     /**
@@ -42,7 +42,7 @@ export class UserData extends BaseModule {
      * @param nickname 用户昵称
      * @param headurl 头像地址
      */
-    updateUserNameAndHeadurl(nickname:string, headurl:string){
-        this.reqLobby(SprotoUpdateUserNameAndHeadurl, { nickname: nickname, headurl: headurl })
+    updateUserNameAndHeadurl(nickname: string, headurl: string) {
+        this.reqLobby(SprotoUpdateUserNameAndHeadurl, { nickname: nickname, headurl: headurl });
     }
 }

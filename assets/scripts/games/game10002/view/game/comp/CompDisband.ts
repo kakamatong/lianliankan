@@ -8,16 +8,16 @@ import {
     VoteInfo,
 } from "../../../data/InterfaceGameConfig";
 import { GameData } from "../../../data/GameData";
-import { GameSocketManager } from "../../../../../frameworks/GameSocketManager";
+import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { DataCenter } from "../../../../../datacenter/Datacenter";
 import { TipsView } from "../../../../../view/common/TipsView";
 import { PopMessageView } from "../../../../../view/common/PopMessageView";
 import { ENUM_POP_MESSAGE_TYPE } from "../../../../../datacenter/InterfaceConfig";
 import { Color } from "cc";
 import { SprotoVoteDisbandResult, SprotoVoteDisbandStart, SprotoVoteDisbandUpdate } from "../../../../../../types/protocol/game10002/s2c";
-import { ViewClass } from "db://assets/scripts/frameworks/Framework";
+import { ViewClass } from "@frameworks/Framework";
 import { SprotoVoteDisbandResponse } from "db://assets/types/protocol/game10002/c2s";
-import { TruncateString } from "../../../../../frameworks/utils/Utils";
+import { TruncateString } from "@frameworks/utils/Utils";
 
 /**
  * 解散房间投票组件

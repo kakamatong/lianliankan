@@ -2,10 +2,10 @@ import FGUICompPlayerHead from "../../../../../fgui/game10002/FGUICompPlayerHead
 import { GameData } from "../../../data/GameData";
 import { PlayerInfoView } from "../../playerInfo/PlayerInfoView";
 import { CompTalk } from "./CompTalk";
-import { ViewClass } from "db://assets/scripts/frameworks/Framework";
+import { ViewClass } from "@frameworks/Framework";
 import { GAME_PLAYER_INFO, PLAYER_STATUS } from "../../../data/InterfaceGameConfig";
 import FGUICompHead from "../../../../../fgui/common/FGUICompHead";
-import { TruncateString } from "../../../../../frameworks/utils/Utils";
+import { TruncateString } from "@frameworks/utils/Utils";
 import * as fgui from "fairygui-cc";
 /**
  * @class CompPlayerHead

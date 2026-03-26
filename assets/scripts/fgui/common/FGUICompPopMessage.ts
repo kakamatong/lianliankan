@@ -4,7 +4,7 @@ import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
 import FGUICompBtnScale from "./FGUICompBtnScale";
 
-import { PackageManager } from "../../frameworks/PackageManager";
+import { PackageManager } from "@frameworks/PackageManager";
 
 export default class FGUICompPopMessage extends fgui.GComponent {
 

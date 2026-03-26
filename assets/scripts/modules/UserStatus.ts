@@ -4,11 +4,11 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from '../datacenter/Datacenter';
-import { DispatchEvent } from '../frameworks/Framework';
-import { SprotoUserStatus } from '../../types/protocol/lobby/c2s';
-import { EVENT_NAMES } from '../datacenter/CommonConfig';
-import { BaseModule } from '../frameworks/base/BaseModule';
+import { DataCenter } from "../datacenter/Datacenter";
+import { DispatchEvent } from "@frameworks/Framework";
+import { SprotoUserStatus } from "../../types/protocol/lobby/c2s";
+import { EVENT_NAMES } from "../datacenter/CommonConfig";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**
  * @class UserStatus
@@ -23,7 +23,7 @@ export class UserStatus extends BaseModule {
      * @description 请求用户状态数据
      */
     req() {
-        this.reqLobby(SprotoUserStatus, { userid: DataCenter.instance.userid }, this.resp.bind(this))
+        this.reqLobby(SprotoUserStatus, { userid: DataCenter.instance.userid }, this.resp.bind(this));
     }
 
     /**
@@ -32,6 +32,6 @@ export class UserStatus extends BaseModule {
      */
     resp(data: SprotoUserStatus.Response) {
         DataCenter.instance.userStatus = data;
-        DispatchEvent(EVENT_NAMES.USER_STATUS,data)
+        DispatchEvent(EVENT_NAMES.USER_STATUS, data);
     }
 }

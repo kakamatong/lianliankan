@@ -6,14 +6,14 @@
 
 import { DataCenter } from "../datacenter/Datacenter";
 import { ENUM_CHANNEL_ID, LOGIN_TYPE } from "../datacenter/InterfaceConfig";
-import { LobbySocketManager } from "../frameworks/LobbySocketManager";
-import { ACCOUNT_INFO, Login } from "../frameworks/login/Login";
-import { MiniGameUtils } from "../frameworks/utils/sdk/MiniGameUtils";
-import { HttpPostWithDefaultJWT } from "../frameworks/utils/Utils";
+import { LobbySocketManager } from "@frameworks/LobbySocketManager";
+import { ACCOUNT_INFO, Login } from "@frameworks/login/Login";
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
+import { HttpPostWithDefaultJWT } from "@frameworks/utils/Utils";
 import { Auth } from "./Auth";
 import { AuthList } from "./AuthList";
 import { sys } from "cc";
-import { BaseModule } from "../frameworks/base/BaseModule";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**
  * @class ConnectSvr

@@ -4,7 +4,7 @@ import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
 import FGUICompLobbyMain from "./FGUICompLobbyMain";
 
-import { PackageManager } from "../../frameworks/PackageManager";
+import { PackageManager } from "@frameworks/PackageManager";
 
 export default class FGUILobbyView extends fgui.GComponent {
 

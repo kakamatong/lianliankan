@@ -5,7 +5,7 @@ import * as fgui from "fairygui-cc";
 import FGUICompPrivateCreate from "./FGUICompPrivateCreate";
 import FGUICompPrivateJoin from "./FGUICompPrivateJoin";
 
-import { PackageManager } from "../../frameworks/PackageManager";
+import { PackageManager } from "@frameworks/PackageManager";
 
 export default class FGUIPrivateRoomView extends fgui.GComponent {
 

@@ -4,9 +4,9 @@
  * @category 网络请求模块
  */
 
-import { LogColors } from "../frameworks/Framework";
+import { LogColors } from "@frameworks/Framework";
 import { SprotoCallActivityFunc } from "../../types/protocol/lobby/c2s";
-import { BaseModule } from "../frameworks/base/BaseModule";
+import { BaseModule } from "@frameworks/base/BaseModule";
 import { MAIN_GAME_ID } from "../datacenter/InterfaceConfig";
 
 /**

@@ -4,7 +4,7 @@ import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
 import FGUICompBtnSound from "./FGUICompBtnSound";
 
-import { PackageManager } from "../../frameworks/PackageManager";
+import { PackageManager } from "@frameworks/PackageManager";
 
 export default class FGUIUserCenterView extends fgui.GComponent {
 

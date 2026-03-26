@@ -10,7 +10,7 @@ import FGUICompGameStartAct from "./FGUICompGameStartAct";
 import FGUICompTimeLeft from "./FGUICompTimeLeft";
 import FGUICompFinshInfo from "./FGUICompFinshInfo";
 
-import { PackageManager } from "../../frameworks/PackageManager";
+import { PackageManager } from "@frameworks/PackageManager";
 
 export default class FGUICompGameMain extends fgui.GComponent {
 

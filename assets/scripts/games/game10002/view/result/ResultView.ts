@@ -1,14 +1,14 @@
 import FGUIResultView from "../../../../fgui/game10002Result/FGUIResultView";
 import * as fgui from "fairygui-cc";
 import { GameData } from "../../data/GameData";
-import { SoundManager } from "../../../../frameworks/SoundManager";
-import { MiniGameUtils } from "db://assets/scripts/frameworks/utils/sdk/MiniGameUtils";
-import { PackageLoad, ViewClass } from "db://assets/scripts/frameworks/Framework";
+import { SoundManager } from "@frameworks/SoundManager";
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
+import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import FGUICompResultInfo from "../../../../fgui/game10002Result/FGUICompResultInfo";
 import FGUICompHead from "../../../../fgui/common/FGUICompHead";
 import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
 import { DataCenter } from "db://assets/scripts/datacenter/Datacenter";
-import { TruncateString } from "../../../../frameworks/utils/Utils";
+import { TruncateString } from "@frameworks/utils/Utils";
 
 @ViewClass()
 @PackageLoad(["gameCommon"])

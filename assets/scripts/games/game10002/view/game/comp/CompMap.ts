@@ -4,13 +4,13 @@ import * as fgui from "fairygui-cc";
 import { PathFinder } from "../../../logic/PathFinder";
 import { MapManager } from "../../../logic/MapManager";
 import { Point, LineSegment } from "../../../logic/TileMapData";
-import { ViewClass } from "db://assets/scripts/frameworks/Framework";
-import { GameSocketManager } from "../../../../../frameworks/GameSocketManager";
+import { ViewClass } from "@frameworks/Framework";
+import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { SprotoClickTiles } from "../../../../../../types/protocol/game10002/c2s";
 import { TipsView } from "../../../../../view/common/TipsView";
 import { GameData } from "../../../data/GameData";
 import { ENUM_GAME_STEP } from "../../../data/InterfaceGameConfig";
-import { SpinePlay } from "../../../../../frameworks/utils/Utils";
+import { SpinePlay } from "@frameworks/utils/Utils";
 
 /**
  * @class CompMap

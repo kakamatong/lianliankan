@@ -1,4 +1,4 @@
-import { ViewClass } from "db://assets/scripts/frameworks/Framework";
+import { ViewClass } from "@frameworks/Framework";
 import FGUICompTalk from "../../../../../fgui/game10002/FGUICompTalk";
 import * as fgui from "fairygui-cc";
 

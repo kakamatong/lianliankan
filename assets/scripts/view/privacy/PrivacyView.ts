@@ -4,10 +4,10 @@
  * @category 隐私视图
  */
 
-import FGUIPrivacyView from '../../fgui/privacy/FGUIPrivacyView';
+import FGUIPrivacyView from "../../fgui/privacy/FGUIPrivacyView";
 import * as fgui from "fairygui-cc";
-import { MiniGameUtils } from '../../frameworks/utils/sdk/MiniGameUtils';
-import { ViewClass } from '../../frameworks/Framework';
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
+import { ViewClass } from "@frameworks/Framework";
 
 /**
  * @class PrivacyView
@@ -17,31 +17,31 @@ import { ViewClass } from '../../frameworks/Framework';
 @ViewClass()
 export class PrivacyView extends FGUIPrivacyView {
     /** 解析函数 */
-    private _resolve:Function | null = null;
+    private _resolve: Function | null = null;
 
     /**
      * @description 显示隐私协议视图
      * @param data 视图数据
      */
-    show(data?: any):void{
-        this._resolve = data.resolvefunc
-        this._resolve && this._resolve({event:'exposureAuthorization'})
+    show(data?: any): void {
+        this._resolve = data.resolvefunc;
+        this._resolve && this._resolve({ event: "exposureAuthorization" });
     }
 
     /**
      * @description 同意协议按钮点击事件
      */
     onBtnAgree(): void {
-        this._resolve && this._resolve({event:'agree'})
-        PrivacyView.hideView()
+        this._resolve && this._resolve({ event: "agree" });
+        PrivacyView.hideView();
     }
 
     /**
      * @description 拒绝协议按钮点击事件
      */
     onBtnRefuse(): void {
-        this._resolve && this._resolve({event:'disagree'})
-        PrivacyView.hideView()
+        this._resolve && this._resolve({ event: "disagree" });
+        PrivacyView.hideView();
     }
 
     /**
@@ -49,7 +49,7 @@ export class PrivacyView extends FGUIPrivacyView {
      */
     onBtnPrivacy(): void {
         // 跳转隐私协议
-        MiniGameUtils.instance.openPrivacyContract()
+        MiniGameUtils.instance.openPrivacyContract();
     }
 }
 fgui.UIObjectFactory.setExtension(PrivacyView.URL, PrivacyView);

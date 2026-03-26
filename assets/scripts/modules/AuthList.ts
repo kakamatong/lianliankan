@@ -5,9 +5,9 @@
  */
 
 import { DataCenter } from "../datacenter/Datacenter";
-import { LogColors } from "../frameworks/Framework";
-import { HttpPostWithDefaultJWT, DecodeURLRecursive } from "../frameworks/utils/Utils";
-import { BaseModule } from "../frameworks/base/BaseModule";
+import { LogColors } from "@frameworks/Framework";
+import { HttpPostWithDefaultJWT, DecodeURLRecursive } from "@frameworks/utils/Utils";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 // 添加console.log别名，方便使用日志颜色
 const log = console.log;

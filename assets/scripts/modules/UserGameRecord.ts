@@ -4,10 +4,10 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from '../datacenter/Datacenter';
-import { MAIN_GAME_ID } from '../datacenter/InterfaceConfig';
-import { SprotoUserGameRecord } from '../../types/protocol/lobby/c2s';
-import { BaseModule } from '../frameworks/base/BaseModule';
+import { DataCenter } from "../datacenter/Datacenter";
+import { MAIN_GAME_ID } from "../datacenter/InterfaceConfig";
+import { SprotoUserGameRecord } from "../../types/protocol/lobby/c2s";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**
  * @class UserGameRecord
@@ -20,16 +20,16 @@ export class UserGameRecord extends BaseModule {
     }
 
     /** 回调函数 */
-    private _callback: ((data:any)=>void) | null = null;
+    private _callback: ((data: any) => void) | null = null;
     /**
      * @method req
      * @description 请求用户数据，向服务器发送用户数据请求
      */
-    req(userid?:number, callback?: (data:any)=>void) {
+    req(userid?: number, callback?: (data: any) => void) {
         if (callback) {
-            this._callback = callback
+            this._callback = callback;
         }
-        this.reqLobby(SprotoUserGameRecord, { userid: userid  || DataCenter.instance.userid, gameid: MAIN_GAME_ID }, this.resp.bind(this))
+        this.reqLobby(SprotoUserGameRecord, { userid: userid || DataCenter.instance.userid, gameid: MAIN_GAME_ID }, this.resp.bind(this));
     }
 
     /**

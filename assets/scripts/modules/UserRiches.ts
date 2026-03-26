@@ -4,11 +4,11 @@
  * @category 网络请求模块
  */
 
-import { SprotoUserRiches } from '../../types/protocol/lobby/c2s';
-import { DataCenter } from '../datacenter/Datacenter';
-import { DispatchEvent } from '../frameworks/Framework';
-import { EVENT_NAMES } from '../datacenter/CommonConfig';
-import { BaseModule } from '../frameworks/base/BaseModule';
+import { SprotoUserRiches } from "../../types/protocol/lobby/c2s";
+import { DataCenter } from "../datacenter/Datacenter";
+import { DispatchEvent } from "@frameworks/Framework";
+import { EVENT_NAMES } from "../datacenter/CommonConfig";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**
  * @class UserRiches
@@ -23,7 +23,7 @@ export class UserRiches extends BaseModule {
      * @description 请求用户财富数据
      */
     req() {
-        this.reqLobby(SprotoUserRiches, {}, this.resp.bind(this))
+        this.reqLobby(SprotoUserRiches, {}, this.resp.bind(this));
     }
 
     /**
@@ -32,17 +32,17 @@ export class UserRiches extends BaseModule {
      */
     resp(data: SprotoUserRiches.Response) {
         //DataCenter.instance.userData = data;
-        if (data  && data.richType && data.richNums && data.richType.length > 0 && data.richNums.length > 0) {
-            const riches: Array<{richType:number, richNums:number}> = []
+        if (data && data.richType && data.richNums && data.richType.length > 0 && data.richNums.length > 0) {
+            const riches: Array<{ richType: number; richNums: number }> = [];
             for (let i = 0; i < data.richType.length; i++) {
                 const tmp = {
                     richType: data.richType[i],
-                    richNums: data.richNums[i]
-                }
-                riches.push(tmp)
+                    richNums: data.richNums[i],
+                };
+                riches.push(tmp);
             }
-            DataCenter.instance.userRiches = riches
-            DispatchEvent(EVENT_NAMES.USER_RICHES,data)
+            DataCenter.instance.userRiches = riches;
+            DispatchEvent(EVENT_NAMES.USER_RICHES, data);
         }
     }
 }

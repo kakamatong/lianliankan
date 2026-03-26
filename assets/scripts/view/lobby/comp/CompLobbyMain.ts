@@ -1,14 +1,14 @@
 import FGUICompLobbyMain from "../../../fgui/lobby/FGUICompLobbyMain";
-import { ViewClass, AddEventListener, ChangeScene, LogColors, RemoveEventListener } from "../../../frameworks/Framework";
+import { ViewClass, AddEventListener, ChangeScene, LogColors, RemoveEventListener } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { DataCenter } from "../../../datacenter/Datacenter";
 import { ConnectSvr } from "../../../modules/ConnectSvr";
 import { PopMessageView } from "../../common/PopMessageView";
 import { ENUM_POP_MESSAGE_TYPE, ENUM_USER_STATUS, LOBBY_SHARE_PIC_URL, LOCAL_KEY, RICH_TYPE } from "../../../datacenter/InterfaceConfig";
 import { EVENT_NAMES } from "../../../datacenter/CommonConfig";
-import { FW_EVENT_NAMES } from "../../../frameworks/config/Config";
+import { FW_EVENT_NAMES } from "@frameworks/config/Config";
 import { TipsView } from "../../common/TipsView";
-import { LobbySocketManager } from "../../../frameworks/LobbySocketManager";
+import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import { Rank } from "../../../modules/Rank";
 import { RankView } from "../../rank/RankView";
 import { LoadingView } from "../../common/LoadingView";
@@ -19,7 +19,7 @@ import { MailView } from "../../mail/MailView";
 import { Mail } from "../../../modules/Mail";
 import { PrivateRoomView } from "../../privateRoom/PrivateRoomView";
 import { UserCenterView } from "../../userCenter/UserCenterView";
-import { MiniGameUtils } from "../../../frameworks/utils/sdk/MiniGameUtils";
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 import { ConnectGameSvr } from "../../../modules/ConnectGameSvr";
 import { SprotoGameRoomReady } from "db://assets/types/protocol/lobby/s2c";
 import { SignInView } from "../../signIn/SignInView";
@@ -27,8 +27,8 @@ import { sys } from "cc";
 import { AdReward } from "../../../modules/AdReward";
 import { AwardView } from "../../award/AwardView";
 import { UserRiches } from "../../../modules/UserRiches";
-import { REWORD_VIDEOAD_CODE } from "../../../frameworks/config/Config";
-import { TruncateString } from "../../../frameworks/utils/Utils";
+import { REWORD_VIDEOAD_CODE } from "@frameworks/config/Config";
+import { TruncateString } from "@frameworks/utils/Utils";
 /**
  * 大厅主界面组件
  * 负责大厅界面的初始化、用户登录管理、用户信息展示、功能入口处理等

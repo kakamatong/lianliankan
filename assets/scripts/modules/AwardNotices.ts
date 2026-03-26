@@ -4,9 +4,9 @@
  * @category 网络请求模块
  */
 
-import { DataCenter } from '../datacenter/Datacenter';
-import { SprotoGetAwardNotice,SprotoSetAwardNoticeRead } from '../../types/protocol/lobby/c2s';
-import { BaseModule } from '../frameworks/base/BaseModule';
+import { DataCenter } from "../datacenter/Datacenter";
+import { SprotoGetAwardNotice, SprotoSetAwardNoticeRead } from "../../types/protocol/lobby/c2s";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**
  * @class AwardNotices
@@ -21,8 +21,7 @@ export class AwardNotices extends BaseModule {
      * @description 请求获取奖励通知
      */
     req() {
-        this.reqLobby(SprotoGetAwardNotice, { userid:DataCenter.instance.userid}, this.resp.bind(this))
-
+        this.reqLobby(SprotoGetAwardNotice, { userid: DataCenter.instance.userid }, this.resp.bind(this));
     }
 
     /**
@@ -31,15 +30,14 @@ export class AwardNotices extends BaseModule {
      */
     resp(data: SprotoGetAwardNotice.Response) {
         // 这是未通知到的奖励，可以一个一个通知，或者合并通知
-        data && data.list && console.log(data.list)
+        data && data.list && console.log(data.list);
     }
 
     /**
      * @description 标记奖励通知为已读
      * @param id 奖励通知ID
      */
-    reqRead(id:number){
-        this.reqLobby(SprotoSetAwardNoticeRead, { id:id})
+    reqRead(id: number) {
+        this.reqLobby(SprotoSetAwardNoticeRead, { id: id });
     }
-
 }

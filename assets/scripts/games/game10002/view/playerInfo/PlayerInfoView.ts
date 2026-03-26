@@ -3,8 +3,8 @@ import FGUIPlayerInfoView from "../../../../fgui/game10002PlayerInfo/FGUIPlayerI
 import * as fgui from "fairygui-cc";
 import { GameData } from "../../data/GameData";
 import FGUICompHead from "../../../../fgui/common/FGUICompHead";
-import { ViewClass } from "db://assets/scripts/frameworks/Framework";
-import { TruncateString } from "../../../../frameworks/utils/Utils";
+import { ViewClass } from "@frameworks/Framework";
+import { TruncateString } from "@frameworks/utils/Utils";
 
 @ViewClass()
 export class PlayerInfoView extends FGUIPlayerInfoView {

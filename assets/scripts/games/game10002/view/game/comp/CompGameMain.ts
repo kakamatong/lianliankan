@@ -1,6 +1,6 @@
 import FGUICompGameMain from "../../../../../fgui/game10002/FGUICompGameMain";
-import { GameSocketManager } from "../../../../../frameworks/GameSocketManager";
-import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "../../../../../frameworks/Framework";
+import { GameSocketManager } from "@frameworks/GameSocketManager";
+import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "@frameworks/Framework";
 import { DataCenter } from "../../../../../datacenter/Datacenter";
 import { GameData } from "../../../data/GameData";
 import {
@@ -9,23 +9,22 @@ import {
     ROOM_TYPE,
     CTRL_BTN_INDEX,
     GAME_MODE_TXT,
-    ROOM_PLAYER_INDEX,
     GAME_PLAYER_INFO,
 } from "../../../data/InterfaceGameConfig";
 import * as fgui from "fairygui-cc";
 import { CompTimeLeft } from "./CompTimeLeft";
 import { CompFinshInfo } from "./CompFinshInfo";
 import { PopMessageView } from "../../../../../view/common/PopMessageView";
-import { ENUM_POP_MESSAGE_TYPE, RICH_TYPE } from "../../../../../datacenter/InterfaceConfig";
-import { FW_EVENT_NAMES } from "../../../../../frameworks/config/Config";
+import { ENUM_POP_MESSAGE_TYPE } from "../../../../../datacenter/InterfaceConfig";
+import { FW_EVENT_NAMES } from "@frameworks/config/Config";
 import { ResultView } from "../../result/ResultView";
 import { UserStatus } from "../../../../../modules/UserStatus";
 import { MatchView } from "../../../../../view/match/MatchView";
 import { Match } from "../../../../../modules/Match";
-import { LobbySocketManager } from "../../../../../frameworks/LobbySocketManager";
+import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import { AuthGame } from "../../../../../modules/AuthGame";
 import { TotalResultView } from "../../result/TotalResultView";
-import { MiniGameUtils } from "../../../../../frameworks/utils/sdk/MiniGameUtils";
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 import { CompPlayerHead } from "./CompPlayerHead";
 import { CompPlayers } from "./CompPlayers";
 import {

@@ -4,11 +4,10 @@
  * @category 网络请求模块
  */
 
-import { CancelrevokeaccResponse, RevokeaccResponse } from '../../types/protocol/lobby/c2s';
-import { DataCenter } from '../datacenter/Datacenter';
-import { SprotoRevokeAcc, SprotoCancelRevokeAcc } from '../../types/protocol/lobby/c2s';
-import { BaseModule } from '../frameworks/base/BaseModule';
-
+import { CancelrevokeaccResponse, RevokeaccResponse } from "../../types/protocol/lobby/c2s";
+import { DataCenter } from "../datacenter/Datacenter";
+import { SprotoRevokeAcc, SprotoCancelRevokeAcc } from "../../types/protocol/lobby/c2s";
+import { BaseModule } from "@frameworks/base/BaseModule";
 
 /**
  * @class RevokeAccount
@@ -21,29 +20,29 @@ export class RevokeAccount extends BaseModule {
     }
 
     /** 回调函数 */
-    private _callback: ((data:any)=>void) | null = null;
+    private _callback: ((data: any) => void) | null = null;
     /**
      * @description 请求账号注销
      * @param callback 回调函数
      */
-    reqRevokeAccount(callback?: (data:any)=>void) {
+    reqRevokeAccount(callback?: (data: any) => void) {
         if (callback) {
-            this._callback = callback
+            this._callback = callback;
         }
         const loginInfo = DataCenter.instance.getLoginInfo();
-        this.reqLobby(SprotoRevokeAcc, { loginType: loginInfo?.loginType }, this.respRevoke.bind(this))
+        this.reqLobby(SprotoRevokeAcc, { loginType: loginInfo?.loginType }, this.respRevoke.bind(this));
     }
 
     /**
      * @description 请求取消账号注销
      * @param callback 回调函数
      */
-    reqCancelRevokeAccount(callback?: (data:any)=>void) {
+    reqCancelRevokeAccount(callback?: (data: any) => void) {
         if (callback) {
-            this._callback = callback
+            this._callback = callback;
         }
         const loginInfo = DataCenter.instance.getLoginInfo();
-        this.reqLobby(SprotoCancelRevokeAcc, { userid: loginInfo?.loginType }, this.respCancelRevoke.bind(this))
+        this.reqLobby(SprotoCancelRevokeAcc, { userid: loginInfo?.loginType }, this.respCancelRevoke.bind(this));
     }
 
     /**

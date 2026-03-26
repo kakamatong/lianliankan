@@ -1,7 +1,7 @@
 import { _decorator, Component } from "cc";
 import * as fgui from "fairygui-cc";
 import { GameView } from "../games/game10002/view/game/GameView";
-import { SoundManager } from "../frameworks/SoundManager";
+import { SoundManager } from "@frameworks/SoundManager";
 const { ccclass } = _decorator;
 
 @ccclass("GameScene")

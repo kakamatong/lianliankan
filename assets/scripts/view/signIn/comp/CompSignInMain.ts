@@ -1,5 +1,5 @@
 import * as fgui from "fairygui-cc";
-import { LogColors, ViewClass } from "../../../frameworks/Framework";
+import { LogColors, ViewClass } from "@frameworks/Framework";
 import FGUICompSignInMain from "../../../fgui/signIn/FGUICompSignInMain";
 import { SignIn } from "../../../modules/SignIn";
 import { SignInConfig } from "../data/SignInconfig";
@@ -8,8 +8,8 @@ import FGUICompSignItem from "../../../fgui/signIn/FGUICompSignItem";
 import { SignInView } from "../SignInView";
 import { UserRiches } from "../../../modules/UserRiches";
 import { AwardView } from "../../award/AwardView";
-import { MiniGameUtils } from "../../../frameworks/utils/sdk/MiniGameUtils";
-import { REWORD_VIDEOAD_CODE } from "../../../frameworks/config/Config";
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
+import { REWORD_VIDEOAD_CODE } from "@frameworks/config/Config";
 import { LoadingView } from "../../common/LoadingView";
 
 /**

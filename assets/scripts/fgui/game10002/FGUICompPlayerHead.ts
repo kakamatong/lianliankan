@@ -5,7 +5,7 @@ import * as fgui from "fairygui-cc";
 import FGUICompOffline from "./FGUICompOffline";
 import FGUICompTalk from "./FGUICompTalk";
 
-import { PackageManager } from "../../frameworks/PackageManager";
+import { PackageManager } from "@frameworks/PackageManager";
 
 export default class FGUICompPlayerHead extends fgui.GComponent {
 

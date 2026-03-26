@@ -1,6 +1,6 @@
 import FGUICompPlayers from "../../../../../fgui/game10002/FGUICompPlayers";
 import { CompOtherPlayer } from "./CompOtherPlayer";
-import { ViewClass } from "db://assets/scripts/frameworks/Framework";
+import { ViewClass } from "@frameworks/Framework";
 import { GAME_PLAYER_INFO } from "../../../data/InterfaceGameConfig";
 import { Point, LineSegment } from "../../../logic/TileMapData";
 import * as fgui from "fairygui-cc";
