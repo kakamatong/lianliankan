@@ -145,13 +145,13 @@ export class SocketManager implements handleSocketMessage {
         }
         const bundle = assetManager.loadBundle("protocol", (err, bundle) => {
             if (err) {
-                Logger.error("loadBundle error", err);
+                Logger.log("loadBundle error", err);
                 return;
             }
             const protocolPath = path + "/";
             // 必须先读取服务端协议
             bundle.load(protocolPath + "s2c", (err, asset: TextAsset) => {
-                Logger.error("loadAsset error", err);
+                Logger.log("loadAsset error", err);
 
                 const txt = asset.nativeAsset;
                 const buffer = protoParse.parse(txt, {});
@@ -160,7 +160,7 @@ export class SocketManager implements handleSocketMessage {
 
                 // 然后读取客户端协议
                 bundle.load(protocolPath + "c2s", (err, asset: TextAsset) => {
-                    Logger.error("loadAsset error", err);
+                    Logger.log("loadAsset error", err);
 
                     const txt = asset.nativeAsset;
                     const buffer = protoParse.parse(txt, {});

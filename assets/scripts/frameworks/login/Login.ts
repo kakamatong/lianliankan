@@ -8,8 +8,8 @@ import CryptoJS from "crypto-js";
 import { _decorator } from "cc";
 import { Socket } from "../socket/Socket";
 import { handleSocketMessage } from "../config/Config";
-import { dhexchange, dhsecret, hmac64, CustomDESEncrypt, StringToUint8Array, DecodeBase64Node } from "../utils/Utils";
-import { LogColors, Logger } from "../Framework";
+import { dhexchange, dhsecret, hmac64, CustomDESEncrypt, StringToUint8Array, DecodeBase64Node, Logger } from "../utils/Utils";
+import { LogColors } from "../Framework";
 const { ccclass, property } = _decorator;
 
 /**
