@@ -1,6 +1,6 @@
 import CryptoJS from "crypto-js";
 import { MiniGameUtils } from "./sdk/MiniGameUtils";
-import { sp } from "cc";
+import { sp, log, debug, error, warn } from "cc";
 import { LogColors } from "../Framework";
 import * as fgui from "fairygui-cc";
 
@@ -1004,6 +1004,13 @@ export const TruncateString = (str: string, maxWidth: number): string => {
     return chars.slice(0, endIndex).join("") + "...";
 };
 
+/**
+ * 播放 spine 动画
+ * @param sp
+ * @param animation
+ * @param loop
+ * @param complete
+ */
 export const SpinePlay = (
     sp: fgui.GLoader3D,
     animation: string,
@@ -1016,3 +1023,21 @@ export const SpinePlay = (
     skeleton.setAnimation(0, animation, loop);
     complete && skeleton.setCompleteListener(complete);
 };
+
+/**
+ * 日志工具类
+ */
+export class Logger {
+    static log(...args: any[]): void {
+        log(...args);
+    }
+    static debug(...args: any[]): void {
+        debug(...args);
+    }
+    static error(...args: any[]): void {
+        error(...args);
+    }
+    static warn(...args: any[]): void {
+        warn(...args);
+    }
+}
