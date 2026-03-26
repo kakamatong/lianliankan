@@ -10,8 +10,8 @@ import {
 import { GameData } from "../../../data/GameData";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { DataCenter } from "@datacenter/Datacenter";
-import { TipsView } from "../../../../../view/common/TipsView";
-import { PopMessageView } from "../../../../../view/common/PopMessageView";
+import { TipsView } from "@view/common/TipsView";
+import { PopMessageView } from "@view/common/PopMessageView";
 import { ENUM_POP_MESSAGE_TYPE } from "@datacenter/InterfaceConfig";
 import { Color } from "cc";
 import { SprotoVoteDisbandResult, SprotoVoteDisbandStart, SprotoVoteDisbandUpdate } from "../../../../../../types/protocol/game10002/s2c";

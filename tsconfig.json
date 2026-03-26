@@ -11,7 +11,8 @@
             "@frameworks/*": ["./assets/scripts/frameworks/*"],
             "@fgui/*": ["./assets/scripts/fgui/*"],
             "@modules/*": ["./assets/scripts/modules/*"],
-            "@datacenter/*": ["./assets/scripts/datacenter/*"]
+            "@datacenter/*": ["./assets/scripts/datacenter/*"],
+            "@view/*": ["./assets/scripts/view/*"]
         }
     }
 }
