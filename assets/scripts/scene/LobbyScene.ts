@@ -1,10 +1,11 @@
-import { _decorator, Component, log, sys, assetManager, resources, AssetManager, JsonAsset } from "cc";
+import { _decorator, Component, sys, resources, JsonAsset } from "cc";
 import * as fgui from "fairygui-cc";
 import { DataCenter } from "@datacenter/Datacenter";
 import { LobbyView } from "@view/lobby/LobbyView";
 import { ENUM_CHANNEL_ID, LOCAL_KEY } from "@datacenter/InterfaceConfig";
 import { LoginView } from "@view/login/LoginView";
 import { SoundManager } from "@frameworks/SoundManager";
+import { Logger } from "@frameworks/utils/Utils";
 const { ccclass } = _decorator;
 
 @ccclass("LobbyScreen")
@@ -23,7 +24,7 @@ export class LobbyScreen extends Component {
             }
         });
         this.initView();
-        log("LobbyScreen");
+        Logger.log("LobbyScreen");
     }
 
     initView() {
