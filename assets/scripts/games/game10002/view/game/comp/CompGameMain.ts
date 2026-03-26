@@ -1,4 +1,4 @@
-import FGUICompGameMain from "../../../../../fgui/game10002/FGUICompGameMain";
+import FGUICompGameMain from "@fgui/game10002/FGUICompGameMain";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "@frameworks/Framework";
 import { DataCenter } from "../../../../../datacenter/Datacenter";
@@ -63,7 +63,7 @@ import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "../../talk/TalkConfig";
 import { TalkView } from "../../talk/TalkView";
 import { CompMap } from "./CompMap";
 import { LineSegment } from "../../../logic/TileMapData";
-import FGUICompMedal from "../../../../../fgui/gameCommon/FGUICompMedal";
+import FGUICompMedal from "@fgui/gameCommon/FGUICompMedal";
 
 /**
  * 游戏主体组件

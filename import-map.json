@@ -1,5 +1,6 @@
 {
     "imports": {
-        "@frameworks/": "./assets/scripts/frameworks/"
+        "@frameworks/": "./assets/scripts/frameworks/",
+        "@fgui/": "./assets/scripts/fgui/"
     }
 }

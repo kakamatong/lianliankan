@@ -4,7 +4,7 @@
  * @category 匹配视图
  */
 
-import FGUICompMatchAct from "../../../fgui/match/FGUICompMatchAct";
+import FGUICompMatchAct from "@fgui/match/FGUICompMatchAct";
 import * as fgui from "fairygui-cc";
 import { GetRandomInt } from "@frameworks/utils/Utils";
 import { ViewClass } from "@frameworks/Framework";

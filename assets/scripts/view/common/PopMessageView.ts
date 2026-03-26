@@ -4,7 +4,7 @@
  * @category 通用视图
  */
 
-import FGUIPopMessageView from "../../fgui/common/FGUIPopMessageView";
+import FGUIPopMessageView from "@fgui/common/FGUIPopMessageView";
 import { ENUM_POP_MESSAGE_TYPE } from "../../datacenter/InterfaceConfig";
 import * as fgui from "fairygui-cc";
 import { ViewClass } from "@frameworks/Framework";

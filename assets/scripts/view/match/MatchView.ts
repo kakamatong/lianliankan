@@ -4,7 +4,7 @@
  * @category 匹配视图
  */
 
-import FGUIMatchView from "../../fgui/match/FGUIMatchView";
+import FGUIMatchView from "@fgui/match/FGUIMatchView";
 import * as fgui from "fairygui-cc";
 import { Match } from "../../modules/Match";
 import { ENUM_POP_MESSAGE_TYPE, LOCAL_KEY } from "../../datacenter/InterfaceConfig";

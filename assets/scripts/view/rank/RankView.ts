@@ -4,7 +4,7 @@
  * @category 排行榜视图
  */
 
-import FGUIRankView from "../../fgui/rank/FGUIRankView";
+import FGUIRankView from "@fgui/rank/FGUIRankView";
 import { CompRankInfo } from "./comp/CompRankInfo";
 import * as fgui from "fairygui-cc";
 import { ViewClass } from "@frameworks/Framework";

@@ -1,12 +1,12 @@
-import FGUITotalResultView from "../../../../fgui/game10002Result/FGUITotalResultView";
+import FGUITotalResultView from "@fgui/game10002Result/FGUITotalResultView";
 import * as fgui from "fairygui-cc";
 import { GameData } from "../../data/GameData";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { ChangeScene, PackageLoad, ViewClass } from "@frameworks/Framework";
 import { TruncateString } from "@frameworks/utils/Utils";
-import { SprotoTotalResult } from "../../../../../../types/protocol/game10002/s2c";
-import FGUICompTotalResultInfo from "db://assets/scripts/fgui/game10002Result/FGUICompTotalResultInfo";
-import FGUICompMedal from "db://assets/scripts/fgui/gameCommon/FGUICompMedal";
+import { SprotoTotalResult } from "../../../../../types/protocol/game10002/s2c";
+import FGUICompTotalResultInfo from "@fgui/game10002Result/FGUICompTotalResultInfo";
+import FGUICompMedal from "@fgui/gameCommon/FGUICompMedal";
 
 @ViewClass()
 @PackageLoad(["gameCommon"])

@@ -5,7 +5,7 @@
  */
 
 import { _decorator } from "cc";
-import FGUICompRankInfo from "../../../fgui/rank/FGUICompRankInfo";
+import FGUICompRankInfo from "@fgui/rank/FGUICompRankInfo";
 import * as fgui from "fairygui-cc";
 import { ViewClass } from "@frameworks/Framework";
 import { TruncateString } from "@frameworks/utils/Utils";

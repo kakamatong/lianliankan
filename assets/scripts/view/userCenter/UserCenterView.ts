@@ -1,7 +1,7 @@
-import FGUIUserCenterView from "../../fgui/userCenter/FGUIUserCenterView";
+import FGUIUserCenterView from "@fgui/userCenter/FGUIUserCenterView";
 import * as fgui from "fairygui-cc";
 import { UserGameRecord } from "../../modules/UserGameRecord";
-import FGUICompHead from "../../fgui/common/FGUICompHead";
+import FGUICompHead from "@fgui/common/FGUICompHead";
 import { DataCenter } from "../../datacenter/Datacenter";
 import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 import { TipsView } from "../common/TipsView";

@@ -1,5 +1,5 @@
 import { ViewClass } from "@frameworks/Framework";
-import FGUICompFinshInfo from "../../../../../fgui/game10002/FGUICompFinshInfo";
+import FGUICompFinshInfo from "@fgui/game10002/FGUICompFinshInfo";
 import * as fgui from "fairygui-cc";
 
 /**

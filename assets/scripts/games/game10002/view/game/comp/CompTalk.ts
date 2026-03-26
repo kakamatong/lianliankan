@@ -1,5 +1,5 @@
 import { ViewClass } from "@frameworks/Framework";
-import FGUICompTalk from "../../../../../fgui/game10002/FGUICompTalk";
+import FGUICompTalk from "@fgui/game10002/FGUICompTalk";
 import * as fgui from "fairygui-cc";
 
 @ViewClass()

@@ -6,7 +6,7 @@
 
 import { sys } from "cc";
 import { LOCAL_KEY } from "../../datacenter/InterfaceConfig";
-import FGUILoginView from "../../fgui/login/FGUILoginView";
+import FGUILoginView from "@fgui/login/FGUILoginView";
 import * as fgui from "fairygui-cc";
 import { LobbyView } from "../lobby/LobbyView";
 import { PrivacyView } from "../privacy/PrivacyView";

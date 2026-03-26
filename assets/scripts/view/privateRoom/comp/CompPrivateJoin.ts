@@ -4,7 +4,7 @@
  * @category 私密房间视图
  */
 
-import FGUICompPrivateJoin from "../../../fgui/privateRoom/FGUICompPrivateJoin";
+import FGUICompPrivateJoin from "@fgui/privateRoom/FGUICompPrivateJoin";
 import * as fgui from "fairygui-cc";
 import { PopMessageView } from "../../common/PopMessageView";
 import { ENUM_POP_MESSAGE_TYPE } from "../../../datacenter/InterfaceConfig";

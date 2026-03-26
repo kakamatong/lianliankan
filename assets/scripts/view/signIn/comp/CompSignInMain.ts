@@ -1,10 +1,10 @@
 import * as fgui from "fairygui-cc";
 import { LogColors, ViewClass } from "@frameworks/Framework";
-import FGUICompSignInMain from "../../../fgui/signIn/FGUICompSignInMain";
+import FGUICompSignInMain from "@fgui/signIn/FGUICompSignInMain";
 import { SignIn } from "../../../modules/SignIn";
 import { SignInConfig } from "../data/SignInconfig";
 import { TipsView } from "../../common/TipsView";
-import FGUICompSignItem from "../../../fgui/signIn/FGUICompSignItem";
+import FGUICompSignItem from "@fgui/signIn/FGUICompSignItem";
 import { SignInView } from "../SignInView";
 import { UserRiches } from "../../../modules/UserRiches";
 import { AwardView } from "../../award/AwardView";

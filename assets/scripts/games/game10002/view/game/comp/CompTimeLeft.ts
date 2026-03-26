@@ -1,5 +1,5 @@
 import { ViewClass } from "@frameworks/Framework";
-import FGUICompTimeLeft from "../../../../../fgui/game10002/FGUICompTimeLeft";
+import FGUICompTimeLeft from "@fgui/game10002/FGUICompTimeLeft";
 import * as fgui from "fairygui-cc";
 
 /**

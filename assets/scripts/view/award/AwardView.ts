@@ -4,7 +4,7 @@
  * @category 奖励视图
  */
 
-import FGUIAwardView from "../../fgui/award/FGUIAwardView";
+import FGUIAwardView from "@fgui/award/FGUIAwardView";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { AwardConfig } from "./data/AwardConfig";

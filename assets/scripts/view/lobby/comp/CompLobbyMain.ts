@@ -1,4 +1,4 @@
-import FGUICompLobbyMain from "../../../fgui/lobby/FGUICompLobbyMain";
+import FGUICompLobbyMain from "@fgui/lobby/FGUICompLobbyMain";
 import { ViewClass, AddEventListener, ChangeScene, LogColors, RemoveEventListener } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { DataCenter } from "../../../datacenter/Datacenter";
@@ -14,7 +14,7 @@ import { RankView } from "../../rank/RankView";
 import { LoadingView } from "../../common/LoadingView";
 import { Match } from "../../../modules/Match";
 import { MatchView } from "../../match/MatchView";
-import FGUICompHead from "../../../fgui/common/FGUICompHead";
+import FGUICompHead from "@fgui/common/FGUICompHead";
 import { MailView } from "../../mail/MailView";
 import { Mail } from "../../../modules/Mail";
 import { PrivateRoomView } from "../../privateRoom/PrivateRoomView";

@@ -1,4 +1,4 @@
-import FGUICompAwardMain from "../../../fgui/award/FGUICompAwardMain";
+import FGUICompAwardMain from "@fgui/award/FGUICompAwardMain";
 import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { AwardConfig } from "../data/AwardConfig";

@@ -4,7 +4,7 @@
  * @category 大厅视图
  */
 
-import FGUILobbyView from "../../fgui/lobby/FGUILobbyView";
+import FGUILobbyView from "@fgui/lobby/FGUILobbyView";
 import * as fgui from "fairygui-cc";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
 

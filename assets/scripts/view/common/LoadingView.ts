@@ -4,7 +4,7 @@
  * @category 通用视图
  */
 
-import FGUILoadingView from "../../fgui/common/FGUILoadingView";
+import FGUILoadingView from "@fgui/common/FGUILoadingView";
 import * as fgui from "fairygui-cc";
 import { ViewClass } from "@frameworks/Framework";
 

@@ -1,5 +1,5 @@
-import FGUICompMap from "../../../../../fgui/game10002/FGUICompMap";
-import FGUICompCube from "../../../../../fgui/game10002/FGUICompCube";
+import FGUICompMap from "@fgui/game10002/FGUICompMap";
+import FGUICompCube from "@fgui/game10002/FGUICompCube";
 import * as fgui from "fairygui-cc";
 import { PathFinder } from "../../../logic/PathFinder";
 import { MapManager } from "../../../logic/MapManager";

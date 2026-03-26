@@ -4,7 +4,7 @@
  * @category 私密房间视图
  */
 
-import FGUIPrivateRoomView from "../../fgui/privateRoom/FGUIPrivateRoomView";
+import FGUIPrivateRoomView from "@fgui/privateRoom/FGUIPrivateRoomView";
 import * as fgui from "fairygui-cc";
 import { ViewClass } from "@frameworks/Framework";
 

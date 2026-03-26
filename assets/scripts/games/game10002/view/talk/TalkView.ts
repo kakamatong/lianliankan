@@ -1,5 +1,5 @@
-import FGUICompItem from "db://assets/scripts/fgui/game10002Talk/FGUICompItem";
-import FGUITalkView from "db://assets/scripts/fgui/game10002Talk/FGUITalkView";
+import FGUICompItem from "@fgui/game10002Talk/FGUICompItem";
+import FGUITalkView from "@fgui/game10002Talk/FGUITalkView";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "db://assets/scripts/games/game10002/view/talk/TalkConfig";

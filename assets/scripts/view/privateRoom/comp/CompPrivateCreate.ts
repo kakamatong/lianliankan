@@ -4,7 +4,7 @@
  * @category 私密房间视图
  */
 
-import FGUICompPrivateCreate from "../../../fgui/privateRoom/FGUICompPrivateCreate";
+import FGUICompPrivateCreate from "@fgui/privateRoom/FGUICompPrivateCreate";
 import * as fgui from "fairygui-cc";
 import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import { PopMessageView } from "../../common/PopMessageView";

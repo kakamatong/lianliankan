@@ -1,4 +1,4 @@
-import FGUICompOtherPlayer from "../../../../../fgui/game10002/FGUICompOtherPlayer";
+import FGUICompOtherPlayer from "@fgui/game10002/FGUICompOtherPlayer";
 import { CompPlayerHead } from "./CompPlayerHead";
 import { CompMap } from "./CompMap";
 import { ViewClass } from "@frameworks/Framework";

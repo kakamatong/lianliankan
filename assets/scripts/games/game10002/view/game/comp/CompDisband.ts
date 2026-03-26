@@ -1,4 +1,4 @@
-import FGUICompDisband from "../../../../../fgui/game10002/FGUICompDisband";
+import FGUICompDisband from "@fgui/game10002/FGUICompDisband";
 import * as fgui from "fairygui-cc";
 import {
     VOTE_STATUS,

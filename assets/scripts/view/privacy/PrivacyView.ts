@@ -4,7 +4,7 @@
  * @category 隐私视图
  */
 
-import FGUIPrivacyView from "../../fgui/privacy/FGUIPrivacyView";
+import FGUIPrivacyView from "@fgui/privacy/FGUIPrivacyView";
 import * as fgui from "fairygui-cc";
 import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 import { ViewClass } from "@frameworks/Framework";
