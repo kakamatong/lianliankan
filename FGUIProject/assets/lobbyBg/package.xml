@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="m52rjp09">
+  <resources>
+    <component id="d01om" name="CompBgCube.xml" path="/comp/"/>
+    <component id="d01o0" name="ComLobbyBg.xml" path="/comp/" exported="true"/>
+    <component id="d01o1" name="CompCowCube.xml" path="/comp/"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

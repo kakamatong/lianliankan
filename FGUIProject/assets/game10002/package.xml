@@ -22,7 +22,6 @@
     <component id="ln74p" name="CompGameMain.xml" path="/comp/"/>
     <component id="hs3tq" name="CompMap.xml" path="/comp/map/"/>
     <component id="hs3tr" name="CompCube.xml" path="/comp/map/"/>
-    <image id="8yj8t" name="gamebg.jpg" path="/imgs/" atlas="alone_npot"/>
     <image id="8yj8u" name="line.png" path="/imgs/" scale="9grid" scale9grid="6,6,1,1"/>
     <component id="8yj8v" name="CompLine.xml" path="/comp/" exported="true"/>
     <component id="pgw3w" name="CompOtherPlayer.xml" path="/comp/"/>
@@ -37,6 +36,7 @@
     <misc id="qcd3m" name="E54011.atlas" path="/spine/"/>
     <image id="qcd3n" name="E54011.png" path="/spine/"/>
     <spine id="qcd3l" name="E54011.json" path="/spine/" exported="true" width="360" height="360" require="qcd3m,qcd3n" atlasNames="E54011" anchor="180,180"/>
+    <image id="drdu1b" name="gamebg.jpg" path="/imgs/" scale="9grid" scale9grid="2,2,4,4"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
