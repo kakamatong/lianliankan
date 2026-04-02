@@ -228,11 +228,8 @@ export class CompMap extends FGUICompMap {
         // 记录选中的方块
         this._selectedCubes.push({ cube, row, col });
 
-        // 设置放大效果
-        cube.setScale(this._selectScale, this._selectScale);
-
-        // 设置最高zOrder
-        cube.sortingOrder = this._selectZOrder;
+        // 设置选中控制器
+        cube.ctrl_selected.selectedIndex = 1;
     }
 
     /**
@@ -248,11 +245,8 @@ export class CompMap extends FGUICompMap {
 
         const selected = this._selectedCubes[index];
 
-        // 恢复方块大小
-        selected.cube.setScale(1, 1);
-
-        // 恢复zOrder
-        selected.cube.sortingOrder = 0;
+        // 取消选中控制器
+        selected.cube.ctrl_selected.selectedIndex = 0;
 
         // 从选中数组中移除
         this._selectedCubes.splice(index, 1);
@@ -266,8 +260,7 @@ export class CompMap extends FGUICompMap {
     private _clearSelection(): void {
         // 恢复所有选中方块的状态
         for (const selected of this._selectedCubes) {
-            selected.cube.setScale(1, 1);
-            selected.cube.sortingOrder = 0;
+            selected.cube.ctrl_selected.selectedIndex = 0;
         }
 
         // 清空选中数组
@@ -404,13 +397,11 @@ export class CompMap extends FGUICompMap {
 
         // 隐藏方块（重置为初始状态）
         first.cube.visible = false;
-        first.cube.setScale(1, 1);
-        first.cube.sortingOrder = 0;
+        first.cube.ctrl_selected.selectedIndex = 0;
         first.cube.UI_LOADER_ICOM.url = "";
 
         second.cube.visible = false;
-        second.cube.setScale(1, 1);
-        second.cube.sortingOrder = 0;
+        second.cube.ctrl_selected.selectedIndex = 0;
         second.cube.UI_LOADER_ICOM.url = "";
 
         // 清理路径线条
