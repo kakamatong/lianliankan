@@ -8,6 +8,7 @@ import { Logger } from "@frameworks/utils/Utils";
 
 export default class FGUICompCube extends fgui.GComponent {
 
+	public ctrl_selected:fgui.Controller;
 	public UI_LOADER_ICOM:fgui.GLoader;
 	public UI_SP_ANI:fgui.GLoader3D;
 	public static URL:string = "ui://2zsfe53xhs3tr";
@@ -50,8 +51,9 @@ export default class FGUICompCube extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.UI_LOADER_ICOM = <fgui.GLoader>(this.getChildAt(0));
-		this.UI_SP_ANI = <fgui.GLoader3D>(this.getChildAt(1));
+		this.ctrl_selected = this.getControllerAt(0);
+		this.UI_LOADER_ICOM = <fgui.GLoader>(this.getChildAt(2));
+		this.UI_SP_ANI = <fgui.GLoader3D>(this.getChildAt(3));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

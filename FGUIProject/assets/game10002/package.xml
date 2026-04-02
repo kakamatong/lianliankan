@@ -37,6 +37,8 @@
     <image id="qcd3n" name="E54011.png" path="/spine/"/>
     <spine id="qcd3l" name="E54011.json" path="/spine/" exported="true" width="360" height="360" require="qcd3m,qcd3n" atlasNames="E54011" anchor="180,180"/>
     <image id="drdu1b" name="gamebg.jpg" path="/imgs/" scale="9grid" scale9grid="2,2,4,4"/>
+    <image id="h0nk1c" name="bg1.png" path="/imgs/"/>
+    <image id="h0nk1d" name="bg2.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

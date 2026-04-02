@@ -1,7 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <component size="80,80">
+  <controller name="ctrl_selected" pages="0,,1," selected="0">
+    <remark page="0" value="未选择"/>
+    <remark page="1" value="选中"/>
+  </controller>
   <displayList>
+    <image id="n3_h0nk" name="n3" src="h0nk1c" fileName="imgs/bg1.png" xy="-1,-1">
+      <gearDisplay controller="ctrl_selected" pages="0"/>
+    </image>
+    <image id="n4_h0nk" name="n4" src="h0nk1d" fileName="imgs/bg2.png" xy="-1,-1">
+      <gearDisplay controller="ctrl_selected" pages="1"/>
+    </image>
     <loader id="n1_hs3t" name="UI_LOADER_ICOM" xy="0,0" size="80,80" fill="scaleFree" clearOnPublish="true"/>
-    <loader3D id="n2_ef2d" name="UI_SP_ANI" xy="-84,-83" size="360,360" scale="0.7,0.7" visible="false" touchable="false" url="ui://2zsfe53xqcd3l" animation="action" skin="" loop="false" clearOnPublish="false" autoSize="false" fill="none" align="left" verticalAlign="top" shrinkOnly="false" playing="true"/>
+    <loader3D id="n2_ef2d" name="UI_SP_ANI" xy="-84,-83" size="360,360" scale="0.7,0.7" visible="false" touchable="false" url="ui://2zsfe53xqcd3l" animation="action" skin=""/>
   </displayList>
 </component>
