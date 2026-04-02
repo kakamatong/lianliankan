@@ -11,7 +11,7 @@
     <image id="n4_h0nk" name="n4" src="h0nk1d" fileName="imgs/bg2.png" xy="-1,-1">
       <gearDisplay controller="ctrl_selected" pages="1"/>
     </image>
-    <loader id="n1_hs3t" name="UI_LOADER_ICOM" xy="0,0" size="80,80" fill="scaleFree" autoSize="true" clearOnPublish="true">
+    <loader id="n1_hs3t" name="UI_LOADER_ICOM" xy="5,5" size="70,70" fill="scaleFree" clearOnPublish="true">
       <relation target="" sidePair="center-center,middle-middle"/>
     </loader>
     <loader3D id="n2_ef2d" name="UI_SP_ANI" xy="-84,-83" size="360,360" scale="0.7,0.7" visible="false" touchable="false" url="ui://2zsfe53xqcd3l" animation="action" skin=""/>
