@@ -157,7 +157,7 @@ export class CompPlayers extends FGUICompPlayers {
      * @param {number[][]} mapData - 地图数据
      * @param {string} resPath - 资源路径
      */
-    updateOtherPlayerMap(svrSeat: number, mapData: number[][], resPath: string = "resEmoji"): void {
+    updateOtherPlayerMap(svrSeat: number, mapData: number[][], resPath: string = "resFruit"): void {
         const otherPlayer = this._playerMap.get(svrSeat);
         if (otherPlayer) {
             otherPlayer.updateMap(mapData, resPath);

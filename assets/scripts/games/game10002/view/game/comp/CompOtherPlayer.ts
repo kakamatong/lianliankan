@@ -114,9 +114,9 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
      * @method updateMap
      * @description 更新地图数据
      * @param {number[][]} mapData - 地图数据
-     * @param {string} resPath - 资源路径，默认为 "resEmoji"
+     * @param {string} resPath - 资源路径，默认为 "resFruit"
      */
-    updateMap(mapData: number[][], resPath: string = "resEmoji"): void {
+    updateMap(mapData: number[][], resPath: string = "resFruit"): void {
         if (this._compMap) {
             this._compMap.initMap(mapData, resPath);
         }

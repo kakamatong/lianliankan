@@ -147,7 +147,7 @@ export class CompGameMain extends FGUICompGameMain {
         }
 
         // 初始化地图组件
-        (this.UI_COMP_MAP as CompMap).initMap(map, "resEmoji");
+        (this.UI_COMP_MAP as CompMap).initMap(map, "resFruit");
         Logger.log("随机地图生成完成", map);
     }
 
@@ -474,7 +474,7 @@ export class CompGameMain extends FGUICompGameMain {
                 if (compMap) {
                     const scale = data.row <= 6 && data.col <= 6 ? 1.2 : 1.0;
                     compMap.node.setScale(scale, scale);
-                    compMap.initMap(map, "resEmoji");
+                    compMap.initMap(map, "resFruit");
                 }
             } else {
                 // 其他玩家的地图，渲染到对应的小地图
