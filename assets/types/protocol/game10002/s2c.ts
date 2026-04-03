@@ -61,6 +61,7 @@ export interface RankingInfo {
     usedTime: number;
     eliminated: number;
     rank: number;
+    maxCombo: number;
 }
 
 /** 分数信息 */
@@ -270,6 +271,14 @@ export interface MapshuffledRequest {
     reason: number;
 }
 
+/** 连击成功通知 - 请求参数 */
+export interface CombosuccessRequest {
+    seat: number;
+    comboCount: number;
+    comboTime: number;
+    comboDuration: number;
+}
+
 export namespace SprotoSvrMsg {
     export const Name = "svrMsg";
     export type Request = SvrmsgRequest;
@@ -430,4 +439,10 @@ export namespace SprotoMapShuffled {
     export const Name = "mapShuffled";
     export type Request = MapshuffledRequest;
     export type Response = undefined;  // mapShuffled 协议没有响应参数
+}
+
+export namespace SprotoComboSuccess {
+    export const Name = "comboSuccess";
+    export type Request = CombosuccessRequest;
+    export type Response = undefined;  // comboSuccess 协议没有响应参数
 }
