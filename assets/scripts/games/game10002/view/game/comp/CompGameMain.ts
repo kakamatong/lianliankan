@@ -900,6 +900,7 @@ export class CompGameMain extends FGUICompGameMain {
                     rank: rank.rank,
                     headurl: headurl,
                     score: data.scores[key].delta,
+                    maxComb: rank.maxCombo,
                 };
             });
 

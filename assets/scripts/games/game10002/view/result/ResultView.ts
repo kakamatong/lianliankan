@@ -22,6 +22,7 @@ export class ResultView extends FGUIResultView {
         nickname: string;
         headurl: string;
         score: number;
+        maxComb: number;
     }> = [];
     show(data?: any) {
         const flag = 1;
@@ -71,6 +72,7 @@ export class ResultView extends FGUIResultView {
             node.ctrl_uncomp.selectedIndex = 1;
             node.UI_TXT_USE_TIME.text = "未完成";
         }
+        node.UI_TXT_MAX_COMB.text = data.maxComb?.toString() ?? "0";
 
         const selfid = DataCenter.instance.userid;
         if (data.userid === selfid) {
