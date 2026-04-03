@@ -62,7 +62,7 @@ export default class FGUIResultView extends fgui.GComponent {
 		this.UI_BTN_BACK = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_BACK.onClick(this.onBtnBack, this);
 		this.UI_LV_GAME_INFO = <fgui.GList>(this.getChildAt(5));
-		this.UI_GROP_RESULT = <fgui.GGroup>(this.getChildAt(9));
+		this.UI_GROP_RESULT = <fgui.GGroup>(this.getChildAt(10));
 		this.act = this.getTransitionAt(0);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

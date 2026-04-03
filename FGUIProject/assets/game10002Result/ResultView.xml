@@ -29,9 +29,10 @@
       <item title="3" name="3"/>
       <item title="4" name="4"/>
     </list>
-    <text id="n13_rei5" name="n13" xy="287,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="用时"/>
+    <text id="n13_rei5" name="n13" xy="253,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="用时"/>
     <text id="n14_rei5" name="n14" xy="566,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="排名"/>
-    <text id="n16_jqb6" name="n16" xy="434,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="分数"/>
+    <text id="n16_jqb6" name="n16" xy="460,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="分数"/>
+    <text id="n17_coh5" name="n17" xy="358,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="连击"/>
     <group id="n7_fnug" name="UI_GROP_RESULT" xy="59,449" size="657,789" advanced="true">
       <relation target="" sidePair="center-center,middle-middle"/>
     </group>
