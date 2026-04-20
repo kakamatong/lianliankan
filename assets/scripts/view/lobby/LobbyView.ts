@@ -13,7 +13,7 @@ import { PackageLoad, ViewClass } from "@frameworks/Framework";
  * @description 大厅视图，游戏主界面
  * @category 大厅视图
  */
-@PackageLoad(["common", "props"])
+@PackageLoad(["common", "props", "lobbyBg"])
 @ViewClass()
 export class LobbyView extends FGUILobbyView {}
 // 继承出来的对象，必须重写
