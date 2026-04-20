@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <packageDescription id="m52rjp09">
   <resources>
-    <component id="d01om" name="CompBgCube.xml" path="/comp/"/>
     <component id="d01o0" name="ComLobbyBg.xml" path="/comp/" exported="true"/>
+    <image id="jorfn" name="bg2.jpg" path="/imgs/" atlas="alone_npot"/>
   </resources>
   <publish name=""/>
 </packageDescription>
