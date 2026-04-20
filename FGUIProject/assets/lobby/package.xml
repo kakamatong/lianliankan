@@ -3,8 +3,6 @@
   <resources>
     <component id="sc722" name="LobbyView.xml" path="/" exported="true"/>
     <component id="xoqi6" name="CompActLine1.xml" path="/comp/"/>
-    <image id="gtlg7" name="privateRoom.png" path="/imgs/"/>
-    <image id="gtlg8" name="matchRoom.png" path="/imgs/"/>
     <component id="gtlg9" name="CompLobbyBtn.xml" path="/comp/"/>
     <component id="cveva" name="CompTop.xml" path="/comp/"/>
     <image id="ddz1b" name="mail.png" path="/imgs/"/>
@@ -15,6 +13,8 @@
     <component id="ln74i" name="CompLobbyMain.xml" path="/comp/"/>
     <image id="ln74j" name="ad.png" path="/imgs/"/>
     <image id="drdul" name="lobbybg.jpg" path="/imgs/" scale="9grid" scale9grid="2,2,4,4"/>
+    <image id="jorfm" name="lobbyButton1.png" path="/imgs/"/>
+    <image id="jorfn" name="lobbybutton2.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
