@@ -31,9 +31,9 @@
     <image id="bbyt1c" name="ad.png" path="/imgs/" exported="true"/>
     <component id="pz9v1d" name="CompBtnAdScale.xml" path="/comp/" exported="true"/>
     <image id="pz9v1e" name="矩形 1.png" path="/imgs/" exported="true" scale="9grid" scale9grid="32,35,27,16"/>
-    <image id="jorf1f" name="btnBule.png" path="/imgs/" scale="9grid" scale9grid="53,25,29,50"/>
-    <image id="jorf1g" name="btnGreen.png" path="/imgs/" scale="9grid" scale9grid="50,24,39,48"/>
-    <image id="jorf1h" name="btnYellow.png" path="/imgs/" scale="9grid" scale9grid="49,24,35,48"/>
+    <image id="jorf1f" name="btnBule.png" path="/imgs/" exported="true" scale="9grid" scale9grid="53,25,29,50"/>
+    <image id="jorf1g" name="btnGreen.png" path="/imgs/" exported="true" scale="9grid" scale9grid="50,24,39,48"/>
+    <image id="jorf1h" name="btnYellow.png" path="/imgs/" exported="true" scale="9grid" scale9grid="49,24,35,48"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
