@@ -3,7 +3,7 @@
   <controller name="ctrl_btn_type" pages="0,2个按钮,1,1个确定按钮,2,1个取消按钮,3,没有按钮" selected="0"/>
   <displayList>
     <component id="n8_axf1" name="n8" src="axf11l" fileName="comp/CompPopBg.xml" xy="0,0"/>
-    <component id="n2_muz3" name="UI_BTN_CLOSE" src="muz3h" fileName="comp/CompBtnClose.xml" xy="573,7"/>
+    <component id="n2_muz3" name="UI_BTN_CLOSE" src="muz3h" fileName="comp/CompBtnClose.xml" xy="569,4"/>
     <component id="n3_muz3" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" xy="356,640" controller="ctrl_color,1">
       <gearDisplay controller="ctrl_btn_type" pages="0,1"/>
       <gearXY controller="ctrl_btn_type" pages="0,1" values="356,640|213,641" default="356,641"/>
