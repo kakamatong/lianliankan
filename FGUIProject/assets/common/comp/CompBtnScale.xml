@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="230,99" pivot="0.5,0.5" extention="Button">
+  <controller name="ctrl_color" exported="true" pages="0,,1,,2,,3," selected="2">
+    <remark page="0" value="无"/>
+    <remark page="1" value="蓝色"/>
+    <remark page="2" value="黄色"/>
+    <remark page="3" value="绿色"/>
+  </controller>
   <displayList>
     <loader id="n5_cmlt" name="icon" xy="0,0" size="230,99" url="ui://gj0r6g5imuz3e" fill="scaleFree">
       <relation target="" sidePair="width-width,height-height"/>
     </loader>
-    <text id="n3_cmlt" name="title" xy="0,0" size="230,99" fontSize="40" color="#ffffff" align="center" vAlign="middle" autoSize="none" strokeColor="#000000" strokeSize="2" singleLine="true" text="确定">
+    <text id="n3_cmlt" name="title" xy="0,0" size="230,99" fontSize="40" color="#ffffff" align="center" vAlign="middle" autoSize="none" strokeColor="#ac8606" strokeSize="4" singleLine="true" text="确定">
+      <gearColor controller="ctrl_color" pages="1,2,3" values="#ffffff,#0365a4|#ffffff,#ac8606|#ffffff,#18b02a" default="#ffffff,#000000"/>
       <relation target="" sidePair="width-width,height-height"/>
     </text>
   </displayList>

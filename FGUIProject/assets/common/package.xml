@@ -5,7 +5,6 @@
     <image id="gtlg8" name="headBox.png" path="/imgs/"/>
     <component id="cvev9" name="CompHead.xml" path="/comp/" exported="true"/>
     <image id="jin6a" name="mask.png" path="/imgs/" exported="true" scale="9grid" scale9grid="18,12,36,24"/>
-    <image id="muz3d" name="popbg.png" path="/imgs/" exported="true"/>
     <image id="muz3f" name="btnclose.png" path="/imgs/"/>
     <component id="muz3g" name="CompPopMessage.xml" path="/comp/"/>
     <component id="muz3h" name="CompBtnClose.xml" path="/comp/" exported="true"/>
@@ -35,6 +34,8 @@
     <image id="jorf1g" name="btnGreen.png" path="/imgs/" exported="true" scale="9grid" scale9grid="50,24,39,48"/>
     <image id="jorf1h" name="btnYellow.png" path="/imgs/" exported="true" scale="9grid" scale9grid="49,24,35,48"/>
     <image id="axf11i" name="buttonClose.png" path="/imgs/"/>
+    <image id="axf11k" name="popbg2.png" path="/imgs/" scale="9grid" scale9grid="111,163,78,91"/>
+    <component id="axf11l" name="CompPopBg.xml" path="/comp/" exported="true"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
