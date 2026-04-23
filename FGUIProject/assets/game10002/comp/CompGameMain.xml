@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
-  <controller name="ctrl_btn" pages="0,都不显示,1,确定,2,更换,3,继续游戏,4,准备" selected="0"/>
-  <controller name="ctrl_roomtype" pages="0,普通房,1,私人房" selected="0">
+  <controller name="ctrl_btn" pages="0,都不显示,1,确定,2,更换,3,继续游戏,4,准备" selected="3"/>
+  <controller name="ctrl_roomtype" pages="0,普通房,1,私人房" selected="1">
     <action type="change_page" fromPage="" toPage="1" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="1"/>
     <action type="change_page" fromPage="" toPage="0" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="0"/>
     <action type="change_page" fromPage="" toPage="1" objectId="n63_gk14" controller="ctrl_roomtype" targetPage="1"/>
@@ -14,14 +14,13 @@
     <remark page="1" value="显示"/>
   </controller>
   <displayList>
-    <component id="n42_jsve" name="UI_BTN_DISBAND" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="157,9" size="143,95">
+    <component id="n42_jsve" name="UI_BTN_DISBAND" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="161,9" size="143,95" controller="ctrl_color,3">
       <gearDisplay controller="ctrl_roomtype" pages="1"/>
       <relation target="" sidePair="left-left,top-top"/>
-      <property target="title" propertyId="0" value="解散"/>
-      <property target="icon" propertyId="1" value="ui://gj0r6g5ijsve10"/>
+      <Button title="解散" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <component id="n3_is91" name="UI_BTN_BACK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="9,8" size="143,94">
-      <property target="icon" propertyId="1" value="ui://gj0r6g5iis91p"/>
+    <component id="n3_is91" name="UI_BTN_BACK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="22,16" size="119,75">
+      <Button icon="ui://gj0r6g5ioott1p"/>
     </component>
     <component id="n39_jsve" name="UI_COMP_PRIVITE_INFO" src="ouez1a" fileName="comp/CompPirvateInfo.xml" xy="412,12">
       <gearDisplay controller="ctrl_roomtype" pages="1"/>
@@ -33,13 +32,11 @@
     <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,627" pivot="0.5,0.5">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n53_mwa6" name="UI_BTN_INVITE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="387,1324" size="230,98" group="n78_ouez" visible="false">
-      <property target="title" propertyId="0" value="邀请好友"/>
-      <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3e"/>
+    <component id="n53_mwa6" name="UI_BTN_INVITE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="387,1324" size="230,98" group="n78_ouez" visible="false" controller="ctrl_color,2">
+      <Button title="邀请好友" icon="ui://gj0r6g5ijorf1h"/>
     </component>
-    <component id="n77_ouez" name="UI_BTN_START_GAME" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="736,1323" size="230,99" group="n78_ouez" visible="false">
-      <property target="title" propertyId="0" value="开始游戏"/>
-      <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3c"/>
+    <component id="n77_ouez" name="UI_BTN_START_GAME" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="736,1323" size="230,99" group="n78_ouez" visible="false" controller="ctrl_color,3">
+      <Button title="开始游戏" icon="ui://gj0r6g5ijorf1g"/>
     </component>
     <group id="n78_ouez" name="n78" xy="387,1323" size="0,0" advanced="true" layout="hz" colGap="119" excludeInvisibles="true">
       <gearDisplay controller="ctrl_roomtype" pages="1"/>
@@ -52,21 +49,21 @@
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
     <group id="n75_mnt1" name="n75" xy="18,1501" size="165,166"/>
-    <component id="n21_folo" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,0">
+    <component id="n21_folo" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,3">
       <gearDisplay controller="ctrl_btn" pages="1"/>
-      <property target="title" propertyId="0" value="确定"/>
+      <Button title="确定" icon="ui://gj0r6g5ijorf1g"/>
     </component>
     <component id="n22_folo" name="UI_BTN_CHANGE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="527,1475" group="n23_folo" controller="ctrl_color,1">
       <gearDisplay controller="ctrl_btn" pages="2"/>
-      <property target="title" propertyId="0" value="更换"/>
+      <Button title="更换" icon="ui://gj0r6g5ijorf1f"/>
     </component>
-    <component id="n38_dkp3" name="UI_BTN_CONTINUE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,0">
+    <component id="n38_dkp3" name="UI_BTN_CONTINUE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,3">
       <gearDisplay controller="ctrl_btn" pages="3"/>
-      <property target="title" propertyId="0" value="继续游戏"/>
+      <Button title="继续游戏" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <component id="n43_r1yn" name="UI_BTN_READY" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,0">
+    <component id="n43_r1yn" name="UI_BTN_READY" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,3">
       <gearDisplay controller="ctrl_btn" pages="4"/>
-      <property target="title" propertyId="0" value="准备"/>
+      <Button title="准备" icon="ui://gj0r6g5ijorf1g"/>
     </component>
     <group id="n23_folo" name="n23" xy="526,1474" size="231,100" advanced="true">
       <relation target="" sidePair="right-right,bottom-bottom"/>
@@ -79,7 +76,7 @@
     </component>
     <component id="n68_pxa5" name="UI_BTN_TALK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="664,1593" size="95,95">
       <relation target="" sidePair="left-right,bottom-bottom"/>
-      <property target="icon" propertyId="1" value="ui://2zsfe53xpxa5o"/>
+      <Button icon="ui://2zsfe53xpxa5o"/>
     </component>
     <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,479" visible="false">
       <relation target="" sidePair="center-center,top-top"/>
