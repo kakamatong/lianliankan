@@ -61,31 +61,31 @@ export default class FGUICompPrivateJoin extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.UI_BTN_JOIN_1 = <fgui.GButton>(this.getChildAt(1));
+		this.UI_BTN_JOIN_1 = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_JOIN_1.onClick(this.onBtnJoin1, this);
-		this.UI_BTN_JOIN_2 = <fgui.GButton>(this.getChildAt(2));
+		this.UI_BTN_JOIN_2 = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_JOIN_2.onClick(this.onBtnJoin2, this);
-		this.UI_BTN_JOIN_3 = <fgui.GButton>(this.getChildAt(3));
+		this.UI_BTN_JOIN_3 = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_JOIN_3.onClick(this.onBtnJoin3, this);
-		this.UI_BTN_JOIN_4 = <fgui.GButton>(this.getChildAt(4));
+		this.UI_BTN_JOIN_4 = <fgui.GButton>(this.getChildAt(5));
 		this.UI_BTN_JOIN_4.onClick(this.onBtnJoin4, this);
-		this.UI_BTN_JOIN_5 = <fgui.GButton>(this.getChildAt(5));
+		this.UI_BTN_JOIN_5 = <fgui.GButton>(this.getChildAt(6));
 		this.UI_BTN_JOIN_5.onClick(this.onBtnJoin5, this);
-		this.UI_BTN_JOIN_6 = <fgui.GButton>(this.getChildAt(6));
+		this.UI_BTN_JOIN_6 = <fgui.GButton>(this.getChildAt(7));
 		this.UI_BTN_JOIN_6.onClick(this.onBtnJoin6, this);
-		this.UI_BTN_JOIN_7 = <fgui.GButton>(this.getChildAt(7));
+		this.UI_BTN_JOIN_7 = <fgui.GButton>(this.getChildAt(8));
 		this.UI_BTN_JOIN_7.onClick(this.onBtnJoin7, this);
-		this.UI_BTN_JOIN_8 = <fgui.GButton>(this.getChildAt(8));
+		this.UI_BTN_JOIN_8 = <fgui.GButton>(this.getChildAt(9));
 		this.UI_BTN_JOIN_8.onClick(this.onBtnJoin8, this);
-		this.UI_BTN_JOIN_9 = <fgui.GButton>(this.getChildAt(9));
+		this.UI_BTN_JOIN_9 = <fgui.GButton>(this.getChildAt(10));
 		this.UI_BTN_JOIN_9.onClick(this.onBtnJoin9, this);
-		this.UI_BTN_JOIN_CLEAR = <fgui.GButton>(this.getChildAt(10));
+		this.UI_BTN_JOIN_CLEAR = <fgui.GButton>(this.getChildAt(11));
 		this.UI_BTN_JOIN_CLEAR.onClick(this.onBtnJoinClear, this);
-		this.UI_BTN_JOIN_0 = <fgui.GButton>(this.getChildAt(11));
+		this.UI_BTN_JOIN_0 = <fgui.GButton>(this.getChildAt(12));
 		this.UI_BTN_JOIN_0.onClick(this.onBtnJoin0, this);
-		this.UI_BTN_JOIN = <fgui.GButton>(this.getChildAt(12));
+		this.UI_BTN_JOIN = <fgui.GButton>(this.getChildAt(13));
 		this.UI_BTN_JOIN.onClick(this.onBtnJoin, this);
-		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(13));
+		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(14));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

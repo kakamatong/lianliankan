@@ -24,13 +24,11 @@
       <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button icon="ui://gv22rev3oottr"/>
     </component>
-    <component id="n19_pizs" name="UI_BTN_SIGN_IN" src="pizsg" fileName="comp/BtnLobbyMenu.xml" xy="621,1426">
-      <relation target="" sidePair="right-right,bottom-bottom"/>
-      <Button title="签 到" icon="ui://gv22rev3pizsf"/>
+    <component id="n22_oott" name="UI_BTN_SIGN_IN" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="633,1485" size="120,108">
+      <Button icon="ui://gv22rev3oottu"/>
     </component>
-    <component id="n20_ln74" name="UI_BTN_AD" src="pizsg" fileName="comp/BtnLobbyMenu.xml" xy="472,1426">
-      <relation target="" sidePair="right-right,bottom-bottom"/>
-      <Button title="免费银子" icon="ui://gv22rev3ln74j"/>
+    <component id="n23_oott" name="UI_BTN_AD" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="494,1485" size="120,108">
+      <Button icon="ui://gv22rev3oottt"/>
     </component>
     <text id="n16_qj8g" name="UI_TXT_ENV" xy="29,1629" size="124,42" visible="false" alpha="0.7" fontSize="30" color="#ffffff" strokeColor="#000000" strokeSize="2" text="开发环境">
       <relation target="" sidePair="left-left,bottom-bottom"/>
