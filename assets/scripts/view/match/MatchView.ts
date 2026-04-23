@@ -11,7 +11,7 @@ import { ENUM_POP_MESSAGE_TYPE, LOCAL_KEY } from "@datacenter/InterfaceConfig";
 import { PopMessageView } from "../common/PopMessageView";
 import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import { DataCenter } from "@datacenter/Datacenter";
-import { LogColors, ViewClass } from "@frameworks/Framework";
+import { LogColors, PackageLoad, ViewClass } from "@frameworks/Framework";
 import { TipsView } from "../common/TipsView";
 import { CompMatchAct } from "./comp/CompMatchAct";
 import { sys } from "cc";
@@ -24,6 +24,7 @@ import { Logger } from "@frameworks/utils/Utils";
  * @category 匹配视图
  */
 @ViewClass()
+@PackageLoad(["resFruit"])
 export class MatchView extends FGUIMatchView {
     /** 匹配确认ID */
     private _checkID: number = 0;

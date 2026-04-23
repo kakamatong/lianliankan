@@ -6,30 +6,27 @@ import * as fgui from "fairygui-cc";
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
 
-export default class FGUICompMatchAct extends fgui.GComponent {
+export default class FGUICompMatchCube extends fgui.GLabel {
 
-	public ctrl_act_0:fgui.Controller;
-	public ctrl_act_1:fgui.Controller;
-	public ctrl_act_2:fgui.Controller;
-	public act:fgui.Transition;
-	public static URL:string = "ui://y9gp37x6wfqx1";
+	public ficon:fgui.GLoader;
+	public static URL:string = "ui://y9gp37x6oott3";
 
 	public static packageName:string = "match";
 
 	public static instance:any | null = null;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
-		if(FGUICompMatchAct.instance) {
+		if(FGUICompMatchCube.instance) {
 			console.log("allready show");
 			callBack&&callBack(false);
 			return;
 		}
 		PackageManager.instance.loadPackage("fgui", this.packageName).then(()=> {
 
-			const view = fgui.UIPackage.createObject("match", "CompMatchAct") as FGUICompMatchAct;
+			const view = fgui.UIPackage.createObject("match", "CompMatchCube") as FGUICompMatchCube;
 
 			view.makeFullScreen();
-			FGUICompMatchAct.instance = view;
+			FGUICompMatchCube.instance = view;
 			fgui.GRoot.inst.addChild(view);
 			view.show && view.show(params);
 			callBack&&callBack(true);
@@ -39,27 +36,24 @@ export default class FGUICompMatchAct extends fgui.GComponent {
 
 	protected onDestroy():void {
 		super.onDestroy();
-		FGUICompMatchAct.instance = null;
+		FGUICompMatchCube.instance = null;
 	}
 	public static hideView():void {
-		FGUICompMatchAct.instance && FGUICompMatchAct.instance.dispose();
+		FGUICompMatchCube.instance && FGUICompMatchCube.instance.dispose();
 	}
 
 	show(data?:any):void{};
 
-	public static createInstance():FGUICompMatchAct {
-		return <FGUICompMatchAct>(fgui.UIPackage.createObject("match", "CompMatchAct"));
+	public static createInstance():FGUICompMatchCube {
+		return <FGUICompMatchCube>(fgui.UIPackage.createObject("match", "CompMatchCube"));
 	}
 
 	protected onConstruct():void {
-		this.ctrl_act_0 = this.getControllerAt(0);
-		this.ctrl_act_1 = this.getControllerAt(1);
-		this.ctrl_act_2 = this.getControllerAt(2);
-		this.act = this.getTransitionAt(0);
+		this.ficon = <fgui.GLoader>(this.getChildAt(1));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
 	unschedule(callback: () => void):void{};
 	schedule(callback: () => void, interval: number):void{};
 }
-fgui.UIObjectFactory.setExtension(FGUICompMatchAct.URL, FGUICompMatchAct);
+fgui.UIObjectFactory.setExtension(FGUICompMatchCube.URL, FGUICompMatchCube);
