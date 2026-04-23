@@ -12,6 +12,7 @@ export default class FGUIPrivacyView extends fgui.GComponent {
 	public UI_BTN_REFUSE:fgui.GButton;
 	public UI_BTN_AGREE:fgui.GButton;
 	public UI_BTN_PRIVACY:fgui.GButton;
+	public UI_TXT_TITLE:fgui.GTextField;
 	public static URL:string = "ui://0b8bc4vt7ivz0";
 
 	public static packageName:string = "privacy";
@@ -59,6 +60,7 @@ export default class FGUIPrivacyView extends fgui.GComponent {
 		this.UI_BTN_AGREE.onClick(this.onBtnAgree, this);
 		this.UI_BTN_PRIVACY = <fgui.GButton>(this.getChildAt(6));
 		this.UI_BTN_PRIVACY.onClick(this.onBtnPrivacy, this);
+		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(7));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
