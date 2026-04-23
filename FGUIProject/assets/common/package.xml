@@ -36,6 +36,7 @@
     <image id="axf11i" name="buttonClose.png" path="/imgs/"/>
     <image id="axf11k" name="popbg2.png" path="/imgs/" scale="9grid" scale9grid="111,163,78,91"/>
     <component id="axf11l" name="CompPopBg.xml" path="/comp/" exported="true"/>
+    <image id="axf11n" name="inlinebg.png" path="/imgs/" exported="true" scale="9grid" scale9grid="78,59,120,32"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
