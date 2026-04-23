@@ -10,30 +10,28 @@
     <graph id="n10_mifd" name="n10" xy="0,0" size="776,1688" type="rect" lineSize="0" lineColor="#00000000" fillColor="#b2000000">
       <relation target="" sidePair="width-width,height-height"/>
     </graph>
-    <image id="n2_fnug" name="n2" src="muz3d" fileName="imgs/popbg.png" pkg="gj0r6g5i" xy="59,449" group="n7_fnug"/>
-    <component id="n4_fnug" name="UI_BTN_CON" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="423,1093" size="230,98" group="n7_fnug">
+    <component id="n18_oott" name="n18" src="axf11l" fileName="comp/CompPopBg.xml" pkg="gj0r6g5i" xy="58,363" size="660,860" group="n19_oott"/>
+    <component id="n4_fnug" name="UI_BTN_CON" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="422,1101" size="230,98" group="n19_oott" controller="ctrl_color,1">
       <gearDisplay controller="ctrl_btn" pages="0"/>
-      <property target="title" propertyId="0" value="继续"/>
-      <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3e"/>
+      <Button title="继续游戏" icon="ui://gj0r6g5ijorf1f"/>
     </component>
-    <component id="n5_fnug" name="UI_BTN_BACK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="125,1093" size="230,99" group="n7_fnug">
+    <component id="n5_fnug" name="UI_BTN_BACK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="124,1101" size="230,99" group="n19_oott" controller="ctrl_color,2">
       <gearDisplay controller="ctrl_btn" pages="0,1"/>
-      <gearXY controller="ctrl_btn" pages="0,1" values="125,1093|273,1093"/>
-      <property target="title" propertyId="0" value="返回"/>
-      <property target="icon" propertyId="1" value="ui://gj0r6g5imuz3c"/>
+      <gearXY controller="ctrl_btn" pages="0,1" values="124,1101|273,1093"/>
+      <Button title="退出" icon="ui://gj0r6g5ijorf1h"/>
     </component>
-    <text id="n12_rei5" name="n12" xy="141,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="玩家"/>
-    <list id="n6_fnug" name="UI_LV_GAME_INFO" xy="120,565" size="540,521" group="n7_fnug" overflow="scroll" lineGap="5" defaultItem="ui://5x18e99vfnug1" autoClearItems="true">
+    <text id="n12_rei5" name="n12" xy="140,508" size="80,52" group="n19_oott" fontSize="38" color="#cc6600" text="玩家"/>
+    <list id="n6_fnug" name="UI_LV_GAME_INFO" xy="119,573" size="540,521" group="n19_oott" overflow="scroll" lineGap="5" defaultItem="ui://5x18e99vfnug1" autoClearItems="true">
       <item title="1" name="1"/>
       <item title="2" name="2"/>
       <item title="3" name="3"/>
       <item title="4" name="4"/>
     </list>
-    <text id="n13_rei5" name="n13" xy="253,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="用时"/>
-    <text id="n14_rei5" name="n14" xy="566,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="排名"/>
-    <text id="n16_jqb6" name="n16" xy="460,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="分数"/>
-    <text id="n17_coh5" name="n17" xy="358,500" size="80,52" group="n7_fnug" fontSize="38" color="#cc6600" text="连击"/>
-    <group id="n7_fnug" name="UI_GROP_RESULT" xy="59,449" size="657,789" advanced="true">
+    <text id="n13_rei5" name="n13" xy="252,508" size="80,52" group="n19_oott" fontSize="38" color="#cc6600" text="用时"/>
+    <text id="n14_rei5" name="n14" xy="565,508" size="80,52" group="n19_oott" fontSize="38" color="#cc6600" text="排名"/>
+    <text id="n16_jqb6" name="n16" xy="459,508" size="80,52" group="n19_oott" fontSize="38" color="#cc6600" text="分数"/>
+    <text id="n17_coh5" name="n17" xy="357,508" size="80,52" group="n19_oott" fontSize="38" color="#cc6600" text="连击"/>
+    <group id="n19_oott" name="UI_GROP_RESULT" xy="58,363" size="660,860" advanced="true">
       <relation target="" sidePair="center-center,middle-middle"/>
     </group>
     <image id="n15_jqb6" name="n15" src="jqb6s" fileName="imgs/roundend.png" xy="88,700">
@@ -41,9 +39,7 @@
     </image>
   </displayList>
   <transition name="act" options="4">
-    <item time="0" type="Alpha" target="n7_fnug" value="0"/>
     <item time="0" type="XY" target="n15_jqb6" value="-,700"/>
     <item time="12" type="XY" target="n15_jqb6" tween="true" startValue="-,700" endValue="-,357,0.113,0.211" duration="12"/>
-    <item time="18" type="Alpha" target="n7_fnug" tween="true" startValue="0" endValue="1" duration="13"/>
   </transition>
 </component>
