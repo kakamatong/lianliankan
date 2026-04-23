@@ -6,7 +6,7 @@ import { DataCenter } from "@datacenter/Datacenter";
 import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 import { TipsView } from "../common/TipsView";
 import { UserData } from "@modules/UserData";
-import { DispatchEvent, ViewClass } from "@frameworks/Framework";
+import { AddEventListener, DispatchEvent, RemoveEventListener, ViewClass } from "@frameworks/Framework";
 import { ENUM_POP_MESSAGE_TYPE, RICH_TYPE } from "@datacenter/InterfaceConfig";
 import { EVENT_NAMES } from "@datacenter/CommonConfig";
 import { PopMessageView } from "../common/PopMessageView";
@@ -14,6 +14,7 @@ import { RevokeAccount } from "@modules/RevokeAccount";
 import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import { SoundManager } from "@frameworks/SoundManager";
 import { Logger, TruncateString } from "@frameworks/utils/Utils";
+import { UserRiches } from "@modules/UserRiches";
 
 /**
  * @class UserCenterView
@@ -48,6 +49,17 @@ export class UserCenterView extends FGUIUserCenterView {
         this.updateUserInfo();
         this.createUserInfoBtn();
         this.updateSound();
+
+        UserRiches.instance.req(); // 请求用户财富数据
+
+        AddEventListener(EVENT_NAMES.USER_RICHES, this.onUserRiches, this);
+    }
+
+    onUserRiches(data: any): void {
+        // 更新用户财富显示
+        // 显示战力值
+        const cp = DataCenter.instance.getRichByType(RICH_TYPE.COMBAT_POWER) ?? { richType: RICH_TYPE.COMBAT_POWER, richNums: 0 };
+        this.UI_TXT_CP.text = `${cp.richNums}`;
     }
 
     /**
@@ -248,6 +260,7 @@ export class UserCenterView extends FGUIUserCenterView {
         super.onDestroy();
         // 销毁微信用户信息按钮
         MiniGameUtils.instance.destroyUserInfoButton();
+        RemoveEventListener(EVENT_NAMES.USER_RICHES, this.onUserRiches);
     }
 }
 fgui.UIObjectFactory.setExtension(UserCenterView.URL, UserCenterView);
