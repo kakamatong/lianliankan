@@ -25,9 +25,11 @@
       <Button icon="ui://gv22rev3oottr"/>
     </component>
     <component id="n22_oott" name="UI_BTN_SIGN_IN" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="633,1485" size="120,108">
+      <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button icon="ui://gv22rev3oottu"/>
     </component>
     <component id="n23_oott" name="UI_BTN_AD" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="494,1485" size="120,108">
+      <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button icon="ui://gv22rev3oottt"/>
     </component>
     <text id="n16_qj8g" name="UI_TXT_ENV" xy="29,1629" size="124,42" visible="false" alpha="0.7" fontSize="30" color="#ffffff" strokeColor="#000000" strokeSize="2" text="开发环境">
