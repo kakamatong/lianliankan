@@ -5,8 +5,6 @@
     <component id="xoqi6" name="CompActLine1.xml" path="/comp/"/>
     <component id="gtlg9" name="CompLobbyBtn.xml" path="/comp/"/>
     <component id="cveva" name="CompTop.xml" path="/comp/"/>
-    <image id="ddz1b" name="mail.png" path="/imgs/"/>
-    <image id="ddz1c" name="rank.png" path="/imgs/"/>
     <component id="ok17e" name="CompRich.xml" path="/comp/"/>
     <image id="pizsf" name="signin.png" path="/imgs/"/>
     <component id="pizsg" name="BtnLobbyMenu.xml" path="/comp/"/>
@@ -15,6 +13,10 @@
     <image id="drdul" name="lobbybg.jpg" path="/imgs/" scale="9grid" scale9grid="2,2,4,4"/>
     <image id="jorfm" name="lobbyButton1.png" path="/imgs/"/>
     <image id="jorfn" name="lobbybutton2.png" path="/imgs/"/>
+    <image id="oottp" name="btnStore.png" path="/imgs/"/>
+    <image id="oottq" name="btnRank.png" path="/imgs/"/>
+    <image id="oottr" name="btnShare.png" path="/imgs/"/>
+    <image id="ootts" name="btnMail.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

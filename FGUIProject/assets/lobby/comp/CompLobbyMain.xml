@@ -12,20 +12,17 @@
     <component id="n9_cvev" name="UI_COMP_TOP" src="cveva" fileName="comp/CompTop.xml" xy="0,0" size="776,185">
       <relation target="" sidePair="top-top,rightext-right,leftext-left"/>
     </component>
-    <component id="n13_is91" name="UI_BTN_MAILS" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="602,1580" size="162,108">
+    <component id="n13_is91" name="UI_BTN_MAILS" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="586,1609" size="180,67">
       <relation target="" sidePair="right-right,bottom-bottom"/>
-      <property target="icon" propertyId="1" value="ui://gv22rev3ddz1b"/>
+      <Button icon="ui://gv22rev3ootts"/>
     </component>
-    <component id="n14_is91" name="UI_BTN_RANK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="407,1580" size="170,108">
+    <component id="n14_is91" name="UI_BTN_RANK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="397,1609" size="180,67">
       <relation target="" sidePair="right-right,bottom-bottom"/>
-      <property target="icon" propertyId="1" value="ui://gv22rev3ddz1c"/>
+      <Button icon="ui://gv22rev3oottq"/>
     </component>
-    <text id="n16_qj8g" name="UI_TXT_ENV" xy="29,1629" size="124,42" visible="false" alpha="0.7" fontSize="30" color="#ffffff" strokeColor="#000000" strokeSize="2" text="开发环境">
-      <relation target="" sidePair="left-left,bottom-bottom"/>
-    </text>
-    <component id="n17_9rp1" name="UI_BTN_SHARE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="218,1580" size="170,96">
+    <component id="n17_9rp1" name="UI_BTN_SHARE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="208,1609" size="180,67">
       <relation target="" sidePair="right-right,bottom-bottom"/>
-      <property target="icon" propertyId="1" value="ui://gj0r6g5i9rp117"/>
+      <Button icon="ui://gv22rev3oottr"/>
     </component>
     <component id="n19_pizs" name="UI_BTN_SIGN_IN" src="pizsg" fileName="comp/BtnLobbyMenu.xml" xy="621,1426">
       <relation target="" sidePair="right-right,bottom-bottom"/>
@@ -35,5 +32,8 @@
       <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button title="免费银子" icon="ui://gv22rev3ln74j"/>
     </component>
+    <text id="n16_qj8g" name="UI_TXT_ENV" xy="29,1629" size="124,42" visible="false" alpha="0.7" fontSize="30" color="#ffffff" strokeColor="#000000" strokeSize="2" text="开发环境">
+      <relation target="" sidePair="left-left,bottom-bottom"/>
+    </text>
   </displayList>
 </component>
