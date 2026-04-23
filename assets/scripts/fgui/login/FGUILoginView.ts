@@ -49,7 +49,7 @@ export default class FGUILoginView extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.UI_BTN_START = <fgui.GButton>(this.getChildAt(0));
+		this.UI_BTN_START = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_START.onClick(this.onBtnStart, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

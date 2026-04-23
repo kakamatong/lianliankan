@@ -11,6 +11,7 @@ export default class FGUIMailView extends fgui.GComponent {
 
 	public ctrl_have:fgui.Controller;
 	public UI_BTN_CLOSE:fgui.GButton;
+	public UI_TXT_TITLE:fgui.GTextField;
 	public UI_LV_LIST:fgui.GList;
 	public UI_COMP_CONTENT:FGUICompMailContent;
 	public static URL:string = "ui://8lqwicsugd4t0";
@@ -54,8 +55,9 @@ export default class FGUIMailView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.ctrl_have = this.getControllerAt(0);
-		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(4));
+		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
+		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_LV_LIST = <fgui.GList>(this.getChildAt(5));
 		this.UI_COMP_CONTENT = <FGUICompMailContent>(this.getChildAt(8));
 	}
