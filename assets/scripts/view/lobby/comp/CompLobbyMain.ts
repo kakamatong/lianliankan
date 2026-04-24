@@ -157,8 +157,8 @@ export class CompLobbyMain extends FGUICompLobbyMain {
         Logger.log("onLoginSuccess");
         const options = MiniGameUtils.instance.getLaunchOptionsSync();
         this.checkPrivateRoomid(options);
-        this.autoShowSignIn();
-        this.reqAdInfo();
+        //this.autoShowSignIn();
+        //this.reqAdInfo();
     }
 
     /**
@@ -352,7 +352,7 @@ export class CompLobbyMain extends FGUICompLobbyMain {
      * 点击分享
      */
     onBtnShare(): void {
-        MiniGameUtils.instance.shareAppMessage({ title: "约上好友来一局石头剪刀布", imageUrl: LOBBY_SHARE_PIC_URL, query: "" });
+        MiniGameUtils.instance.shareAppMessage({ title: "约上好友来一局连连看吧", imageUrl: LOBBY_SHARE_PIC_URL, query: "" });
     }
 
     /**

@@ -472,6 +472,7 @@ export class CompGameMain extends FGUICompGameMain {
                 // 自己的地图，渲染到主地图
                 const compMap = this.getCompMap();
                 if (compMap) {
+                    compMap.visible = true;
                     const scale = data.row <= 6 && data.col <= 6 ? 1.2 : 1.0;
                     compMap.node.setScale(scale, scale);
                     compMap.initMap(map, "resFruit");
@@ -1263,7 +1264,8 @@ export class CompGameMain extends FGUICompGameMain {
      * @param bshow 是否显示
      */
     showInviteBtn(bshow: boolean): void {
-        this.UI_BTN_INVITE.visible = bshow;
+        //this.UI_BTN_INVITE.visible = bshow;
+        this.UI_BTN_INVITE.visible = false;
     }
 
     /**
