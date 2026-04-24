@@ -20,7 +20,7 @@
       <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button icon="ui://gv22rev3oottq"/>
     </component>
-    <component id="n17_9rp1" name="UI_BTN_SHARE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="208,1609" size="180,67" visible="false">
+    <component id="n17_9rp1" name="UI_BTN_SHARE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="208,1609" size="180,67">
       <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button icon="ui://gv22rev3oottr"/>
     </component>
