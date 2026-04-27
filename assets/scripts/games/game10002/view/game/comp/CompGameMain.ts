@@ -1264,8 +1264,8 @@ export class CompGameMain extends FGUICompGameMain {
      * @param bshow 是否显示
      */
     showInviteBtn(bshow: boolean): void {
-        //this.UI_BTN_INVITE.visible = bshow;
-        this.UI_BTN_INVITE.visible = false;
+        this.UI_BTN_INVITE.visible = bshow;
+        //this.UI_BTN_INVITE.visible = false;
     }
 
     /**
@@ -1373,7 +1373,7 @@ export class CompGameMain extends FGUICompGameMain {
     async drawInviteInfo(): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
             // 邀请好友
-            const bgUrl = "https://qiudaoyu-miniapp.oss-cn-hangzhou.aliyuncs.com/share/10001/invitebg.jpg";
+            const bgUrl = "https://qiudaoyu-miniapp.oss-cn-hangzhou.aliyuncs.com/share/10002/invite.jpg";
             const width = 776;
             const height = 621;
             const bg = await MiniGameUtils.instance.loadImage(bgUrl);
@@ -1425,7 +1425,7 @@ export class CompGameMain extends FGUICompGameMain {
                 MiniGameUtils.instance.shareAppMessage({
                     title: `房间号：${DataCenter.instance.shortRoomid} 点击加入 速来战`,
                     imageUrl: res,
-                    query: `gameid=${10001}&roomid=${DataCenter.instance.shortRoomid}`,
+                    query: `gameid=${10002}&roomid=${DataCenter.instance.shortRoomid}`,
                 });
             })
             .catch((err: any) => {
