@@ -32,13 +32,13 @@
     <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,627" pivot="0.5,0.5" visible="false">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n53_mwa6" name="UI_BTN_INVITE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="387,1324" size="230,98" group="n78_ouez" visible="false" controller="ctrl_color,2">
+    <component id="n53_mwa6" name="UI_BTN_INVITE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="272,1275" size="230,98" group="n78_ouez" controller="ctrl_color,2">
       <Button title="邀请好友" icon="ui://gj0r6g5ijorf1h"/>
     </component>
-    <component id="n77_ouez" name="UI_BTN_START_GAME" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="736,1323" size="230,99" group="n78_ouez" visible="false" controller="ctrl_color,3">
+    <component id="n77_ouez" name="UI_BTN_START_GAME" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="621,1274" size="230,99" group="n78_ouez" visible="false" controller="ctrl_color,3">
       <Button title="开始游戏" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <group id="n78_ouez" name="n78" xy="387,1323" size="0,0" advanced="true" layout="hz" colGap="119" excludeInvisibles="true">
+    <group id="n78_ouez" name="n78" xy="272,1275" size="230,98" advanced="true" layout="hz" colGap="119" excludeInvisibles="true">
       <gearDisplay controller="ctrl_roomtype" pages="1"/>
       <relation target="" sidePair="center-center,middle-middle"/>
     </group>

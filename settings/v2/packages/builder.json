@@ -37,7 +37,7 @@
       "image": "project://settings/logo.png"
     },
     "background": {
-      "type": "custom",
+      "type": "color",
       "color": {
         "x": 0.6,
         "y": 0.8509803921568627,
