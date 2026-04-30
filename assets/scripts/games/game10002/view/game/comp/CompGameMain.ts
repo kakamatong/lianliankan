@@ -848,6 +848,8 @@ export class CompGameMain extends FGUICompGameMain {
             this.showInviteBtn(false);
         }
 
+        this.showPropPanel(true);
+
         // 非重连情况
         if (!data.brelink) {
             this.UI_COMP_GAME_START.visible = true;
@@ -870,7 +872,7 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrGameEnd(data: SprotoGameEnd.Request): void {
         GameData.instance.gameStart = false;
-
+        this.showPropPanel(false);
         // 停止倒计时
         const compTimeLeft = this.UI_COMP_CLOCK as CompTimeLeft;
         if (compTimeLeft) {
@@ -1190,26 +1192,6 @@ export class CompGameMain extends FGUICompGameMain {
     }
 
     /**
-     * 使用道具
-     * @param itemId 道具ID (1:重排, 2:提示, 3:加时等)
-     */
-    sendUseItem(itemId: number): void {
-        GameSocketManager.instance.sendToServer(
-            SprotoUseItem,
-            {
-                itemId: itemId,
-            },
-            (response: any) => {
-                if (response && response.code === 1) {
-                    Logger.log("使用道具成功:", itemId);
-                } else {
-                    Logger.error("使用道具失败:", response?.msg || "未知错误");
-                }
-            }
-        );
-    }
-
-    /**
      * 开始解散房间投票
      */
     startDisband(): void {
@@ -1449,11 +1431,10 @@ export class CompGameMain extends FGUICompGameMain {
     }
 
     /**
-     * 使用道具,打乱
-     * @param type 道具类型
+     * 显示道具面板
      */
-    onBtnUpset(): void {
-        this.sendUseItem(RICH_TYPE.UPSET);
+    showPropPanel(b: boolean): void {
+        this.UI_COMP_PROP.visible = b;
     }
 }
 fgui.UIObjectFactory.setExtension(CompGameMain.URL, CompGameMain);
