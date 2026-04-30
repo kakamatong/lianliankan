@@ -15,7 +15,7 @@ import * as fgui from "fairygui-cc";
 import { CompTimeLeft } from "./CompTimeLeft";
 import { CompFinshInfo } from "./CompFinshInfo";
 import { PopMessageView } from "@view/common/PopMessageView";
-import { ENUM_POP_MESSAGE_TYPE } from "@datacenter/InterfaceConfig";
+import { ENUM_POP_MESSAGE_TYPE, RICH_TYPE } from "@datacenter/InterfaceConfig";
 import { FW_EVENT_NAMES } from "@frameworks/config/Config";
 import { ResultView } from "../../result/ResultView";
 import { UserStatus } from "@modules/UserStatus";
@@ -1448,8 +1448,12 @@ export class CompGameMain extends FGUICompGameMain {
         return this.UI_COMP_MAP as CompMap;
     }
 
+    /**
+     * 使用道具,打乱
+     * @param type 道具类型
+     */
     onBtnUpset(): void {
-        
+        this.sendUseItem(RICH_TYPE.UPSET);
     }
 }
 fgui.UIObjectFactory.setExtension(CompGameMain.URL, CompGameMain);

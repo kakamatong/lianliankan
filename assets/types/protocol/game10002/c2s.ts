@@ -23,7 +23,8 @@ export interface CallRequest {
 /** 调用接口 - 响应参数 */
 export interface CallResponse {
     code: number;
-    result: string;
+    msg: string;
+    richNum: number;
 }
 
 /** 发送接口（无响应） - 请求参数 */
@@ -136,6 +137,7 @@ export interface UseitemRequest {
 export interface UseitemResponse {
     code: number;
     msg: string;
+    richNum: number;
 }
 
 export namespace SprotoCall {

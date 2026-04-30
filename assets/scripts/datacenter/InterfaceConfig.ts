@@ -143,6 +143,7 @@ export enum RICH_TYPE {
     GOLD_COIN = 1, // 金币（一级货币）
     SILVER_COIN = 2, // 银子（二级货币）
     COMBAT_POWER = 100, // 战力
+    UPSET = 10001, // 打乱
 }
 
 /**
