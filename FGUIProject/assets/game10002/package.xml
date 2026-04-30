@@ -40,6 +40,7 @@
     <image id="h0nk1c" name="bg1.png" path="/imgs/"/>
     <image id="h0nk1d" name="bg2.png" path="/imgs/"/>
     <component id="tw1h1f" name="CompBtnProp.xml" path="/comp/"/>
+    <component id="tw1h1g" name="CompPropPanel.xml" path="/comp/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

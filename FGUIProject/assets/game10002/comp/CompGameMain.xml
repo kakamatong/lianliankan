@@ -85,8 +85,8 @@
       <gearDisplay controller="ctrl_finshInfo" pages="1"/>
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n79_tw1h" name="UI_BTN_UPSET" src="tw1h1f" fileName="comp/CompBtnProp.xml" xy="681,1438">
-      <Button title="打乱" icon="ui://gj0r6g5itw1h1q"/>
+    <component id="n80_tw1h" name="UI_COMP_PROP" src="tw1h1g" fileName="comp/CompPropPanel.xml" xy="688,1436">
+      <relation target="" sidePair="right-right,bottom-bottom"/>
     </component>
   </displayList>
 </component>

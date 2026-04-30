@@ -9,6 +9,7 @@ import FGUICompPlayerHead from "./FGUICompPlayerHead";
 import FGUICompGameStartAct from "./FGUICompGameStartAct";
 import FGUICompTimeLeft from "./FGUICompTimeLeft";
 import FGUICompFinshInfo from "./FGUICompFinshInfo";
+import FGUICompPropPanel from "./FGUICompPropPanel";
 
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
@@ -35,7 +36,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_TALK:fgui.GButton;
 	public UI_COMP_CLOCK:FGUICompTimeLeft;
 	public UI_COMP_FINSH_INFO:FGUICompFinshInfo;
-	public UI_BTN_UPSET:fgui.GButton;
+	public UI_COMP_PROP:FGUICompPropPanel;
 	public static URL:string = "ui://2zsfe53xln74p";
 
 	public static packageName:string = "game10002";
@@ -105,8 +106,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_TALK.onClick(this.onBtnTalk, this);
 		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(18));
 		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(19));
-		this.UI_BTN_UPSET = <fgui.GButton>(this.getChildAt(20));
-		this.UI_BTN_UPSET.onClick(this.onBtnUpset, this);
+		this.UI_COMP_PROP = <FGUICompPropPanel>(this.getChildAt(20));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
@@ -121,6 +121,5 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	onBtnContinue():void{};
 	onBtnReady():void{};
 	onBtnTalk():void{};
-	onBtnUpset():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompGameMain.URL, FGUICompGameMain);
