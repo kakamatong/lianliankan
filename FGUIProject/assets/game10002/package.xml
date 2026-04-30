@@ -39,6 +39,7 @@
     <image id="drdu1b" name="gamebg.jpg" path="/imgs/" scale="9grid" scale9grid="2,2,4,4"/>
     <image id="h0nk1c" name="bg1.png" path="/imgs/"/>
     <image id="h0nk1d" name="bg2.png" path="/imgs/"/>
+    <component id="tw1h1f" name="CompBtnProp.xml" path="/comp/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

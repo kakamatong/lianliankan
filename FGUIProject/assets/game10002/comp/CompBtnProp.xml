@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="80,93" extention="Button">
+  <displayList>
+    <loader id="n4_tw1h" name="icon" xy="0,0" size="80,93" autoSize="true"/>
+    <text id="n5_tw1h" name="title" xy="34,63" pivot="0.5,0.5" size="10,32" fontSize="22" color="#ffffff" align="center" vAlign="middle" strokeColor="#000000" text=""/>
+  </displayList>
+  <Button/>
+  <relation target="n4_tw1h" sidePair="width-width,height-height"/>
+</component>

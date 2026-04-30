@@ -1447,5 +1447,9 @@ export class CompGameMain extends FGUICompGameMain {
     getCompMap(): CompMap {
         return this.UI_COMP_MAP as CompMap;
     }
+
+    onBtnUpset(): void {
+        
+    }
 }
 fgui.UIObjectFactory.setExtension(CompGameMain.URL, CompGameMain);

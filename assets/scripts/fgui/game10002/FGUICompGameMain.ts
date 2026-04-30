@@ -35,6 +35,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_TALK:fgui.GButton;
 	public UI_COMP_CLOCK:FGUICompTimeLeft;
 	public UI_COMP_FINSH_INFO:FGUICompFinshInfo;
+	public UI_BTN_UPSET:fgui.GButton;
 	public static URL:string = "ui://2zsfe53xln74p";
 
 	public static packageName:string = "game10002";
@@ -104,6 +105,8 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_TALK.onClick(this.onBtnTalk, this);
 		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(18));
 		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(19));
+		this.UI_BTN_UPSET = <fgui.GButton>(this.getChildAt(20));
+		this.UI_BTN_UPSET.onClick(this.onBtnUpset, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
@@ -118,5 +121,6 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	onBtnContinue():void{};
 	onBtnReady():void{};
 	onBtnTalk():void{};
+	onBtnUpset():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompGameMain.URL, FGUICompGameMain);

@@ -38,6 +38,7 @@
     <image id="axf11n" name="inlinebg.png" path="/imgs/" exported="true" scale="9grid" scale9grid="78,59,120,32"/>
     <image id="oott1o" name="logo.png" path="/imgs/" exported="true"/>
     <image id="oott1p" name="btnBack.png" path="/imgs/" exported="true"/>
+    <image id="tw1h1q" name="upset.png" path="/imgs/prop/" exported="true"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
