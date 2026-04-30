@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="80,93">
+<component size="183,93">
   <displayList>
-    <component id="n1_tw1h" name="UI_BTN_UPSET" src="tw1h1f" fileName="comp/CompBtnProp.xml" xy="0,0">
+    <component id="n1_tw1h" name="UI_BTN_AUTO_REMOVE" src="tw1h1f" fileName="comp/CompBtnProp.xml" xy="0,0">
+      <Button title="自动移除" icon="ui://gj0r6g5itw1h1q"/>
+    </component>
+    <component id="n2_tw1h" name="UI_BTN_UPSET" src="tw1h1f" fileName="comp/CompBtnProp.xml" xy="103,0">
       <Button title="打乱" icon="ui://gj0r6g5itw1h1q"/>
     </component>
   </displayList>

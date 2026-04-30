@@ -85,7 +85,7 @@
       <gearDisplay controller="ctrl_finshInfo" pages="1"/>
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n80_tw1h" name="UI_COMP_PROP" src="tw1h1g" fileName="comp/CompPropPanel.xml" xy="688,1436">
+    <component id="n80_tw1h" name="UI_COMP_PROP" src="tw1h1g" fileName="comp/CompPropPanel.xml" xy="579,1436" pivot="1,1">
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </component>
   </displayList>

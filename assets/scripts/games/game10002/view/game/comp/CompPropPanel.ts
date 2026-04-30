@@ -22,6 +22,9 @@ export class CompPropPanel extends FGUICompPropPanel {
     init(): void {
         const upSetNums = DataCenter.instance.getRichByType(RICH_TYPE.UPSET);
         this.UI_BTN_UPSET.UI_TXT_NUMS.text = `X ${upSetNums?.richNums || 0}`;
+
+        const autoRemoveNums = DataCenter.instance.getRichByType(RICH_TYPE.AUTO_REMOVE);
+        this.UI_BTN_AUTO_REMOVE.UI_TXT_NUMS.text = `X ${autoRemoveNums?.richNums || 0}`;
     }
     /**
      * 使用道具
@@ -58,6 +61,17 @@ export class CompPropPanel extends FGUICompPropPanel {
             }
         };
         this.sendUseItem(RICH_TYPE.UPSET, callBack);
+    }
+
+    onBtnAutoRemove(): void {
+        Logger.log("使用道具: 自动移除");
+        const callBack = (b: boolean, response: SprotoUseItem.Response) => {
+            if (b) {
+                DataCenter.instance.updateRichByType(RICH_TYPE.AUTO_REMOVE, response.richNum);
+                this.init();
+            }
+        };
+        this.sendUseItem(RICH_TYPE.AUTO_REMOVE, callBack);
     }
 }
 fgui.UIObjectFactory.setExtension(CompPropPanel.URL, CompPropPanel);
