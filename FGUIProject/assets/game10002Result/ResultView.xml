@@ -39,7 +39,9 @@
     </image>
   </displayList>
   <transition name="act" options="4">
+    <item time="0" type="Alpha" target="n19_oott" value="0"/>
     <item time="0" type="XY" target="n15_jqb6" value="-,700"/>
+    <item time="12" type="Alpha" target="n19_oott" tween="true" startValue="0" endValue="1" duration="12"/>
     <item time="12" type="XY" target="n15_jqb6" tween="true" startValue="-,700" endValue="-,357,0.113,0.211" duration="12"/>
   </transition>
 </component>
