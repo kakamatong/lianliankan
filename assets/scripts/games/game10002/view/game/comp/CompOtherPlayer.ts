@@ -118,6 +118,7 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
      */
     updateMap(mapData: number[][], resPath: string = "resFruit"): void {
         if (this._compMap) {
+            this._compMap.visible = true;
             this._compMap.initMap(mapData, resPath);
         }
     }

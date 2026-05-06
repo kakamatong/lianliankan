@@ -2,7 +2,7 @@
 <component size="80,93" pivot="0.5,0.5" extention="Button">
   <displayList>
     <loader id="n4_tw1h" name="icon" xy="0,0" size="80,93" autoSize="true"/>
-    <image id="n6_tw1h" name="n6" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="13,63" pivot="0.5,0.5" size="54,35">
+    <image id="n6_tw1h" name="n6" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="24,63" pivot="0.5,0.5" size="32,35">
       <relation target="n5_tw1h" sidePair="width-width"/>
     </image>
     <text id="n5_tw1h" name="title" xy="29,59" pivot="0.5,0.5" size="20,39" fontSize="28" color="#ffffff" align="center" vAlign="middle" text="0"/>
