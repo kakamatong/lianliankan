@@ -626,6 +626,45 @@ export class CompMap extends FGUICompMap {
     }
 
     /**
+     * @method removeTilesWithAnimation
+     * @description 服务器确认自己消除时，执行消除动画（连线 + 特效 + 隐藏方块），不发送网络请求
+     * @param {Point} p1 - 第一个方块坐标
+     * @param {Point} p2 - 第二个方块坐标
+     * @param {LineSegment[]} lines - 连接路径
+     */
+    removeTilesWithAnimation(p1: Point, p2: Point, lines: LineSegment[]): void {
+        const firstCube = this.getCube(p1.row, p1.col);
+        const secondCube = this.getCube(p2.row, p2.col);
+
+        if (!firstCube || !secondCube) return;
+        if (!firstCube.visible || !secondCube.visible) return;
+
+        this._clearSelection();
+
+        this._showPathLines(lines);
+
+        firstCube.UI_SP_ANI.visible = true;
+        secondCube.UI_SP_ANI.visible = true;
+        SpinePlay(firstCube.UI_SP_ANI, "action", false);
+        SpinePlay(secondCube.UI_SP_ANI, "action", false);
+
+        this.scheduleOnce(() => {
+            this._mapManager.removeTiles(p1, p2);
+            this._pathFinder.setMap(this._mapManager.getMap());
+
+            firstCube.visible = false;
+            firstCube.ctrl_selected.selectedIndex = 0;
+            firstCube.UI_LOADER_ICOM.url = "";
+
+            secondCube.visible = false;
+            secondCube.ctrl_selected.selectedIndex = 0;
+            secondCube.UI_LOADER_ICOM.url = "";
+
+            this._clearPathLines();
+        }, this._removeDelay);
+    }
+
+    /**
      * @method showOtherPlayerRemoveAnimation
      * @description 显示其他玩家消除的连线动画（不判断是否可以消除）
      * @param {Point} p1 - 第一个方块坐标

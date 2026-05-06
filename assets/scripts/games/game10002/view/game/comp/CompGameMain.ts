@@ -495,8 +495,19 @@ export class CompGameMain extends FGUICompGameMain {
         const selfSeat = GameData.instance.getSelfSeat();
 
         if (data.seat === selfSeat) {
-            // 自己的消除，已经在本地处理过了，这里只需更新数据
-            GameData.instance.updatePlayerMapTilesRemoved(data.seat, data.p1.row, data.p1.col, data.p2.row, data.p2.col);
+            const playerMap = GameData.instance.getPlayerMapData(data.seat);
+            const isAlreadyRemoved =
+                playerMap?.mapData?.[data.p1.row]?.[data.p1.col] === 0 && playerMap?.mapData?.[data.p2.row]?.[data.p2.col] === 0;
+
+            if (isAlreadyRemoved) {
+                GameData.instance.updatePlayerMapTilesRemoved(data.seat, data.p1.row, data.p1.col, data.p2.row, data.p2.col);
+            } else {
+                const compMap = this.getCompMap();
+                if (compMap) {
+                    compMap.removeTilesWithAnimation(data.p1, data.p2, data.lines);
+                }
+                GameData.instance.updatePlayerMapTilesRemoved(data.seat, data.p1.row, data.p1.col, data.p2.row, data.p2.col);
+            }
         } else {
             // 其他玩家的消除，需要在对应的小地图上显示消除效果
             const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
