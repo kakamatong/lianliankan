@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="650,139">
+<component size="650,80">
   <controller name="ctrl_warn" pages="0,,1," selected="0">
     <remark page="0" value="普通"/>
     <remark page="1" value="告警"/>
@@ -7,10 +7,10 @@
     <action type="play_transition" fromPage="1" toPage="0" transition=""/>
   </controller>
   <displayList>
-    <image id="n7_mnt1" name="n7" src="mnt116" fileName="imgs/barbg.png" xy="0,0"/>
-    <image id="n8_mnt1" name="UI_IMG_BAR" src="mnt115" fileName="imgs/bar.png" xy="17,12" size="620,114" fillMethod="hz"/>
-    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="319,33" pivot="0.5,0.5" size="10,72" fontSize="54" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#6699cc" strokeSize="2" text="">
-      <gearColor controller="ctrl_warn" pages="1" values="#ff0000,#6699cc" default="#ffffff,#6699cc"/>
+    <image id="n10_jt3f" name="n10" src="jt3f1i" fileName="imgs/clockBG.png" xy="0,0" size="650,80"/>
+    <image id="n13_jt3f" name="UI_IMG_BAR" src="jt3f1j" fileName="imgs/clockIn.png" xy="4,4" fillMethod="hz"/>
+    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="281,8" pivot="0.5,0.5" size="88,64" fontSize="48" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#5ca48e" strokeSize="2" text="111">
+      <gearColor controller="ctrl_warn" pages="0,1" values="#ffffff,#5ca48e|#ff0000,#6699cc"/>
     </text>
   </displayList>
   <transition name="act" options="4">

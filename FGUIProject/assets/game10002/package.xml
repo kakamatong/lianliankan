@@ -28,8 +28,6 @@
     <component id="pgw3x" name="CompPlayers.xml" path="/comp/"/>
     <image id="eijpz" name="comp.png" path="/imgs/"/>
     <component id="mnt112" name="CompTimeLeft.xml" path="/comp/"/>
-    <image id="mnt115" name="bar.png" path="/imgs/" scale="9grid" scale9grid="155,31,310,62"/>
-    <image id="mnt116" name="barbg.png" path="/imgs/"/>
     <component id="mnt118" name="CompFinshInfo.xml" path="/comp/"/>
     <image id="rei519" name="unComp.png" path="/imgs/"/>
     <component id="ouez1a" name="CompPirvateInfo.xml" path="/comp/"/>
@@ -41,6 +39,8 @@
     <image id="h0nk1d" name="bg2.png" path="/imgs/"/>
     <component id="tw1h1f" name="CompBtnProp.xml" path="/comp/"/>
     <component id="tw1h1g" name="CompPropPanel.xml" path="/comp/"/>
+    <image id="jt3f1i" name="clockBG.png" path="/imgs/" scale="9grid" scale9grid="29,24,8,13"/>
+    <image id="jt3f1j" name="clockIn.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
