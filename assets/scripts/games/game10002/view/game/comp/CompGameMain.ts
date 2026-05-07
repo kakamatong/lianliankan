@@ -567,6 +567,8 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrGameRelink(data: any): void {
         Logger.log("游戏重连", data);
+        this.showStartGameBtn(false);
+        this.showInviteBtn(false);
     }
 
     /**
