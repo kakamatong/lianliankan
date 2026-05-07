@@ -78,7 +78,7 @@
       <relation target="" sidePair="left-right,bottom-bottom"/>
       <Button icon="ui://2zsfe53xpxa5o"/>
     </component>
-    <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,477" visible="false">
+    <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,472" visible="false">
       <relation target="" sidePair="center-center,top-top"/>
     </component>
     <component id="n76_mnt1" name="UI_COMP_FINSH_INFO" src="mnt118" fileName="comp/CompFinshInfo.xml" xy="208,801">
@@ -88,5 +88,6 @@
     <component id="n80_tw1h" name="UI_COMP_PROP" src="tw1h1g" fileName="comp/CompPropPanel.xml" xy="568,1417" pivot="1,1" visible="false">
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </component>
+    <component id="n82_jt3f" name="UI_COMP_COMB" src="jt3f1k" fileName="comp/CompComb.xml" xy="27,1420"/>
   </displayList>
 </component>
