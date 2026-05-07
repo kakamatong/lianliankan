@@ -91,15 +91,6 @@ export class CompPlayerHead extends FGUICompPlayerHead {
     }
 
     /**
-     * @method setWinLost
-     * @description 设置胜负战绩
-     * @param {number} win - 胜利次数
-     */
-    setWinLost(win: number): void {
-        this.UI_TXT_WINLOSE.text = `胜:${win ?? 0}`;
-    }
-
-    /**
      * @method showMsg
      * @description 显示聊天消息
      * @param {string} msg - 消息内容
