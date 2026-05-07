@@ -49,6 +49,7 @@ import {
     SprotoStepId,
     SprotoTilesRemoved,
     SprotoTotalResult,
+    SprotoComboSuccess,
 } from "../../../../../../types/protocol/game10002/s2c";
 import {
     SprotoClientReady,
@@ -177,6 +178,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoGameRelink, this.onSvrGameRelink.bind(this));
         GameSocketManager.instance.addServerListen(SprotoProgressUpdate, this.onSvrProgressUpdate.bind(this));
         GameSocketManager.instance.addServerListen(SprotoItemEffect, this.onSvrItemEffect.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoComboSuccess, this.onSvrComboSuccess.bind(this));
         LobbySocketManager.instance.addServerListen(SprotoGameRoomReady, this.onSvrGameRoomReady.bind(this));
         AddEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect, this);
     }
@@ -215,6 +217,8 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoGameRelink);
         GameSocketManager.instance.removeServerListen(SprotoProgressUpdate);
         GameSocketManager.instance.removeServerListen(SprotoItemEffect);
+        GameSocketManager.instance.removeServerListen(SprotoComboSuccess);
+
         LobbySocketManager.instance.removeServerListen(SprotoGameRoomReady);
         RemoveEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect);
     }
@@ -277,6 +281,20 @@ export class CompGameMain extends FGUICompGameMain {
 
             this.checkShowStartGameBtn();
         }
+    }
+
+    onSvrComboSuccess(data: SprotoComboSuccess.Request) {
+        Logger.log("ComboSuccess", data);
+        const selfSeat = GameData.instance.getSelfSeat();
+        if (selfSeat === data.seat) {
+            // 自己的Combo成功，显示Combo数
+            this.playComb(data.comboCount);
+        }
+    }
+
+    playComb(count: number) {
+        this.UI_COMP_COMB.text = `连击X${count}`;
+        this.UI_COMP_COMB.act.play();
     }
 
     /**
