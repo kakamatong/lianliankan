@@ -567,12 +567,6 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrGameRelink(data: any): void {
         Logger.log("游戏重连", data);
-        GameData.instance.gameStart = true;
-        this.showStartGameBtn(false);
-        this.showInviteBtn(false);
-        // 地图数据通过 mapData 协议单独下发
-        // 清除本地地图数据缓存，等待 mapData 协议重新下发所有玩家地图
-        GameData.instance.clearAllPlayerMaps();
     }
 
     /**
@@ -870,6 +864,10 @@ export class CompGameMain extends FGUICompGameMain {
 
             // 第几回合
             this.clear();
+        } else {
+            // 地图数据通过 mapData 协议单独下发
+            // 清除本地地图数据缓存，等待 mapData 协议重新下发所有玩家地图
+            GameData.instance.clearAllPlayerMaps();
         }
 
         for (let index = 0; index < GameData.instance.maxPlayer; index++) {
