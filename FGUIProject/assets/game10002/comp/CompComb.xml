@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="202,54" extention="Label">
   <displayList>
-    <text id="n0_jt3f" name="title" xy="0,0" pivot="0,0.5" size="202,54" font="ui://2zsfe53xjt3f1l" fontSize="17" color="#6699cc" text="连击X10"/>
+    <text id="n0_jt3f" name="title" xy="0,0" pivot="0,0.5" size="10,54" font="ui://2zsfe53xjt3f1l" fontSize="17" color="#6699cc" text=""/>
   </displayList>
   <transition name="act">
     <item time="0" type="Alpha" target="n0_jt3f" value="1"/>
