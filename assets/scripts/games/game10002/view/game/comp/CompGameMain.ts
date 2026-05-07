@@ -302,27 +302,26 @@ export class CompGameMain extends FGUICompGameMain {
      * @param data 胜负数据
      */
     showWinLost(data: any): void {
-        if (!data || data.length === 0) return;
-        for (let index = 0; index < data.length; index++) {
-            const element = data[index];
-            const svrSeat = index + 1; // 服务器座位号从1开始
-            const selfSeat = GameData.instance.getSelfSeat();
-
-            if (svrSeat === selfSeat) {
-                // 自己，使用 UI_COMP_SELFPLAYER
-                const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
-                if (selfPlayer) {
-                    selfPlayer.setWinLost(element.win);
-                }
-            } else {
-                // 其他玩家，使用 UI_COMP_PLAYERS 列表
-                const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-                const otherPlayer = compPlayers?.getOtherPlayer(svrSeat);
-                if (otherPlayer) {
-                    otherPlayer.getHeadComponent()?.setWinLost(element.win);
-                }
-            }
-        }
+        // if (!data || data.length === 0) return;
+        // for (let index = 0; index < data.length; index++) {
+        //     const element = data[index];
+        //     const svrSeat = index + 1; // 服务器座位号从1开始
+        //     const selfSeat = GameData.instance.getSelfSeat();
+        //     if (svrSeat === selfSeat) {
+        //         // 自己，使用 UI_COMP_SELFPLAYER
+        //         const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
+        //         if (selfPlayer) {
+        //             selfPlayer.setWinLost(element.win);
+        //         }
+        //     } else {
+        //         // 其他玩家，使用 UI_COMP_PLAYERS 列表
+        //         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+        //         const otherPlayer = compPlayers?.getOtherPlayer(svrSeat);
+        //         if (otherPlayer) {
+        //             otherPlayer.getHeadComponent()?.setWinLost(element.win);
+        //         }
+        //     }
+        // }
     }
 
     /**
@@ -933,6 +932,7 @@ export class CompGameMain extends FGUICompGameMain {
                     headurl: headurl,
                     score: data.scores[key].delta,
                     maxComb: rank.maxCombo,
+                    totalScore: data.scores[key].newScore,
                 };
             });
 

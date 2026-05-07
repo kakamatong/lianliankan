@@ -23,6 +23,7 @@ export class ResultView extends FGUIResultView {
         headurl: string;
         score: number;
         maxComb: number;
+        totalScore: number;
     }> = [];
     show(data?: any) {
         const flag = 1;
@@ -56,7 +57,9 @@ export class ResultView extends FGUIResultView {
         head.UI_LOADER_HEAD.url = data.headurl;
         node.UI_TXT_NICKNAME.text = TruncateString(data.nickname, 8);
         const score = data.score ?? 0;
+        const totalScore = data.totalScore ?? 0;
         node.UI_TXT_SCORE.text = score > 0 ? `+${score}` : score.toString();
+        node.UI_TXT_TOTALSCORE.text = totalScore.toString();
         if (score >= 0) {
             node.ctrl_color.selectedIndex = 0;
         } else {
