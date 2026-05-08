@@ -296,7 +296,7 @@ export class CompMap extends FGUICompMap {
             second.cube.UI_SP_ANI.visible = true;
             SpinePlay(first.cube.UI_SP_ANI, "action", false);
             SpinePlay(second.cube.UI_SP_ANI, "action", false);
-            SoundManager.instance.playSoundEffect("game10002/bomb");
+            !this._readonly && SoundManager.instance.playSoundEffect("game10002/bomb");
             // 延迟0.2秒后执行消除
             this.scheduleOnce(() => {
                 this._removeCubesWithLines(first, second, p1, p2);
