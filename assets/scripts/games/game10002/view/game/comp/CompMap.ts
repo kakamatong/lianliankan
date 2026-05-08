@@ -11,6 +11,7 @@ import { TipsView } from "@view/common/TipsView";
 import { GameData } from "../../../data/GameData";
 import { ENUM_GAME_STEP } from "../../../data/InterfaceGameConfig";
 import { Logger, SpinePlay } from "@frameworks/utils/Utils";
+import { SoundManager } from "@frameworks/SoundManager";
 
 /**
  * @class CompMap
@@ -192,6 +193,8 @@ export class CompMap extends FGUICompMap {
             return;
         }
 
+        SoundManager.instance.playSoundEffect("game10002/cubeClick");
+
         // 检查是否点击了已选中的方块
         const selectedIndex = this._selectedCubes.findIndex((item) => item.row === row && item.col === col);
 
@@ -293,6 +296,7 @@ export class CompMap extends FGUICompMap {
             second.cube.UI_SP_ANI.visible = true;
             SpinePlay(first.cube.UI_SP_ANI, "action", false);
             SpinePlay(second.cube.UI_SP_ANI, "action", false);
+            SoundManager.instance.playSoundEffect("game10002/bomb");
             // 延迟0.2秒后执行消除
             this.scheduleOnce(() => {
                 this._removeCubesWithLines(first, second, p1, p2);
@@ -647,6 +651,7 @@ export class CompMap extends FGUICompMap {
         secondCube.UI_SP_ANI.visible = true;
         SpinePlay(firstCube.UI_SP_ANI, "action", false);
         SpinePlay(secondCube.UI_SP_ANI, "action", false);
+        SoundManager.instance.playSoundEffect("game10002/bomb");
 
         this.scheduleOnce(() => {
             this._mapManager.removeTiles(p1, p2);
