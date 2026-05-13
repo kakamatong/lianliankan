@@ -21,10 +21,16 @@ export class CompPropPanel extends FGUICompPropPanel {
      */
     init(): void {
         const upSetNums = DataCenter.instance.getRichByType(RICH_TYPE.UPSET);
-        this.UI_BTN_UPSET.UI_TXT_NUMS.text = `X ${upSetNums?.richNums || 0}`;
+        this.showNums(this.UI_BTN_UPSET, upSetNums?.richNums || 0);
 
         const autoRemoveNums = DataCenter.instance.getRichByType(RICH_TYPE.AUTO_REMOVE);
-        this.UI_BTN_AUTO_REMOVE.UI_TXT_NUMS.text = `X ${autoRemoveNums?.richNums || 0}`;
+        this.showNums(this.UI_BTN_AUTO_REMOVE, autoRemoveNums?.richNums || 0);
+    }
+
+    showNums(obj: fgui.GComponent, nums: number): void {
+        if (obj) {
+            obj.getChild("UI_TXT_NUM").text = `X ${nums}`;
+        }
     }
     /**
      * 使用道具

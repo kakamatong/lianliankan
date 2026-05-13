@@ -6,7 +6,7 @@ import * as fgui from "fairygui-cc";
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
 
-export default class FGUIComProp extends fgui.GComponent {
+export default class FGUIComProp extends fgui.GButton {
 
 	public ctrl_num:fgui.Controller;
 	public UI_LOADER_ICON:fgui.GLoader;

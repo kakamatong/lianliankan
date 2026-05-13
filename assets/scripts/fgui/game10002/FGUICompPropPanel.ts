@@ -2,15 +2,14 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
-import FGUICompBtnProp from "./FGUICompBtnProp";
 
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
 
 export default class FGUICompPropPanel extends fgui.GComponent {
 
-	public UI_BTN_AUTO_REMOVE:FGUICompBtnProp;
-	public UI_BTN_UPSET:FGUICompBtnProp;
+	public UI_BTN_AUTO_REMOVE:fgui.GButton;
+	public UI_BTN_UPSET:fgui.GButton;
 	public static URL:string = "ui://2zsfe53xtw1h1g";
 
 	public static packageName:string = "game10002";
@@ -51,9 +50,9 @@ export default class FGUICompPropPanel extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.UI_BTN_AUTO_REMOVE = <FGUICompBtnProp>(this.getChildAt(0));
+		this.UI_BTN_AUTO_REMOVE = <fgui.GButton>(this.getChildAt(0));
 		this.UI_BTN_AUTO_REMOVE.onClick(this.onBtnAutoRemove, this);
-		this.UI_BTN_UPSET = <FGUICompBtnProp>(this.getChildAt(1));
+		this.UI_BTN_UPSET = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_UPSET.onClick(this.onBtnUpset, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
