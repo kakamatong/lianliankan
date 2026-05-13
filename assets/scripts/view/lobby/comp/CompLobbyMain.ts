@@ -55,7 +55,7 @@ export class CompLobbyMain extends FGUICompLobbyMain {
         AddEventListener(FW_EVENT_NAMES.ON_SHOW, this.onAppShow, this);
         LobbySocketManager.instance.addServerListen(SprotoGameRoomReady, this.onSvrGameRoomReady.bind(this));
         this.UI_COMP_TOP.UI_COMP_HEAD.onClick(this.onBtnHead, this);
-        this.UI_COMP_TOP.UI_COMP_SILVER.onClick(this.onBtnSignIn, this);
+        //this.UI_COMP_TOP.UI_COMP_SILVER.onClick(this.onBtnSignIn, this);
     }
 
     /**
@@ -99,8 +99,8 @@ export class CompLobbyMain extends FGUICompLobbyMain {
      * 初始化财富
      */
     initRichs(): void {
-        const rich = DataCenter.instance.getRichByType(RICH_TYPE.SILVER_COIN); // 银子
-        this.UI_COMP_TOP.UI_COMP_SILVER.UI_TXT_NUM.text = `${rich?.richNums ?? 0}`;
+        //const rich = DataCenter.instance.getRichByType(RICH_TYPE.SILVER_COIN); // 银子
+        //this.UI_COMP_TOP.UI_COMP_SILVER.UI_TXT_NUM.text = `${rich?.richNums ?? 0}`;
     }
 
     /**

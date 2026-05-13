@@ -24,8 +24,6 @@
     <image id="q5lz14" name="selectC2.png" path="/imgs/" exported="true"/>
     <sound id="fugr15" name="click.mp3" path="/sound/" exported="true"/>
     <image id="sexy16" name="zhanli.png" path="/imgs/" exported="true"/>
-    <image id="pxa518" name="gold40x40.png" path="/imgs/prop/40x40/"/>
-    <image id="pxa519" name="gold80x80.png" path="/imgs/prop/80x80/"/>
     <image id="bbyt1c" name="ad.png" path="/imgs/" exported="true"/>
     <component id="pz9v1d" name="CompBtnAdScale.xml" path="/comp/" exported="true"/>
     <image id="pz9v1e" name="矩形 1.png" path="/imgs/" exported="true" scale="9grid" scale9grid="32,35,27,16"/>
@@ -38,8 +36,6 @@
     <image id="axf11n" name="inlinebg.png" path="/imgs/" exported="true" scale="9grid" scale9grid="78,59,120,32"/>
     <image id="oott1o" name="logo.png" path="/imgs/" exported="true"/>
     <image id="oott1p" name="btnBack.png" path="/imgs/" exported="true"/>
-    <image id="tw1h1q" name="upset.png" path="/imgs/prop/" exported="true"/>
-    <image id="wwhe1s" name="autoremove.png" path="/imgs/prop/" exported="true"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

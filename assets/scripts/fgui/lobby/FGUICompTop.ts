@@ -2,7 +2,6 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
-import FGUICompRich from "./FGUICompRich";
 
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
@@ -12,7 +11,6 @@ export default class FGUICompTop extends fgui.GComponent {
 	public UI_COMP_HEAD:fgui.GComponent;
 	public UI_TXT_NICKNAME:fgui.GTextField;
 	public UI_TXT_USERID:fgui.GTextField;
-	public UI_COMP_SILVER:FGUICompRich;
 	public static URL:string = "ui://gv22rev3cveva";
 
 	public static packageName:string = "lobby";
@@ -56,7 +54,6 @@ export default class FGUICompTop extends fgui.GComponent {
 		this.UI_COMP_HEAD = <fgui.GComponent>(this.getChildAt(1));
 		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(2));
 		this.UI_TXT_USERID = <fgui.GTextField>(this.getChildAt(3));
-		this.UI_COMP_SILVER = <FGUICompRich>(this.getChildAt(4));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
