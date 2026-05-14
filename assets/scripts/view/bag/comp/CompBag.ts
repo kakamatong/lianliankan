@@ -10,6 +10,7 @@ import * as fgui from "fairygui-cc";
 import { BagView } from "../BagView";
 import { DataCenter } from "@datacenter/Datacenter";
 import FGUIComProp from "@fgui/props/FGUIComProp";
+import { PROP_CONFIG } from "@datacenter/PropConfig";
 
 /**
  * @class CompBag
@@ -75,6 +76,7 @@ export class CompBag extends FGUICompBag {
         this.UI_LV_BAGS.itemRenderer = this.itemRenderer.bind(this);
         this.UI_LV_BAGS.numItems = this._richList.length;
         this._richList.length > 0 ? (this.ctrl_have.selectedIndex = 1) : (this.ctrl_have.selectedIndex = 0);
+        this._richList.length > 0 && this.initDis(this._richList[0].richType);
     }
 
     /**
@@ -90,6 +92,9 @@ export class CompBag extends FGUICompBag {
         const iconNode = this.UI_COMP_ICON as FGUIComProp;
         iconNode.UI_LOADER_ICON.url = `ui://props/prop_${richType}`;
         iconNode.ctrl_num.selectedIndex = 1;
+
+        const dis = PROP_CONFIG[richType].dis;
+        this.UI_COMP_DIS.text = dis;
     }
 
     /**
