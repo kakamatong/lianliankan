@@ -58,9 +58,9 @@ export default class FGUICompBag extends fgui.GComponent {
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
-		this.UI_LV_BAGS = <fgui.GList>(this.getChildAt(4));
-		this.UI_COMP_ICON = <fgui.GButton>(this.getChildAt(5));
-		this.UI_COMP_DIS = <fgui.GTextField>(this.getChildAt(6));
+		this.UI_LV_BAGS = <fgui.GList>(this.getChildAt(5));
+		this.UI_COMP_ICON = <fgui.GButton>(this.getChildAt(6));
+		this.UI_COMP_DIS = <fgui.GTextField>(this.getChildAt(7));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

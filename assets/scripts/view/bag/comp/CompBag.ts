@@ -91,7 +91,7 @@ export class CompBag extends FGUICompBag {
     initDis(richType: number): void {
         const iconNode = this.UI_COMP_ICON as FGUIComProp;
         iconNode.UI_LOADER_ICON.url = `ui://props/prop_${richType}`;
-        iconNode.ctrl_num.selectedIndex = 1;
+        iconNode.ctrl_num.selectedIndex = 0;
 
         const dis = PROP_CONFIG[richType].dis;
         this.UI_COMP_DIS.text = dis;
