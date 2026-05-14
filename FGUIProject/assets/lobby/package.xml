@@ -19,6 +19,7 @@
     <image id="ootts" name="btnMail.png" path="/imgs/"/>
     <image id="oottt" name="btnFree.png" path="/imgs/"/>
     <image id="oottu" name="btnSignIn.png" path="/imgs/"/>
+    <image id="bj8qw" name="btnBag.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
