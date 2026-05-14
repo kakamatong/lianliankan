@@ -30,6 +30,7 @@ import { UserRiches } from "@modules/UserRiches";
 import { REWORD_VIDEOAD_CODE } from "@frameworks/config/Config";
 import { Logger, TruncateString } from "@frameworks/utils/Utils";
 import { SoundManager } from "@frameworks/SoundManager";
+import { BagView } from "@view/bag/BagView";
 /**
  * 大厅主界面组件
  * 负责大厅界面的初始化、用户登录管理、用户信息展示、功能入口处理等
@@ -353,6 +354,13 @@ export class CompLobbyMain extends FGUICompLobbyMain {
      */
     onBtnShare(): void {
         MiniGameUtils.instance.shareAppMessage({ title: "约上好友来一局连连看吧", imageUrl: LOBBY_SHARE_PIC_URL, query: "" });
+    }
+
+    /**
+     * 点击背包
+     */
+    onBtnBag(): void {
+        BagView.showView();
     }
 
     /**

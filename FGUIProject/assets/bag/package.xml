@@ -4,5 +4,5 @@
     <component id="rgj10" name="BagView.xml" path="/" exported="true"/>
     <component id="rgj11" name="CompBag.xml" path="/comp/"/>
   </resources>
-  <publish name=""/>
+  <publish name="" genCode="true"/>
 </packageDescription>
