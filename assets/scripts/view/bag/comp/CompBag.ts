@@ -8,6 +8,8 @@ import FGUICompBag from "@fgui/bag/FGUICompBag";
 import { ViewClass, AddEventListener, RemoveEventListener } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { BagView } from "../BagView";
+import { DataCenter } from "@datacenter/Datacenter";
+import FGUIComProp from "@fgui/props/FGUIComProp";
 
 /**
  * @class CompBag
@@ -16,12 +18,14 @@ import { BagView } from "../BagView";
  */
 @ViewClass({ curveScreenAdapt: true })
 export class CompBag extends FGUICompBag {
+    private _richList: Array<{ richType: number; richNums: number }> = [];
     /**
      * @method onConstruct
      * @description 组件构建回调，初始化监听和UI
      */
     onConstruct() {
         super.onConstruct();
+        this.show();
     }
 
     /**
@@ -48,6 +52,68 @@ export class CompBag extends FGUICompBag {
      */
     show(data?: any): void {
         // TODO: 实现数据显示逻辑
+        this.initRiches();
+        this.initUI();
+    }
+
+    /**
+     * 初始化财富
+     */
+    initRiches(): void {
+        const riches = DataCenter.instance.userRiches;
+        riches.forEach((element) => {
+            if (element.richType > 10000) {
+                this._richList.push(element);
+            }
+        });
+    }
+
+    /**
+     * 初始化界面
+     */
+    initUI(): void {
+        this.UI_LV_BAGS.itemRenderer = this.itemRenderer.bind(this);
+        this.UI_LV_BAGS.numItems = this._richList.length;
+        this._richList.length > 0 ? (this.ctrl_have.selectedIndex = 1) : (this.ctrl_have.selectedIndex = 0);
+    }
+
+    /**
+     * 初始化道具列表
+     */
+    initList(): void {}
+
+    /**
+     * 初始化具体道具描述
+     * @param richType 财富类型
+     */
+    initDis(richType: number): void {
+        const iconNode = this.UI_COMP_ICON as FGUIComProp;
+        iconNode.UI_LOADER_ICON.url = `ui://props/prop_${richType}`;
+        iconNode.ctrl_num.selectedIndex = 1;
+    }
+
+    /**
+     * 列表渲染
+     * @param index
+     * @param obj
+     */
+    itemRenderer(index: number, obj: fgui.GObject): void {
+        const propConfig = this._richList[index];
+        const itemNode = obj as FGUIComProp;
+        itemNode.UI_LOADER_ICON.url = `ui://props/prop_${propConfig.richType}`;
+        itemNode.UI_TXT_NUM.text = `X ${propConfig.richNums || 0}`;
+        itemNode.clearClick();
+        itemNode.onClick(() => {
+            this.onBtnRich(propConfig.richType);
+        });
+    }
+
+    /**
+     * 点击财富
+     * @param richType 财富类型
+     */
+    onBtnRich(richType: number): void {
+        this.initDis(richType);
     }
 }
 
