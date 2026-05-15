@@ -9,11 +9,14 @@ import { Logger } from "@frameworks/utils/Utils";
 export default class FGUICompPrivateCreate extends fgui.GComponent {
 
 	public ctrl_mode:fgui.Controller;
+	public ctrl_prop:fgui.Controller;
 	public UI_BTN_CREATE:fgui.GButton;
 	public UI_BTN_JU3:fgui.GButton;
 	public UI_BTN_JU5:fgui.GButton;
 	public UI_BTN_JU7:fgui.GButton;
 	public UI_BTN_JU0:fgui.GButton;
+	public UI_BTN_ENABLE:fgui.GButton;
+	public UI_BTN_DISENABLE:fgui.GButton;
 	public static URL:string = "ui://s0qy2rl1nomu1";
 
 	public static packageName:string = "privateRoom";
@@ -55,6 +58,7 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.ctrl_mode = this.getControllerAt(0);
+		this.ctrl_prop = this.getControllerAt(1);
 		this.UI_BTN_CREATE = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_CREATE.onClick(this.onBtnCreate, this);
 		this.UI_BTN_JU3 = <fgui.GButton>(this.getChildAt(3));
@@ -65,6 +69,10 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 		this.UI_BTN_JU7.onClick(this.onBtnJu7, this);
 		this.UI_BTN_JU0 = <fgui.GButton>(this.getChildAt(6));
 		this.UI_BTN_JU0.onClick(this.onBtnJu0, this);
+		this.UI_BTN_ENABLE = <fgui.GButton>(this.getChildAt(9));
+		this.UI_BTN_ENABLE.onClick(this.onBtnEnable, this);
+		this.UI_BTN_DISENABLE = <fgui.GButton>(this.getChildAt(10));
+		this.UI_BTN_DISENABLE.onClick(this.onBtnDisenable, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
@@ -75,5 +83,7 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 	onBtnJu5():void{};
 	onBtnJu7():void{};
 	onBtnJu0():void{};
+	onBtnEnable():void{};
+	onBtnDisenable():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompPrivateCreate.URL, FGUICompPrivateCreate);

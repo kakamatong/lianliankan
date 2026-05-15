@@ -58,6 +58,7 @@ export class CompPrivateCreate extends FGUICompPrivateCreate {
     onBtnCreate(): void {
         const gameRule = {
             playNum: Number(this.ctrl_mode.selectedPage),
+            enableProp: Number(this.ctrl_prop.selectedPage),
         };
         const func = (result: any) => {
             if (result && result.code == 1) {
