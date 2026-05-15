@@ -158,7 +158,7 @@ export class CompLobbyMain extends FGUICompLobbyMain {
         Logger.log("onLoginSuccess");
         const options = MiniGameUtils.instance.getLaunchOptionsSync();
         this.checkPrivateRoomid(options);
-        //this.autoShowSignIn();
+        this.autoShowSignIn();
         //this.reqAdInfo();
     }
 

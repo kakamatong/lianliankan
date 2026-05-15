@@ -34,7 +34,7 @@ export class SignIn extends BaseModule {
         this._signDataCallBack = callBack;
         this.reqLobby(
             SprotoCallActivityFunc,
-            { moduleName: "daySignIn", funcName: "getSignInInfo", args: JSON.stringify({}) },
+            { moduleName: "daySignIn", funcName: "getSignInInfo", args: JSON.stringify({ cfgId: 2 }) },
             this.respSignData.bind(this)
         );
     }

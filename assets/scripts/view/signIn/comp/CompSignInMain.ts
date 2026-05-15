@@ -13,6 +13,7 @@ import { REWORD_VIDEOAD_CODE } from "@frameworks/config/Config";
 import { LoadingView } from "../../common/LoadingView";
 import { Logger } from "@frameworks/utils/Utils";
 import { SoundManager } from "@frameworks/SoundManager";
+import FGUIComProp from "@fgui/props/FGUIComProp";
 
 /**
  * 签到视图
@@ -73,12 +74,22 @@ export class CompSignInMain extends FGUICompSignInMain {
     itemRenderer(index: number, obj: fgui.GObject): void {
         const config = this._signInConfig[index];
         const item = obj as FGUICompSignItem;
-        item.UI_TXT_NUM.text = `x${config.richNums[0]}`;
         item.UI_TXT_DAY.text = `第${index + 1}天`;
-        item.ctrl_icon.selectedIndex = this.getIconIndex(index);
         item.ctrl_geted.selectedIndex = this._signInStatus[index] ? 1 : index >= this._nowIndex - 1 ? 0 : 2;
         item.ctrl_today.selectedIndex = index == this._nowIndex - 1 ? 1 : 0;
 
+        // richNums =(1) [2]
+        // richNums2 =(1) [4]
+        // richTypes =(1) [10002]
+        item.UI_LV_PROPS.removeChildren();
+        for (let i = 0; i < config.richTypes.length; i++) {
+            const richType = config.richTypes[i];
+            const richNum = config.richNums[i];
+            const richNum2 = config.richNums2[i];
+            const subItem = item.UI_LV_PROPS.addItem() as FGUIComProp;
+            subItem.UI_LOADER_ICON.url = `ui://props/prop_${richType}`;
+            subItem.UI_TXT_NUM.text = `X ${richNum}`;
+        }
         item.UI_BTN_FILL.clearClick();
         item.UI_BTN_FILL.onClick(() => {
             this.onBtnFill(index + 1);

@@ -12,6 +12,7 @@ export default class FGUICompSignItem extends fgui.GComponent {
 	public ctrl_today:fgui.Controller;
 	public UI_TXT_DAY:fgui.GTextField;
 	public UI_BTN_FILL:fgui.GButton;
+	public UI_LV_PROPS:fgui.GList;
 	public static URL:string = "ui://cytsuqelbbyt5";
 
 	public static packageName:string = "signIn";
@@ -57,6 +58,7 @@ export default class FGUICompSignItem extends fgui.GComponent {
 		this.UI_TXT_DAY = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_BTN_FILL = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_FILL.onClick(this.onBtnFill, this);
+		this.UI_LV_PROPS = <fgui.GList>(this.getChildAt(5));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
