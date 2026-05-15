@@ -10,10 +10,7 @@ export default class FGUICompSignItem extends fgui.GComponent {
 
 	public ctrl_geted:fgui.Controller;
 	public ctrl_today:fgui.Controller;
-	public ctrl_icon:fgui.Controller;
-	public UI_LOADER_ICON:fgui.GLoader;
 	public UI_TXT_DAY:fgui.GTextField;
-	public UI_TXT_NUM:fgui.GTextField;
 	public UI_BTN_FILL:fgui.GButton;
 	public static URL:string = "ui://cytsuqelbbyt5";
 
@@ -57,11 +54,8 @@ export default class FGUICompSignItem extends fgui.GComponent {
 	protected onConstruct():void {
 		this.ctrl_geted = this.getControllerAt(0);
 		this.ctrl_today = this.getControllerAt(1);
-		this.ctrl_icon = this.getControllerAt(2);
-		this.UI_LOADER_ICON = <fgui.GLoader>(this.getChildAt(1));
-		this.UI_TXT_DAY = <fgui.GTextField>(this.getChildAt(2));
-		this.UI_TXT_NUM = <fgui.GTextField>(this.getChildAt(3));
-		this.UI_BTN_FILL = <fgui.GButton>(this.getChildAt(5));
+		this.UI_TXT_DAY = <fgui.GTextField>(this.getChildAt(1));
+		this.UI_BTN_FILL = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_FILL.onClick(this.onBtnFill, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
