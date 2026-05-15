@@ -31,6 +31,7 @@ import { REWORD_VIDEOAD_CODE } from "@frameworks/config/Config";
 import { Logger, TruncateString } from "@frameworks/utils/Utils";
 import { SoundManager } from "@frameworks/SoundManager";
 import { BagView } from "@view/bag/BagView";
+import { Prop } from "@modules/Prop";
 /**
  * 大厅主界面组件
  * 负责大厅界面的初始化、用户登录管理、用户信息展示、功能入口处理等
@@ -159,7 +160,7 @@ export class CompLobbyMain extends FGUICompLobbyMain {
         const options = MiniGameUtils.instance.getLaunchOptionsSync();
         this.checkPrivateRoomid(options);
         this.autoShowSignIn();
-        //this.reqAdInfo();
+        this.reqAdInfo();
     }
 
     /**
@@ -385,7 +386,9 @@ export class CompLobbyMain extends FGUICompLobbyMain {
         if (noticeDate !== nowDayStr) {
             const reward = adRewardInfo.rewards[0];
             const rewardAmount = reward?.richNums[0] ?? 0;
-            const content = `看完视频每天可以领取${adRewardInfo.maxDailyRewardCount}次，每次${rewardAmount}银子奖励`;
+            const propid = reward?.richTypes[0] ?? 0;
+            const propInfo = Prop.create(propid);
+            const content = `看完视频每天可以领取${adRewardInfo.maxDailyRewardCount}次，每次${rewardAmount}${propInfo?.name ?? ""}道具奖励`;
             const func = () => {
                 sys.localStorage.setItem(LOCAL_KEY.AD_NOTICE_DATE, nowDayStr);
                 this.playAdAndReceiveReward();
