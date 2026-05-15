@@ -4,7 +4,7 @@
  * @category 网络请求模块
  */
 
-import { PropConfig, PropData } from "@datacenter/CommonConfig";
+import { PROP_CONFIG, PropData } from "@datacenter/PropConfig";
 
 /**
  * @class Prop
@@ -18,9 +18,9 @@ export class Prop {
      * @returns 道具数据，如果不存在返回 undefined
      */
     static create(id: number): PropData | undefined {
-        const data = PropConfig[id];
+        const data = PROP_CONFIG[id];
         if (data && !data.icon) {
-            data.icon = `ui://props/prop_120x120_${id}`;
+            data.icon = `ui://props/prop_${id}`;
         }
         return data;
     }

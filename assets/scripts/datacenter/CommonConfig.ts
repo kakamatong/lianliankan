@@ -5,31 +5,6 @@
  */
 
 /**
- * @typedef PropData
- * @description 道具数据类型
- * @property {number} id 道具 ID
- * @property {string} name 道具名称
- * @property {string} desc 道具描述
- * @property {string} [icon] 道具图标
- */
-// 道具类型
-export type PropData = {
-    id: number;
-    name: string;
-    desc: string;
-    icon?: string;
-};
-
-/**
- * @description 道具配置
- */
-//道具配置
-export const PropConfig: Record<number, PropData> = {
-    2: { id: 2, name: "银子", desc: "用于聊天消耗等" },
-    10001: { id: 10001, name: "打乱", desc: "打乱道具" },
-};
-
-/**
  * @description 事件名称常量
  */
 // 事件名称常量
