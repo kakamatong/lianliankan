@@ -66,7 +66,7 @@ export class SignIn extends BaseModule {
         this._signInCallBack = callBack;
         this.reqLobby(
             SprotoCallActivityFunc,
-            { moduleName: "daySignIn", funcName: "signIn", args: JSON.stringify({ mult }) },
+            { moduleName: "daySignIn", funcName: "signIn", args: JSON.stringify({ mult, cfgId: 2 }) },
             this.respSignIn.bind(this)
         );
     }
@@ -98,7 +98,7 @@ export class SignIn extends BaseModule {
         this._fillSignInCallBack = callBack;
         this.reqLobby(
             SprotoCallActivityFunc,
-            { moduleName: "daySignIn", funcName: "fillSignIn", args: JSON.stringify({ index }) },
+            { moduleName: "daySignIn", funcName: "fillSignIn", args: JSON.stringify({ index, cfgId: 2 }) },
             this.respFillSignIn.bind(this)
         );
     }
