@@ -193,5 +193,13 @@ export class MatchView extends FGUIMatchView {
             callBack
         );
     }
+
+    onBtnClose(): void {
+        if (this._beCheck) {
+        } else {
+            Match.instance.reqLeave();
+        }
+        MatchView.hideView();
+    }
 }
 fgui.UIObjectFactory.setExtension(MatchView.URL, MatchView);
