@@ -50,6 +50,7 @@ export class Match extends BaseModule {
             result && Logger.log(LogColors.red(result.msg));
             this._callBack && this._callBack(false, result);
         }
+        this._callBack = null;
     }
 
     /**
@@ -74,5 +75,6 @@ export class Match extends BaseModule {
         } else {
             this._callBack && this._callBack(false, result);
         }
+        this._callBack = null;
     }
 }
