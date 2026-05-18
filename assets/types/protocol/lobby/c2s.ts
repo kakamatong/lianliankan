@@ -165,6 +165,7 @@ export interface JoinprivateroomResponse {
     roomid: string;
     addr: string;
     rule: string;
+    shortRoomid: number;
     gatewayUrl: string;
 }
 

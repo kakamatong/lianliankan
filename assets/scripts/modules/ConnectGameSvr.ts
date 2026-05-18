@@ -35,7 +35,7 @@ export class ConnectGameSvr extends BaseModule {
         DataCenter.instance.roomid = data.roomid;
         DataCenter.instance.gameAddr = data.addr;
         DataCenter.instance.gameGatewayUrl = data.gatewayUrl;
-        DataCenter.instance.shortRoomid = data.shortRoomid ?? 0; // 匹配房
+        DataCenter.instance.shortRoomid = data.shortRoomid || 0; // 匹配房
         Logger.log(LogColors.green("游戏房间准备完成"));
         const authCallBack = (success: boolean) => {
             callBack && callBack(success);
