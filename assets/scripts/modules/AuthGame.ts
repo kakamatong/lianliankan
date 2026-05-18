@@ -32,7 +32,7 @@ export class AuthGame extends BaseModule {
      * @param roomid 房间ID
      * @param callBack 回调函数
      */
-    req(addr: string, gameid: number, roomid: string, callBack: (success: boolean) => void) {
+    req(addr: string, gatewayUrl: string, gameid: number, roomid: string, callBack: (success: boolean) => void) {
         this._callBack = callBack;
         GameSocketManager.instance.loadProtocol("game10002", () => {
             const loginInfo = DataCenter.instance.getLoginInfo();
@@ -50,9 +50,9 @@ export class AuthGame extends BaseModule {
             const urlToken = encodeURIComponent(token);
 
             const params = `ver=1&userid=${loginInfo?.userid ?? ""}&gameid=${gameid}&roomid=${roomid}&token=${urlToken}`;
-            const newAddr = DataCenter.instance.gameAuthList[addr];
+            //const newAddr = DataCenter.instance.gameAuthList[addr];
 
-            const url = `${newAddr}?${params}`;
+            const url = `${gatewayUrl}?${params}`;
             GameSocketManager.instance.start(url, undefined, this.resp.bind(this));
         });
     }

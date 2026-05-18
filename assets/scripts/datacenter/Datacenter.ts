@@ -80,6 +80,11 @@ export class DataCenter {
     private _gameAddr: string = "";
 
     /**
+     * 游戏网关url
+     */
+    private _gameGatewayUrl: string = "";
+
+    /**
      * @property {number} _shortRoomid - 短房间ID
      * @private
      */
@@ -386,6 +391,23 @@ export class DataCenter {
      */
     get gameAddr(): string {
         return this._gameAddr;
+    }
+
+    /**
+     * @method gameGatewayUrl
+     * @description 设置游戏网关地址
+     */
+    set gameGatewayUrl(url: string) {
+        this._gameGatewayUrl = url;
+    }
+
+    /**
+     * @method gameGatewayUrl
+     * @description 获取游戏网关地址
+     * @returns 游戏服务网关地址
+     */
+    get gameGatewayUrl() {
+        return this._gameGatewayUrl;
     }
 
     /**

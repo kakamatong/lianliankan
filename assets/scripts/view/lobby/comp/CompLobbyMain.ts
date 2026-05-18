@@ -339,7 +339,7 @@ export class CompLobbyMain extends FGUICompLobbyMain {
     /**
      * 游戏服务器准备就绪
      */
-    onSvrGameRoomReady(data: any): void {
+    onSvrGameRoomReady(data: SprotoGameRoomReady.Request): void {
         Logger.log("gameRoomReady", data);
         ConnectGameSvr.instance.connectGame(data, (success: boolean, data?: any) => {
             if (success) {
