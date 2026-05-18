@@ -78,10 +78,10 @@ export default class FGUIUserCenterView extends fgui.GComponent {
 		this.UI_BTN_BGMUSIC.onClick(this.onBtnBgmusic, this);
 		this.UI_BTN_EFFECT = <FGUICompBtnSound>(this.getChildAt(19));
 		this.UI_BTN_EFFECT.onClick(this.onBtnEffect, this);
-		this.UI_TXT_CP = <fgui.GTextField>(this.getChildAt(21));
-		this.UI_BTN_DEL_ACC = <fgui.GButton>(this.getChildAt(22));
+		this.UI_TXT_CP = <fgui.GTextField>(this.getChildAt(20));
+		this.UI_BTN_DEL_ACC = <fgui.GButton>(this.getChildAt(21));
 		this.UI_BTN_DEL_ACC.onClick(this.onBtnDelAcc, this);
-		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(23));
+		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(22));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

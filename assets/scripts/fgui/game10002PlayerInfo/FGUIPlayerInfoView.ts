@@ -69,8 +69,8 @@ export default class FGUIPlayerInfoView extends fgui.GComponent {
 		this.UI_TXT_LOSE = <fgui.GTextField>(this.getChildAt(13));
 		this.UI_TXT_DRAW = <fgui.GTextField>(this.getChildAt(14));
 		this.UI_TXT_RATE = <fgui.GTextField>(this.getChildAt(15));
-		this.UI_TXT_CP = <fgui.GTextField>(this.getChildAt(17));
-		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(18));
+		this.UI_TXT_CP = <fgui.GTextField>(this.getChildAt(16));
+		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(17));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

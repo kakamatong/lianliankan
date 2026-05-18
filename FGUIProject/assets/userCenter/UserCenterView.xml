@@ -25,10 +25,10 @@
     <text id="n20_pr8n" name="n20" xy="194,1074" size="112,49" group="n32_axf1" fontSize="36" color="#7e6547" align="right" text="音效："/>
     <component id="n23_pr8n" name="UI_BTN_BGMUSIC" src="pr8n1" fileName="comp/CompBtnSound.xml" xy="292,1001" group="n32_axf1" aspect="true" scale="0.6,0.6" controller="ctrl_status,0"/>
     <component id="n24_pr8n" name="UI_BTN_EFFECT" src="pr8n1" fileName="comp/CompBtnSound.xml" xy="291,1069" group="n32_axf1" aspect="true" scale="0.6,0.6" controller="ctrl_status,0"/>
-    <image id="n26_sexy" name="n26" src="sexy16" fileName="imgs/zhanli.png" pkg="gj0r6g5i" xy="508,998" group="n32_axf1"/>
-    <text id="n27_sexy" name="UI_TXT_CP" xy="493,1066" size="140,49" group="n32_axf1" fontSize="36" color="#ff0000" align="center" vAlign="middle" autoSize="none" strokeColor="#000000" text="999"/>
+    <text id="n27_sexy" name="UI_TXT_CP" xy="513,1007" size="140,49" group="n32_axf1" fontSize="36" color="#ff0000" align="center" vAlign="middle" autoSize="none" strokeColor="#000000" text="999"/>
     <component id="n28_lvao" name="UI_BTN_DEL_ACC" src="lvao2" fileName="comp/BtnRevoke.xml" xy="591,1227" group="n32_axf1"/>
     <text id="n31_axf1" name="UI_TXT_TITLE" xy="266,535" pivot="0.5,0.5" size="244,79" group="n32_axf1" fontSize="60" color="#ffffff" align="center" vAlign="middle" strokeColor="#3d4b61" strokeSize="4" singleLine="true" text="个人信息"/>
+    <text id="n33_o6ru" name="n33" xy="423,1008" size="112,49" group="n32_axf1" fontSize="36" color="#7e6547" text="积分："/>
     <group id="n32_axf1" name="n32" xy="58,501" size="660,790" advanced="true">
       <relation target="" sidePair="center-center,middle-middle"/>
     </group>
