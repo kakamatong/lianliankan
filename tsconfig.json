@@ -12,7 +12,8 @@
             "@fgui/*": ["./assets/scripts/fgui/*"],
             "@modules/*": ["./assets/scripts/modules/*"],
             "@datacenter/*": ["./assets/scripts/datacenter/*"],
-            "@view/*": ["./assets/scripts/view/*"]
+            "@view/*": ["./assets/scripts/view/*"],
+            "@localGame/*": ["./assets/scripts/localGame/*"]
         },
         "types": ["minigame-api-typings"]
     }

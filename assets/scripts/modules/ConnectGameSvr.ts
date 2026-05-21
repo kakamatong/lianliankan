@@ -10,6 +10,8 @@ import { LogColors } from "@frameworks/Framework";
 import { AuthGame } from "./AuthGame";
 import { BaseModule } from "@frameworks/base/BaseModule";
 import { Logger } from "@frameworks/utils/Utils";
+import { LocalSvr } from "@localGame/LocalSvr";
+import { GameSocketManager } from "@frameworks/GameSocketManager";
 
 /**
  * @class ConnectGameSvr
@@ -43,12 +45,17 @@ export class ConnectGameSvr extends BaseModule {
         AuthGame.instance.req(data.addr, data.gatewayUrl, data.gameid, data.roomid, authCallBack);
     }
 
-    connectLocalGame(data:{gameid:number}, callBack?: (success: boolean, data?: any) => void) {
+    connectLocalGame(data: { gameid: number }, callBack?: (success: boolean, data?: any) => void) {
         Logger.log(LogColors.green("连接本地游戏服务器"));
         const authCallBack = (success: boolean) => {
             callBack && callBack(success);
         };
-        
+
+        const localGame = new LocalSvr();
+        localGame.start();
+
+        GameSocketManager.instance.start(true);
+        authCallBack(true);
     }
 
     /**

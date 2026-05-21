@@ -283,6 +283,12 @@ export class CompLobbyMain extends FGUICompLobbyMain {
         Match.instance.req(0, func);
     }
 
+    onBtnLocalGame(): void {
+        ConnectGameSvr.instance.connectLocalGame({ gameid: 10002 }, (b: boolean) => {
+            b && this.changeToGameScene();
+        });
+    }
+
     /**
      * 点击私人房间
      */

@@ -69,9 +69,9 @@ export class GameSocketManager extends SocketManager {
         if (this._isLocalGame) {
             const func = (data) => {
                 callBack && callBack(data);
-                RemoveEventListener(xy.Name, func);
+                RemoveEventListener("resp" + xy.Name, func);
             };
-            AddEventListener(xy.Name, func, this);
+            AddEventListener("resp" + xy.Name, func, this);
             DispatchEvent(xy.Name, data);
         } else {
             super.sendToServer(xy, data, callBack);
