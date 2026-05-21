@@ -43,6 +43,14 @@ export class ConnectGameSvr extends BaseModule {
         AuthGame.instance.req(data.addr, data.gatewayUrl, data.gameid, data.roomid, authCallBack);
     }
 
+    connectLocalGame(data:{gameid:number}, callBack?: (success: boolean, data?: any) => void) {
+        Logger.log(LogColors.green("连接本地游戏服务器"));
+        const authCallBack = (success: boolean) => {
+            callBack && callBack(success);
+        };
+        
+    }
+
     /**
      * @description 加入私密房间
      * @param roomid 短房间ID
