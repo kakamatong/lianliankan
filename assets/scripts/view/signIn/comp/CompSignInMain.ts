@@ -75,7 +75,9 @@ export class CompSignInMain extends FGUICompSignInMain {
         const config = this._signInConfig[index];
         const item = obj as FGUICompSignItem;
         item.UI_TXT_DAY.text = `第${index + 1}天`;
-        item.ctrl_geted.selectedIndex = this._signInStatus[index] ? 1 : index >= this._nowIndex - 1 ? 0 : 2;
+        // 补签显示，展示隐藏
+        // item.ctrl_geted.selectedIndex = this._signInStatus[index] ? 1 : index >= this._nowIndex - 1 ? 0 : 2;
+        item.ctrl_geted.selectedIndex = this._signInStatus[index] ? 1 : index >= this._nowIndex - 1 ? 0 : 0;
         item.ctrl_today.selectedIndex = index == this._nowIndex - 1 ? 1 : 0;
 
         // richNums =(1) [2]

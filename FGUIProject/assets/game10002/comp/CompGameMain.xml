@@ -88,6 +88,8 @@
     <component id="n80_tw1h" name="UI_COMP_PROP" src="tw1h1g" fileName="comp/CompPropPanel.xml" xy="489,1416" pivot="1,1" visible="false">
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </component>
-    <component id="n82_jt3f" name="UI_COMP_COMB" src="jt3f1k" fileName="comp/CompComb.xml" xy="27,1420"/>
+    <component id="n82_jt3f" name="UI_COMP_COMB" src="jt3f1k" fileName="comp/CompComb.xml" xy="27,1420">
+      <relation target="" sidePair="left-left,bottom-bottom"/>
+    </component>
   </displayList>
 </component>
