@@ -77,4 +77,8 @@ export class GameSocketManager extends SocketManager {
             super.sendToServer(xy, data, callBack);
         }
     }
+
+    isLocalGame(): boolean {
+        return this._isLocalGame;
+    }
 }

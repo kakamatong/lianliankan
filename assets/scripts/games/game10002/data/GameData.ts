@@ -80,6 +80,7 @@ export class GameData {
         this._privateNowCnt = 0;
         this._playerMaps.clear();
         this._playingStepTime = 0;
+        this._isLocalGame = false;
     }
 
     get gameStep(): ENUM_GAME_STEP {

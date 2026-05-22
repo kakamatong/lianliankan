@@ -105,6 +105,12 @@ export class CompGameMain extends FGUICompGameMain {
             GameData.instance.isPrivateRoom = true;
         }
 
+        if (GameSocketManager.instance.isLocalGame()) {
+            GameData.instance.isLocalGame = true;
+        } else {
+            GameData.instance.isLocalGame = false;
+        }
+
         //this.testRandomMap();
     }
 
