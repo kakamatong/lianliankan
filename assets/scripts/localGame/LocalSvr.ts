@@ -12,6 +12,7 @@ import {
     SprotoMapShuffled,
     SprotoPlayerInfos,
     SprotoPlayerEnter,
+    SprotoStepId,
 } from "../../types/protocol/game10002/s2c";
 import {
     SprotoClickTiles,
@@ -224,6 +225,7 @@ export class LocalSvr {
         this._lastRemoveTime = 0;
 
         this.dispatchEvent(SprotoGameStart.Name, {});
+        this.dispatchEvent(SprotoStepId.Name, { step: 2 });
         this.dispatchEvent(SprotoLogicInfo.Name, { playerCnt: 1, playingStepTime: 0, ext: "" });
 
         // 下发自己的用户信息
