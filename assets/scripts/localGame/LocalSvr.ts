@@ -31,6 +31,19 @@ import { DataCenter } from "@datacenter/Datacenter";
  *              模拟联网游戏的核心协议流程（方块消除、道具使用、游戏结束等）
  */
 export class LocalSvr {
+    /** 单例实例 */
+    private static _instance: LocalSvr;
+
+    /**
+     * 获取 LocalSvr 单例
+     */
+    public static get instance(): LocalSvr {
+        if (!this._instance) {
+            this._instance = new LocalSvr();
+        }
+        return this._instance;
+    }
+
     /** 服务器端维护的地图数据 */
     private _map: number[][] = [];
     /** 地图行数 */
@@ -58,6 +71,9 @@ export class LocalSvr {
      * 启动本地服务器，注册所有 C2S 协议监听
      */
     start(): void {
+        // 先清理旧监听，确保多次调用不累积
+        this.destroy();
+
         AddEventListener(SprotoClientReady.Name, this.onClientReady, this);
         AddEventListener(SprotoClickTiles.Name, this.onClickTiles, this);
         AddEventListener(SprotoUseItem.Name, this.onUseItem, this);
