@@ -10,6 +10,8 @@ import { SprotoMatchJoin, SprotoMatchLeave } from "../../types/protocol/lobby/c2
 import { BaseModule } from "@frameworks/base/BaseModule";
 import { MAIN_GAME_ID } from "@datacenter/InterfaceConfig";
 import { Logger } from "@frameworks/utils/Utils";
+import { LobbySocketManager } from "@frameworks/LobbySocketManager";
+import { ConnectSvr } from "./ConnectSvr";
 
 /**
  * @class Match
@@ -33,7 +35,33 @@ export class Match extends BaseModule {
         if (callBack) {
             this._callBack = callBack;
         }
-        this.reqLobby(SprotoMatchJoin, { gameid: MAIN_GAME_ID, queueid: 1 }, this.resp.bind(this));
+
+        if (LobbySocketManager.instance.isOpen()) {
+            this.reqLobby(SprotoMatchJoin, { gameid: MAIN_GAME_ID, queueid: 1 }, this.resp.bind(this));
+        } else {
+            this.loginLobby((b: boolean) => {
+                if (b) {
+                    this.reqLobby(SprotoMatchJoin, { gameid: MAIN_GAME_ID, queueid: 1 }, this.resp.bind(this));
+                } else {
+                    callBack && callBack(false);
+                }
+            });
+        }
+    }
+
+    /**
+     * @method loginLobby
+     * @description 登录游戏大厅
+     * @param {function} callback - 登录回调函数
+     */
+    protected loginLobby(callback?: (b: boolean) => void): void {
+        const func = (b: boolean) => {
+            if (!b) {
+            } else {
+                callback && callback(b);
+            }
+        };
+        ConnectSvr.instance.checkAutoLogin(func);
     }
 
     /**
