@@ -10,6 +10,8 @@ import {
     SprotoLogicInfo,
     SprotoComboSuccess,
     SprotoMapShuffled,
+    SprotoPlayerInfos,
+    SprotoPlayerEnter,
 } from "../../types/protocol/game10002/s2c";
 import {
     SprotoClickTiles,
@@ -20,6 +22,7 @@ import {
     SprotoClientReady,
 } from "../../types/protocol/game10002/c2s";
 import { RICH_TYPE } from "@datacenter/InterfaceConfig";
+import { DataCenter } from "@datacenter/Datacenter";
 
 /**
  * @class LocalSvr
@@ -101,7 +104,7 @@ export class LocalSvr {
      */
     onClickTiles(data: SprotoClickTiles.Request): void {
         const { row1, col1, row2, col2 } = data;
-        const selfSeat = 0;
+        const selfSeat = 1;
 
         // 更新服务器端地图
         this._map[row1][col1] = 0;
@@ -222,7 +225,40 @@ export class LocalSvr {
 
         this.dispatchEvent(SprotoGameStart.Name, {});
         this.dispatchEvent(SprotoLogicInfo.Name, { playerCnt: 1, playingStepTime: 0, ext: "" });
+
+        // 下发自己的用户信息
+        this.dispatchSelfPlayerInfo();
+
         this.randomMap();
+    }
+
+    /**
+     * 下发本地玩家的用户信息（playerInfos + playerEnter）
+     */
+    dispatchSelfPlayerInfo(): void {
+        const dc = DataCenter.instance;
+        const userData = dc.userData;
+        const selfSeat = 1;
+
+        // 构造 PlayerInfo
+        const playerInfo = {
+            userid: dc.userid,
+            nickname: userData?.nickname ?? "",
+            headurl: dc.headurl,
+            sex: userData?.sex ?? 0,
+            province: userData?.province ?? "",
+            city: userData?.city ?? "",
+            ip: userData?.ip ?? "",
+            status: 0,
+            cp: 0,
+            ext: "",
+        };
+
+        // 广播玩家信息列表
+        this.dispatchEvent(SprotoPlayerInfos.Name, { infos: [playerInfo] });
+
+        // 广播玩家进入
+        this.dispatchEvent(SprotoPlayerEnter.Name, { userid: dc.userid, seat: selfSeat });
     }
 
     /**
@@ -231,24 +267,29 @@ export class LocalSvr {
     randomMap(): void {
         const map: number[][] = [];
 
+        // 初始化地图（全部设为0）
         for (let i = 0; i < this._rows; i++) {
             map[i] = new Array(this._cols).fill(0);
         }
 
+        // 内部区域为8x8（行1-8，列1-8），需要填充64个格子
+        // 生成32对方块，每对随机类型1-max
         let pairIndex = 0;
         const max = 10;
         const pairs: number[] = [];
         for (let i = 0; i < 32; i++) {
             const type = ++pairIndex;
-            pairs.push(type, type);
+            pairs.push(type, type); // 添加一对
             if (pairIndex >= max) pairIndex = 0;
         }
 
+        // 打乱顺序
         for (let i = pairs.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
         }
 
+        // 填充到内部区域
         let index = 0;
         for (let row = 1; row < this._rows - 1; row++) {
             for (let col = 1; col < this._cols - 1; col++) {
@@ -264,7 +305,7 @@ export class LocalSvr {
         const data = {
             mapData: strMap,
             totalBlocks: this._totalBlocks,
-            seat: 0,
+            seat: 1,
             row: this._rows,
             col: this._cols,
         };
@@ -277,7 +318,7 @@ export class LocalSvr {
      */
     onGameFinished(): void {
         const usedTime = Math.round((Date.now() - this._startTime) / 1000);
-        const selfSeat = 0;
+        const selfSeat = 1;
 
         // 广播玩家完成
         this.dispatchEvent(SprotoPlayerFinished.Name, {
@@ -318,7 +359,7 @@ export class LocalSvr {
      * 处理打乱道具：收集剩余方块 → 随机重排 → 下发新地图
      */
     handleUpset(itemId: number): void {
-        const selfSeat = 0;
+        const selfSeat = 1;
 
         // 收集所有非零方块
         const tiles: number[] = [];
@@ -376,7 +417,7 @@ export class LocalSvr {
      * 处理自动消除道具：找到两个同类型方块 → 直接消除
      */
     handleAutoRemove(itemId: number): void {
-        const selfSeat = 0;
+        const selfSeat = 1;
 
         // 查找任意两个同类型方块
         let found: { row1: number; col1: number; row2: number; col2: number } | null = null;

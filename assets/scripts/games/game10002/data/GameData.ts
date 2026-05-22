@@ -27,7 +27,7 @@ export interface PLAYER_MAP_DATA {
  */
 export class GameData {
     private _playerInfoMap: Map<number, GAME_PLAYER_INFO> = new Map();
-    private _selfSeat: number = 0;
+    private _selfSeat: number = 1;
     private _maxPlayer = 2;
     private _gameStep: ENUM_GAME_STEP = ENUM_GAME_STEP.NONE;
     private _roomEnd: boolean = false;
