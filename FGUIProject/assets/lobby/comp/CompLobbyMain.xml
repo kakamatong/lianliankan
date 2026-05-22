@@ -39,5 +39,9 @@
       <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button icon="ui://gv22rev3bj8qw"/>
     </component>
+    <component id="n25_iv8f" name="UI_BTN_LOCALGAME" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="624,1297">
+      <relation target="" sidePair="left-right,bottom-bottom"/>
+      <Button title="单机" icon="ui://gj0r6g5ijorf1f"/>
+    </component>
   </displayList>
 </component>

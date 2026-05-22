@@ -19,6 +19,7 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 	public UI_BTN_AD:fgui.GButton;
 	public UI_TXT_ENV:fgui.GTextField;
 	public UI_BTN_BAG:fgui.GButton;
+	public UI_BTN_LOCALGAME:fgui.GButton;
 	public static URL:string = "ui://gv22rev3ln74i";
 
 	public static packageName:string = "lobby";
@@ -77,6 +78,8 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 		this.UI_TXT_ENV = <fgui.GTextField>(this.getChildAt(8));
 		this.UI_BTN_BAG = <fgui.GButton>(this.getChildAt(9));
 		this.UI_BTN_BAG.onClick(this.onBtnBag, this);
+		this.UI_BTN_LOCALGAME = <fgui.GButton>(this.getChildAt(10));
+		this.UI_BTN_LOCALGAME.onClick(this.onBtnLocalgame, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
@@ -90,5 +93,6 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 	onBtnSignIn():void{};
 	onBtnAd():void{};
 	onBtnBag():void{};
+	onBtnLocalgame():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompLobbyMain.URL, FGUICompLobbyMain);
