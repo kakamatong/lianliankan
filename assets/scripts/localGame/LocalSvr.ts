@@ -1,5 +1,5 @@
 import { AddEventListener, DispatchEvent, LogColors, RemoveEventListener } from "@frameworks/Framework";
-import { SprotoMapData } from "../../types/protocol/game10002/s2c";
+import { SprotoGameStart, SprotoMapData } from "../../types/protocol/game10002/s2c";
 
 export class LocalSvr {
     constructor() {}
@@ -17,6 +17,11 @@ export class LocalSvr {
     }
 
     onClientReady(): void {
+        this.startStepGame();
+    }
+
+    startStepGame(): void {
+        this.dispatchEvent(SprotoGameStart.Name, {});
         this.randomMap();
     }
 
