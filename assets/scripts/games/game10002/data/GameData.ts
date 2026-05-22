@@ -42,6 +42,13 @@ export class GameData {
     private _playerMaps: Map<number, PLAYER_MAP_DATA> = new Map();
     /** 对局阶段时间（秒） */
     private _playingStepTime: number = 0;
+
+    /**
+     * @description 是否是本地游戏
+     * @returns {boolean} 是否是本地游戏
+     */
+    private _isLocalGame: boolean = false;
+
     /** 单例实例 */
     private static _instance: GameData;
 
@@ -314,5 +321,13 @@ export class GameData {
      */
     set playingStepTime(value: number) {
         this._playingStepTime = value;
+    }
+
+    set isLocalGame(flag: boolean) {
+        this._isLocalGame = flag;
+    }
+
+    get isLocalGame(): boolean {
+        return this._isLocalGame;
     }
 }
