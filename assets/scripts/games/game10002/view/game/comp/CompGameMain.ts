@@ -87,6 +87,8 @@ export class CompGameMain extends FGUICompGameMain {
         // 客户端进入完成
         if (GameData.instance.isPrivateRoom) {
             this.ctrl_roomtype.selectedIndex = ROOM_TYPE.PRIVATE;
+        } else if (GameData.instance.isLocalGame) {
+            this.ctrl_roomtype.selectedIndex = ROOM_TYPE.LOCAL;
         }
 
         // 延迟发送客户端进入完成
