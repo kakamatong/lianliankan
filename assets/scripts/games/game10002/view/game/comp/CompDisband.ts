@@ -116,6 +116,14 @@ export class CompDisband extends FGUICompDisband {
         if (data.initiator) {
             this._initiator = data.initiator;
         }
+
+        // 发起人
+        const player = GameData.instance.getPlayerByUserid(data.initiator);
+        if (player) {
+            this.UI_TXT_DISBAN.text = `玩家${player.nickname}发起解散房间`;
+        } else {
+            this.UI_TXT_DISBAN.text = `玩家${data.initiator}发起解散房间`;
+        }
     }
 
     /**

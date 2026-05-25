@@ -14,6 +14,7 @@ export default class FGUICompDisband extends fgui.GComponent {
 	public UI_LV_VOTE_INFO:fgui.GList;
 	public UI_TXT_LEFT_TIME:fgui.GTextField;
 	public UI_TXT_MSG:fgui.GTextField;
+	public UI_TXT_DISBAN:fgui.GTextField;
 	public static URL:string = "ui://2zsfe53xr1yn0";
 
 	public static packageName:string = "game10002";
@@ -62,6 +63,7 @@ export default class FGUICompDisband extends fgui.GComponent {
 		this.UI_LV_VOTE_INFO = <fgui.GList>(this.getChildAt(3));
 		this.UI_TXT_LEFT_TIME = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_TXT_MSG = <fgui.GTextField>(this.getChildAt(6));
+		this.UI_TXT_DISBAN = <fgui.GTextField>(this.getChildAt(7));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
