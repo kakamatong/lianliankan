@@ -12,7 +12,7 @@
     <component id="n2_7ivz" name="UI_BTN_AGREE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="407,1103" size="230,99" group="n14_oott" controller="ctrl_color,1">
       <Button title="同意" icon="ui://gj0r6g5ijorf1f"/>
     </component>
-    <text id="n3_7ivz" name="n3" xy="79,713" size="615,94" group="n14_oott" fontSize="35" color="#7e6547" vAlign="middle" text="在您使用 《连连消除对战》 服务之前，&#xA;请仔细阅读"/>
+    <text id="n3_7ivz" name="n3" xy="79,713" size="615,94" group="n14_oott" fontSize="35" color="#7e6547" vAlign="middle" text="在您使用 《连连乐看消除》 服务之前，&#xA;请仔细阅读"/>
     <text id="n4_7ivz" name="n4" xy="78,810" size="599,94" group="n14_oott" fontSize="35" color="#7e6547" vAlign="middle" text="如您同意该指引，请点击“同意”开始&#xA;使用。"/>
     <component id="n8_7ivz" name="UI_BTN_PRIVACY" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="398,739" group="n14_oott">
       <Button title="《隐私政策指引》" titleColor="#ff0000" titleFontSize="35"/>

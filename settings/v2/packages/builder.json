@@ -44,8 +44,9 @@
         "z": 0.9333333333333333,
         "w": 1
       },
-      "image": "project://settings/bg2.jpg"
+      "image": "project://settings/logo.png"
     },
-    "totalTime": 500
+    "totalTime": 500,
+    "displayRatio": 1.45
   }
 }
