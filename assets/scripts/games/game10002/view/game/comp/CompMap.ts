@@ -297,6 +297,8 @@ export class CompMap extends FGUICompMap {
             SpinePlay(first.cube.UI_SP_ANI, "action", false);
             SpinePlay(second.cube.UI_SP_ANI, "action", false);
             !this._readonly && SoundManager.instance.playSoundEffect("game10002/bomb");
+            // 清空选中数组
+            this._selectedCubes = [];
             // 延迟0.2秒后执行消除
             this.scheduleOnce(() => {
                 this._removeCubesWithLines(first, second, p1, p2);
@@ -410,9 +412,6 @@ export class CompMap extends FGUICompMap {
 
         // 清理路径线条
         this._clearPathLines();
-
-        // 清空选中数组
-        this._selectedCubes = [];
 
         Logger.log(`消除方块: (${first.row},${first.col}) 和 (${second.row},${second.col})`);
 
