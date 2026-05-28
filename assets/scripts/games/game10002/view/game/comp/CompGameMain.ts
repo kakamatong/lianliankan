@@ -93,7 +93,7 @@ export class CompGameMain extends FGUICompGameMain {
 
         // 延迟发送客户端进入完成
         this.scheduleOnce(() => {
-            GameSocketManager.instance.sendToServer(SprotoClientReady, {});
+            this.sendClientReady();
         }, 0);
     }
 
@@ -229,6 +229,10 @@ export class CompGameMain extends FGUICompGameMain {
 
         LobbySocketManager.instance.removeServerListen(SprotoGameRoomReady);
         RemoveEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect);
+    }
+
+    sendClientReady() {
+        GameSocketManager.instance.sendToServer(SprotoClientReady, {});
     }
 
     /**
@@ -694,6 +698,8 @@ export class CompGameMain extends FGUICompGameMain {
 
         if (GameData.instance.isPrivateRoom) {
             this.onBtnReady();
+        } else if (GameData.instance.isLocalGame) {
+            this.sendClientReady();
         } else {
             this.startMatch();
         }
