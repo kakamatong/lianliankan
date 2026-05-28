@@ -314,7 +314,8 @@ export class LocalSvr {
         }
         this._totalBlocks = totalBlocks;
 
-        this._dispatchMapData();
+        // 确保初始地图可消除，不可消除则自动打乱
+        this._ensureSolvable();
     }
 
     /**
