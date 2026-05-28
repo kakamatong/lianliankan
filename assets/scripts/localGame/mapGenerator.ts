@@ -107,7 +107,9 @@ export function generateFromDesign(
  * @returns { map, design } - 生成的地图和对应的设计配置
  */
 export function generateRandomMap(): { map: number[][]; design: (typeof MAP_DESIGN_CONFIG)[number] } {
-    const design = MAP_DESIGN_CONFIG[Math.floor(Math.random() * MAP_DESIGN_CONFIG.length)];
+    let index = Math.floor(Math.random() * MAP_DESIGN_CONFIG.length);
+    index = MAP_DESIGN_CONFIG.length - 1
+    const design = MAP_DESIGN_CONFIG[index];
     const map = generateFromDesign(design.MAP, design.DEFAULT_ROWS, design.DEFAULT_COLS, design.ICON_TYPES);
     return { map, design };
 }

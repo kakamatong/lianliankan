@@ -32,6 +32,9 @@ import { generateRandomMap } from "./mapGenerator";
  *              模拟联网游戏的核心协议流程（方块消除、道具使用、游戏结束等）
  */
 export class LocalSvr {
+    /** 障碍物判定阈值（值 >= 100 为障碍物，不可通过也不可消除） */
+    private static readonly DECORATION_VALUE = 100;
+
     /** 单例实例 */
     private static _instance: LocalSvr;
 
@@ -65,6 +68,9 @@ export class LocalSvr {
     private _lastRemoveTime: number = 0;
     /** 连击时间窗口（毫秒） */
     private readonly COMBO_WINDOW: number = 3000;
+
+    /** 记录初始可填充位置（用于重新填入时只填充到有效位置） */
+    private _validPositions: { row: number; col: number }[] = [];
 
     constructor() {}
 
@@ -180,6 +186,11 @@ export class LocalSvr {
             });
         }
 
+        // 检查地图是否还有可消除对，没有则自动打乱
+        if (remaining > 0 && !this._hasValidPair()) {
+            this._ensureSolvable();
+        }
+
         // 检查游戏结束
         if (remaining <= 0) {
             this.onGameFinished();
@@ -281,7 +292,7 @@ export class LocalSvr {
     }
 
     /**
-     * 生成随机地图并广播
+     * 生成随机地图并广播（从配置表随机选取设计）
      */
     randomMap(): void {
         const { map, design } = generateRandomMap();
@@ -289,29 +300,21 @@ export class LocalSvr {
         // 保存到服务器端状态
         this._map = map;
 
-        // 统计可消除方块总数（排除障碍物：值 >= 100）
-        const DECORATION_VALUE = 100;
+        // 统计可消除方块总数并记录有效位置（排除障碍物：值 >= 100）
+        this._validPositions = [];
         let totalBlocks = 0;
         for (let row = 0; row < this._rows; row++) {
             for (let col = 0; col < this._cols; col++) {
                 const val = map[row][col];
-                if (val > 0 && val < DECORATION_VALUE) {
+                if (val > 0 && val < LocalSvr.DECORATION_VALUE) {
                     totalBlocks++;
+                    this._validPositions.push({ row, col });
                 }
             }
         }
         this._totalBlocks = totalBlocks;
 
-        const strMap = JSON.stringify(map);
-        const data = {
-            mapData: strMap,
-            totalBlocks: this._totalBlocks,
-            seat: 1,
-            row: this._rows,
-            col: this._cols,
-        };
-
-        this.dispatchEvent(SprotoMapData.Name, data);
+        this._dispatchMapData();
     }
 
     /**
@@ -357,82 +360,48 @@ export class LocalSvr {
     // ============================================
 
     /**
-     * 处理打乱道具：收集剩余方块 → 随机重排 → 下发新地图
+     * 处理打乱道具：收集剩余方块 → 随机重排 → 确保可解 → 下发新地图
      */
     handleUpset(itemId: number): void {
-        const selfSeat = 1;
-
-        // 收集所有非零方块
-        const tiles: number[] = [];
-        for (let row = 1; row < this._rows - 1; row++) {
-            for (let col = 1; col < this._cols - 1; col++) {
-                if (this._map[row][col] !== 0) {
-                    tiles.push(this._map[row][col]);
-                }
-            }
-        }
-
-        // 打乱
-        for (let i = tiles.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
-        }
-
-        // 重新填充
-        let index = 0;
-        for (let row = 1; row < this._rows - 1; row++) {
-            for (let col = 1; col < this._cols - 1; col++) {
-                this._map[row][col] = index < tiles.length ? tiles[index++] : 0;
-            }
-        }
+        this._shuffleRemainingTiles();
+        this._ensureSolvable();
 
         // 响应道具使用
         this.dispatchEventResp(SprotoUseItem.Name, { code: 1, msg: "", richNum: 0 });
 
         // 广播道具效果
         this.dispatchEvent(SprotoItemEffect.Name, {
-            seat: selfSeat,
+            seat: 1,
             itemId: itemId,
             effect: "shuffle",
         });
 
         // 广播打乱通知
         this.dispatchEvent(SprotoMapShuffled.Name, {
-            seat: selfSeat,
+            seat: 1,
             reason: 1,
         });
-
-        // 下发新地图（客户端通过 onSvrMapData 重新渲染）
-        const strMap = JSON.stringify(this._map);
-        const mapData = {
-            mapData: strMap,
-            totalBlocks: this._totalBlocks,
-            seat: selfSeat,
-            row: this._rows,
-            col: this._cols,
-        };
-        this.dispatchEvent(SprotoMapData.Name, mapData);
     }
 
     /**
-     * 处理自动消除道具：找到两个同类型方块 → 直接消除
+     * 处理自动消除道具：找到两个同类型且可连接的方块 → 直接消除
      */
     handleAutoRemove(itemId: number): void {
         const selfSeat = 1;
 
-        // 查找任意两个同类型方块
+        // 查找任意两个同类型且可连接的方块
         let found: { row1: number; col1: number; row2: number; col2: number } | null = null;
 
-        for (let row = 1; row < this._rows - 1 && !found; row++) {
-            for (let col = 1; col < this._cols - 1 && !found; col++) {
+        for (let row = 0; row < this._rows && !found; row++) {
+            for (let col = 0; col < this._cols && !found; col++) {
                 const type = this._map[row][col];
-                if (type === 0) continue;
+                if (type <= 0 || type >= LocalSvr.DECORATION_VALUE) continue;
 
-                // 从当前位置之后查找同类型
-                for (let r2 = row; r2 < this._rows - 1 && !found; r2++) {
-                    const startCol = r2 === row ? col + 1 : 1;
-                    for (let c2 = startCol; c2 < this._cols - 1 && !found; c2++) {
-                        if (this._map[r2][c2] === type) {
+                // 从当前位置之后查找同类型且可连接的方块
+                for (let r2 = row; r2 < this._rows && !found; r2++) {
+                    const startCol = r2 === row ? col + 1 : 0;
+                    for (let c2 = startCol; c2 < this._cols && !found; c2++) {
+                        if (this._map[r2][c2] === type && this._canConnect(row, col, r2, c2)) {
                             found = { row1: row, col1: col, row2: r2, col2: c2 };
                         }
                     }
@@ -457,5 +426,177 @@ export class LocalSvr {
             // 没有可消除的方块对
             this.dispatchEventResp(SprotoUseItem.Name, { code: 0, msg: "没有可消除的方块对", richNum: 0 });
         }
+    }
+
+    // ============================================
+    // 路径判定（独立实现，不依赖游戏区 PathFinder）
+    // ============================================
+
+    /**
+     * 判断指定位置是否可通过（空格）
+     * 越界不可通过，值为 0 可通过
+     */
+    private _isPassable(row: number, col: number): boolean {
+        if (row < 0 || row >= this._rows || col < 0 || col >= this._cols) return false;
+        return this._map[row][col] === 0;
+    }
+
+    /**
+     * 判断同行或同列两点之间的直线是否全空（不含端点）
+     */
+    private _isLineClear(r1: number, c1: number, r2: number, c2: number): boolean {
+        if (r1 === r2) {
+            const minC = Math.min(c1, c2);
+            const maxC = Math.max(c1, c2);
+            for (let c = minC + 1; c < maxC; c++) {
+                if (!this._isPassable(r1, c)) return false;
+            }
+            return true;
+        }
+        if (c1 === c2) {
+            const minR = Math.min(r1, r2);
+            const maxR = Math.max(r1, r2);
+            for (let r = minR + 1; r < maxR; r++) {
+                if (!this._isPassable(r, c1)) return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 0 拐连接：同行或同列且直线全空
+     */
+    private _canConnect0Turn(r1: number, c1: number, r2: number, c2: number): boolean {
+        if (r1 !== r2 && c1 !== c2) return false;
+        return this._isLineClear(r1, c1, r2, c2);
+    }
+
+    /**
+     * 1 拐连接：L 形，拐角处必须可通过
+     */
+    private _canConnect1Turn(r1: number, c1: number, r2: number, c2: number): boolean {
+        if (this._isPassable(r1, c2) &&
+            this._isLineClear(r1, c1, r1, c2) &&
+            this._isLineClear(r1, c2, r2, c2)) return true;
+        if (this._isPassable(r2, c1) &&
+            this._isLineClear(r1, c1, r2, c1) &&
+            this._isLineClear(r2, c1, r2, c2)) return true;
+        return false;
+    }
+
+    /**
+     * 2 拐连接：Z/U 形，扫描所有行和列找两个拐点
+     */
+    private _canConnect2Turn(r1: number, c1: number, r2: number, c2: number): boolean {
+        // 扫描所有行：在列 c1 拐第一次，在列 c2 拐第二次
+        for (let r = 0; r < this._rows; r++) {
+            if (this._isPassable(r, c1) && this._isPassable(r, c2) &&
+                this._isLineClear(r1, c1, r, c1) &&
+                this._isLineClear(r, c1, r, c2) &&
+                this._isLineClear(r, c2, r2, c2)) return true;
+        }
+        // 扫描所有列：在行 r1 拐第一次，在行 r2 拐第二次
+        for (let c = 0; c < this._cols; c++) {
+            if (this._isPassable(r1, c) && this._isPassable(r2, c) &&
+                this._isLineClear(r1, c1, r1, c) &&
+                this._isLineClear(r1, c, r2, c) &&
+                this._isLineClear(r2, c, r2, c2)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断两个位置是否可以连接（最多 2 拐）
+     */
+    private _canConnect(r1: number, c1: number, r2: number, c2: number): boolean {
+        return this._canConnect0Turn(r1, c1, r2, c2) ||
+               this._canConnect1Turn(r1, c1, r2, c2) ||
+               this._canConnect2Turn(r1, c1, r2, c2);
+    }
+
+    // ============================================
+    // 地图分析与自动打乱
+    // ============================================
+
+    /**
+     * 判断当前地图是否存在至少一对可消除的方块
+     */
+    private _hasValidPair(): boolean {
+        for (let r1 = 0; r1 < this._rows; r1++) {
+            for (let c1 = 0; c1 < this._cols; c1++) {
+                const v1 = this._map[r1][c1];
+                if (v1 <= 0 || v1 >= LocalSvr.DECORATION_VALUE) continue;
+
+                for (let r2 = r1; r2 < this._rows; r2++) {
+                    const startC = r2 === r1 ? c1 + 1 : 0;
+                    for (let c2 = startC; c2 < this._cols; c2++) {
+                        if (this._map[r2][c2] === v1 && this._canConnect(r1, c1, r2, c2)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 收集剩余方块值 → 洗牌 → 按原有效位置重新填入
+     */
+    private _shuffleRemainingTiles(): void {
+        // 收集所有剩余非障碍方块的值
+        const tiles: number[] = [];
+        for (let i = 0; i < this._validPositions.length; i++) {
+            const { row, col } = this._validPositions[i];
+            const val = this._map[row][col];
+            if (val > 0 && val < LocalSvr.DECORATION_VALUE) {
+                tiles.push(val);
+            }
+        }
+
+        // Fisher-Yates 洗牌
+        for (let i = tiles.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+        }
+
+        // 重新填入有效位置（跳过已消除的）
+        let idx = 0;
+        for (let i = 0; i < this._validPositions.length; i++) {
+            const { row, col } = this._validPositions[i];
+            if (this._map[row][col] > 0 && this._map[row][col] < LocalSvr.DECORATION_VALUE) {
+                this._map[row][col] = idx < tiles.length ? tiles[idx++] : 0;
+            }
+        }
+    }
+
+    /**
+     * 自动打乱直到出现可消除对（最多 100 次），然后广播新地图
+     */
+    private _ensureSolvable(): void {
+        let attempts = 0;
+        const maxAttempts = 100;
+
+        while (!this._hasValidPair() && attempts < maxAttempts) {
+            this._shuffleRemainingTiles();
+            attempts++;
+        }
+
+        this._dispatchMapData();
+    }
+
+    /**
+     * 下发当前地图数据给客户端
+     */
+    private _dispatchMapData(): void {
+        const strMap = JSON.stringify(this._map);
+        this.dispatchEvent(SprotoMapData.Name, {
+            mapData: strMap,
+            totalBlocks: this._totalBlocks,
+            seat: 1,
+            row: this._rows,
+            col: this._cols,
+        });
     }
 }
