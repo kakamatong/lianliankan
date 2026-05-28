@@ -1,4 +1,4 @@
-import { _decorator, Component, sys, resources, JsonAsset } from "cc";
+import { _decorator, Component, sys, resources, JsonAsset, DynamicAtlasManager, macro } from "cc";
 import * as fgui from "fairygui-cc";
 import { DataCenter } from "@datacenter/Datacenter";
 import { LobbyView } from "@view/lobby/LobbyView";
@@ -7,7 +7,10 @@ import { LoginView } from "@view/login/LoginView";
 import { SoundManager } from "@frameworks/SoundManager";
 import { Logger } from "@frameworks/utils/Utils";
 const { ccclass } = _decorator;
-
+// 开启动态合批，减少drawcall，但是内存占用会增加
+macro.CLEANUP_IMAGE_CACHE = false;
+DynamicAtlasManager.instance.enabled = true;
+DynamicAtlasManager.instance.maxFrameSize = 1024;
 @ccclass("LobbyScreen")
 export class LobbyScreen extends Component {
     start() {

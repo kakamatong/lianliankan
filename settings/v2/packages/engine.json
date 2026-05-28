@@ -223,5 +223,9 @@
       }
     },
     "globalConfigKey": "defaultConfig"
+  },
+  "macroConfig": {
+    "CLEANUP_IMAGE_CACHE": false,
+    "ENABLE_MULTI_TOUCH": false
   }
 }
