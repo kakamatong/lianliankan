@@ -887,7 +887,13 @@ export class CompGameMain extends FGUICompGameMain {
             this.showInviteBtn(false);
         }
 
-        this.showPropPanel(true);
+        // 单机不显示道具面板
+        if(GameData.instance.isLocalGame){
+            this.showPropPanel(false);
+        }else{
+            this.showPropPanel(true);
+        }
+        
 
         // 非重连情况
         if (!data.brelink) {
