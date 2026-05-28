@@ -24,6 +24,7 @@ import {
 } from "../../types/protocol/game10002/c2s";
 import { RICH_TYPE } from "@datacenter/InterfaceConfig";
 import { DataCenter } from "@datacenter/Datacenter";
+import { generateRandomMap } from "./mapGenerator";
 
 /**
  * @class LocalSvr
@@ -283,41 +284,23 @@ export class LocalSvr {
      * 生成随机地图并广播
      */
     randomMap(): void {
-        const map: number[][] = [];
-
-        // 初始化地图（全部设为0）
-        for (let i = 0; i < this._rows; i++) {
-            map[i] = new Array(this._cols).fill(0);
-        }
-
-        // 内部区域为8x8（行1-8，列1-8），需要填充64个格子
-        // 生成32对方块，每对随机类型1-max
-        let pairIndex = 0;
-        const max = 10;
-        const pairs: number[] = [];
-        for (let i = 0; i < 32; i++) {
-            const type = ++pairIndex;
-            pairs.push(type, type); // 添加一对
-            if (pairIndex >= max) pairIndex = 0;
-        }
-
-        // 打乱顺序
-        for (let i = pairs.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
-        }
-
-        // 填充到内部区域
-        let index = 0;
-        for (let row = 1; row < this._rows - 1; row++) {
-            for (let col = 1; col < this._cols - 1; col++) {
-                map[row][col] = pairs[index++];
-            }
-        }
+        const { map, design } = generateRandomMap();
 
         // 保存到服务器端状态
         this._map = map;
-        this._totalBlocks = 64;
+
+        // 统计可消除方块总数（排除障碍物：值 >= 100）
+        const DECORATION_VALUE = 100;
+        let totalBlocks = 0;
+        for (let row = 0; row < this._rows; row++) {
+            for (let col = 0; col < this._cols; col++) {
+                const val = map[row][col];
+                if (val > 0 && val < DECORATION_VALUE) {
+                    totalBlocks++;
+                }
+            }
+        }
+        this._totalBlocks = totalBlocks;
 
         const strMap = JSON.stringify(map);
         const data = {
