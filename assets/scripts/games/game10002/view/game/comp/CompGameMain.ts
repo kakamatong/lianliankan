@@ -887,15 +887,6 @@ export class CompGameMain extends FGUICompGameMain {
             this.showInviteBtn(false);
         }
 
-        // 单机不显示道具面板
-        if(GameData.instance.isLocalGame){
-            this.showPropPanel(false);
-            this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.RESTART;
-        }else{
-            this.showPropPanel(true);
-        }
-        
-
         // 非重连情况
         if (!data.brelink) {
             this.UI_COMP_GAME_START.visible = true;
@@ -909,6 +900,14 @@ export class CompGameMain extends FGUICompGameMain {
             // 地图数据通过 mapData 协议单独下发
             // 清除本地地图数据缓存，等待 mapData 协议重新下发所有玩家地图
             GameData.instance.clearAllPlayerMaps();
+        }
+
+        // 单机不显示道具面板
+        if(GameData.instance.isLocalGame){
+            this.showPropPanel(false);
+            this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.RESTART;
+        }else{
+            this.showPropPanel(true);
         }
 
         for (let index = 0; index < GameData.instance.maxPlayer; index++) {
