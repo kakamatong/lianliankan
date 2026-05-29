@@ -322,7 +322,7 @@ export class LocalSvr {
      * 游戏完成处理
      */
     onGameFinished(): void {
-        const usedTime = Math.round((Date.now() - this._startTime) / 1000);
+        const usedTime = (Date.now() - this._startTime);
         const selfSeat = 1;
 
         // 广播玩家完成
