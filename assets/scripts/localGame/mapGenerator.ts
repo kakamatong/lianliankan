@@ -108,7 +108,7 @@ export function generateFromDesign(
  */
 export function generateRandomMap(): { map: number[][]; design: (typeof MAP_DESIGN_CONFIG)[number] } {
     let index = Math.floor(Math.random() * MAP_DESIGN_CONFIG.length);
-    index = MAP_DESIGN_CONFIG.length - 1
+    //index = MAP_DESIGN_CONFIG.length - 1
     const design = MAP_DESIGN_CONFIG[index];
     const map = generateFromDesign(design.MAP, design.DEFAULT_ROWS, design.DEFAULT_COLS, design.ICON_TYPES);
     return { map, design };
