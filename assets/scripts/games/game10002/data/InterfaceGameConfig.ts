@@ -151,6 +151,7 @@ export enum CTRL_BTN_INDEX {
     CHANGE = 2, // 更换按钮
     CONTINUE = 3, // 继续按钮
     READY = 4, // 准备按钮
+    RESTART = 5, // 重开按钮
 }
 
 /**

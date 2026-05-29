@@ -33,6 +33,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_BTN_CHANGE:fgui.GButton;
 	public UI_BTN_CONTINUE:fgui.GButton;
 	public UI_BTN_READY:fgui.GButton;
+	public UI_BTN_RESTART:fgui.GButton;
 	public UI_COMP_GAME_START:FGUICompGameStartAct;
 	public UI_BTN_TALK:fgui.GButton;
 	public UI_COMP_CLOCK:FGUICompTimeLeft;
@@ -103,13 +104,15 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_BTN_CONTINUE.onClick(this.onBtnContinue, this);
 		this.UI_BTN_READY = <fgui.GButton>(this.getChildAt(13));
 		this.UI_BTN_READY.onClick(this.onBtnReady, this);
-		this.UI_COMP_GAME_START = <FGUICompGameStartAct>(this.getChildAt(15));
-		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(17));
+		this.UI_BTN_RESTART = <fgui.GButton>(this.getChildAt(14));
+		this.UI_BTN_RESTART.onClick(this.onBtnRestart, this);
+		this.UI_COMP_GAME_START = <FGUICompGameStartAct>(this.getChildAt(16));
+		this.UI_BTN_TALK = <fgui.GButton>(this.getChildAt(18));
 		this.UI_BTN_TALK.onClick(this.onBtnTalk, this);
-		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(18));
-		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(19));
-		this.UI_COMP_PROP = <FGUICompPropPanel>(this.getChildAt(20));
-		this.UI_COMP_COMB = <FGUICompComb>(this.getChildAt(21));
+		this.UI_COMP_CLOCK = <FGUICompTimeLeft>(this.getChildAt(19));
+		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(20));
+		this.UI_COMP_PROP = <FGUICompPropPanel>(this.getChildAt(21));
+		this.UI_COMP_COMB = <FGUICompComb>(this.getChildAt(22));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
@@ -123,6 +126,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	onBtnChange():void{};
 	onBtnContinue():void{};
 	onBtnReady():void{};
+	onBtnRestart():void{};
 	onBtnTalk():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompGameMain.URL, FGUICompGameMain);

@@ -890,6 +890,7 @@ export class CompGameMain extends FGUICompGameMain {
         // 单机不显示道具面板
         if(GameData.instance.isLocalGame){
             this.showPropPanel(false);
+            this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.RESTART;
         }else{
             this.showPropPanel(true);
         }
@@ -1485,6 +1486,15 @@ export class CompGameMain extends FGUICompGameMain {
      */
     showPropPanel(b: boolean): void {
         this.UI_COMP_PROP.visible = b;
+    }
+
+    /**
+     * 重开按钮处理
+     */
+    onBtnRestart(): void {
+        if (GameData.instance.isLocalGame) {
+            this.sendClientReady();
+        }
     }
 }
 fgui.UIObjectFactory.setExtension(CompGameMain.URL, CompGameMain);
