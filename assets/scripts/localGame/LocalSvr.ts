@@ -578,12 +578,18 @@ export class LocalSvr {
     private _ensureSolvable(): void {
         let attempts = 0;
         const maxAttempts = 100;
+        let shuffled = false;
 
         while (!this._hasValidPair() && attempts < maxAttempts) {
             this._shuffleRemainingTiles();
             attempts++;
+            shuffled = true;
         }
 
+        // 如果发生过打乱，通知客户端
+        if (shuffled) {
+            this.dispatchEvent(SprotoMapShuffled.Name, { seat: 1, reason: 1 });
+        }
         this._dispatchMapData();
     }
 

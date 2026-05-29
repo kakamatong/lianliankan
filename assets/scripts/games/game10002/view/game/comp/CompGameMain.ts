@@ -50,6 +50,7 @@ import {
     SprotoTilesRemoved,
     SprotoTotalResult,
     SprotoComboSuccess,
+    SprotoMapShuffled,
 } from "../../../../../../types/protocol/game10002/s2c";
 import {
     SprotoClientReady,
@@ -66,6 +67,7 @@ import { CompMap } from "./CompMap";
 import { LineSegment } from "../../../logic/TileMapData";
 import FGUICompMedal from "@fgui/gameCommon/FGUICompMedal";
 import { Logger } from "@frameworks/utils/Utils";
+import { TipsView } from "@view/common/TipsView";
 
 /**
  * 游戏主体组件
@@ -112,52 +114,6 @@ export class CompGameMain extends FGUICompGameMain {
         } else {
             GameData.instance.isLocalGame = false;
         }
-
-        //this.testRandomMap();
-    }
-
-    /**
-     * 测试随机地图
-     * 生成10x10地图，最外圈为空，内部随机填充1-max的方块（确保成对出现）
-     */
-    testRandomMap() {
-        const rows = 10;
-        const cols = 10;
-        const map: number[][] = [];
-
-        // 初始化地图（全部设为0）
-        for (let i = 0; i < rows; i++) {
-            map[i] = new Array(cols).fill(0);
-        }
-
-        // 内部区域为8x8（行1-8，列1-8），需要填充64个格子
-        // 生成32对方块，每对随机类型1-max
-        let pairIndex = 0;
-        const max = 10;
-        const pairs: number[] = [];
-        for (let i = 0; i < 32; i++) {
-            const type = ++pairIndex;
-            pairs.push(type, type); // 添加一对
-            if (pairIndex >= max) pairIndex = 0;
-        }
-
-        // 打乱顺序
-        for (let i = pairs.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
-        }
-
-        // 填充到内部区域
-        let index = 0;
-        for (let row = 1; row < rows - 1; row++) {
-            for (let col = 1; col < cols - 1; col++) {
-                map[row][col] = pairs[index++];
-            }
-        }
-
-        // 初始化地图组件
-        (this.UI_COMP_MAP as CompMap).initMap(map, "resFruit");
-        Logger.log("随机地图生成完成", map);
     }
 
     /**
@@ -187,6 +143,7 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.addServerListen(SprotoProgressUpdate, this.onSvrProgressUpdate.bind(this));
         GameSocketManager.instance.addServerListen(SprotoItemEffect, this.onSvrItemEffect.bind(this));
         GameSocketManager.instance.addServerListen(SprotoComboSuccess, this.onSvrComboSuccess.bind(this));
+        GameSocketManager.instance.addServerListen(SprotoMapShuffled, this.onSvrMapShuffled.bind(this));
         LobbySocketManager.instance.addServerListen(SprotoGameRoomReady, this.onSvrGameRoomReady.bind(this));
         AddEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect, this);
     }
@@ -226,13 +183,25 @@ export class CompGameMain extends FGUICompGameMain {
         GameSocketManager.instance.removeServerListen(SprotoProgressUpdate);
         GameSocketManager.instance.removeServerListen(SprotoItemEffect);
         GameSocketManager.instance.removeServerListen(SprotoComboSuccess);
-
+        GameSocketManager.instance.removeServerListen(SprotoMapShuffled);
         LobbySocketManager.instance.removeServerListen(SprotoGameRoomReady);
         RemoveEventListener(FW_EVENT_NAMES.GAME_SOCKET_DISCONNECT, this.onGameSocketDisconnect);
     }
 
     sendClientReady() {
         GameSocketManager.instance.sendToServer(SprotoClientReady, {});
+    }
+
+    /**
+     * 地图打乱处理
+     * @param data 
+     */
+    onSvrMapShuffled(data: SprotoMapShuffled.Request): void {
+        const selfSeat = GameData.instance.getSelfSeat();
+        if (data.seat === selfSeat) {
+            // 处理自己的地图打乱逻辑
+            TipsView.showView({ content: `地图已自动打乱` });
+        }
     }
 
     /**
