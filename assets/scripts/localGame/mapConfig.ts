@@ -30,7 +30,7 @@ export const MAP_DESIGN_CONFIG = [
         ],
         DEFAULT_ROWS: 8,
         DEFAULT_COLS: 8,
-        ICON_TYPES: 11,
+        ICON_TYPES: 15,
         TOTAL_TIME: 120,
         END_TIME: 10,
     },

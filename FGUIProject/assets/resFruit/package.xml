@@ -12,6 +12,10 @@
     <image id="h0nk8" name="80_8.png" path="/imgs/" exported="true"/>
     <image id="h0nk9" name="80_9.png" path="/imgs/" exported="true"/>
     <image id="h0nka" name="80_10.png" path="/imgs/" exported="true"/>
+    <image id="djnjb" name="80_12.png" path="/imgs/" exported="true"/>
+    <image id="djnjc" name="80_13.png" path="/imgs/" exported="true"/>
+    <image id="djnjd" name="80_14.png" path="/imgs/" exported="true"/>
+    <image id="djnje" name="80_15.png" path="/imgs/" exported="true"/>
   </resources>
   <publish name=""/>
 </packageDescription>
