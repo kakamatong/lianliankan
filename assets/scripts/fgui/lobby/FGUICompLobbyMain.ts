@@ -11,6 +11,7 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 
 	public UI_BTN_MATCH_ROOM:fgui.GButton;
 	public UI_BTN_PRIVATE_ROOM:fgui.GButton;
+	public UI_BTN_LOCAL_GAME:fgui.GButton;
 	public UI_COMP_TOP:FGUICompTop;
 	public UI_BTN_MAILS:fgui.GButton;
 	public UI_BTN_RANK:fgui.GButton;
@@ -64,21 +65,23 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 		this.UI_BTN_MATCH_ROOM.onClick(this.onBtnMatchRoom, this);
 		this.UI_BTN_PRIVATE_ROOM = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_PRIVATE_ROOM.onClick(this.onBtnPrivateRoom, this);
-		this.UI_COMP_TOP = <FGUICompTop>(this.getChildAt(2));
-		this.UI_BTN_MAILS = <fgui.GButton>(this.getChildAt(3));
+		this.UI_BTN_LOCAL_GAME = <fgui.GButton>(this.getChildAt(2));
+		this.UI_BTN_LOCAL_GAME.onClick(this.onBtnLocalGame, this);
+		this.UI_COMP_TOP = <FGUICompTop>(this.getChildAt(3));
+		this.UI_BTN_MAILS = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_MAILS.onClick(this.onBtnMails, this);
-		this.UI_BTN_RANK = <fgui.GButton>(this.getChildAt(4));
+		this.UI_BTN_RANK = <fgui.GButton>(this.getChildAt(5));
 		this.UI_BTN_RANK.onClick(this.onBtnRank, this);
-		this.UI_BTN_SHARE = <fgui.GButton>(this.getChildAt(5));
+		this.UI_BTN_SHARE = <fgui.GButton>(this.getChildAt(6));
 		this.UI_BTN_SHARE.onClick(this.onBtnShare, this);
-		this.UI_BTN_SIGN_IN = <fgui.GButton>(this.getChildAt(6));
+		this.UI_BTN_SIGN_IN = <fgui.GButton>(this.getChildAt(7));
 		this.UI_BTN_SIGN_IN.onClick(this.onBtnSignIn, this);
-		this.UI_BTN_AD = <fgui.GButton>(this.getChildAt(7));
+		this.UI_BTN_AD = <fgui.GButton>(this.getChildAt(8));
 		this.UI_BTN_AD.onClick(this.onBtnAd, this);
-		this.UI_TXT_ENV = <fgui.GTextField>(this.getChildAt(8));
-		this.UI_BTN_BAG = <fgui.GButton>(this.getChildAt(9));
+		this.UI_TXT_ENV = <fgui.GTextField>(this.getChildAt(9));
+		this.UI_BTN_BAG = <fgui.GButton>(this.getChildAt(10));
 		this.UI_BTN_BAG.onClick(this.onBtnBag, this);
-		this.UI_BTN_LOCALGAME = <fgui.GButton>(this.getChildAt(10));
+		this.UI_BTN_LOCALGAME = <fgui.GButton>(this.getChildAt(11));
 		this.UI_BTN_LOCALGAME.onClick(this.onBtnLocalgame, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
@@ -87,6 +90,7 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 	schedule(callback: () => void, interval: number):void{};
 	onBtnMatchRoom():void{};
 	onBtnPrivateRoom():void{};
+	onBtnLocalGame():void{};
 	onBtnMails():void{};
 	onBtnRank():void{};
 	onBtnShare():void{};
