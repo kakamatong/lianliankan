@@ -251,8 +251,10 @@ export class CompGameMain extends FGUICompGameMain {
         if (GameData.instance.isPrivateRoom) {
             if (data.maxCnt === 9999) {
                 this.UI_COMP_PRIVITE_INFO.UI_TXT_PROGRESS.text = `第${data.nowCnt ?? 0}局 无限局`;
+                this.UI_TXT_PROGRESS.text = `第${data.nowCnt ?? 0}局 无限局`;
             } else {
                 this.UI_COMP_PRIVITE_INFO.UI_TXT_PROGRESS.text = `第${data.nowCnt ?? 0}局 共${data.maxCnt ?? 0}局`;
+                this.UI_TXT_PROGRESS.text = `第${data.nowCnt ?? 0}局 共${data.maxCnt ?? 0}局`;
             }
             GameData.instance.privateMaxCnt = data.maxCnt;
             GameData.instance.privateNowCnt = data.nowCnt;
@@ -866,6 +868,7 @@ export class CompGameMain extends FGUICompGameMain {
         if (GameData.instance.isPrivateRoom) {
             this.showStartGameBtn(false);
             this.showInviteBtn(false);
+            this.UI_COMP_PRIVITE_INFO.visible = false;
         }
 
         // 非重连情况
@@ -1130,11 +1133,11 @@ export class CompGameMain extends FGUICompGameMain {
             const gameData = JSON.parse(data.gameData);
             if (gameData && gameData.rule != "") {
                 const rule = JSON.parse(gameData.rule);
-                if (rule.mode) {
-                    this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = `${GAME_MODE_TXT[rule.mode]}`;
-                } else {
-                    this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = "排名模式";
-                }
+                // if (rule.mode) {
+                //     this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = `${GAME_MODE_TXT[rule.mode]}`;
+                // } else {
+                //     this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = "排名模式";
+                // }
 
                 // 重新赋值房间人数
                 GameData.instance.maxPlayer = rule.playerCnt;

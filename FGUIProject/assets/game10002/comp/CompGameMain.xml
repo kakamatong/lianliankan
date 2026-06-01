@@ -8,7 +8,7 @@
     <remark page="4" value="准备"/>
     <remark page="5" value="重新开始"/>
   </controller>
-  <controller name="ctrl_roomtype" pages="0,,1,,2," selected="0">
+  <controller name="ctrl_roomtype" pages="0,,1,,2," selected="1">
     <remark page="0" value="普通房"/>
     <remark page="1" value="私人房"/>
     <remark page="2" value="单机房"/>
@@ -32,14 +32,20 @@
     <component id="n3_is91" name="UI_BTN_BACK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="22,16" size="119,75">
       <Button icon="ui://gj0r6g5ioott1p"/>
     </component>
-    <component id="n39_jsve" name="UI_COMP_PRIVITE_INFO" src="ouez1a" fileName="comp/CompPirvateInfo.xml" xy="412,12">
+    <component id="n39_jsve" name="UI_COMP_PRIVITE_INFO" src="ouez1a" fileName="comp/CompPirvateInfo.xml" xy="208,708">
       <gearDisplay controller="ctrl_roomtype" pages="1"/>
       <relation target="" sidePair="right-right,top-top"/>
     </component>
+    <image id="n85_djnj" name="n85" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="564,19" size="201,49" group="n86_djnj"/>
+    <text id="n84_djnj" name="UI_TXT_PROGRESS" xy="586,26" size="162,37" group="n86_djnj" fontSize="26" color="#ffffff" align="center" vAlign="middle" autoSize="shrink" text="第0轮 共5轮"/>
+    <group id="n86_djnj" name="n86" xy="564,19" size="201,49" advanced="true">
+      <gearDisplay controller="ctrl_roomtype" pages="1"/>
+      <relation target="" sidePair="right-right,top-top"/>
+    </group>
     <component id="n71_pgw3" name="UI_COMP_PLAYERS" src="pgw3x" fileName="comp/CompPlayers.xml" xy="9,20">
       <relation target="" sidePair="width-width,top-top"/>
     </component>
-    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,580" pivot="0.5,0.5" visible="false">
+    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,581" pivot="0.5,0.5" visible="false">
       <gearXY controller="ctrl_roomtype" pages="0,2" values="0,580|0,108" default="0,581"/>
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
