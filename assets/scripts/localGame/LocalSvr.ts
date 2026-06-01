@@ -53,7 +53,7 @@ export class LocalSvr {
     /** 地图行数 */
     private _rows: number = 10;
     /** 地图列数 */
-    private _cols: number = 10;
+    private _cols: number = 16;
     /** 初始总方块数 */
     private _totalBlocks: number = 0;
     /** 已消除方块数 */
@@ -296,6 +296,14 @@ export class LocalSvr {
      */
     randomMap(): void {
         const { map, design } = generateRandomMap();
+
+        // 扩展为 10×16，右侧 6 列补零（超出地图设计范围默认隐藏）
+        for (let row = 0; row < this._rows; row++) {
+            map[row].length = this._cols;
+            for (let col = 10; col < this._cols; col++) {
+                map[row][col] = 0;
+            }
+        }
 
         // 保存到服务器端状态
         this._map = map;
