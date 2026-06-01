@@ -298,10 +298,15 @@ export class LocalSvr {
         const { map, design } = generateRandomMap();
 
         // 扩展为 10×16，右侧 6 列补零（超出地图设计范围默认隐藏）
-        for (let row = 0; row < this._rows; row++) {
-            map[row].length = this._cols;
-            for (let col = 10; col < this._cols; col++) {
-                map[row][col] = 0;
+        const TARGET_COLS = 16;  // 1列 16个
+        const TARGET_ROWS = 10; // 1排 10个
+        const mapLength = map ? map.length : 0;
+        if (mapLength < TARGET_COLS) {
+            for(let col = mapLength; col < TARGET_COLS; col++) {
+                map[col] = [];
+                for(let row = 0; row < TARGET_ROWS; row++) {
+                        map[col][row] = 0;
+                }
             }
         }
 

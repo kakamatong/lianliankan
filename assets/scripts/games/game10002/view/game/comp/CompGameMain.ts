@@ -464,8 +464,21 @@ export class CompGameMain extends FGUICompGameMain {
 
         try {
             const map = JSON.parse(data.mapData);
-            const selfSeat = GameData.instance.getSelfSeat();
 
+            // 兼容服务端 10×10 地图，右侧补零扩展到 10×16
+            const TARGET_COLS = 16;  // 1列 16个
+            const TARGET_ROWS = 10; // 1排 10个
+            const mapLength = map ? map.length : 0;
+            if (mapLength < TARGET_COLS) {
+                for(let col = mapLength; col < TARGET_COLS; col++) {
+                    map[col] = [];
+                    for(let row = 0; row < TARGET_ROWS; row++) {
+                         map[col][row] = 0;
+                    }
+                }
+            }
+
+            const selfSeat = GameData.instance.getSelfSeat();
             // 保存地图数据到 GameData
             GameData.instance.setPlayerMapData(data.seat, map, data.totalBlocks, data.col, data.row);
 
