@@ -16,6 +16,13 @@
     <image id="djnjc" name="80_13.png" path="/imgs/" exported="true"/>
     <image id="djnjd" name="80_14.png" path="/imgs/" exported="true"/>
     <image id="djnje" name="80_15.png" path="/imgs/" exported="true"/>
+    <image id="djnjf" name="80_19.png" path="/imgs/" exported="true"/>
+    <image id="djnjg" name="80_20.png" path="/imgs/" exported="true"/>
+    <image id="djnjh" name="80_21.png" path="/imgs/" exported="true"/>
+    <image id="djnji" name="80_22.png" path="/imgs/" exported="true"/>
+    <image id="djnjj" name="80_16.png" path="/imgs/" exported="true"/>
+    <image id="djnjk" name="80_17.png" path="/imgs/" exported="true"/>
+    <image id="djnjl" name="80_18.png" path="/imgs/" exported="true"/>
   </resources>
   <publish name=""/>
 </packageDescription>
