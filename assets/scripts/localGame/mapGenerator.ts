@@ -11,10 +11,6 @@ import { Logger } from "@frameworks/utils/Utils";
 // 地图生成
 // ============================================
 
-/** 固定地图尺寸 */
-const MAP_SIZE_COLS = 10;
-const MAP_SIZE_ROWS = 16;
-
 /** 障碍物初始值（障碍物编号以此为基准递增，避免与图标类型冲突） */
 const DECORATION_VALUE = 100;
 
@@ -42,8 +38,14 @@ export function generateFromDesign(
     // 收集可填充位置
     const fillPositions: { row: number; col: number }[] = [];
 
-    for (let row = 0; row < MAP_SIZE_ROWS; row++) {
-        for (let col = 0; col < MAP_SIZE_COLS; col++) {
+    // 初始化地图（全 0）
+    const map: number[][] = []
+
+    const mapLength = designMap ? designMap.length : 0;
+    for (let row = 0; row < mapLength; row++) {
+        map[row] = []
+        for (let col = 0; col < designMap[row].length; col++) {
+            map[row][col] = 0; // 默认空
             if (designMap[row][col] === 1) {
                 fillPositions.push({ row, col });
             }
@@ -81,9 +83,6 @@ export function generateFromDesign(
         }
     }
 
-    // 初始化地图（全 0）
-    const map: number[][] = Array.from({ length: MAP_SIZE_ROWS }, () => new Array(MAP_SIZE_COLS).fill(0));
-
     // 填充可消除方块
     for (let i = 0; i < fillPositions.length; i++) {
         const pos = fillPositions[i];
@@ -92,8 +91,8 @@ export function generateFromDesign(
 
     // 填充障碍物（编号从 101 开始）
     let obstacleIdx = 0;
-    for (let row = 0; row < MAP_SIZE_ROWS; row++) {
-        for (let col = 0; col < MAP_SIZE_COLS; col++) {
+    for (let row = 0; row < mapLength; row++) {
+        for (let col = 0; col < designMap[row].length; col++) {
             if (designMap[row][col] === 9) {
                 map[row][col] = DECORATION_VALUE + (obstacleIdx + 1);
                 obstacleIdx++;

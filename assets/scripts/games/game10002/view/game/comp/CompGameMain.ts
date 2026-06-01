@@ -465,16 +465,12 @@ export class CompGameMain extends FGUICompGameMain {
         try {
             const map = JSON.parse(data.mapData);
 
-            // 兼容服务端 10×10 地图，右侧补零扩展到 10×16
-            const TARGET_COLS = 16;  // 1列 16个
-            const TARGET_ROWS = 10; // 1排 10个
-            const mapLength = map ? map.length : 0;
-            if (mapLength < TARGET_COLS) {
-                for(let col = mapLength; col < TARGET_COLS; col++) {
-                    map[col] = [];
-                    for(let row = 0; row < TARGET_ROWS; row++) {
-                         map[col][row] = 0;
-                    }
+            // 兼容服务端 10×10 地图，底部补零扩展到 16×10
+            const TARGET_ROWS = 16;
+            if (map.length < TARGET_ROWS) {
+                const cols = map[0] ? map[0].length : data.col;
+                for (let row = map.length; row < TARGET_ROWS; row++) {
+                    map[row] = new Array(cols).fill(0);
                 }
             }
 
