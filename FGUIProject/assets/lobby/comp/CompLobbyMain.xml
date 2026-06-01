@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
   <displayList>
-    <component id="n7_gtlg" name="UI_BTN_MATCH_ROOM" src="gtlg9" fileName="comp/CompLobbyBtn.xml" xy="93,393" size="600,209">
+    <component id="n7_gtlg" name="UI_BTN_MATCH_ROOM" src="gtlg9" fileName="comp/CompLobbyBtn.xml" xy="88,393" size="600,209">
       <relation target="" sidePair="center-center,middle-middle"/>
       <Button icon="ui://gv22rev3jorfm"/>
     </component>
-    <component id="n8_gtlg" name="UI_BTN_PRIVATE_ROOM" src="gtlg9" fileName="comp/CompLobbyBtn.xml" xy="93,634" size="600,207">
+    <component id="n8_gtlg" name="UI_BTN_PRIVATE_ROOM" src="gtlg9" fileName="comp/CompLobbyBtn.xml" xy="88,634" size="600,207">
       <relation target="" sidePair="center-center,middle-middle"/>
       <property target="icon" propertyId="1" value="ui://gv22rev3jorfn"/>
     </component>
-    <component id="n26_djnj" name="UI_BTN_LOCAL_GAME" src="gtlg9" fileName="comp/CompLobbyBtn.xml" xy="93,877" size="600,207">
+    <component id="n26_djnj" name="UI_BTN_LOCALGAME" src="gtlg9" fileName="comp/CompLobbyBtn.xml" xy="88,877" size="600,207">
       <relation target="" sidePair="center-center,middle-middle"/>
       <property target="icon" propertyId="1" value="ui://gv22rev3djnjy"/>
     </component>
@@ -42,10 +42,6 @@
     <component id="n24_rgj1" name="UI_BTN_BAG" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="586,1523" size="180,67">
       <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button icon="ui://gv22rev3bj8qw"/>
-    </component>
-    <component id="n25_iv8f" name="UI_BTN_LOCALGAME" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="624,1246">
-      <relation target="" sidePair="left-right,bottom-bottom"/>
-      <Button title="单机" icon="ui://gj0r6g5ijorf1f"/>
     </component>
   </displayList>
 </component>

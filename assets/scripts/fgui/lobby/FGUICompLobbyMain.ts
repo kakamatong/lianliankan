@@ -11,7 +11,7 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 
 	public UI_BTN_MATCH_ROOM:fgui.GButton;
 	public UI_BTN_PRIVATE_ROOM:fgui.GButton;
-	public UI_BTN_LOCAL_GAME:fgui.GButton;
+	public UI_BTN_LOCALGAME:fgui.GButton;
 	public UI_COMP_TOP:FGUICompTop;
 	public UI_BTN_MAILS:fgui.GButton;
 	public UI_BTN_RANK:fgui.GButton;
@@ -20,7 +20,6 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 	public UI_BTN_AD:fgui.GButton;
 	public UI_TXT_ENV:fgui.GTextField;
 	public UI_BTN_BAG:fgui.GButton;
-	public UI_BTN_LOCALGAME:fgui.GButton;
 	public static URL:string = "ui://gv22rev3ln74i";
 
 	public static packageName:string = "lobby";
@@ -65,8 +64,8 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 		this.UI_BTN_MATCH_ROOM.onClick(this.onBtnMatchRoom, this);
 		this.UI_BTN_PRIVATE_ROOM = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_PRIVATE_ROOM.onClick(this.onBtnPrivateRoom, this);
-		this.UI_BTN_LOCAL_GAME = <fgui.GButton>(this.getChildAt(2));
-		this.UI_BTN_LOCAL_GAME.onClick(this.onBtnLocalGame, this);
+		this.UI_BTN_LOCALGAME = <fgui.GButton>(this.getChildAt(2));
+		this.UI_BTN_LOCALGAME.onClick(this.onBtnLocalgame, this);
 		this.UI_COMP_TOP = <FGUICompTop>(this.getChildAt(3));
 		this.UI_BTN_MAILS = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_MAILS.onClick(this.onBtnMails, this);
@@ -81,8 +80,6 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 		this.UI_TXT_ENV = <fgui.GTextField>(this.getChildAt(9));
 		this.UI_BTN_BAG = <fgui.GButton>(this.getChildAt(10));
 		this.UI_BTN_BAG.onClick(this.onBtnBag, this);
-		this.UI_BTN_LOCALGAME = <fgui.GButton>(this.getChildAt(11));
-		this.UI_BTN_LOCALGAME.onClick(this.onBtnLocalgame, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
@@ -90,13 +87,12 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 	schedule(callback: () => void, interval: number):void{};
 	onBtnMatchRoom():void{};
 	onBtnPrivateRoom():void{};
-	onBtnLocalGame():void{};
+	onBtnLocalgame():void{};
 	onBtnMails():void{};
 	onBtnRank():void{};
 	onBtnShare():void{};
 	onBtnSignIn():void{};
 	onBtnAd():void{};
 	onBtnBag():void{};
-	onBtnLocalgame():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompLobbyMain.URL, FGUICompLobbyMain);
