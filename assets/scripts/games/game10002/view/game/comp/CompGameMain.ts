@@ -312,6 +312,9 @@ export class CompGameMain extends FGUICompGameMain {
         if (!GameData.instance.gameStart) {
             return;
         }
+        if (GameData.instance.isLocalGame) {
+            return;
+        }
         PopMessageView.showView({
             content: "游戏已断开，返回大厅",
             type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
