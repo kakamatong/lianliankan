@@ -10,7 +10,6 @@ export default class FGUICompPirvateInfo extends fgui.GComponent {
 
 	public UI_TXT_ROOMID:fgui.GTextField;
 	public UI_TXT_RULE:fgui.GTextField;
-	public UI_TXT_PROGRESS:fgui.GTextField;
 	public static URL:string = "ui://2zsfe53xouez1a";
 
 	public static packageName:string = "game10002";
@@ -53,7 +52,6 @@ export default class FGUICompPirvateInfo extends fgui.GComponent {
 	protected onConstruct():void {
 		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_TXT_RULE = <fgui.GTextField>(this.getChildAt(2));
-		this.UI_TXT_PROGRESS = <fgui.GTextField>(this.getChildAt(3));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

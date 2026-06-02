@@ -110,4 +110,3 @@ export class XxxView extends Component { }
 - 访问 UI 前确认 FGUI 包已加载（通过 `@PackageLoad` 声明依赖）
 - `onDestroy` 中清理事件监听器和定时器
 - 平台特定代码（微信）必须用 `MiniGameUtils`，不要直接调 `wx.*` API
-- `game10001` 目录已不存在，仅有残留的 `.meta` 文件，不要恢复
