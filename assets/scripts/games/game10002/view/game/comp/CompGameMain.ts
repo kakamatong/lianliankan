@@ -485,7 +485,7 @@ export class CompGameMain extends FGUICompGameMain {
                 const compMap = this.getCompMap();
                 if (compMap) {
                     compMap.visible = true;
-                    const scale = data.row <= 6 && data.col <= 6 ? 1.2 : 1.0;
+                    const scale = 1.0;
                     compMap.node.setScale(scale, scale);
                     compMap.initMap(map, "resFruit");
                 }
