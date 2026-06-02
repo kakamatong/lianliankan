@@ -30,14 +30,14 @@
     <component id="n8_nomu" name="UI_BTN_JOIN_9" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="385,335" size="230,99" scale="0.8,0.8" controller="ctrl_color,3">
       <Button title="9" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <component id="n9_nomu" name="UI_BTN_JOIN_CLEAR" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="-10,438" size="230,98" scale="0.8,0.8" controller="ctrl_color,3">
-      <Button title="清空" icon="ui://gj0r6g5ijorf1g"/>
+    <component id="n9_nomu" name="UI_BTN_JOIN_CLEAR" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="-10,438" size="230,98" scale="0.8,0.8" controller="ctrl_color,2">
+      <Button title="清空" icon="ui://gj0r6g5ijorf1h"/>
     </component>
     <component id="n10_nomu" name="UI_BTN_JOIN_0" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="186,438" size="230,99" scale="0.8,0.8" controller="ctrl_color,3">
       <Button title="0" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <component id="n11_nomu" name="UI_BTN_JOIN" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="384,438" size="230,98" scale="0.8,0.8" controller="ctrl_color,3">
-      <Button title="加入" icon="ui://gj0r6g5ijorf1g"/>
+    <component id="n11_nomu" name="UI_BTN_JOIN" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="384,438" size="230,98" scale="0.8,0.8" controller="ctrl_color,1">
+      <Button title="加入" icon="ui://gj0r6g5ijorf1f"/>
     </component>
     <text id="n12_nomu" name="UI_TXT_ROOMID" xy="178,22" pivot="0.5,0.5" size="244,92" fontSize="70" color="#ffffff" align="center" vAlign="middle" strokeColor="#000000" singleLine="true" autoClearText="true" text="000000"/>
   </displayList>
