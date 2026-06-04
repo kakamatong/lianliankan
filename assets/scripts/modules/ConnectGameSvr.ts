@@ -52,7 +52,7 @@ export class ConnectGameSvr extends BaseModule {
         };
 
         LocalSvr.instance.start();
-
+        DataCenter.instance.shortRoomid = 0
         GameSocketManager.instance.start(true);
         authCallBack(true);
     }
