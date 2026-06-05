@@ -13,6 +13,7 @@ import {
     SprotoPlayerInfos,
     SprotoPlayerEnter,
     SprotoStepId,
+    SprotoRoomInfo,
 } from "../../types/protocol/game10002/s2c";
 import {
     SprotoClickTiles,
@@ -22,7 +23,7 @@ import {
     SprotoOwnerStartGame,
     SprotoClientReady,
 } from "../../types/protocol/game10002/c2s";
-import { RICH_TYPE } from "@datacenter/InterfaceConfig";
+import { MAIN_GAME_ID, RICH_TYPE } from "@datacenter/InterfaceConfig";
 import { DataCenter } from "@datacenter/Datacenter";
 import { generateRandomMap } from "./mapGenerator";
 
@@ -256,6 +257,7 @@ export class LocalSvr {
         this._comboCount = 0;
         this._lastRemoveTime = 0;
 
+        this.dispatchRoomInfo();
         this.dispatchEvent(SprotoGameStart.Name, {});
         this.dispatchEvent(SprotoStepId.Name, { step: 2 });
         this.dispatchEvent(SprotoLogicInfo.Name, { playerCnt: 1, playingStepTime: 0, ext: "" });
@@ -293,6 +295,26 @@ export class LocalSvr {
 
         // 广播玩家进入
         this.dispatchEvent(SprotoPlayerEnter.Name, { userid: dc.userid, seat: selfSeat });
+    }
+
+    /**
+     * 下发房间信息（本地模式在每局开始时发送）
+     * gameData 中的 itemEnabled 控制道具是否可用
+     */
+    dispatchRoomInfo(): void {
+        const dc = DataCenter.instance;
+        const gameData = JSON.stringify({
+            itemEnabled: true,
+        });
+
+        this.dispatchEvent(SprotoRoomInfo.Name, {
+            gameid: MAIN_GAME_ID,
+            roomid: 0,
+            playerids: [dc.userid],
+            gameData: gameData,
+            shortRoomid: 0,
+            owner: dc.userid,
+        });
     }
 
     /**
@@ -336,7 +358,7 @@ export class LocalSvr {
      * 游戏完成处理
      */
     onGameFinished(): void {
-        const usedTime = (Date.now() - this._startTime);
+        const usedTime = Date.now() - this._startTime;
         const selfSeat = 1;
 
         // 广播玩家完成
@@ -488,12 +510,8 @@ export class LocalSvr {
      * 1 拐连接：L 形，拐角处必须可通过
      */
     private _canConnect1Turn(r1: number, c1: number, r2: number, c2: number): boolean {
-        if (this._isPassable(r1, c2) &&
-            this._isLineClear(r1, c1, r1, c2) &&
-            this._isLineClear(r1, c2, r2, c2)) return true;
-        if (this._isPassable(r2, c1) &&
-            this._isLineClear(r1, c1, r2, c1) &&
-            this._isLineClear(r2, c1, r2, c2)) return true;
+        if (this._isPassable(r1, c2) && this._isLineClear(r1, c1, r1, c2) && this._isLineClear(r1, c2, r2, c2)) return true;
+        if (this._isPassable(r2, c1) && this._isLineClear(r1, c1, r2, c1) && this._isLineClear(r2, c1, r2, c2)) return true;
         return false;
     }
 
@@ -503,17 +521,25 @@ export class LocalSvr {
     private _canConnect2Turn(r1: number, c1: number, r2: number, c2: number): boolean {
         // 扫描所有行：在列 c1 拐第一次，在列 c2 拐第二次
         for (let r = 0; r < this._rows; r++) {
-            if (this._isPassable(r, c1) && this._isPassable(r, c2) &&
+            if (
+                this._isPassable(r, c1) &&
+                this._isPassable(r, c2) &&
                 this._isLineClear(r1, c1, r, c1) &&
                 this._isLineClear(r, c1, r, c2) &&
-                this._isLineClear(r, c2, r2, c2)) return true;
+                this._isLineClear(r, c2, r2, c2)
+            )
+                return true;
         }
         // 扫描所有列：在行 r1 拐第一次，在行 r2 拐第二次
         for (let c = 0; c < this._cols; c++) {
-            if (this._isPassable(r1, c) && this._isPassable(r2, c) &&
+            if (
+                this._isPassable(r1, c) &&
+                this._isPassable(r2, c) &&
                 this._isLineClear(r1, c1, r1, c) &&
                 this._isLineClear(r1, c, r2, c) &&
-                this._isLineClear(r2, c, r2, c2)) return true;
+                this._isLineClear(r2, c, r2, c2)
+            )
+                return true;
         }
         return false;
     }
@@ -522,9 +548,7 @@ export class LocalSvr {
      * 判断两个位置是否可以连接（最多 2 拐）
      */
     private _canConnect(r1: number, c1: number, r2: number, c2: number): boolean {
-        return this._canConnect0Turn(r1, c1, r2, c2) ||
-               this._canConnect1Turn(r1, c1, r2, c2) ||
-               this._canConnect2Turn(r1, c1, r2, c2);
+        return this._canConnect0Turn(r1, c1, r2, c2) || this._canConnect1Turn(r1, c1, r2, c2) || this._canConnect2Turn(r1, c1, r2, c2);
     }
 
     // ============================================
