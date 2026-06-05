@@ -8,6 +8,9 @@ import { Logger } from "@frameworks/utils/Utils";
 import { UserData } from "@modules/UserData";
 import { DataCenter } from "@datacenter/Datacenter";
 import { TipsView } from "@view/common/TipsView";
+import { GameData } from "../../../data/GameData";
+import { LobbySocketManager } from "@frameworks/LobbySocketManager";
+import { SprotoLocalGameUseProps } from "../../../../../../types/protocol/lobby/c2s";
 
 @ViewClass()
 export class CompPropPanel extends FGUICompPropPanel {
@@ -55,11 +58,72 @@ export class CompPropPanel extends FGUICompPropPanel {
         );
     }
 
+    sendLobbyUseItem(itemId: number, itemNums: number, callBack?: (b: boolean, response: SprotoLocalGameUseProps.Response) => void): void {
+        LobbySocketManager.instance.sendToServer(
+            SprotoLocalGameUseProps,
+            {
+                richType: itemId,
+                richNums: itemNums,
+            },
+            (response: SprotoLocalGameUseProps.Response) => {
+                if (response && response.code === 1) {
+                    callBack && callBack(true, response);
+                    Logger.log("使用道具成功:", itemId);
+                } else {
+                    callBack && callBack(false, response);
+                    Logger.error("使用道具失败:", response?.msg || "未知错误");
+                    TipsView.showView({ content: response.msg });
+                }
+            }
+        );
+    }
+
+    checkPropEnough(itemId: number): boolean {
+        const richData = DataCenter.instance.getRichByType(itemId);
+        if (!richData || richData.richNums <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+    useLocalGameProp(itemId: number, callBack?: (b: boolean, response: SprotoLocalGameUseProps.Response) => void): void {
+        if (!GameData.instance.isLocalGame) {
+            Logger.warn("非本地游戏无法使用本地道具");
+            return;
+        }
+
+        if (!this.checkPropEnough(itemId)) {
+            TipsView.showView({ content: "道具数量不足" });
+            return;
+        }
+
+        this.sendLobbyUseItem(itemId, 1, (b, response) => {
+            if (b) {
+                DataCenter.instance.updateRichByType(itemId, response.remainNums);
+                callBack && callBack(true, response);
+                Logger.log("本地游戏使用道具成功:", itemId);
+            } else {
+                callBack && callBack(false, response);
+                Logger.error("本地游戏使用道具失败:", response?.msg || "未知错误");
+                TipsView.showView({ content: response.msg });
+            }
+        });
+    }
+
     /**
      * 使用道具: 打乱
      */
     onBtnUpset(): void {
         Logger.log("使用道具: 打乱");
+        if (GameData.instance.isLocalGame) {
+            this.useLocalGameProp(RICH_TYPE.UPSET, (b, response) => {
+                if (b) {
+                    // todo: 本地游戏打乱后需要重置地图数据
+                    this.init();
+                }
+            });
+            return;
+        }
         const callBack = (b: boolean, response: SprotoUseItem.Response) => {
             if (b) {
                 DataCenter.instance.updateRichByType(RICH_TYPE.UPSET, response.richNum);
@@ -71,6 +135,15 @@ export class CompPropPanel extends FGUICompPropPanel {
 
     onBtnAutoRemove(): void {
         Logger.log("使用道具: 自动移除");
+        if (GameData.instance.isLocalGame) {
+            this.useLocalGameProp(RICH_TYPE.AUTO_REMOVE, (b, response) => {
+                if (b) {
+                    // todo: 本地游戏自动移除后需要重置地图数据
+                    this.init();
+                }
+            });
+            return;
+        }
         const callBack = (b: boolean, response: SprotoUseItem.Response) => {
             if (b) {
                 DataCenter.instance.updateRichByType(RICH_TYPE.AUTO_REMOVE, response.richNum);

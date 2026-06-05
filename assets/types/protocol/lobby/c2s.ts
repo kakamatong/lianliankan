@@ -234,6 +234,19 @@ export interface CancelrevokeaccResponse {
     msg: string;
 }
 
+/** 本地游戏使用道具 - 请求参数 */
+export interface LocalgameusepropsRequest {
+    richType: number;
+    richNums: number;
+}
+
+/** 本地游戏使用道具 - 响应参数 */
+export interface LocalgameusepropsResponse {
+    code: number;
+    msg: string;
+    remainNums: number;
+}
+
 export namespace SprotoCall {
     export const Name = "call";
     export type Request = CallRequest;
@@ -340,4 +353,10 @@ export namespace SprotoCancelRevokeAcc {
     export const Name = "cancelRevokeAcc";
     export type Request = CancelrevokeaccRequest;
     export type Response = CancelrevokeaccResponse;
+}
+
+export namespace SprotoLocalGameUseProps {
+    export const Name = "localGameUseProps";
+    export type Request = LocalgameusepropsRequest;
+    export type Response = LocalgameusepropsResponse;
 }
