@@ -80,7 +80,7 @@ export class CompPropPanel extends FGUICompPropPanel {
 
     checkPropEnough(itemId: number): boolean {
         const richData = DataCenter.instance.getRichByType(itemId);
-        if (!richData || richData.richNums <= 0) {
+        if (!richData || !richData.richNums || richData.richNums <= 0) {
             return false;
         }
         return true;
