@@ -156,11 +156,12 @@ export class LocalSvr {
         });
 
         // 广播方块消除通知
+        const lines = this._buildConnectionLines(row1, col1, row2, col2);
         this.dispatchEvent(SprotoTilesRemoved.Name, {
             code: 1,
             p1: { row: row1, col: col1 },
             p2: { row: row2, col: col2 },
-            lines: [],
+            lines: lines,
             eliminated: this._eliminated,
             remaining: remaining,
             seat: selfSeat,
@@ -549,6 +550,67 @@ export class LocalSvr {
      */
     private _canConnect(r1: number, c1: number, r2: number, c2: number): boolean {
         return this._canConnect0Turn(r1, c1, r2, c2) || this._canConnect1Turn(r1, c1, r2, c2) || this._canConnect2Turn(r1, c1, r2, c2);
+    }
+
+    /**
+     * 构建两点之间的连接路径线段（用于 tilesRemoved 的 lines 字段）
+     * @returns LineSegment 数组，按顺序从 p1 连到 p2
+     */
+    private _buildConnectionLines(r1: number, c1: number, r2: number, c2: number): { start: { row: number; col: number }; dest: { row: number; col: number } }[] {
+        const p = (r: number, c: number) => ({ row: r, col: c });
+
+        // 0 拐：直线直连
+        if (this._canConnect0Turn(r1, c1, r2, c2)) {
+            return [{ start: p(r1, c1), dest: p(r2, c2) }];
+        }
+
+        // 1 拐：L 形，拐角 (r1,c2) 或 (r2,c1)
+        if (this._isPassable(r1, c2) && this._isLineClear(r1, c1, r1, c2) && this._isLineClear(r1, c2, r2, c2)) {
+            return [
+                { start: p(r1, c1), dest: p(r1, c2) },
+                { start: p(r1, c2), dest: p(r2, c2) },
+            ];
+        }
+        if (this._isPassable(r2, c1) && this._isLineClear(r1, c1, r2, c1) && this._isLineClear(r2, c1, r2, c2)) {
+            return [
+                { start: p(r1, c1), dest: p(r2, c1) },
+                { start: p(r2, c1), dest: p(r2, c2) },
+            ];
+        }
+
+        // 2 拐：扫描行列找两个拐点
+        for (let r = 0; r < this._rows; r++) {
+            if (
+                this._isPassable(r, c1) &&
+                this._isPassable(r, c2) &&
+                this._isLineClear(r1, c1, r, c1) &&
+                this._isLineClear(r, c1, r, c2) &&
+                this._isLineClear(r, c2, r2, c2)
+            ) {
+                return [
+                    { start: p(r1, c1), dest: p(r, c1) },
+                    { start: p(r, c1), dest: p(r, c2) },
+                    { start: p(r, c2), dest: p(r2, c2) },
+                ];
+            }
+        }
+        for (let c = 0; c < this._cols; c++) {
+            if (
+                this._isPassable(r1, c) &&
+                this._isPassable(r2, c) &&
+                this._isLineClear(r1, c1, r1, c) &&
+                this._isLineClear(r1, c, r2, c) &&
+                this._isLineClear(r2, c, r2, c2)
+            ) {
+                return [
+                    { start: p(r1, c1), dest: p(r1, c) },
+                    { start: p(r1, c), dest: p(r2, c) },
+                    { start: p(r2, c), dest: p(r2, c2) },
+                ];
+            }
+        }
+
+        return [];
     }
 
     // ============================================
