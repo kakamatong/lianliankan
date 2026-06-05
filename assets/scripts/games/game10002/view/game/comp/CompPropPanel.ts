@@ -119,6 +119,7 @@ export class CompPropPanel extends FGUICompPropPanel {
             this.useLocalGameProp(RICH_TYPE.UPSET, (b, response) => {
                 if (b) {
                     // todo: 本地游戏打乱后需要重置地图数据
+                    this.sendUseItem(RICH_TYPE.UPSET); // 同步使用道具接口，减少本地游戏和在线游戏的差异
                     this.init();
                 }
             });
@@ -139,6 +140,7 @@ export class CompPropPanel extends FGUICompPropPanel {
             this.useLocalGameProp(RICH_TYPE.AUTO_REMOVE, (b, response) => {
                 if (b) {
                     // todo: 本地游戏自动移除后需要重置地图数据
+                    this.sendUseItem(RICH_TYPE.AUTO_REMOVE); // 同步使用道具接口，减少本地游戏和在线游戏的差异
                     this.init();
                 }
             });

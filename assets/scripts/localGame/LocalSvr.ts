@@ -188,7 +188,11 @@ export class LocalSvr {
 
         // 检查地图是否还有可消除对，没有则自动打乱
         if (remaining > 0 && !this._hasValidPair()) {
-            this._ensureSolvable();
+            const didShuffle = this._ensureSolvable();
+            if (didShuffle) {
+                this.dispatchEvent(SprotoMapShuffled.Name, { seat: 1, reason: 1 });
+            }
+            this._dispatchMapData();
         }
 
         // 检查游戏结束
@@ -321,7 +325,11 @@ export class LocalSvr {
         this._totalBlocks = totalBlocks;
 
         // 确保初始地图可消除，不可消除则自动打乱
-        this._ensureSolvable();
+        const didShuffle = this._ensureSolvable();
+        if (didShuffle) {
+            this.dispatchEvent(SprotoMapShuffled.Name, { seat: 1, reason: 1 });
+        }
+        this._dispatchMapData();
     }
 
     /**
@@ -373,21 +381,22 @@ export class LocalSvr {
         this._shuffleRemainingTiles();
         this._ensureSolvable();
 
-        // 响应道具使用
-        this.dispatchEventResp(SprotoUseItem.Name, { code: 1, msg: "", richNum: 0 });
+        const richNum = DataCenter.instance.getRichByType(itemId)?.richNums ?? 0;
 
-        // 广播道具效果
+        this.dispatchEventResp(SprotoUseItem.Name, { code: 1, msg: "", richNum: richNum });
+
         this.dispatchEvent(SprotoItemEffect.Name, {
             seat: 1,
             itemId: itemId,
             effect: "shuffle",
         });
 
-        // 广播打乱通知
         this.dispatchEvent(SprotoMapShuffled.Name, {
             seat: 1,
             reason: 1,
         });
+
+        this._dispatchMapData();
     }
 
     /**
@@ -396,7 +405,6 @@ export class LocalSvr {
     handleAutoRemove(itemId: number): void {
         const selfSeat = 1;
 
-        // 查找任意两个同类型且可连接的方块
         let found: { row1: number; col1: number; row2: number; col2: number } | null = null;
 
         for (let row = 0; row < this._rows && !found; row++) {
@@ -404,7 +412,6 @@ export class LocalSvr {
                 const type = this._map[row][col];
                 if (type <= 0 || type >= LocalSvr.DECORATION_VALUE) continue;
 
-                // 从当前位置之后查找同类型且可连接的方块
                 for (let r2 = row; r2 < this._rows && !found; r2++) {
                     const startCol = r2 === row ? col + 1 : 0;
                     for (let c2 = startCol; c2 < this._cols && !found; c2++) {
@@ -417,20 +424,18 @@ export class LocalSvr {
         }
 
         if (found) {
-            // 响应道具使用
-            this.dispatchEventResp(SprotoUseItem.Name, { code: 1, msg: "", richNum: 0 });
+            const richNum = DataCenter.instance.getRichByType(itemId)?.richNums ?? 0;
 
-            // 直接调用消除逻辑
-            this.onClickTiles({ row1: found.row1, col1: found.col1, row2: found.row2, col2: found.col2 });
+            this.dispatchEventResp(SprotoUseItem.Name, { code: 1, msg: "", richNum: richNum });
 
-            // 广播道具效果
             this.dispatchEvent(SprotoItemEffect.Name, {
                 seat: selfSeat,
                 itemId: itemId,
                 effect: "autoRemove",
             });
+
+            this.onClickTiles({ row1: found.row1, col1: found.col1, row2: found.row2, col2: found.col2 });
         } else {
-            // 没有可消除的方块对
             this.dispatchEventResp(SprotoUseItem.Name, { code: 0, msg: "没有可消除的方块对", richNum: 0 });
         }
     }
@@ -579,9 +584,9 @@ export class LocalSvr {
     }
 
     /**
-     * 自动打乱直到出现可消除对（最多 100 次），然后广播新地图
+     * 自动打乱直到出现可消除对（最多 100 次），返回是否发生了洗牌
      */
-    private _ensureSolvable(): void {
+    private _ensureSolvable(): boolean {
         let attempts = 0;
         const maxAttempts = 100;
         let shuffled = false;
@@ -592,11 +597,7 @@ export class LocalSvr {
             shuffled = true;
         }
 
-        // 如果发生过打乱，通知客户端
-        if (shuffled) {
-            this.dispatchEvent(SprotoMapShuffled.Name, { seat: 1, reason: 1 });
-        }
-        this._dispatchMapData();
+        return shuffled;
     }
 
     /**
