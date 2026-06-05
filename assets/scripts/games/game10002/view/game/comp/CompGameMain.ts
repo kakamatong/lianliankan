@@ -194,7 +194,7 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * 地图打乱处理
-     * @param data 
+     * @param data
      */
     onSvrMapShuffled(data: SprotoMapShuffled.Request): void {
         const selfSeat = GameData.instance.getSelfSeat();
@@ -257,8 +257,8 @@ export class CompGameMain extends FGUICompGameMain {
             GameData.instance.privateMaxCnt = data.maxCnt;
             GameData.instance.privateNowCnt = data.nowCnt;
 
-            if(data.nowCnt && data.nowCnt > 0){
-                this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = `准备后继续游戏`
+            if (data.nowCnt && data.nowCnt > 0) {
+                this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = `准备后继续游戏`;
             }
 
             this.showWinLost(JSON.parse(data.ext));
@@ -886,13 +886,13 @@ export class CompGameMain extends FGUICompGameMain {
             GameData.instance.clearAllPlayerMaps();
         }
 
-        // 单机不显示道具面板
-        if(GameData.instance.isLocalGame){
-            this.showPropPanel(false);
+        // 单机显示重新开始按钮
+        if (GameData.instance.isLocalGame) {
             this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.RESTART;
-        }else{
-            this.showPropPanel(true);
         }
+
+        // 显示道具面板
+        this.showPropPanel(GameData.instance.itemEnabled);
 
         for (let index = 0; index < GameData.instance.maxPlayer; index++) {
             this.showSignReady(index + 1, false);
@@ -1129,8 +1129,8 @@ export class CompGameMain extends FGUICompGameMain {
             this.UI_COMP_PRIVITE_INFO.UI_TXT_ROOMID.text = "房间号:" + shortRoomid.padStart(6, "0");
         }
 
+        const gameData = JSON.parse(data.gameData);
         if (GameData.instance.isPrivateRoom && data.gameData && data.gameData != "") {
-            const gameData = JSON.parse(data.gameData);
             if (gameData && gameData.rule != "") {
                 const rule = JSON.parse(gameData.rule);
                 // if (rule.mode) {
@@ -1144,6 +1144,10 @@ export class CompGameMain extends FGUICompGameMain {
             }
         } else {
             GameData.instance.maxPlayer = data.playerids.length ?? 2;
+        }
+
+        if (gameData.itemEnabled) {
+            GameData.instance.itemEnabled = gameData.itemEnabled;
         }
 
         this.checkShowStartGameBtn();

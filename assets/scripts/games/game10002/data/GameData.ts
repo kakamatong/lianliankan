@@ -42,6 +42,7 @@ export class GameData {
     private _playerMaps: Map<number, PLAYER_MAP_DATA> = new Map();
     /** 对局阶段时间（秒） */
     private _playingStepTime: number = 0;
+    private _itemEnabled: boolean = false; // 道具是否可用
 
     /**
      * @description 是否是本地游戏
@@ -81,6 +82,7 @@ export class GameData {
         this._playerMaps.clear();
         this._playingStepTime = 0;
         this._isLocalGame = false;
+        this._itemEnabled = false;
     }
 
     get gameStep(): ENUM_GAME_STEP {
@@ -330,5 +332,20 @@ export class GameData {
 
     get isLocalGame(): boolean {
         return this._isLocalGame;
+    }
+
+    /**
+     * @description 设置道具是否可用
+     */
+    set itemEnabled(flag: boolean) {
+        this._itemEnabled = flag;
+    }
+
+    /**
+     * @description 获取道具是否可用
+     * @returns {boolean} 道具是否可用
+     */
+    get itemEnabled(): boolean {
+        return this._itemEnabled;
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
-  <controller name="ctrl_btn" pages="0,,1,,2,,3,,4,,5," selected="0">
+  <controller name="ctrl_btn" pages="0,,1,,2,,3,,4,,5," selected="5">
     <remark page="0" value="都不显示"/>
     <remark page="1" value="确定"/>
     <remark page="2" value="更换"/>
@@ -66,27 +66,27 @@
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
     <group id="n75_mnt1" name="n75" xy="18,1501" size="165,166"/>
-    <component id="n21_folo" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,3">
+    <component id="n21_folo" name="UI_BTN_SURE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1440" group="n23_folo" controller="ctrl_color,3">
       <gearDisplay controller="ctrl_btn" pages="1"/>
       <Button title="确定" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <component id="n22_folo" name="UI_BTN_CHANGE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="527,1475" group="n23_folo" controller="ctrl_color,1">
+    <component id="n22_folo" name="UI_BTN_CHANGE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="527,1441" group="n23_folo" controller="ctrl_color,1">
       <gearDisplay controller="ctrl_btn" pages="2"/>
       <Button title="更换" icon="ui://gj0r6g5ijorf1f"/>
     </component>
-    <component id="n38_dkp3" name="UI_BTN_CONTINUE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,3">
+    <component id="n38_dkp3" name="UI_BTN_CONTINUE" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1440" group="n23_folo" controller="ctrl_color,3">
       <gearDisplay controller="ctrl_btn" pages="3"/>
       <Button title="继续游戏" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <component id="n43_r1yn" name="UI_BTN_READY" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,3">
+    <component id="n43_r1yn" name="UI_BTN_READY" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1440" group="n23_folo" controller="ctrl_color,3">
       <gearDisplay controller="ctrl_btn" pages="4"/>
       <Button title="准备" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <component id="n83_mg6g" name="UI_BTN_RESTART" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1474" group="n23_folo" controller="ctrl_color,3">
+    <component id="n83_mg6g" name="UI_BTN_RESTART" src="cmlt4" fileName="comp/CompBtnScale.xml" pkg="gj0r6g5i" xy="526,1440" group="n23_folo" controller="ctrl_color,3">
       <gearDisplay controller="ctrl_btn" pages="5"/>
       <Button title="重新开始" icon="ui://gj0r6g5ijorf1g"/>
     </component>
-    <group id="n23_folo" name="n23" xy="526,1474" size="231,100" advanced="true">
+    <group id="n23_folo" name="n23" xy="526,1440" size="231,100" advanced="true">
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </group>
     <component id="n37_fnug" name="UI_COMP_GAME_START" src="fnugh" fileName="comp/CompGameStartAct.xml" xy="132,625" visible="false">
