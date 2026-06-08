@@ -4,7 +4,7 @@
  * @category 数据中心
  */
 
-import { UserdataResponse, UserstatusResponse } from "../../types/protocol/lobby/c2s";
+import { UserdataResponse, UserstatusResponse, UserenergyResponse } from "../../types/protocol/lobby/c2s";
 import {
     LOGIN_INFO,
     USER_STATUS,
@@ -42,6 +42,12 @@ export class DataCenter {
      * @private
      */
     private _userRiches: Array<{ richType: number; richNums: number }> = [];
+
+    /**
+     * @property {UserenergyResponse | null} _userEnergy - 用户能量数据
+     * @private
+     */
+    private _userEnergy: UserenergyResponse | null = null;
 
     /**
      * @property {UserstatusResponse | null} _userStatus - 用户状态信息
@@ -287,6 +293,24 @@ export class DataCenter {
      */
     get userRiches() {
         return this._userRiches;
+    }
+
+    /**
+     * @method userEnergy
+     * @description 设置用户能量数据
+     * @param {UserenergyResponse} data - 能量数据
+     */
+    set userEnergy(data: UserenergyResponse) {
+        this._userEnergy = data;
+    }
+
+    /**
+     * @method userEnergy
+     * @description 获取用户能量数据
+     * @returns {UserenergyResponse | null} 能量数据
+     */
+    get userEnergy(): UserenergyResponse | null {
+        return this._userEnergy;
     }
 
     /**

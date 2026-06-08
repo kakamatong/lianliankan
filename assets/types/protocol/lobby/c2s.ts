@@ -247,6 +247,15 @@ export interface LocalgameusepropsResponse {
     remainNums: number;
 }
 
+/** 获取用户能量 - 响应参数 */
+export interface UserenergyResponse {
+    leftEnergy: number;
+    extraEnergy: number;
+    maxEnergy: number;
+    updateTime: number;
+    rate: number;
+}
+
 export namespace SprotoCall {
     export const Name = "call";
     export type Request = CallRequest;
@@ -359,4 +368,10 @@ export namespace SprotoLocalGameUseProps {
     export const Name = "localGameUseProps";
     export type Request = LocalgameusepropsRequest;
     export type Response = LocalgameusepropsResponse;
+}
+
+export namespace SprotoUserEnergy {
+    export const Name = "userEnergy";
+    export type Request = undefined;  // userEnergy 协议没有请求参数
+    export type Response = UserenergyResponse;
 }

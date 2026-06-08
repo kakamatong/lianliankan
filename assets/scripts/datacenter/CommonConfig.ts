@@ -13,4 +13,5 @@ export const EVENT_NAMES = {
     USER_DATA: "userData",
     USER_STATUS: "userStatus",
     USER_RICHES: "userRichs",
+    USER_ENERGY: "userEnergy",
 } as const;
