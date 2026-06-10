@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
   <displayList>
-    <component id="n0_hot0" name="n0" src="hot02" fileName="comp/CompEnergy.xml" xy="67,33"/>
+    <component id="n0_hot0" name="n0" src="hot02" fileName="comp/CompEnergy.xml" xy="507,43"/>
+    <component id="n1_hot0" name="UI_BTN_CLOSE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="41,35" size="119,75">
+      <Button icon="ui://gj0r6g5ioott1p"/>
+    </component>
   </displayList>
 </component>
