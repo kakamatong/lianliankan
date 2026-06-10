@@ -314,6 +314,17 @@ export class DataCenter {
     }
 
     /**
+     * @method updateLeftEnergy
+     * @description 更新左体力值（用于自动恢复计时器更新）
+     * @param {number} value - 新的左体力值
+     */
+    updateLeftEnergy(value: number): void {
+        if (this._userEnergy) {
+            this._userEnergy.leftEnergy = value;
+        }
+    }
+
+    /**
      * @method addRichByType
      * @description 按类型增加财富数量
      * @param {number} type - 财富类型
