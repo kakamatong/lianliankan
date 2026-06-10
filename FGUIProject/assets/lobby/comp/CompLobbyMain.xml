@@ -43,5 +43,9 @@
       <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button icon="ui://gv22rev3bj8qw"/>
     </component>
+    <component id="n27_hot0" name="UI_BTN_CHALLENGE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="634,1263" size="120,108">
+      <relation target="" sidePair="right-right,bottom-bottom"/>
+      <Button title="闯关" icon="ui://gj0r6g5ijorf1f"/>
+    </component>
   </displayList>
 </component>

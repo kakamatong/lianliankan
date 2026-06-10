@@ -32,6 +32,7 @@ import { Logger, TruncateString } from "@frameworks/utils/Utils";
 import { SoundManager } from "@frameworks/SoundManager";
 import { BagView } from "@view/bag/BagView";
 import { Prop } from "@modules/Prop";
+import { ChallengeView } from "@view/challenge/ChallengeView";
 /**
  * 大厅主界面组件
  * 负责大厅界面的初始化、用户登录管理、用户信息展示、功能入口处理等
@@ -368,6 +369,13 @@ export class CompLobbyMain extends FGUICompLobbyMain {
      */
     onBtnBag(): void {
         BagView.showView();
+    }
+
+    /**
+     * 点击挑战
+     */
+    onBtnChallenge(): void {
+        ChallengeView.showView();
     }
 
     /**
