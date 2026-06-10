@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
-  <displayList/>
+  <displayList>
+    <component id="n0_hot0" name="n0" src="hot02" fileName="comp/CompEnergy.xml" xy="67,33"/>
+  </displayList>
 </component>
