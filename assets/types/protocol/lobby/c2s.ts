@@ -256,6 +256,22 @@ export interface UserenergyResponse {
     rate: number;
 }
 
+/** 增减用户能量 - 请求参数 */
+export interface UserenergychangeRequest {
+    change: number;
+}
+
+/** 增减用户能量 - 响应参数 */
+export interface UserenergychangeResponse {
+    code: number;
+    msg: string;
+    leftEnergy: number;
+    extraEnergy: number;
+    maxEnergy: number;
+    updateTime: number;
+    rate: number;
+}
+
 export namespace SprotoCall {
     export const Name = "call";
     export type Request = CallRequest;
@@ -374,4 +390,10 @@ export namespace SprotoUserEnergy {
     export const Name = "userEnergy";
     export type Request = undefined;  // userEnergy 协议没有请求参数
     export type Response = UserenergyResponse;
+}
+
+export namespace SprotoUserEnergyChange {
+    export const Name = "userEnergyChange";
+    export type Request = UserenergychangeRequest;
+    export type Response = UserenergychangeResponse;
 }
