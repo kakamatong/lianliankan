@@ -50,6 +50,40 @@ assets/scripts/
 ### 语言
 **所有内容必须用中文**：注释、JSDoc、日志、UI 文本。变量名优先使用中文语义。
 
+### 注释（JSDoc）
+**主要逻辑和接口必须补充 JSDoc 注释**，格式如下：
+```typescript
+/**
+ * @file 文件名.ts
+ * @description 文件功能描述
+ * @category 分类名称
+ */
+
+/**
+ * @class 类名
+ * @description 类功能描述
+ * @category 分类名称
+ */
+
+/**
+ * @method 方法名
+ * @description 方法功能描述
+ * @param {类型} 参数名 - 参数说明
+ * @returns {类型} 返回值说明
+ * @private
+ */
+
+/**
+ * @property {类型} 属性名 - 属性说明
+ * @private
+ */
+```
+- 文件头注释必须包含 `@file` 和 `@description`
+- 公共类和接口必须包含 `@class` / `@interface` 和 `@description`
+- 主要方法必须包含 `@method`、`@description`、`@param`（如有参数）、`@returns`（如有返回值）
+- 私有方法/属性标注 `@private`
+- 自动生成的文件（`fgui/`、`types/protocol/`）不需要补充注释
+
 ### 格式化（Prettier）
 - 双引号、分号必需、4 空格缩进、打印宽度 140
 
