@@ -94,10 +94,6 @@ export class CompEnergy extends FGUICompEnergy {
         this.startTimerIfNeeded();
     }
 
-    // ============================================
-    // 数据加载
-    // ============================================
-
     /**
      * @method initFromDataCenter
      * @description 从 DataCenter 读取服务端能量数据并缓存到本地字段
@@ -114,10 +110,6 @@ export class CompEnergy extends FGUICompEnergy {
         }
     }
 
-    // ============================================
-    // 服务端事件
-    // ============================================
-
     /**
      * @method onUserEnergy
      * @description 收到服务端 USER_ENERGY 事件，重置基准数据并刷新显示
@@ -133,10 +125,6 @@ export class CompEnergy extends FGUICompEnergy {
         this.refreshDisplay();
         this.startTimerIfNeeded();
     }
-
-    // ============================================
-    // 计时器
-    // ============================================
 
     /**
      * @method startTimer
@@ -192,10 +180,6 @@ export class CompEnergy extends FGUICompEnergy {
         this.refreshDisplay();
     }
 
-    // ============================================
-    // 核心计算
-    // ============================================
-
     /**
      * @method _calcState
      * @description 根据服务端基准数据和经过时间，计算当前体力状态
@@ -222,10 +206,6 @@ export class CompEnergy extends FGUICompEnergy {
 
         return { isFull, currentLeft, currentTotal, timeLeft };
     }
-
-    // ============================================
-    // 显示刷新
-    // ============================================
 
     /**
      * @method refreshDisplay
