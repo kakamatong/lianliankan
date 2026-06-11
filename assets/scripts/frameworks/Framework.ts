@@ -173,19 +173,19 @@ export const ViewClass = (data?: any) => {
 
         // 继承原构造函数的方法和属性
         newConstructor.prototype.scheduleOnce = function (callback: () => void, delay: number) {
-            this.node.components[0].scheduleOnce(callback, delay);
+            this.node && this.node.components[0] && this.node.components[0].scheduleOnce(callback, delay);
         };
 
         newConstructor.prototype.schedule = function (callback: () => void, interval: number) {
-            this.node.components[0].schedule(callback, interval);
+            this.node && this.node.components[0] && this.node.components[0].schedule(callback, interval);
         };
 
         newConstructor.prototype.unschedule = function (callback: () => void) {
-            this.node.components[0].unschedule(callback);
+            this.node && this.node.components[0] && this.node.components[0].unschedule(callback);
         };
 
         newConstructor.prototype.unscheduleAllCallbacks = function () {
-            this.node.components[0].unscheduleAllCallbacks();
+            this.node && this.node.components[0] && this.node.components[0].unscheduleAllCallbacks();
         };
 
         return newConstructor;

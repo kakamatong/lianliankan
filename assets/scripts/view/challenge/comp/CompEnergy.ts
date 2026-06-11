@@ -91,16 +91,13 @@ export class CompEnergy extends FGUICompEnergy {
 
     private tick(): void {
         const state = this._calcState();
-
         if (state.currentLeft > this._lastCalculatedLeft) {
             this._lastCalculatedLeft = state.currentLeft;
             DataCenter.instance.updateLeftEnergy(state.currentLeft);
         }
-
         if (state.isFull) {
             this.stopTimer();
         }
-
         this.refreshDisplay();
     }
 

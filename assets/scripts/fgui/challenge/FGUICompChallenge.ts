@@ -9,6 +9,8 @@ import { Logger } from "@frameworks/utils/Utils";
 export default class FGUICompChallenge extends fgui.GComponent {
 
 	public UI_BTN_CLOSE:fgui.GButton;
+	public UI_BTN_TEST_ADD:fgui.GButton;
+	public UI_BTN_TEST_REDUCE:fgui.GButton;
 	public static URL:string = "ui://22u2b061hot01";
 
 	public static packageName:string = "challenge";
@@ -51,11 +53,17 @@ export default class FGUICompChallenge extends fgui.GComponent {
 	protected onConstruct():void {
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
+		this.UI_BTN_TEST_ADD = <fgui.GButton>(this.getChildAt(2));
+		this.UI_BTN_TEST_ADD.onClick(this.onBtnTestAdd, this);
+		this.UI_BTN_TEST_REDUCE = <fgui.GButton>(this.getChildAt(3));
+		this.UI_BTN_TEST_REDUCE.onClick(this.onBtnTestReduce, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
 	unschedule(callback: () => void):void{};
 	schedule(callback: () => void, interval: number):void{};
 	onBtnClose():void{};
+	onBtnTestAdd():void{};
+	onBtnTestReduce():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompChallenge.URL, FGUICompChallenge);

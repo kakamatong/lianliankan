@@ -5,5 +5,11 @@
     <component id="n1_hot0" name="UI_BTN_CLOSE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="41,35" size="119,75">
       <Button icon="ui://gj0r6g5ioott1p"/>
     </component>
+    <component id="n2_wbnb" name="UI_BTN_TEST_ADD" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="388,173">
+      <Button title="增加" icon="ui://gj0r6g5ijorf1f"/>
+    </component>
+    <component id="n3_wbnb" name="UI_BTN_TEST_REDUCE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="588,174">
+      <Button title="减少" icon="ui://gj0r6g5ijorf1h"/>
+    </component>
   </displayList>
 </component>

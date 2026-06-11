@@ -27,6 +27,14 @@ export class CompChallenge extends FGUICompChallenge {
     show(data?: any): void {
         // TODO: 实现业务逻辑
     }
+
+    onBtnTestAdd() {
+        UserEnergy.instance.changeReq(1);
+    }
+
+    onBtnTestReduce() {
+        UserEnergy.instance.changeReq(-1);
+    }
 }
 
 fgui.UIObjectFactory.setExtension(CompChallenge.URL, CompChallenge);
