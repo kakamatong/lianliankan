@@ -20,6 +20,7 @@ export class CompEnergy extends FGUICompEnergy {
         super.onConstruct();
         this._scheduleId = this.tick.bind(this);
         AddEventListener(EVENT_NAMES.USER_ENERGY, this.onUserEnergy, this);
+        this.show();
     }
 
     onDestroy() {
@@ -144,11 +145,11 @@ export class CompEnergy extends FGUICompEnergy {
     }
 
     private _formatTime(seconds: number): string {
-        const h = Math.floor(seconds / 3600);
-        const m = Math.floor((seconds % 3600) / 60);
-        const hh = h.toString().padStart(2, "0");
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
         const mm = m.toString().padStart(2, "0");
-        return `${hh}:${mm}`;
+        const ss = s.toString().padStart(2, "0");
+        return `${mm}:${ss}`;
     }
 }
 
