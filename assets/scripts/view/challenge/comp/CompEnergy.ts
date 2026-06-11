@@ -105,18 +105,18 @@ export class CompEnergy extends FGUICompEnergy {
     // ============================================
     // 核心计算
     // ============================================
-
     private _calcState(): { isFull: boolean; currentLeft: number; currentTotal: number; timeLeft: number } {
         const nowSec = Math.floor(Date.now() / 1000);
+        const recoverySecs = 3600 / this._rate;
         const elapsed = Math.max(0, nowSec - this._serverUpdateTime);
-        const recovered = Math.floor(elapsed / this._rate);
+        const recovered = Math.floor(elapsed / recoverySecs);
         const currentLeft = Math.min(this._serverLeftEnergy + recovered, this._maxEnergy);
         const currentTotal = currentLeft + this._serverExtraEnergy;
         const isFull = currentLeft >= this._maxEnergy;
 
         let timeLeft = 0;
         if (!isFull) {
-            const nextRecoverSec = this._serverUpdateTime + (recovered + 1) * this._rate;
+            const nextRecoverSec = this._serverUpdateTime + (recovered + 1) * recoverySecs;
             timeLeft = Math.max(0, nextRecoverSec - nowSec);
         }
 
@@ -126,7 +126,6 @@ export class CompEnergy extends FGUICompEnergy {
     // ============================================
     // 显示刷新
     // ============================================
-
     private refreshDisplay(): void {
         const state = this._calcState();
         this._lastCalculatedLeft = state.currentLeft;
