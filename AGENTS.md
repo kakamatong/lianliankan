@@ -87,6 +87,17 @@ assets/scripts/
 ### 格式化（Prettier）
 - 双引号、分号必需、4 空格缩进、打印宽度 140
 
+### 日志
+使用 `Logger` 模块打印日志，**禁止使用 `console.log`**：
+```typescript
+import { Logger } from "@frameworks/utils/Utils";
+
+Logger.log("普通日志");
+Logger.warn("警告信息");
+Logger.error("错误信息");
+Logger.debug("调试信息");
+```
+
 ### 单例模式
 所有管理器类（DataCenter、SoundManager、SocketManager 等）使用标准单例：
 ```typescript
