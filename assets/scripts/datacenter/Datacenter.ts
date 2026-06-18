@@ -50,12 +50,6 @@ export class DataCenter {
     private _userEnergy: UserenergyResponse | null = null;
 
     /**
-     * @property {any} _challengeConfig - 闯关模式配置
-     * @private
-     */
-    private _challengeConfig: any = null;
-
-    /**
      * @property {UserstatusResponse | null} _userStatus - 用户状态信息
      * @private
      */
@@ -330,23 +324,7 @@ export class DataCenter {
         }
     }
 
-    /**
-     * @method challengeConfig
-     * @description 设置闯关模式配置
-     * @param {any} data - 配置数据
-     */
-    set challengeConfig(data: any) {
-        this._challengeConfig = data;
-    }
 
-    /**
-     * @method challengeConfig
-     * @description 获取闯关模式配置
-     * @returns {any} 配置数据
-     */
-    get challengeConfig(): any {
-        return this._challengeConfig;
-    }
 
     /**
      * @method addRichByType
