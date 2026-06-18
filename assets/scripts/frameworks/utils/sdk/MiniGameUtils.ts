@@ -82,7 +82,7 @@ export class MiniGameUtils {
                         url: url,
                         method: method,
                         header: headers,
-                        data: JSON.stringify(body),
+                        data: body != null ? JSON.stringify(body) : undefined,
                         success: (res: any) => {
                             resolve(res.data);
                         },
@@ -97,7 +97,7 @@ export class MiniGameUtils {
             fetch(url, {
                 method: method,
                 headers: headers,
-                body: JSON.stringify(body),
+                body: body != null ? JSON.stringify(body) : undefined,
             })
                 .then((response) => {
                     if (!response.ok) {

@@ -896,6 +896,16 @@ export const HttpPostWithDefaultJWT = (url: string, body: any, payload: object):
     return HttpPost(url, body, payload, DEFAULT_JWT_SECRET_KEY, DEFAULT_JWT_EXPIRE_TIME);
 };
 
+/**
+ * HTTP GET 请求，用于拉取远程 JSON 数据（如 OSS 静态文件）
+ * @param url 请求URL
+ * @returns {Promise<any>} 响应数据
+ */
+export const HttpGet = (url: string): Promise<any> => {
+    Logger.log(LogColors.blue(`Sending GET request to: ${url}`));
+    return MiniGameUtils.instance.request(url, "GET", {}, null);
+};
+
 export const GetRandomInt = (min: number, max: number): number => {
     min = Math.ceil(min);
     max = Math.floor(max);
