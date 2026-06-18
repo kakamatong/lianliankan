@@ -5,6 +5,8 @@
  */
 
 import { HttpGet, Logger } from "@frameworks/utils/Utils";
+import { sys } from "cc";
+import { LOCAL_KEY } from "./InterfaceConfig";
 
 /**
  * @interface CHALLENGE_CHAPTER
@@ -51,6 +53,17 @@ export interface MAP_LEVEL_CONFIG {
     totalTime: number;
     /** 结束倒计时(秒) */
     endTime: number;
+}
+
+/**
+ * @interface CHAPTER_CACHE_DATA
+ * @description 章节本地缓存数据结构
+ */
+interface CHAPTER_CACHE_DATA {
+    /** 配置文件MD5 */
+    md5: string;
+    /** 关卡配置数组 */
+    data: MAP_LEVEL_CONFIG[];
 }
 
 /**
@@ -119,14 +132,15 @@ export class ChallengeConfig {
 
     /**
      * @method loadChapterConfig
-     * @description 加载指定章节的关卡地图配置（从远程 OSS 拉取），带内存缓存
+     * @description 加载指定章节的关卡地图配置，优先使用 localStorage 缓存，通过 MD5 判断是否需要更新
      * @param {number} chapterIndex - 章节索引
      * @returns {Promise<MAP_LEVEL_CONFIG[]>} 关卡配置数组
      */
     async loadChapterConfig(chapterIndex: number): Promise<MAP_LEVEL_CONFIG[]> {
-        const cached = this._chapterMaps.get(chapterIndex);
-        if (cached) {
-            return cached;
+        // ① 内存缓存命中
+        const memCached = this._chapterMaps.get(chapterIndex);
+        if (memCached) {
+            return memCached;
         }
 
         if (!this._config) {
@@ -138,11 +152,37 @@ export class ChallengeConfig {
             throw new Error(`章节 ${chapterIndex} 不存在`);
         }
 
-        const url = this._config.doMain + chapter.path;
-        Logger.log(`加载章节 ${chapterIndex} 地图配置: ${url}`);
+        // ② 查 localStorage 缓存，通过 MD5 判断是否需要更新
+        const storageKey = LOCAL_KEY.CHALLENGE_CHAPTER_PREFIX + chapterIndex;
+        try {
+            const raw = sys.localStorage.getItem(storageKey);
+            if (raw) {
+                const cachedData: CHAPTER_CACHE_DATA = JSON.parse(raw);
+                if (cachedData.md5 && cachedData.md5 === chapter.fileMD5) {
+                    Logger.log(`章节 ${chapterIndex} 使用本地缓存，MD5 匹配: ${chapter.fileMD5}`);
+                    this._chapterMaps.set(chapterIndex, cachedData.data);
+                    return cachedData.data;
+                }
+                Logger.log(`章节 ${chapterIndex} MD5 已更新: ${cachedData.md5} → ${chapter.fileMD5}`);
+            }
+        } catch (e) {
+            Logger.warn(`读取章节 ${chapterIndex} 本地缓存失败: ${e}`);
+        }
 
+        // ③ 重新下载
+        const url = this._config.doMain + chapter.path;
+        Logger.log(`下载章节 ${chapterIndex} 地图配置: ${url}`);
         const data = await HttpGet(url);
+
+        // ④ 同时写入内存缓存和 localStorage
         this._chapterMaps.set(chapterIndex, data);
+        try {
+            const cacheData: CHAPTER_CACHE_DATA = { md5: chapter.fileMD5, data };
+            sys.localStorage.setItem(storageKey, JSON.stringify(cacheData));
+        } catch (e) {
+            Logger.warn(`保存章节 ${chapterIndex} 缓存失败: ${e}`);
+        }
+
         return data as MAP_LEVEL_CONFIG[];
     }
 }
