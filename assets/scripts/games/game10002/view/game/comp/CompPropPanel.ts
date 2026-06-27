@@ -8,7 +8,7 @@ import { Logger } from "@frameworks/utils/Utils";
 import { DataCenter } from "@datacenter/Datacenter";
 import { TipsView } from "@view/common/TipsView";
 import { GameData } from "../../../data/GameData";
-import { LobbySocketManager } from "@frameworks/LobbySocketManager";
+import { LocalGameUseProps } from "@modules/LocalGameUseProps";
 import { SprotoLocalGameUseProps } from "../../../../../../types/protocol/lobby/c2s";
 
 @ViewClass()
@@ -57,26 +57,6 @@ export class CompPropPanel extends FGUICompPropPanel {
         );
     }
 
-    sendLobbyUseItem(itemId: number, itemNums: number, callBack?: (b: boolean, response: SprotoLocalGameUseProps.Response) => void): void {
-        LobbySocketManager.instance.sendToServer(
-            SprotoLocalGameUseProps,
-            {
-                richType: itemId,
-                richNums: itemNums,
-            },
-            (response: SprotoLocalGameUseProps.Response) => {
-                if (response && response.code === 1) {
-                    callBack && callBack(true, response);
-                    Logger.log("使用道具成功:", itemId);
-                } else {
-                    callBack && callBack(false, response);
-                    Logger.error("使用道具失败:", response?.msg || "未知错误");
-                    TipsView.showView({ content: response.msg });
-                }
-            }
-        );
-    }
-
     checkPropEnough(itemId: number): boolean {
         const richData = DataCenter.instance.getRichByType(itemId);
         if (!richData || !richData.richNums || richData.richNums <= 0) {
@@ -96,9 +76,8 @@ export class CompPropPanel extends FGUICompPropPanel {
             return;
         }
 
-        this.sendLobbyUseItem(itemId, 1, (b, response) => {
+        LocalGameUseProps.instance.req(itemId, 1, (b, response) => {
             if (b) {
-                DataCenter.instance.updateRichByType(itemId, response.remainNums);
                 callBack && callBack(true, response);
                 Logger.log("本地游戏使用道具成功:", itemId);
             } else {

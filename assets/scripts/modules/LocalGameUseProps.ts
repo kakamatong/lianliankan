@@ -24,13 +24,13 @@ export class LocalGameUseProps extends BaseModule {
     }
 
     /**
-     * @method use
-     * @description 使用道具：发送道具使用请求到服务器，resp 作为临时闭包避免多次调用时回调覆盖
+     * @method req
+     * @description 请求使用道具：发送道具使用请求到服务器，resp 作为临时闭包避免多次调用时回调覆盖
      * @param {number} itemId - 道具ID
      * @param {number} itemNums - 道具数量，默认为1
      * @param {(b:boolean, response?: SprotoLocalGameUseProps.Response)=>void} callBack - 回调函数
      */
-    use(itemId: number, itemNums: number = 1, callBack?: (b: boolean, response?: SprotoLocalGameUseProps.Response) => void) {
+    req(itemId: number, itemNums: number = 1, callBack?: (b: boolean, response?: SprotoLocalGameUseProps.Response) => void) {
         const param = { richType: itemId, richNums: itemNums };
 
         const resp = (result: SprotoLocalGameUseProps.Response) => {
