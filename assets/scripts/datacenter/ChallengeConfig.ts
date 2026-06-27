@@ -39,14 +39,12 @@ export interface CHALLENGE_CONFIG {
  * @description 关卡地图关卡配置（单个关卡）
  */
 export interface MAP_LEVEL_CONFIG {
+    /** 章节索引 */
+    chapter: number;
     /** 关卡索引 */
     index: number;
     /** 地图二维数组 0=边界 1=可放置 */
     map: number[][];
-    /** 默认行数 */
-    defaultRows: number;
-    /** 默认列数 */
-    defaultCols: number;
     /** 图标种类数 */
     iconTypes: number;
     /** 总时间(秒) */
