@@ -23,7 +23,8 @@
     "defaultCols": 14,
     "iconTypes": 22,
     "totalTime": 120,
-    "endTime": 10
+    "type": 1,
+    "starTime":[30,40,60]
   },
 {
     "index": 2,
@@ -49,7 +50,8 @@
     "defaultCols": 12,
     "iconTypes": 22,
     "totalTime": 90,
-    "endTime": 10
+    "type": 1,
+    "starTime":[30,40,60]
   },
 {
     "index": 3,
@@ -75,7 +77,8 @@
     "defaultCols": 12,
     "iconTypes": 22,
     "totalTime": 60,
-    "endTime": 10
+    "type": 1,
+    "starTime":[30,40,60]
   },
 {
     "index": 4,
@@ -101,7 +104,8 @@
     "defaultCols": 6,
     "iconTypes": 22,
     "totalTime": 60,
-    "endTime": 10
+    "type": 1,
+    "starTime":[30,40,60]
   },
 {
     "index": 5,
@@ -127,7 +131,8 @@
     "defaultCols": 14,
     "iconTypes": 22,
     "totalTime": 60,
-    "endTime": 10
+    "type": 1,
+    "starTime":[30,40,60]
   },
 {
     "index": 6,
@@ -153,7 +158,8 @@
     "defaultCols": 12,
     "iconTypes": 22,
     "totalTime": 60,
-    "endTime": 10
+    "type": 1,
+    "starTime":[30,40,60]
   },
 {
     "index": 7,

@@ -5,7 +5,6 @@ import { GameSocketManager } from "@frameworks/GameSocketManager";
 import * as fgui from "fairygui-cc";
 import { SprotoUseItem } from "../../../../../../types/protocol/game10002/c2s";
 import { Logger } from "@frameworks/utils/Utils";
-import { UserData } from "@modules/UserData";
 import { DataCenter } from "@datacenter/Datacenter";
 import { TipsView } from "@view/common/TipsView";
 import { GameData } from "../../../data/GameData";
