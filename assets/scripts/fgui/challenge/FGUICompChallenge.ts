@@ -51,11 +51,11 @@ export default class FGUICompChallenge extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(1));
+		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
-		this.UI_BTN_TEST_ADD = <fgui.GButton>(this.getChildAt(2));
+		this.UI_BTN_TEST_ADD = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_TEST_ADD.onClick(this.onBtnTestAdd, this);
-		this.UI_BTN_TEST_REDUCE = <fgui.GButton>(this.getChildAt(3));
+		this.UI_BTN_TEST_REDUCE = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_TEST_REDUCE.onClick(this.onBtnTestReduce, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

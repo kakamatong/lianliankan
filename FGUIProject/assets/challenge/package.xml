@@ -14,6 +14,7 @@
     <image id="vcwwa" name="unlocked.png" path="/imgs/"/>
     <image id="vcwwb" name="boss.png" path="/imgs/"/>
     <component id="vcwwc" name="CompStar.xml" path="/comp/"/>
+    <image id="vcwwd" name="mask.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

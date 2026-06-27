@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="702,1379">
+<component size="702,1235">
   <displayList>
     <component id="n2_vcww" name="n2" src="vcww4" fileName="comp/CompPage.xml" xy="0,0"/>
+    <component id="n3_vcww" name="n3" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="477,1118" size="219,95" controller="ctrl_color,3">
+      <Button title="下一章" icon="ui://gj0r6g5ijorf1g"/>
+    </component>
+    <component id="n4_vcww" name="n4" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="11,1118" size="219,95" controller="ctrl_color,3">
+      <Button title="上一章" icon="ui://gj0r6g5ijorf1g"/>
+    </component>
   </displayList>
 </component>
