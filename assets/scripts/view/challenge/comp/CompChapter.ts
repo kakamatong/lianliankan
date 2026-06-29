@@ -1,6 +1,6 @@
 /**
  * @file CompChapter.ts
- * @description 章节组件
+ * @description 章节组件：展示章节关卡列表，支持上一章/下一章切换
  * @category 闯关视图
  */
 
@@ -14,13 +14,22 @@ import { Challenge } from "@modules/Challenge";
 
 @ViewClass()
 export class CompChapter extends FGUICompChapter {
-    // 章节索引
+    /**
+     * @property {number} _chapterIndex - 当前章节索引
+     * @private
+     */
     private _chapterIndex: number = 0;
 
-    // 章节配置数据
+    /**
+     * @property {MAP_LEVEL_CONFIG[]} _chapterConfig - 当前章节关卡配置数据
+     * @private
+     */
     private _chapterConfig: MAP_LEVEL_CONFIG[] = [];
 
-    // 章节总数
+    /**
+     * @property {number} _chapterCount - 章节总数
+     * @private
+     */
     private _chapterCount: number = 0;
 
     onConstruct() {
@@ -30,11 +39,12 @@ export class CompChapter extends FGUICompChapter {
 
     /**
      * @method init
-     * @description 初始化组件
+     * @description 初始化组件：设置列表渲染器、拉取配置、显示首章
+     * @private
      */
-    init() {
+    private init() {
         this.UI_LV_ITEMS.itemRenderer = this.itemRenderer.bind(this);
-        Challenge.instance.getConfig((success, data) => {
+        Challenge.instance.getConfig((success) => {
             if (success) {
                 this._chapterCount = ChallengeConfig.instance.chapterCount;
                 this.showChapter(this._chapterIndex);
@@ -47,28 +57,65 @@ export class CompChapter extends FGUICompChapter {
 
     /**
      * @method showChapter
-     * @description 显示章节关卡列表
+     * @description 加载并显示指定章节的关卡列表，同时更新按钮状态
      * @param {number} index - 章节索引
+     * @private
      */
-    async showChapter(index: number) {
+    private async showChapter(index: number) {
         const config = await ChallengeConfig.instance.loadChapterConfig(index);
         this._chapterConfig = config ?? [];
         this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
+        this.updateButtons();
+    }
+
+    /**
+     * @method onBtnNext
+     * @description 点击下一章：索引 +1 并重新渲染
+     */
+    onBtnNext(): void {
+        if (this._chapterIndex < this._chapterCount - 1) {
+            this._chapterIndex++;
+            this.showChapter(this._chapterIndex);
+        }
+    }
+
+    /**
+     * @method onBtnPre
+     * @description 点击上一章：索引 -1 并重新渲染
+     */
+    onBtnPre(): void {
+        if (this._chapterIndex > 0) {
+            this._chapterIndex--;
+            this.showChapter(this._chapterIndex);
+        }
+    }
+
+    /**
+     * @method updateButtons
+     * @description 根据当前章节索引更新上一章/下一章按钮可见性
+     * @private
+     */
+    private updateButtons(): void {
+        if (this.UI_BTN_PRE) {
+            this.UI_BTN_PRE.visible = this._chapterIndex > 0;
+        }
+        if (this.UI_BTN_NEXT) {
+            this.UI_BTN_NEXT.visible = this._chapterIndex < this._chapterCount - 1;
+        }
     }
 
     /**
      * @method itemRenderer
-     * @description 章节列表渲染器
-     * @param {number} index - 索引
+     * @description 章节列表项渲染器
+     * @param {number} index - 列表索引
      * @param {fgui.GObject} item - 列表项对象
+     * @private
      */
-    itemRenderer(index: number, item: fgui.GObject) {
+    private itemRenderer(index: number, item: fgui.GObject) {
         const chapterItem = item as CompLevel;
         const config = this._chapterConfig[index];
         if (config && chapterItem) {
             chapterItem.setLevelName(`${config.index + 1}`);
-            //chapterItem.setStatus(config.status);
-            //chapterItem.setStars(config.stars);
         }
     }
 }
