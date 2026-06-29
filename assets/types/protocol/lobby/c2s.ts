@@ -10,6 +10,16 @@ export interface AwardNotice {
     create_at: string;
 }
 
+/** ChallengeLevelData 结构体定义 */
+export interface ChallengeLevelData {
+    chapter: number;
+    level: number;
+    isGet: number;
+    stars: number;
+    scoreMax: number;
+    challengeCount: number;
+}
+
 /** 调用接口 - 请求参数 */
 export interface CallRequest {
     serverName: string;
@@ -272,6 +282,29 @@ export interface UserenergychangeResponse {
     rate: number;
 }
 
+/** 获取章节关卡数据 - 请求参数 */
+export interface GetchallengechapterdataRequest {
+    chapter: number;
+}
+
+/** 获取章节关卡数据 - 响应参数 */
+export interface GetchallengechapterdataResponse {
+    list: ChallengeLevelData[];
+}
+
+/** 更新关卡数据 - 请求参数 */
+export interface UpdatechallengeleveldataRequest {
+    chapter: number;
+    level: number;
+    score: number;
+    stars: number;
+}
+
+/** 更新关卡数据 - 响应参数 */
+export interface UpdatechallengeleveldataResponse {
+    code: number;
+}
+
 export namespace SprotoCall {
     export const Name = "call";
     export type Request = CallRequest;
@@ -396,4 +429,16 @@ export namespace SprotoUserEnergyChange {
     export const Name = "userEnergyChange";
     export type Request = UserenergychangeRequest;
     export type Response = UserenergychangeResponse;
+}
+
+export namespace SprotoGetChallengeChapterData {
+    export const Name = "getChallengeChapterData";
+    export type Request = GetchallengechapterdataRequest;
+    export type Response = GetchallengechapterdataResponse;
+}
+
+export namespace SprotoUpdateChallengeLevelData {
+    export const Name = "updateChallengeLevelData";
+    export type Request = UpdatechallengeleveldataRequest;
+    export type Response = UpdatechallengeleveldataResponse;
 }
