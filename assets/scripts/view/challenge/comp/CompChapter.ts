@@ -57,12 +57,18 @@ export class CompChapter extends FGUICompChapter {
 
     /**
      * @method showChapter
-     * @description 加载并显示指定章节的关卡列表，同时更新按钮状态
+     * @description 加载并显示指定章节的关卡列表（地图配置 + 玩家数据），同时更新按钮状态
      * @param {number} index - 章节索引
      * @private
      */
     private async showChapter(index: number) {
-        const config = await ChallengeData.instance.loadChapterConfig(index);
+        const [config] = await Promise.all([
+            ChallengeData.instance.loadChapterConfig(index),
+            new Promise<boolean>((resolve) => {
+                Challenge.instance.getChapterData(index, (success) => resolve(success));
+            }),
+        ]);
+
         this._chapterConfig = config ?? [];
         this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
         this.updateButtons();
