@@ -17,16 +17,16 @@ export class CompChallenge extends FGUICompChallenge {
 
     init() {
         UserEnergy.instance.req();
-        Challenge.instance.getConfig((success, data) => {
-            if (success) {
-                ChallengeConfig.instance.loadChapterConfig(0).then((maps) => {
-                    Logger.log("章节关卡配置加载成功", maps);
-                });
-                Logger.log("闯关配置获取成功");
-            } else {
-                Logger.warn("闯关配置获取失败");
-            }
-        });
+        // Challenge.instance.getConfig((success, data) => {
+        //     if (success) {
+        //         ChallengeConfig.instance.loadChapterConfig(0).then((maps) => {
+        //             Logger.log("章节关卡配置加载成功", maps);
+        //         });
+        //         Logger.log("闯关配置获取成功");
+        //     } else {
+        //         Logger.warn("闯关配置获取失败");
+        //     }
+        // });
     }
 
     onDestroy() {

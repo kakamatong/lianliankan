@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="702,1235">
   <displayList>
-    <list id="n5_qul5" name="UI_LV_ITEMS" xy="0,0" size="702,1078" layout="flow_hz" overflow="scroll" lineGap="5" colGap="25" defaultItem="ui://22u2b061vcww5">
+    <list id="n5_qul5" name="UI_LV_ITEMS" xy="0,0" size="702,1078" layout="flow_hz" overflow="scroll" lineGap="5" colGap="25" defaultItem="ui://22u2b061vcww5" autoClearItems="true">
       <item/>
       <item/>
       <item/>
