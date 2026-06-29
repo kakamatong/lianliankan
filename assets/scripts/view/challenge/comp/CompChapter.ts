@@ -20,6 +20,9 @@ export class CompChapter extends FGUICompChapter {
     // 章节配置数据
     private _chapterConfig: MAP_LEVEL_CONFIG[] = [];
 
+    // 章节总数
+    private _chapterCount: number = 0;
+
     onConstruct() {
         super.onConstruct();
         this.init();
@@ -33,6 +36,7 @@ export class CompChapter extends FGUICompChapter {
         this.UI_LV_ITEMS.itemRenderer = this.itemRenderer.bind(this);
         Challenge.instance.getConfig((success, data) => {
             if (success) {
+                this._chapterCount = ChallengeConfig.instance.chapterCount;
                 this.showChapter(this._chapterIndex);
                 Logger.log("闯关配置获取成功");
             } else {
