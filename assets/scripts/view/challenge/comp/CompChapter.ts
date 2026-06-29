@@ -25,6 +25,10 @@ export class CompChapter extends FGUICompChapter {
         this.init();
     }
 
+    /**
+     * @method init
+     * @description 初始化组件
+     */
     init() {
         this.UI_LV_ITEMS.itemRenderer = this.itemRenderer.bind(this);
         Challenge.instance.getConfig((success, data) => {
@@ -37,6 +41,11 @@ export class CompChapter extends FGUICompChapter {
         });
     }
 
+    /**
+     * @method showChapter
+     * @description 显示章节关卡列表
+     * @param {number} index - 章节索引
+     */
     async showChapter(index: number) {
         const config = await ChallengeConfig.instance.loadChapterConfig(index);
         this._chapterConfig = config ?? [];
