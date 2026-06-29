@@ -19,8 +19,8 @@ export interface CHALLENGE_CHAPTER {
     name: string;
     /** 配置文件路径 */
     path: string;
-    /** 配置文件MD5 */
-    fileMD5: string;
+    /** 配置版本 */
+    ver: string;
 }
 
 /**
@@ -58,8 +58,8 @@ export interface MAP_LEVEL_CONFIG {
  * @description 章节本地缓存数据结构
  */
 interface CHAPTER_CACHE_DATA {
-    /** 配置文件MD5 */
-    md5: string;
+    /** 配置版本 */
+    ver: string;
     /** 关卡配置数组 */
     data: MAP_LEVEL_CONFIG[];
 }
@@ -150,18 +150,18 @@ export class ChallengeConfig {
             throw new Error(`章节 ${chapterIndex} 不存在`);
         }
 
-        // ② 查 localStorage 缓存，通过 MD5 判断是否需要更新
+        // ② 查 localStorage 缓存，通过版本判断是否需要更新
         const storageKey = LOCAL_KEY.CHALLENGE_CHAPTER_PREFIX + chapterIndex;
         try {
             const raw = sys.localStorage.getItem(storageKey);
             if (raw) {
                 const cachedData: CHAPTER_CACHE_DATA = JSON.parse(raw);
-                if (cachedData.md5 && cachedData.md5 === chapter.fileMD5) {
-                    Logger.log(`章节 ${chapterIndex} 使用本地缓存，MD5 匹配: ${chapter.fileMD5}`);
+                if (cachedData.ver && cachedData.ver === chapter.ver) {
+                    Logger.log(`章节 ${chapterIndex} 使用本地缓存，版本匹配: ${chapter.ver}`);
                     this._chapterMaps.set(chapterIndex, cachedData.data);
                     return cachedData.data;
                 }
-                Logger.log(`章节 ${chapterIndex} MD5 已更新: ${cachedData.md5} → ${chapter.fileMD5}`);
+                Logger.log(`章节 ${chapterIndex} 版本已更新: ${cachedData.ver} → ${chapter.ver}`);
             }
         } catch (e) {
             Logger.warn(`读取章节 ${chapterIndex} 本地缓存失败: ${e}`);
@@ -175,7 +175,7 @@ export class ChallengeConfig {
         // ④ 同时写入内存缓存和 localStorage
         this._chapterMaps.set(chapterIndex, data);
         try {
-            const cacheData: CHAPTER_CACHE_DATA = { md5: chapter.fileMD5, data };
+            const cacheData: CHAPTER_CACHE_DATA = { ver: chapter.ver, data };
             sys.localStorage.setItem(storageKey, JSON.stringify(cacheData));
         } catch (e) {
             Logger.warn(`保存章节 ${chapterIndex} 缓存失败: ${e}`);
