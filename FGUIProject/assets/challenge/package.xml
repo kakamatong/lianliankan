@@ -5,7 +5,6 @@
     <component id="hot01" name="CompChallenge.xml" path="/comp/"/>
     <component id="hot02" name="CompEnergy.xml" path="/comp/"/>
     <component id="vcww3" name="CompChapter.xml" path="/comp/"/>
-    <component id="vcww4" name="CompPage.xml" path="/comp/"/>
     <component id="vcww5" name="CompLevel.xml" path="/comp/"/>
     <image id="vcww6" name="comp.png" path="/imgs/"/>
     <image id="vcww7" name="gray.png" path="/imgs/"/>

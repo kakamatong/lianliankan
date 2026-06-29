@@ -10,6 +10,7 @@ import { Logger } from "@frameworks/utils/Utils";
 export default class FGUICompLevel extends fgui.GButton {
 
 	public ctrl_status:fgui.Controller;
+	public ctrl_stars:fgui.Controller;
 	public UI_LOAD_ICON:fgui.GLoader;
 	public UI_COMP_STAR_0:FGUICompStar;
 	public UI_COMP_STAR_1:FGUICompStar;
@@ -56,6 +57,7 @@ export default class FGUICompLevel extends fgui.GButton {
 
 	protected onConstruct():void {
 		this.ctrl_status = this.getControllerAt(0);
+		this.ctrl_stars = this.getControllerAt(1);
 		this.UI_LOAD_ICON = <fgui.GLoader>(this.getChildAt(0));
 		this.UI_COMP_STAR_0 = <FGUICompStar>(this.getChildAt(1));
 		this.UI_COMP_STAR_1 = <FGUICompStar>(this.getChildAt(2));
