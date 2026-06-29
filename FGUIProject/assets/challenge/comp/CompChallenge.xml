@@ -12,7 +12,7 @@
     <component id="n3_wbnb" name="UI_BTN_TEST_REDUCE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="363,15">
       <Button title="减少" icon="ui://gj0r6g5ijorf1h"/>
     </component>
-    <component id="n5_vcww" name="n5" src="vcww3" fileName="comp/CompChapter.xml" xy="37,257">
+    <component id="n5_vcww" name="UI_COMP_CHAPTER" src="vcww3" fileName="comp/CompChapter.xml" xy="37,257">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
   </displayList>

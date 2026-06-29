@@ -2,6 +2,7 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
+import FGUICompChapter from "./FGUICompChapter";
 
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
@@ -11,6 +12,7 @@ export default class FGUICompChallenge extends fgui.GComponent {
 	public UI_BTN_CLOSE:fgui.GButton;
 	public UI_BTN_TEST_ADD:fgui.GButton;
 	public UI_BTN_TEST_REDUCE:fgui.GButton;
+	public UI_COMP_CHAPTER:FGUICompChapter;
 	public static URL:string = "ui://22u2b061hot01";
 
 	public static packageName:string = "challenge";
@@ -57,6 +59,7 @@ export default class FGUICompChallenge extends fgui.GComponent {
 		this.UI_BTN_TEST_ADD.onClick(this.onBtnTestAdd, this);
 		this.UI_BTN_TEST_REDUCE = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_TEST_REDUCE.onClick(this.onBtnTestReduce, this);
+		this.UI_COMP_CHAPTER = <FGUICompChapter>(this.getChildAt(5));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
