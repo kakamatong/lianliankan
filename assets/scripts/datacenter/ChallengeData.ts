@@ -1,6 +1,6 @@
 /**
- * @file ChallengeConfig.ts
- * @description 闯关模式配置管理：定义闯关配置数据类型，使用单例模式管理配置存取
+ * @file ChallengeData.ts
+ * @description 闯关模式数据管理：定义闯关配置数据类型，使用单例模式管理数据存取
  * @category 数据中心
  */
 
@@ -65,12 +65,12 @@ interface CHAPTER_CACHE_DATA {
 }
 
 /**
- * @class ChallengeConfig
- * @description 闯关配置管理单例，负责闯关模式配置数据的存取
+ * @class ChallengeData
+ * @description 闯关数据管理单例，负责闯关模式配置数据的存取
  * @category 数据中心
  * @singleton 单例模式
  */
-export class ChallengeConfig {
+export class ChallengeData {
     /**
      * @property {CHALLENGE_CONFIG | null} _config - 闯关模式配置数据
      * @private
@@ -84,21 +84,21 @@ export class ChallengeConfig {
     private _chapterMaps: Map<number, MAP_LEVEL_CONFIG[]> = new Map();
 
     /**
-     * @property {ChallengeConfig} _instance - 单例实例
+     * @property {ChallengeData} _instance - 单例实例
      * @private
      * @static
      */
-    private static _instance: ChallengeConfig;
+    private static _instance: ChallengeData;
 
     /**
      * @method instance
-     * @description 获取ChallengeConfig的单例实例
+     * @description 获取ChallengeData的单例实例
      * @static
-     * @returns {ChallengeConfig} ChallengeConfig单例实例
+     * @returns {ChallengeData} ChallengeData单例实例
      */
-    public static get instance(): ChallengeConfig {
+    public static get instance(): ChallengeData {
         if (!this._instance) {
-            this._instance = new ChallengeConfig();
+            this._instance = new ChallengeData();
         }
         return this._instance;
     }
@@ -139,7 +139,7 @@ export class ChallengeConfig {
 
     /**
      * @method loadChapterConfig
-     * @description 加载指定章节的关卡地图配置，优先使用 localStorage 缓存，通过 MD5 判断是否需要更新
+     * @description 加载指定章节的关卡地图配置，优先使用 localStorage 缓存，通过版本判断是否需要更新
      * @param {number} chapterIndex - 章节索引
      * @returns {Promise<MAP_LEVEL_CONFIG[]>} 关卡配置数组
      */

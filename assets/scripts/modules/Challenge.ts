@@ -5,7 +5,7 @@
  */
 
 import { DataCenter } from "@datacenter/Datacenter";
-import { ChallengeConfig } from "@datacenter/ChallengeConfig";
+import { ChallengeData } from "@datacenter/ChallengeData";
 import { LogColors } from "@frameworks/Framework";
 import { HttpPostWithDefaultJWT, Logger } from "@frameworks/utils/Utils";
 import { BaseModule } from "@frameworks/base/BaseModule";
@@ -45,7 +45,7 @@ export class Challenge extends BaseModule {
             .then((data) => {
                 Logger.log(LogColors.green("challenge config request successful!"));
                 if (data && data.code === 200 && data.data) {
-                    ChallengeConfig.instance.config = data.data;
+                    ChallengeData.instance.config = data.data;
                 }
                 callBack(true, data);
             })

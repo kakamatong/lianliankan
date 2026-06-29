@@ -4,7 +4,7 @@
  * @category 闯关视图
  */
 
-import { ChallengeConfig, MAP_LEVEL_CONFIG } from "@datacenter/ChallengeConfig";
+import { ChallengeData, MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
 import FGUICompChapter from "@fgui/challenge/FGUICompChapter";
 import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
@@ -46,7 +46,7 @@ export class CompChapter extends FGUICompChapter {
         this.UI_LV_ITEMS.itemRenderer = this.itemRenderer.bind(this);
         Challenge.instance.getConfig((success) => {
             if (success) {
-                this._chapterCount = ChallengeConfig.instance.chapterCount;
+                this._chapterCount = ChallengeData.instance.chapterCount;
                 this.showChapter(this._chapterIndex);
                 Logger.log("闯关配置获取成功");
             } else {
@@ -62,7 +62,7 @@ export class CompChapter extends FGUICompChapter {
      * @private
      */
     private async showChapter(index: number) {
-        const config = await ChallengeConfig.instance.loadChapterConfig(index);
+        const config = await ChallengeData.instance.loadChapterConfig(index);
         this._chapterConfig = config ?? [];
         this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
         this.updateButtons();
