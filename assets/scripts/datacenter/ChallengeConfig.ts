@@ -129,6 +129,15 @@ export class ChallengeConfig {
     }
 
     /**
+     * @method chapterCount
+     * @description 获取章节数量
+     * @returns {number} 章节数量
+     */
+    get chapterCount(): number {
+        return this._config?.chapter.length ?? 0;
+    }
+
+    /**
      * @method loadChapterConfig
      * @description 加载指定章节的关卡地图配置，优先使用 localStorage 缓存，通过 MD5 判断是否需要更新
      * @param {number} chapterIndex - 章节索引
