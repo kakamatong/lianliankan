@@ -9,6 +9,7 @@ import { ChallengeData } from "@datacenter/ChallengeData";
 import { LogColors } from "@frameworks/Framework";
 import { HttpPostWithDefaultJWT, Logger } from "@frameworks/utils/Utils";
 import { BaseModule } from "@frameworks/base/BaseModule";
+import { SprotoGetChallengeChapterData, SprotoUpdateChallengeLevelData } from "../../types/protocol/lobby/c2s";
 
 /**
  * @class Challenge
@@ -53,5 +54,50 @@ export class Challenge extends BaseModule {
                 Logger.warn(LogColors.red(`challenge config request failed: ${error.message}`));
                 callBack(false, error);
             });
+    }
+
+    /**
+     * @method getChapterData
+     * @description 获取指定章节的玩家关卡数据
+     * @param {number} chapter - 章节索引
+     * @param {(success:boolean)=>void} callBack - 回调函数
+     */
+    getChapterData(chapter: number, callBack?: (success: boolean) => void) {
+        this.reqLobby(SprotoGetChallengeChapterData, { chapter }, (data: SprotoGetChallengeChapterData.Response) => {
+            if (data && data.list) {
+                ChallengeData.instance.setChapterLevelData(data.chapter, data.list);
+                Logger.log(LogColors.green(`章节 ${data.chapter} 关卡数据获取成功, 共 ${data.list.length} 关`));
+                callBack && callBack(true);
+            } else {
+                Logger.warn(LogColors.red(`章节 ${chapter} 关卡数据获取失败`));
+                callBack && callBack(false);
+            }
+        });
+    }
+
+    /**
+     * @method updateLevelData
+     * @description 更新关卡数据（上传分数和星级）
+     * @param {number} chapter - 章节索引
+     * @param {number} level - 关卡索引
+     * @param {number} score - 本次分数
+     * @param {number} stars - 本次星级
+     * @param {(success:boolean)=>void} callBack - 回调函数
+     */
+    updateLevelData(chapter: number, level: number, score: number, stars: number, callBack?: (success: boolean) => void) {
+        this.reqLobby(
+            SprotoUpdateChallengeLevelData,
+            { chapter, level, score, stars },
+            (data: SprotoUpdateChallengeLevelData.Response) => {
+                if (data && data.code === 1) {
+                    ChallengeData.instance.updateSingleLevelData(chapter, level, score, stars);
+                    Logger.log(LogColors.green(`关卡 ${chapter}-${level} 数据更新成功, 分数: ${score}, 星级: ${stars}`));
+                    callBack && callBack(true);
+                } else {
+                    Logger.warn(LogColors.red(`关卡 ${chapter}-${level} 数据更新失败`));
+                    callBack && callBack(false);
+                }
+            }
+        );
     }
 }

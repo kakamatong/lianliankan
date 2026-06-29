@@ -289,6 +289,7 @@ export interface GetchallengechapterdataRequest {
 
 /** 获取章节关卡数据 - 响应参数 */
 export interface GetchallengechapterdataResponse {
+    chapter: number;
     list: ChallengeLevelData[];
 }
 

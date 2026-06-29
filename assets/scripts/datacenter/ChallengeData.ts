@@ -7,6 +7,7 @@
 import { HttpGet, Logger } from "@frameworks/utils/Utils";
 import { sys } from "cc";
 import { LOCAL_KEY } from "./InterfaceConfig";
+import { ChallengeLevelData } from "../../types/protocol/lobby/c2s";
 
 /**
  * @interface CHALLENGE_CHAPTER
@@ -84,6 +85,12 @@ export class ChallengeData {
     private _chapterMaps: Map<number, MAP_LEVEL_CONFIG[]> = new Map();
 
     /**
+     * @property {Map<number, ChallengeLevelData[]>} _chapterLevelData - 章节玩家关卡数据缓存
+     * @private
+     */
+    private _chapterLevelData: Map<number, ChallengeLevelData[]> = new Map();
+
+    /**
      * @property {ChallengeData} _instance - 单例实例
      * @private
      * @static
@@ -135,6 +142,46 @@ export class ChallengeData {
      */
     get chapterCount(): number {
         return this._config?.chapter.length ?? 0;
+    }
+
+    /**
+     * @method setChapterLevelData
+     * @description 设置指定章节的玩家关卡数据
+     * @param {number} chapter - 章节索引
+     * @param {ChallengeLevelData[]} data - 关卡数据数组
+     */
+    setChapterLevelData(chapter: number, data: ChallengeLevelData[]): void {
+        this._chapterLevelData.set(chapter, data);
+    }
+
+    /**
+     * @method getChapterLevelData
+     * @description 获取指定章节的玩家关卡数据
+     * @param {number} chapter - 章节索引
+     * @returns {ChallengeLevelData[] | undefined} 关卡数据数组
+     */
+    getChapterLevelData(chapter: number): ChallengeLevelData[] | undefined {
+        return this._chapterLevelData.get(chapter);
+    }
+
+    /**
+     * @method updateSingleLevelData
+     * @description 更新单个关卡数据（本地缓存），通关后更新分数、星级和挑战次数
+     * @param {number} chapter - 章节索引
+     * @param {number} level - 关卡索引
+     * @param {number} score - 本次分数
+     * @param {number} stars - 本次星级
+     */
+    updateSingleLevelData(chapter: number, level: number, score: number, stars: number): void {
+        const list = this._chapterLevelData.get(chapter);
+        if (!list) return;
+        const item = list.find((i) => i.level === level);
+        if (item) {
+            if (score > item.scoreMax) item.scoreMax = score;
+            if (stars > item.stars) item.stars = stars;
+            item.isGet = 1;
+            item.challengeCount++;
+        }
     }
 
     /**
