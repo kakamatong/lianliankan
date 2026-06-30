@@ -93,6 +93,18 @@ export class ChallengeData {
     private _chapterLevelData: Map<number, ChallengeLevelData[]> = new Map();
 
     /**
+     * @property {number} _curChapter - 当前对战的章节ID
+     * @private
+     */
+    private _curChapter: number = 0;
+
+    /**
+     * @property {number} _curLevel - 当前对战的关卡ID
+     * @private
+     */
+    private _curLevel: number = 0;
+
+    /**
      * @property {ChallengeData} _instance - 单例实例
      * @private
      * @static
@@ -144,6 +156,26 @@ export class ChallengeData {
      */
     get chapterCount(): number {
         return this._config?.chapter.length ?? 0;
+    }
+
+    /**
+     * @property {number} curChapter - 当前对战的章节ID
+     */
+    get curChapter(): number {
+        return this._curChapter;
+    }
+    set curChapter(v: number) {
+        this._curChapter = v;
+    }
+
+    /**
+     * @property {number} curLevel - 当前对战的关卡ID
+     */
+    get curLevel(): number {
+        return this._curLevel;
+    }
+    set curLevel(v: number) {
+        this._curLevel = v;
     }
 
     /**

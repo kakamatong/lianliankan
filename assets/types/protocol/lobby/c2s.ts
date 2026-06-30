@@ -290,6 +290,8 @@ export interface GetchallengechapterdataRequest {
 /** 获取章节关卡数据 - 响应参数 */
 export interface GetchallengechapterdataResponse {
     chapter: number;
+    curChapter: number;
+    curLevel: number;
     list: ChallengeLevelData[];
 }
 
@@ -299,6 +301,8 @@ export interface UpdatechallengeleveldataRequest {
     level: number;
     score: number;
     stars: number;
+    nextChapter: number;
+    nextLevel: number;
 }
 
 /** 更新关卡数据 - 响应参数 */

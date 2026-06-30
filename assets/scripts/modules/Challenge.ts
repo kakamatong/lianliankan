@@ -66,6 +66,8 @@ export class Challenge extends BaseModule {
         this.reqLobby(SprotoGetChallengeChapterData, { chapter }, (data: SprotoGetChallengeChapterData.Response) => {
             if (data && data.list) {
                 ChallengeData.instance.setChapterLevelData(data.chapter, data.list);
+                ChallengeData.instance.curChapter = data.curChapter;
+                ChallengeData.instance.curLevel = data.curLevel;
                 Logger.log(LogColors.green(`章节 ${data.chapter} 关卡数据获取成功, 共 ${data.list.length} 关`));
                 callBack && callBack(true);
             } else {
@@ -82,12 +84,22 @@ export class Challenge extends BaseModule {
      * @param {number} level - 关卡索引
      * @param {number} score - 本次分数
      * @param {number} stars - 本次星级
+     * @param {number} nextChapter - 下一章节索引
+     * @param {number} nextLevel - 下一关卡索引
      * @param {(success:boolean)=>void} callBack - 回调函数
      */
-    updateLevelData(chapter: number, level: number, score: number, stars: number, callBack?: (success: boolean) => void) {
+    updateLevelData(
+        chapter: number,
+        level: number,
+        score: number,
+        stars: number,
+        nextChapter: number,
+        nextLevel: number,
+        callBack?: (success: boolean) => void
+    ) {
         this.reqLobby(
             SprotoUpdateChallengeLevelData,
-            { chapter, level, score, stars },
+            { chapter, level, score, stars, nextChapter, nextLevel },
             (data: SprotoUpdateChallengeLevelData.Response) => {
                 if (data && data.code === 1) {
                     ChallengeData.instance.updateSingleLevelData(chapter, level, score, stars);
