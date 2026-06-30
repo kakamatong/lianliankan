@@ -189,13 +189,26 @@ export class ChallengeData {
     }
 
     /**
-     * @method getChapterLevelData
+     * @method getChapterData
      * @description 获取指定章节的玩家关卡数据
      * @param {number} chapter - 章节索引
      * @returns {ChallengeLevelData[] | undefined} 关卡数据数组
      */
-    getChapterLevelData(chapter: number): ChallengeLevelData[] | undefined {
+    getChapterData(chapter: number): ChallengeLevelData[] | undefined {
         return this._chapterLevelData.get(chapter);
+    }
+
+    /**
+     * @method getLevelData
+     * @description 获取指定章节和关卡的玩家关卡数据
+     * @param {number} chapter - 章节索引
+     * @param {number} level - 关卡索引
+     * @returns {ChallengeLevelData | undefined} 关卡数据对象
+     */
+    getLevelData(chapter: number, level: number): ChallengeLevelData | undefined {
+        const list = this._chapterLevelData.get(chapter);
+        if (!list) return undefined;
+        return list.find((i) => i.level === level);
     }
 
     /**

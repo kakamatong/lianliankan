@@ -69,7 +69,7 @@ export class CompChapter extends FGUICompChapter {
     private async showChapter(index: number) {
         const configPromise = ChallengeData.instance.loadChapterConfig(index);
 
-        const hasData = !!ChallengeData.instance.getChapterLevelData(index);
+        const hasData = !!ChallengeData.instance.getChapterData(index);
         const levelDataPromise = hasData
             ? Promise.resolve()
             : new Promise<void>((resolve) => {
@@ -128,7 +128,7 @@ export class CompChapter extends FGUICompChapter {
     private itemRenderer(index: number, item: fgui.GObject) {
         const chapterItem = item as CompLevel;
         const config = this._chapterConfig[index];
-        const levelData = ChallengeData.instance.getChapterLevelData(this._chapterIndex)?.[index];
+        const levelData = ChallengeData.instance.getLevelData(this._chapterIndex, config.index);
         if (!config || !chapterItem) return;
 
         chapterItem.setLevelName(`${config.index + 1}`);
@@ -142,6 +142,7 @@ export class CompChapter extends FGUICompChapter {
                     chapterItem.setStatus(LEVEL_STATUS.IN_PROGRESS);
                 }
                 chapterItem.touchable = true;
+                this.UI_LV_ITEMS.scrollPane.scrollToView(index, true, true);
             } else {
                 chapterItem.setStatus(LEVEL_STATUS.LOCKED);
                 chapterItem.touchable = false;
