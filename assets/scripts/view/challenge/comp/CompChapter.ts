@@ -39,7 +39,7 @@ export class CompChapter extends FGUICompChapter {
 
     /**
      * @method init
-     * @description 初始化组件：设置列表渲染器、拉取配置、显示首章
+     * @description 初始化组件：设置列表渲染器、拉取配置、获取当前章节、显示关卡列表
      * @private
      */
     private init() {
@@ -47,7 +47,12 @@ export class CompChapter extends FGUICompChapter {
         Challenge.instance.getConfig((success) => {
             if (success) {
                 this._chapterCount = ChallengeData.instance.chapterCount;
-                this.showChapter(this._chapterIndex);
+                Challenge.instance.getCurChapterData((ok, curChapter) => {
+                    if (ok && curChapter !== undefined) {
+                        this._chapterIndex = curChapter;
+                    }
+                    this.showChapter(this._chapterIndex);
+                });
                 Logger.log("闯关配置获取成功");
             } else {
                 Logger.warn("闯关配置获取失败");
@@ -57,18 +62,21 @@ export class CompChapter extends FGUICompChapter {
 
     /**
      * @method showChapter
-     * @description 加载并显示指定章节的关卡列表（地图配置 + 玩家数据），同时更新按钮状态
+     * @description 加载并显示指定章节的关卡列表（地图配置 + 玩家数据），有缓存则跳过请求，同时更新按钮状态
      * @param {number} index - 章节索引
      * @private
      */
     private async showChapter(index: number) {
-        const [config] = await Promise.all([
-            ChallengeData.instance.loadChapterConfig(index),
-            new Promise<boolean>((resolve) => {
-                Challenge.instance.getChapterData(index, (success) => resolve(success));
-            }),
-        ]);
+        const configPromise = ChallengeData.instance.loadChapterConfig(index);
 
+        const hasData = !!ChallengeData.instance.getChapterLevelData(index);
+        const levelDataPromise = hasData
+            ? Promise.resolve()
+            : new Promise<void>((resolve) => {
+                  Challenge.instance.getChapterData(index, () => resolve());
+              });
+
+        const [config] = await Promise.all([configPromise, levelDataPromise]);
         this._chapterConfig = config ?? [];
         this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
         this.updateButtons();

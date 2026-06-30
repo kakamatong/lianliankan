@@ -9,7 +9,7 @@ import { ChallengeData } from "@datacenter/ChallengeData";
 import { LogColors } from "@frameworks/Framework";
 import { HttpPostWithDefaultJWT, Logger } from "@frameworks/utils/Utils";
 import { BaseModule } from "@frameworks/base/BaseModule";
-import { SprotoGetChallengeChapterData, SprotoUpdateChallengeLevelData } from "../../types/protocol/lobby/c2s";
+import { SprotoGetChallengeChapterData, SprotoGetCurChallengeChapterData, SprotoUpdateChallengeLevelData } from "../../types/protocol/lobby/c2s";
 
 /**
  * @class Challenge
@@ -66,12 +66,30 @@ export class Challenge extends BaseModule {
         this.reqLobby(SprotoGetChallengeChapterData, { chapter }, (data: SprotoGetChallengeChapterData.Response) => {
             if (data && data.list) {
                 ChallengeData.instance.setChapterLevelData(data.chapter, data.list);
-                ChallengeData.instance.curChapter = data.curChapter;
-                ChallengeData.instance.curLevel = data.curLevel;
                 Logger.log(LogColors.green(`章节 ${data.chapter} 关卡数据获取成功, 共 ${data.list.length} 关`));
                 callBack && callBack(true);
             } else {
                 Logger.warn(LogColors.red(`章节 ${chapter} 关卡数据获取失败`));
+                callBack && callBack(false);
+            }
+        });
+    }
+
+    /**
+     * @method getCurChapterData
+     * @description 获取当前对战章节的玩家关卡数据
+     * @param {(success:boolean, curChapter?:number)=>void} callBack - 回调函数，返回当前章节索引
+     */
+    getCurChapterData(callBack?: (success: boolean, curChapter?: number) => void) {
+        this.reqLobby(SprotoGetCurChallengeChapterData, {}, (data: SprotoGetCurChallengeChapterData.Response) => {
+            if (data && data.list) {
+                ChallengeData.instance.curChapter = data.curChapter;
+                ChallengeData.instance.curLevel = data.curLevel;
+                ChallengeData.instance.setChapterLevelData(data.curChapter, data.list);
+                Logger.log(LogColors.green(`当前章节 ${data.curChapter} 关卡数据获取成功, 共 ${data.list.length} 关`));
+                callBack && callBack(true, data.curChapter);
+            } else {
+                Logger.warn(LogColors.red("当前章节关卡数据获取失败"));
                 callBack && callBack(false);
             }
         });

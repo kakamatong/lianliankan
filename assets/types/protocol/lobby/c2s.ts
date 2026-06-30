@@ -290,8 +290,6 @@ export interface GetchallengechapterdataRequest {
 /** 获取章节关卡数据 - 响应参数 */
 export interface GetchallengechapterdataResponse {
     chapter: number;
-    curChapter: number;
-    curLevel: number;
     list: ChallengeLevelData[];
 }
 
@@ -308,6 +306,13 @@ export interface UpdatechallengeleveldataRequest {
 /** 更新关卡数据 - 响应参数 */
 export interface UpdatechallengeleveldataResponse {
     code: number;
+}
+
+/** 获取当前章节关卡数据 - 响应参数 */
+export interface GetcurchallengechapterdataResponse {
+    curChapter: number;
+    curLevel: number;
+    list: ChallengeLevelData[];
 }
 
 export namespace SprotoCall {
@@ -446,4 +451,10 @@ export namespace SprotoUpdateChallengeLevelData {
     export const Name = "updateChallengeLevelData";
     export type Request = UpdatechallengeleveldataRequest;
     export type Response = UpdatechallengeleveldataResponse;
+}
+
+export namespace SprotoGetCurChallengeChapterData {
+    export const Name = "getCurChallengeChapterData";
+    export type Request = undefined;  // getCurChallengeChapterData 协议没有请求参数
+    export type Response = GetcurchallengechapterdataResponse;
 }
