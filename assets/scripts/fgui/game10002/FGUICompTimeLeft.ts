@@ -2,6 +2,7 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
+import FGUICompTimeStar from "./FGUICompTimeStar";
 
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
@@ -9,8 +10,12 @@ import { Logger } from "@frameworks/utils/Utils";
 export default class FGUICompTimeLeft extends fgui.GComponent {
 
 	public ctrl_warn:fgui.Controller;
+	public ctrl_type:fgui.Controller;
 	public UI_IMG_BAR:fgui.GImage;
 	public UI_TXT_TIME_MSG:fgui.GTextField;
+	public UI_COMP_STAR_1:FGUICompTimeStar;
+	public UI_COMP_STAR_2:FGUICompTimeStar;
+	public UI_COMP_STAR_3:FGUICompTimeStar;
 	public act:fgui.Transition;
 	public static URL:string = "ui://2zsfe53xmnt112";
 
@@ -53,8 +58,12 @@ export default class FGUICompTimeLeft extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.ctrl_warn = this.getControllerAt(0);
+		this.ctrl_type = this.getControllerAt(1);
 		this.UI_IMG_BAR = <fgui.GImage>(this.getChildAt(1));
 		this.UI_TXT_TIME_MSG = <fgui.GTextField>(this.getChildAt(2));
+		this.UI_COMP_STAR_1 = <FGUICompTimeStar>(this.getChildAt(3));
+		this.UI_COMP_STAR_2 = <FGUICompTimeStar>(this.getChildAt(4));
+		this.UI_COMP_STAR_3 = <FGUICompTimeStar>(this.getChildAt(5));
 		this.act = this.getTransitionAt(0);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

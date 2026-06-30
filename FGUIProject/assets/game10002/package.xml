@@ -4,7 +4,6 @@
     <component id="is911" name="GameView.xml" path="/" exported="true"/>
     <image id="qaf24" name="ready.png" path="/imgs/"/>
     <image id="qaf25" name="clock.png" path="/imgs/"/>
-    <component id="qaf26" name="CompClock.xml" path="/comp/"/>
     <image id="qaf27" name="think.png" path="/imgs/"/>
     <component id="qaf28" name="CompThinkAct.xml" path="/comp/"/>
     <image id="qaf29" name="offline.png" path="/imgs/"/>
@@ -56,6 +55,7 @@
     <image id="jt3f1w" name="char_1.png" path="/font/"/>
     <image id="jt3f1x" name="char_2.png" path="/font/"/>
     <image id="jt3f1y" name="char_3.png" path="/font/"/>
+    <component id="kq4j1z" name="CompTimeStar.xml" path="/comp/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

@@ -10,8 +10,8 @@ export default class FGUICompRuleHint extends fgui.GComponent {
 
 	public UI_TXT_TITLE:fgui.GTextField;
 	public UI_BTN_SURE:fgui.GButton;
-	public UI_TXT_CONTENT:fgui.GTextField;
 	public UI_BTN_CLOSE:fgui.GButton;
+	public UI_TXT_CONTENT:fgui.GRichTextField;
 	public static URL:string = "ui://22u2b061kq4jf";
 
 	public static packageName:string = "challenge";
@@ -55,9 +55,9 @@ export default class FGUICompRuleHint extends fgui.GComponent {
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_BTN_SURE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_SURE.onClick(this.onBtnSure, this);
-		this.UI_TXT_CONTENT = <fgui.GTextField>(this.getChildAt(3));
-		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(4));
+		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
+		this.UI_TXT_CONTENT = <fgui.GRichTextField>(this.getChildAt(4));
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

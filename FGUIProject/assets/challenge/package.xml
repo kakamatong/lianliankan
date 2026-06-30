@@ -8,8 +8,6 @@
     <component id="vcww5" name="CompLevel.xml" path="/comp/"/>
     <image id="vcww6" name="comp.png" path="/imgs/"/>
     <image id="vcww7" name="gray.png" path="/imgs/"/>
-    <image id="vcww8" name="star.png" path="/imgs/"/>
-    <image id="vcww9" name="starGray.png" path="/imgs/"/>
     <image id="vcwwa" name="unlocked.png" path="/imgs/"/>
     <image id="vcwwb" name="boss.png" path="/imgs/"/>
     <component id="vcwwc" name="CompStar.xml" path="/comp/"/>
