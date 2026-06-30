@@ -35,7 +35,7 @@
       <gearDisplay controller="ctrl_stars" pages="1,2,3"/>
     </component>
     <group id="n8_vcww" name="n8" xy="10,160" size="100,29"/>
-    <text id="n9_vcww" name="UI_TXT_INDEX" xy="32,-1" pivot="0.5,0.5" size="55,42" fontSize="30" color="#ffffff" align="center" vAlign="middle" strokeColor="#0033cc" text="000"/>
+    <text id="n9_vcww" name="UI_TXT_INDEX" xy="23,-9" pivot="0.5,0.5" size="73,54" fontSize="40" color="#ffffff" align="center" vAlign="middle" strokeColor="#000099" strokeSize="2" text="000"/>
   </displayList>
   <Button downEffect="scale" downEffectValue="0.9"/>
 </component>
