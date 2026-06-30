@@ -132,6 +132,7 @@ export class CompChapter extends FGUICompChapter {
         if (!config || !chapterItem) return;
 
         chapterItem.setLevelName(`${config.index + 1}`);
+        chapterItem.clearClick();
 
         if (!levelData) {
             // 如果当前章节是玩家所在章节，并且关卡索引是当前关卡，则设置为进行中状态
@@ -143,6 +144,9 @@ export class CompChapter extends FGUICompChapter {
                 }
                 chapterItem.touchable = true;
                 this.UI_LV_ITEMS.scrollPane.scrollToView(index, true, true);
+                chapterItem.onClick(() => {
+                    this.onBtnLevel(this._chapterIndex, config.index);
+                });
             } else {
                 chapterItem.setStatus(LEVEL_STATUS.LOCKED);
                 chapterItem.touchable = false;
@@ -156,7 +160,16 @@ export class CompChapter extends FGUICompChapter {
             } else {
                 chapterItem.setStatus(LEVEL_STATUS.COMPLETED);
             }
+
+            chapterItem.onClick(() => {
+                this.onBtnLevel(this._chapterIndex, config.index);
+            });
         }
+    }
+
+    private onBtnLevel(chapter: number, level: number) {
+        Logger.log(`点击关卡: ${chapter}-${level}`);
+        // 这里可以添加点击关卡后的逻辑，例如进入关卡详情或开始挑战
     }
 }
 
