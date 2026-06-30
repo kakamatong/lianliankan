@@ -188,7 +188,7 @@ export class CompChapter extends FGUICompChapter {
         }
 
         if (config.type == 1) {
-            return `在 ${config.totalTime}秒，完成挑战`;
+            return `在 [color=#FF0000]${config.totalTime}[/color] 秒内完成挑战`;
         } else if (config.type == 2) {
             return ``;
         }

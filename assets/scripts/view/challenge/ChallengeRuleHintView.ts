@@ -29,7 +29,10 @@ export class ChallengeRuleHintView extends FGUIChallengeRuleHintView {
     show(data?: any): void {
         if (data && this.UI_COMP_MAIN) {
             if (data.title) this.UI_COMP_MAIN.UI_TXT_TITLE.text = data.title;
-            if (data.content) this.UI_COMP_MAIN.UI_TXT_CONTENT.text = data.content;
+            if (data.content) {
+                this.UI_COMP_MAIN.UI_TXT_CONTENT.ubbEnabled = true;
+                this.UI_COMP_MAIN.UI_TXT_CONTENT.text = data.content;
+            }
             this._sureBack = data.sureBack || null;
         }
     }
