@@ -54,6 +54,10 @@ export interface MAP_LEVEL_CONFIG {
     endTime: number;
     /** boss 关卡标识 */
     boss: number;
+    /** 关卡类型 1是计时规则，2是计分规则 */
+    type: number;
+    /** 获取星星限制时间 */
+    starTime: number[];
 }
 
 /**

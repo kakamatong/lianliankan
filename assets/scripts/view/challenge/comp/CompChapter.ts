@@ -11,6 +11,8 @@ import * as fgui from "fairygui-cc";
 import { CompLevel, LEVEL_STATUS, STAR_COUNT } from "./CompLevel";
 import { Logger } from "@frameworks/utils/Utils";
 import { Challenge } from "@modules/Challenge";
+import { PopMessageView } from "@view/common/PopMessageView";
+import { ENUM_POP_MESSAGE_TYPE } from "@datacenter/InterfaceConfig";
 
 @ViewClass()
 export class CompChapter extends FGUICompChapter {
@@ -170,6 +172,29 @@ export class CompChapter extends FGUICompChapter {
     private onBtnLevel(chapter: number, level: number) {
         Logger.log(`点击关卡: ${chapter}-${level}`);
         // 这里可以添加点击关卡后的逻辑，例如进入关卡详情或开始挑战
+        const msg = this.getRule(chapter, level);
+        PopMessageView.showView({
+            title: "温馨提示",
+            content: msg,
+            type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+            sureBack: () => {
+                // 这里可以添加返回房间的逻辑
+                Logger.log("进入对战");
+            },
+        });
+    }
+
+    private getRule(chapter: number, level: number): string {
+        const config = this._chapterConfig.find((c) => c.index === level);
+        if (!config) {
+            return "关卡配置不存在";
+        }
+
+        if (config.type == 1) {
+            return `在 ${config.totalTime}秒，完成挑战`;
+        } else if (config.type == 2) {
+            return ``;
+        }
     }
 }
 

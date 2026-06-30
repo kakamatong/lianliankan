@@ -14,6 +14,8 @@
     <image id="vcwwb" name="boss.png" path="/imgs/"/>
     <component id="vcwwc" name="CompStar.xml" path="/comp/"/>
     <image id="vcwwd" name="mask.png" path="/imgs/"/>
+    <component id="kq4je" name="ChallengeRuleHintView.xml" path="/" exported="true"/>
+    <component id="kq4jf" name="CompRuleHint.xml" path="/comp/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
