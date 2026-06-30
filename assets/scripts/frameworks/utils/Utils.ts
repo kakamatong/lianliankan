@@ -1035,6 +1035,45 @@ export const SpinePlay = (
 };
 
 /**
+ * 贝塞尔曲线动画，使用二次贝塞尔曲线沿弧线移动目标对象
+ * @param target 目标对象
+ * @param startX 起始X坐标
+ * @param startY 起始Y坐标
+ * @param endX 结束X坐标
+ * @param endY 结束Y坐标
+ * @param duration 动画时长(秒)
+ * @param offset 控制点垂直偏移量，正数向上凸起，负数向下凹陷
+ * @param onComplete 动画结束回调
+ */
+export const BezierTween = (
+    target: fgui.GObject,
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+    duration: number,
+    offset: number,
+    onComplete?: () => void
+): void => {
+    target.x = startX;
+    target.y = startY;
+
+    const ctrlX = (startX + endX) / 2;
+    const ctrlY = (startY + endY) / 2 - offset;
+
+    fgui.GTween.to(0, 1, duration)
+        .onUpdate((tweener: fgui.GTweener) => {
+            const t = tweener.value.x;
+            const u = 1 - t;
+            target.x = u * u * startX + 2 * u * t * ctrlX + t * t * endX;
+            target.y = u * u * startY + 2 * u * t * ctrlY + t * t * endY;
+        })
+        .onComplete(() => {
+            onComplete && onComplete();
+        });
+};
+
+/**
  * 日志工具类
  */
 export class Logger {
