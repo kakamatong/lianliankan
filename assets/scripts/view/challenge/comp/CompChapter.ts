@@ -134,23 +134,27 @@ export class CompChapter extends FGUICompChapter {
         chapterItem.setLevelName(`${config.index + 1}`);
 
         if (!levelData) {
-            chapterItem.setStatus(LEVEL_STATUS.LOCKED);
+            // 如果当前章节是玩家所在章节，并且关卡索引是当前关卡，则设置为进行中状态
+            if (this._chapterIndex === ChallengeData.instance.curChapter && index === ChallengeData.instance.curLevel) {
+                if (config.boss === 1) {
+                    chapterItem.setStatus(LEVEL_STATUS.BOSS);
+                } else {
+                    chapterItem.setStatus(LEVEL_STATUS.IN_PROGRESS);
+                }
+                chapterItem.touchable = true;
+            } else {
+                chapterItem.setStatus(LEVEL_STATUS.LOCKED);
+                chapterItem.touchable = false;
+            }
+
             chapterItem.setStars(STAR_COUNT.HIDE);
-            chapterItem.touchable = false;
         } else {
             chapterItem.setStars(levelData.stars);
-
             if (config.boss === 1) {
                 chapterItem.setStatus(LEVEL_STATUS.BOSS);
             } else {
                 chapterItem.setStatus(LEVEL_STATUS.COMPLETED);
             }
-        }
-
-        // 如果当前章节是玩家所在章节，并且关卡索引是当前关卡，则设置为进行中状态
-        if (this._chapterIndex === ChallengeData.instance.curChapter && index === ChallengeData.instance.curLevel) {
-            chapterItem.setStatus(LEVEL_STATUS.IN_PROGRESS);
-            chapterItem.touchable = true;
         }
     }
 }
