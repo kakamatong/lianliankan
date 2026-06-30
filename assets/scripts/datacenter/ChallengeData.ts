@@ -52,6 +52,8 @@ export interface MAP_LEVEL_CONFIG {
     totalTime: number;
     /** 结束倒计时(秒) */
     endTime: number;
+    /** boss 关卡标识 */
+    boss: number;
 }
 
 /**

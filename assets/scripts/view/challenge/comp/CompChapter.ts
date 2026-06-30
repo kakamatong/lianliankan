@@ -8,7 +8,7 @@ import { ChallengeData, MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
 import FGUICompChapter from "@fgui/challenge/FGUICompChapter";
 import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
-import { CompLevel } from "./CompLevel";
+import { CompLevel, LEVEL_STATUS, STAR_COUNT } from "./CompLevel";
 import { Logger } from "@frameworks/utils/Utils";
 import { Challenge } from "@modules/Challenge";
 
@@ -112,7 +112,7 @@ export class CompChapter extends FGUICompChapter {
 
     /**
      * @method itemRenderer
-     * @description 章节列表项渲染器
+     * @description 章节列表项渲染器：根据玩家数据决定关卡状态和星级展示
      * @param {number} index - 列表索引
      * @param {fgui.GObject} item - 列表项对象
      * @private
@@ -120,8 +120,22 @@ export class CompChapter extends FGUICompChapter {
     private itemRenderer(index: number, item: fgui.GObject) {
         const chapterItem = item as CompLevel;
         const config = this._chapterConfig[index];
-        if (config && chapterItem) {
-            chapterItem.setLevelName(`${config.index + 1}`);
+        const levelData = ChallengeData.instance.getChapterLevelData(this._chapterIndex)?.[index];
+        if (!config || !chapterItem) return;
+
+        chapterItem.setLevelName(`${config.index + 1}`);
+
+        if (!levelData) {
+            chapterItem.setStatus(LEVEL_STATUS.LOCKED);
+            chapterItem.setStars(STAR_COUNT.HIDE);
+        } else {
+            chapterItem.setStars(levelData.stars);
+
+            if (config.boss === 1) {
+                chapterItem.setStatus(LEVEL_STATUS.BOSS);
+            } else {
+                chapterItem.setStatus(LEVEL_STATUS.COMPLETED);
+            }
         }
     }
 }
