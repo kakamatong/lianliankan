@@ -27,7 +27,19 @@ import {
 } from "../../types/protocol/game10002/c2s";
 import { MAIN_GAME_ID, RICH_TYPE } from "@datacenter/InterfaceConfig";
 import { DataCenter } from "@datacenter/Datacenter";
-import { generateRandomMap } from "./mapGenerator";
+import { generateRandomMap, generateFromDesign } from "./mapGenerator";
+import { MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
+
+/**
+ * @enum LOCAL_SVR_MODE
+ * @description 本地服务器运行模式
+ */
+export enum LOCAL_SVR_MODE {
+    /** 单机模式：随机生成地图 */
+    STANDALONE = 0,
+    /** 闯关模式：使用外部传入的关卡配置 */
+    CHALLENGE = 1,
+}
 
 /**
  * @class LocalSvr
@@ -72,6 +84,18 @@ export class LocalSvr {
     /** 连击时间窗口（毫秒） */
     private readonly COMBO_WINDOW: number = 3000;
 
+    /** 当前运行模式 */
+    private _mode: LOCAL_SVR_MODE = LOCAL_SVR_MODE.STANDALONE;
+    /** 闯关模式下的关卡配置 */
+    private _challengeConfig: MAP_LEVEL_CONFIG | null = null;
+
+    /**
+     * 判断当前是否为闯关模式
+     */
+    isChallengeMode(): boolean {
+        return this._mode === LOCAL_SVR_MODE.CHALLENGE;
+    }
+
     /** 记录初始可填充位置（用于重新填入时只填充到有效位置） */
     private _validPositions: { row: number; col: number }[] = [];
 
@@ -86,10 +110,19 @@ export class LocalSvr {
 
     /**
      * 启动本地服务器，注册所有 C2S 协议监听
+     * @param config 闯关模式关卡配置，传入则进入闯关模式，不传则为单机模式
      */
-    start(): void {
+    start(config?: MAP_LEVEL_CONFIG): void {
         // 先清理旧监听，确保多次调用不累积
         this.destroy();
+
+        if (config) {
+            this._mode = LOCAL_SVR_MODE.CHALLENGE;
+            this._challengeConfig = config;
+        } else {
+            this._mode = LOCAL_SVR_MODE.STANDALONE;
+            this._challengeConfig = null;
+        }
 
         AddEventListener(SprotoClientReady.Name, this.onClientReady, this);
         AddEventListener(SprotoClickTiles.Name, this.onClickTiles, this);
@@ -329,13 +362,26 @@ export class LocalSvr {
     }
 
     /**
-     * 生成随机地图并广播（从配置表随机选取设计）
+     * 生成地图并广播
+     * 闯关模式：使用关卡配置的地图模板 + 图标类型数生成
+     * 单机模式：从配置表随机选取设计生成
      */
     randomMap(): void {
-        const { map, design } = generateRandomMap();
+        let map: number[][] = [];
+        let totalTime = 0;
+
+        if (this._mode === LOCAL_SVR_MODE.CHALLENGE && this._challengeConfig) {
+            const cfg = this._challengeConfig;
+            totalTime = cfg.totalTime || 0;
+            map = generateFromDesign(cfg.map, cfg.map.length, cfg.map[0].length, cfg.iconTypes);
+        } else {
+            const result = generateRandomMap();
+            map = result.map;
+            totalTime = result.design.totalTime || 0;
+        }
 
         // 保存当前地图的总时间
-        this._totalTime = design.totalTime || 0;
+        this._totalTime = totalTime;
 
         // 扩展为 16×10，底部 6 行补零（超出地图设计范围默认隐藏）
         const mapLength = map ? map.length : 0;

@@ -6,12 +6,16 @@
 
 import { ChallengeData, MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
 import FGUICompChapter from "@fgui/challenge/FGUICompChapter";
-import { ViewClass } from "@frameworks/Framework";
+import { ChangeScene, ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { CompLevel, LEVEL_STATUS, STAR_COUNT } from "./CompLevel";
 import { Logger } from "@frameworks/utils/Utils";
 import { Challenge } from "@modules/Challenge";
 import { ChallengeRuleHintView } from "@view/challenge/ChallengeRuleHintView";
+import { DataCenter } from "@datacenter/Datacenter";
+import { UserEnergy } from "@modules/UserEnergy";
+import { ConnectGameSvr } from "@modules/ConnectGameSvr";
+import { TipsView } from "@view/common/TipsView";
 
 @ViewClass()
 export class CompChapter extends FGUICompChapter {
@@ -170,15 +174,62 @@ export class CompChapter extends FGUICompChapter {
 
     private onBtnLevel(chapter: number, level: number, energy: number) {
         Logger.log(`点击关卡: ${chapter}-${level}`);
-        // 这里可以添加点击关卡后的逻辑，例如进入关卡详情或开始挑战
         const msg = this.getRule(chapter, level);
+        const config = this._chapterConfig.find((c) => c.index === level);
         ChallengeRuleHintView.showView({
             title: "温馨提示",
             content: msg,
             energy: -energy,
             sureBack: () => {
-                Logger.log("进入对战");
+                this.startChallengeLevel(config, chapter, level, energy);
             },
+        });
+    }
+
+    /**
+     * @method startChallengeLevel
+     * @description 开始闯关关卡：检查体力是否足够，扣除体力后开启本地闯关模式
+     * @param {MAP_LEVEL_CONFIG | undefined} config - 关卡配置
+     * @param {number} chapter - 章节索引
+     * @param {number} level - 关卡索引
+     * @param {number} energy - 体力消耗
+     * @private
+     */
+    private startChallengeLevel(config: MAP_LEVEL_CONFIG | undefined, chapter: number, level: number, energy: number) {
+        if (!config) {
+            TipsView.showView({ content: "关卡配置不存在" });
+            return;
+        }
+
+        if (energy > 0) {
+            const curEnergy = DataCenter.instance.userEnergy?.leftEnergy ?? 0;
+            if (curEnergy < energy) {
+                TipsView.showView({ content: "体力不足" });
+                return;
+            }
+            UserEnergy.instance.changeReq(-energy, (data) => {
+                if (data && data.code === 1) {
+                    this.doStartChallenge(config);
+                } else {
+                    TipsView.showView({ content: "扣除体力失败" });
+                }
+            });
+        } else {
+            this.doStartChallenge(config);
+        }
+    }
+
+    /**
+     * @method doStartChallenge
+     * @description 执行开启闯关：连接本地游戏服务器并切换到游戏场景
+     * @param {MAP_LEVEL_CONFIG} config - 关卡配置
+     * @private
+     */
+    private doStartChallenge(config: MAP_LEVEL_CONFIG) {
+        ConnectGameSvr.instance.connectLocalGame({ gameid: 10002, challengeConfig: config }, (success) => {
+            if (success) {
+                ChangeScene("GameScene");
+            }
         });
     }
 

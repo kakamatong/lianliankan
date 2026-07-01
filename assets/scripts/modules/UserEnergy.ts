@@ -44,9 +44,13 @@ export class UserEnergy extends BaseModule {
      * @method changeReq
      * @description 请求增减用户体力
      * @param {number} change - 体力变化量（正数增加，负数减少）
+     * @param {(data: SprotoUserEnergyChange.Response) => void} callBack - 完成回调
      */
-    changeReq(change: number) {
-        this.reqLobby(SprotoUserEnergyChange, { change }, this.changeResp.bind(this));
+    changeReq(change: number, callBack?: (data: SprotoUserEnergyChange.Response) => void) {
+        this.reqLobby(SprotoUserEnergyChange, { change }, (data: SprotoUserEnergyChange.Response) => {
+            this.changeResp(data);
+            callBack && callBack(data);
+        });
     }
 
     /**

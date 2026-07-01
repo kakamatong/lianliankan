@@ -88,7 +88,9 @@ export class CompGameMain extends FGUICompGameMain {
         this.UI_COMP_CLOCK.visible = false;
 
         // 客户端进入完成
-        if (GameData.instance.isPrivateRoom) {
+        if (GameData.instance.isChallengeMode) {
+            this.ctrl_roomtype.selectedIndex = ROOM_TYPE.CHALLENGE;
+        } else if (GameData.instance.isPrivateRoom) {
             this.ctrl_roomtype.selectedIndex = ROOM_TYPE.PRIVATE;
         } else if (GameData.instance.isLocalGame) {
             this.ctrl_roomtype.selectedIndex = ROOM_TYPE.LOCAL;
@@ -112,6 +114,9 @@ export class CompGameMain extends FGUICompGameMain {
 
         if (GameSocketManager.instance.isLocalGame()) {
             GameData.instance.isLocalGame = true;
+            if (LocalSvr.instance.isChallengeMode()) {
+                GameData.instance.isChallengeMode = true;
+            }
         } else {
             GameData.instance.isLocalGame = false;
         }

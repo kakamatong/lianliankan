@@ -12,6 +12,7 @@ import { BaseModule } from "@frameworks/base/BaseModule";
 import { Logger } from "@frameworks/utils/Utils";
 import { LocalSvr } from "@localGame/LocalSvr";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
+import { MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
 
 /**
  * @class ConnectGameSvr
@@ -45,13 +46,13 @@ export class ConnectGameSvr extends BaseModule {
         AuthGame.instance.req(data.addr, data.gatewayUrl, data.gameid, data.roomid, authCallBack);
     }
 
-    connectLocalGame(data: { gameid: number }, callBack?: (success: boolean, data?: any) => void) {
+    connectLocalGame(data: { gameid: number; challengeConfig?: MAP_LEVEL_CONFIG }, callBack?: (success: boolean, data?: any) => void) {
         Logger.log(LogColors.green("连接本地游戏服务器"));
         const authCallBack = (success: boolean) => {
             callBack && callBack(success);
         };
 
-        LocalSvr.instance.start();
+        LocalSvr.instance.start(data.challengeConfig);
         DataCenter.instance.shortRoomid = 0
         GameSocketManager.instance.start(true);
         authCallBack(true);

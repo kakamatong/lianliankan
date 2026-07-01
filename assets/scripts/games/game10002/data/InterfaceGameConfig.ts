@@ -113,6 +113,7 @@ export enum ROOM_TYPE {
     MATCH = 0, // 匹配房间
     PRIVATE = 1, // 私人房间
     LOCAL = 2, // 本地游戏
+    CHALLENGE = 3, // 闯关模式
 }
 
 /**

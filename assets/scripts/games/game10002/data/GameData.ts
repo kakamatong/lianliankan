@@ -50,6 +50,12 @@ export class GameData {
      */
     private _isLocalGame: boolean = false;
 
+    /**
+     * @description 是否是闯关模式
+     * @returns {boolean} 是否是闯关模式
+     */
+    private _isChallengeMode: boolean = false;
+
     /** 单例实例 */
     private static _instance: GameData;
 
@@ -82,6 +88,7 @@ export class GameData {
         this._playerMaps.clear();
         this._playingStepTime = 0;
         this._isLocalGame = false;
+        this._isChallengeMode = false;
         this._itemEnabled = false;
     }
 
@@ -332,6 +339,14 @@ export class GameData {
 
     get isLocalGame(): boolean {
         return this._isLocalGame;
+    }
+
+    set isChallengeMode(flag: boolean) {
+        this._isChallengeMode = flag;
+    }
+
+    get isChallengeMode(): boolean {
+        return this._isChallengeMode;
     }
 
     /**
