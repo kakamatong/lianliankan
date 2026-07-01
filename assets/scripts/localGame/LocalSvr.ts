@@ -377,11 +377,16 @@ export class LocalSvr {
     onGameFinished(): void {
         // 停止时钟
         this._stopClock();
-        // 下发时钟归零，隐藏客户端倒计时
-        this.dispatchEvent(SprotoGameClock.Name, { time: 0, seat: 1 });
+        // TOTAL_TIME>0 时才下发时钟归零，隐藏客户端倒计时
+        if (this._totalTime > 0) {
+            this.dispatchEvent(SprotoGameClock.Name, { time: 0, seat: 1 });
+        }
 
         const usedTime = Date.now() - this._startTime;
         const selfSeat = 1;
+
+        // 下发游戏步骤 = END
+        this.dispatchEvent(SprotoStepId.Name, { step: 3 });
 
         // 广播玩家完成
         this.dispatchEvent(SprotoPlayerFinished.Name, {
@@ -714,17 +719,19 @@ export class LocalSvr {
     /**
      * 启动服务器端时钟，每秒检查是否超时
      * 超时后强制结束游戏
+     * TOTAL_TIME=0 表示不需要倒计时
      */
     private _startClock(): void {
         this._stopClock();
         this._remainTime = this._totalTime;
 
-        // 下发初始时钟，触发客户端显示倒计时
-        this.dispatchEvent(SprotoGameClock.Name, { time: this._remainTime, seat: 1 });
-
+        // TOTAL_TIME=0 表示不需要倒计时，不下发协议
         if (this._totalTime <= 0) {
             return;
         }
+
+        // 下发初始时钟，触发客户端显示倒计时
+        this.dispatchEvent(SprotoGameClock.Name, { time: this._remainTime, seat: 1 });
 
         this._clockTimer = setInterval(() => {
             this._remainTime--;
