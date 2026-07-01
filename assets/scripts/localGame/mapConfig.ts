@@ -16,7 +16,7 @@
 export const MAP_DESIGN_CONFIG = [
     {
         // 经典全屏 8x8 布局
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -34,15 +34,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 8,
-        DEFAULT_COLS: 14,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 120,
-        END_TIME: 10,
+        defaultRows: 8,
+        defaultCols: 14,
+        iconTypes: 22,
+        totalTime: 120,
+        endTime: 10,
     },
     {
         // 上下分屏布局（中间两行空白隔断）
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -60,15 +60,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 8,
-        DEFAULT_COLS: 12,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 90,
-        END_TIME: 10,
+        defaultRows: 8,
+        defaultCols: 12,
+        iconTypes: 22,
+        totalTime: 90,
+        endTime: 10,
     },
     {
         // 左右分屏 + 中间竖列空白隔断
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 0, 0, 1, 1, 1, 0],
@@ -86,15 +86,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 8,
-        DEFAULT_COLS: 12,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 60,
-        END_TIME: 10,
+        defaultRows: 8,
+        defaultCols: 12,
+        iconTypes: 22,
+        totalTime: 60,
+        endTime: 10,
     },
     {
         // 居中 6x6 区域
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
@@ -112,15 +112,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 6,
-        DEFAULT_COLS: 6,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 60,
-        END_TIME: 10,
+        defaultRows: 6,
+        defaultCols: 6,
+        iconTypes: 22,
+        totalTime: 60,
+        endTime: 10,
     },
     {
         // 十字空白 + 四角 3x3 区块
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 0, 0, 1, 1, 1, 0],
             [0, 1, 1, 1, 0, 0, 1, 1, 1, 0],
@@ -138,15 +138,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 1, 1, 1, 0, 0, 1, 1, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 8,
-        DEFAULT_COLS: 14,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 60,
-        END_TIME: 10,
+        defaultRows: 8,
+        defaultCols: 14,
+        iconTypes: 22,
+        totalTime: 60,
+        endTime: 10,
     },
     {
         // H 型布局（上下连通，左右分块）
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 0, 0, 1, 1, 1, 0],
@@ -164,15 +164,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 6,
-        DEFAULT_COLS: 12,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 60,
-        END_TIME: 10,
+        defaultRows: 6,
+        defaultCols: 12,
+        iconTypes: 22,
+        totalTime: 60,
+        endTime: 10,
     },
     {
         // 回字形（外圈 + 内圈，中间带状空白）
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
             [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
@@ -190,15 +190,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 8,
-        DEFAULT_COLS: 14,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 60,
-        END_TIME: 10,
+        defaultRows: 8,
+        defaultCols: 14,
+        iconTypes: 22,
+        totalTime: 60,
+        endTime: 10,
     },
     {
         // 田字形（四宫格，中间十字空白）
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
             [0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
@@ -216,15 +216,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 8,
-        DEFAULT_COLS: 14,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 70,
-        END_TIME: 10,
+        defaultRows: 8,
+        defaultCols: 14,
+        iconTypes: 22,
+        totalTime: 70,
+        endTime: 10,
     },
     {
         // 三明治布局（三层横向分隔）
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -242,15 +242,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 8,
-        DEFAULT_COLS: 14,
-        ICON_TYPES: 15,
-        TOTAL_TIME: 60,
-        END_TIME: 10,
+        defaultRows: 8,
+        defaultCols: 14,
+        iconTypes: 15,
+        totalTime: 60,
+        endTime: 10,
     },
     {
         // 栅栏布局（竖列条形分隔）
-        MAP: [
+        map: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
             [0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
@@ -268,15 +268,15 @@ export const MAP_DESIGN_CONFIG = [
             [0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-        DEFAULT_ROWS: 8,
-        DEFAULT_COLS: 14,
-        ICON_TYPES: 22,
-        TOTAL_TIME: 60,
-        END_TIME: 10,
+        defaultRows: 8,
+        defaultCols: 14,
+        iconTypes: 22,
+        totalTime: 60,
+        endTime: 10,
     },
     // {
     //     // 栅栏布局（竖列条形分隔）
-    //     MAP: [
+    //     map: [
     //         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     //         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     //         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -288,10 +288,10 @@ export const MAP_DESIGN_CONFIG = [
     //         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     //         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     //     ],
-    //     DEFAULT_ROWS: 4,
-    //     DEFAULT_COLS: 2,
-    //     ICON_TYPES: 11,
-    //     TOTAL_TIME: 60,
-    //     END_TIME: 10,
+    //     defaultRows: 4,
+    //     defaultCols: 2,
+    //     iconTypes: 11,
+    //     totalTime: 60,
+    //     endTime: 10,
     // },
 ];

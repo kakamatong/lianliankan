@@ -112,7 +112,7 @@ export function generateRandomMap(): { map: number[][]; design: (typeof MAP_DESI
     Logger.log(`随机选择地图设计索引: ${index}`);
     //index = MAP_DESIGN_CONFIG.length - 1
     const design = MAP_DESIGN_CONFIG[index];
-    const map = generateFromDesign(design.MAP, design.DEFAULT_ROWS, design.DEFAULT_COLS, design.ICON_TYPES);
+    const map = generateFromDesign(design.map, design.defaultRows, design.defaultCols, design.iconTypes);
     return { map, design };
 }
 

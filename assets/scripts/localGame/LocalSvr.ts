@@ -335,7 +335,7 @@ export class LocalSvr {
         const { map, design } = generateRandomMap();
 
         // 保存当前地图的总时间
-        this._totalTime = design.TOTAL_TIME || 0;
+        this._totalTime = design.totalTime || 0;
 
         // 扩展为 16×10，底部 6 行补零（超出地图设计范围默认隐藏）
         const mapLength = map ? map.length : 0;
