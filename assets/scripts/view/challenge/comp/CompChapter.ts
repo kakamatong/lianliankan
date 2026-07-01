@@ -202,8 +202,8 @@ export class CompChapter extends FGUICompChapter {
         }
 
         if (energy > 0) {
-            const curEnergy = DataCenter.instance.userEnergy?.leftEnergy ?? 0;
-            if (curEnergy < energy) {
+            const state = DataCenter.instance.getCurrentEnergyState();
+            if (state.currentTotal < energy) {
                 TipsView.showView({ content: "体力不足" });
                 return;
             }

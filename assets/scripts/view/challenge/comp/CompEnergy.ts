@@ -1,6 +1,6 @@
 /**
  * @file CompEnergy.ts
- * @description 体力组件：展示体力数值和恢复倒计时，自动恢复体力并同步到数据中心
+ * @description 体力组件：展示体力数值和恢复倒计时，体力计算逻辑托管给 DataCenter
  * @category 挑战视图
  */
 
@@ -27,42 +27,6 @@ export class CompEnergy extends FGUICompEnergy {
     private _scheduleId: (() => void) | null = null;
 
     /**
-     * @property {number} _serverLeftEnergy - 服务端基准左体力值（不含自动恢复增量）
-     * @private
-     */
-    private _serverLeftEnergy: number = 0;
-
-    /**
-     * @property {number} _serverExtraEnergy - 服务端额外体力值（奖励溢出部分）
-     * @private
-     */
-    private _serverExtraEnergy: number = 0;
-
-    /**
-     * @property {number} _maxEnergy - 体力上限
-     * @private
-     */
-    private _maxEnergy: number = 0;
-
-    /**
-     * @property {number} _serverUpdateTime - 服务端上次刷新时间戳（秒）
-     * @private
-     */
-    private _serverUpdateTime: number = 0;
-
-    /**
-     * @property {number} _rate - 体力恢复速率（点/小时）
-     * @private
-     */
-    private _rate: number = 0;
-
-    /**
-     * @property {number} _lastCalculatedLeft - 上一次计算出的左体力值（用于检测跨回复点）
-     * @private
-     */
-    private _lastCalculatedLeft: number = 0;
-
-    /**
      * @method onConstruct
      * @description 组件构建回调，初始化计时器和事件监听
      */
@@ -85,43 +49,21 @@ export class CompEnergy extends FGUICompEnergy {
 
     /**
      * @method show
-     * @description 显示组件，从数据中心加载数据并启动计时器
+     * @description 显示组件，刷新显示并启动计时器
      * @param {any} [data] - 传入数据（预留）
      */
     show(data?: any): void {
-        this.initFromDataCenter();
         this.refreshDisplay();
         this.startTimerIfNeeded();
     }
 
     /**
-     * @method initFromDataCenter
-     * @description 从 DataCenter 读取服务端能量数据并缓存到本地字段
-     * @private
-     */
-    private initFromDataCenter(): void {
-        const energy = DataCenter.instance.userEnergy;
-        if (energy) {
-            this._serverLeftEnergy = energy.leftEnergy;
-            this._serverExtraEnergy = energy.extraEnergy ?? 0;
-            this._maxEnergy = energy.maxEnergy;
-            this._serverUpdateTime = energy.updateTime;
-            this._rate = energy.rate;
-        }
-    }
-
-    /**
      * @method onUserEnergy
      * @description 收到服务端 USER_ENERGY 事件，重置基准数据并刷新显示
-     * @param {any} data - 服务端下发的能量数据
+     * @param {any} _data - 服务端下发的能量数据
      * @private
      */
-    private onUserEnergy(data: any): void {
-        this._serverLeftEnergy = data.leftEnergy;
-        this._serverExtraEnergy = data.extraEnergy ?? 0;
-        this._maxEnergy = data.maxEnergy;
-        this._serverUpdateTime = data.updateTime;
-        this._rate = data.rate;
+    private onUserEnergy(_data: any): void {
         this.refreshDisplay();
         this.startTimerIfNeeded();
     }
@@ -155,7 +97,7 @@ export class CompEnergy extends FGUICompEnergy {
      * @private
      */
     private startTimerIfNeeded(): void {
-        const state = this._calcState();
+        const state = DataCenter.instance.getCurrentEnergyState();
         if (state.isFull) {
             this.stopTimer();
         } else {
@@ -165,46 +107,14 @@ export class CompEnergy extends FGUICompEnergy {
 
     /**
      * @method tick
-     * @description 计时器回调（每秒），检测体力恢复并同步到 DataCenter
+     * @description 计时器回调（每秒），刷新显示并检测是否需要停止计时器
      * @private
      */
     private tick(): void {
-        const state = this._calcState();
-        if (state.currentLeft > this._lastCalculatedLeft) {
-            this._lastCalculatedLeft = state.currentLeft;
-            DataCenter.instance.updateLeftEnergy(state.currentLeft);
-        }
-        if (state.isFull) {
+        if (DataCenter.instance.getCurrentEnergyState().isFull) {
             this.stopTimer();
         }
         this.refreshDisplay();
-    }
-
-    /**
-     * @method _calcState
-     * @description 根据服务端基准数据和经过时间，计算当前体力状态
-     *  - rate 为每小时恢复点数 → 换算为 recoverySecs = 3600 / rate 秒每点
-     *  - currentLeft = min(基准左体力 + 已恢复点数, 上限)
-     *  - currentTotal = currentLeft + extraEnergy（显示用）
-     * @returns {{ isFull: boolean; currentLeft: number; currentTotal: number; timeLeft: number }} 体力状态
-     * @private
-     */
-    private _calcState(): { isFull: boolean; currentLeft: number; currentTotal: number; timeLeft: number } {
-        const nowSec = Math.floor(Date.now() / 1000);
-        const recoverySecs = 3600 / this._rate;
-        const elapsed = Math.max(0, nowSec - this._serverUpdateTime);
-        const recovered = Math.floor(elapsed / recoverySecs);
-        const currentLeft = Math.min(this._serverLeftEnergy + recovered, this._maxEnergy);
-        const currentTotal = currentLeft + this._serverExtraEnergy;
-        const isFull = currentTotal >= this._maxEnergy;
-
-        let timeLeft = 0;
-        if (!isFull) {
-            const nextRecoverSec = this._serverUpdateTime + (recovered + 1) * recoverySecs;
-            timeLeft = Math.max(0, nextRecoverSec - nowSec);
-        }
-
-        return { isFull, currentLeft, currentTotal, timeLeft };
     }
 
     /**
@@ -213,11 +123,10 @@ export class CompEnergy extends FGUICompEnergy {
      * @private
      */
     private refreshDisplay(): void {
-        const state = this._calcState();
-        this._lastCalculatedLeft = state.currentLeft;
+        const state = DataCenter.instance.getCurrentEnergyState();
 
         if (this.UI_TXT_TOTAL) {
-            this.UI_TXT_TOTAL.text = `${state.currentTotal}/${this._maxEnergy}`;
+            this.UI_TXT_TOTAL.text = `${state.currentTotal}/${DataCenter.instance.userEnergy?.maxEnergy ?? 0}`;
         }
 
         if (this.UI_TXT_TIME) {

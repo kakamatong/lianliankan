@@ -19,6 +19,21 @@ import {
 import { sys } from "cc";
 
 /**
+ * @interface ENERGY_STATE
+ * @description 能量状态计算结果
+ */
+export interface ENERGY_STATE {
+    /** 是否已满 */
+    isFull: boolean;
+    /** 当前左体力值（基准 + 自动恢复） */
+    currentLeft: number;
+    /** 当前总体力（左体力 + 额外体力） */
+    currentTotal: number;
+    /** 距离下次恢复剩余秒数 */
+    timeLeft: number;
+}
+
+/**
  * @class DataCenter
  * @description 数据中心，使用单例模式管理全局数据，包括用户信息、游戏数据、服务器地址等
  * @category 数据中心
@@ -322,6 +337,36 @@ export class DataCenter {
         if (this._userEnergy) {
             this._userEnergy.leftEnergy = value;
         }
+    }
+
+    /**
+     * @method getCurrentEnergyState
+     * @description 获取当前能量状态，根据服务端基准数据和经过时间自动计算恢复量，
+     *              同时更新 _userEnergy.leftEnergy 为最新值（含自动恢复增量）
+     * @returns {ENERGY_STATE} 能量状态对象
+     */
+    getCurrentEnergyState(): ENERGY_STATE {
+        if (!this._userEnergy) {
+            return { isFull: true, currentLeft: 0, currentTotal: 0, timeLeft: 0 };
+        }
+
+        const nowSec = Math.floor(Date.now() / 1000);
+        const recoverySecs = 3600 / this._userEnergy.rate;
+        const elapsed = Math.max(0, nowSec - this._userEnergy.updateTime);
+        const recovered = Math.floor(elapsed / recoverySecs);
+        const currentLeft = Math.min(this._userEnergy.leftEnergy + recovered, this._userEnergy.maxEnergy);
+        const currentTotal = currentLeft + (this._userEnergy.extraEnergy ?? 0);
+        const isFull = currentTotal >= this._userEnergy.maxEnergy;
+
+        let timeLeft = 0;
+        if (!isFull) {
+            const nextRecoverSec = this._userEnergy.updateTime + (recovered + 1) * recoverySecs;
+            timeLeft = Math.max(0, nextRecoverSec - nowSec);
+        }
+
+        this._userEnergy.leftEnergy = currentLeft;
+
+        return { isFull, currentLeft, currentTotal, timeLeft };
     }
 
 
