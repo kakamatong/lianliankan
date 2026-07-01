@@ -175,6 +175,7 @@ export class CompChapter extends FGUICompChapter {
         ChallengeRuleHintView.showView({
             title: "温馨提示",
             content: msg,
+            energy: -5,
             sureBack: () => {
                 Logger.log("进入对战");
             },
