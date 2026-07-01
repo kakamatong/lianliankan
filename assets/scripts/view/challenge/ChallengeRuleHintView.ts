@@ -8,6 +8,21 @@ import FGUIChallengeRuleHintView from "@fgui/challenge/FGUIChallengeRuleHintView
 import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 
+/**
+ * @interface CHALLENGE_RULE_HINT_DATA
+ * @description 闯关规则提示框传入参数
+ */
+export interface CHALLENGE_RULE_HINT_DATA {
+    /** 标题文本 */
+    title?: string;
+    /** 规则内容（支持 UBB 标签） */
+    content?: string;
+    /** 体力消耗值 */
+    energy?: number;
+    /** 确定按钮回调 */
+    sureBack?: () => void;
+}
+
 @ViewClass()
 export class ChallengeRuleHintView extends FGUIChallengeRuleHintView {
     /** 确定按钮回调 */
@@ -23,15 +38,18 @@ export class ChallengeRuleHintView extends FGUIChallengeRuleHintView {
 
     /**
      * @method show
-     * @description 显示提示框，设置标题、内容和按钮回调
-     * @param {any} data - { title?: string, content?: string, sureBack?: () => void }
+     * @description 显示提示框，设置标题、内容、体力消耗和按钮回调
+     * @param {CHALLENGE_RULE_HINT_DATA} data - 传入参数
      */
-    show(data?: any): void {
+    show(data?: CHALLENGE_RULE_HINT_DATA): void {
         if (data && this.UI_COMP_MAIN) {
             if (data.title) this.UI_COMP_MAIN.UI_TXT_TITLE.text = data.title;
             if (data.content) {
                 this.UI_COMP_MAIN.UI_TXT_CONTENT.ubbEnabled = true;
                 this.UI_COMP_MAIN.UI_TXT_CONTENT.text = data.content;
+            }
+            if (data.energy !== undefined && data.energy !== null) {
+                this.UI_COMP_MAIN.UI_BTN_SURE.UI_TXT_ENERGY.text = String(data.energy);
             }
             this._sureBack = data.sureBack || null;
         }

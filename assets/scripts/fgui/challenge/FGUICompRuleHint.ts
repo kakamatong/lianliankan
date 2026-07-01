@@ -2,6 +2,7 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
+import FGUICompBtnChallenge from "./FGUICompBtnChallenge";
 
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
@@ -9,9 +10,9 @@ import { Logger } from "@frameworks/utils/Utils";
 export default class FGUICompRuleHint extends fgui.GComponent {
 
 	public UI_TXT_TITLE:fgui.GTextField;
-	public UI_BTN_SURE:fgui.GButton;
 	public UI_BTN_CLOSE:fgui.GButton;
 	public UI_TXT_CONTENT:fgui.GRichTextField;
+	public UI_BTN_SURE:FGUICompBtnChallenge;
 	public static URL:string = "ui://22u2b061kq4jf";
 
 	public static packageName:string = "challenge";
@@ -53,17 +54,17 @@ export default class FGUICompRuleHint extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(1));
-		this.UI_BTN_SURE = <fgui.GButton>(this.getChildAt(2));
-		this.UI_BTN_SURE.onClick(this.onBtnSure, this);
-		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(3));
+		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
-		this.UI_TXT_CONTENT = <fgui.GRichTextField>(this.getChildAt(4));
+		this.UI_TXT_CONTENT = <fgui.GRichTextField>(this.getChildAt(3));
+		this.UI_BTN_SURE = <FGUICompBtnChallenge>(this.getChildAt(4));
+		this.UI_BTN_SURE.onClick(this.onBtnSure, this);
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
 	unschedule(callback: () => void):void{};
 	schedule(callback: () => void, interval: number):void{};
-	onBtnSure():void{};
 	onBtnClose():void{};
+	onBtnSure():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompRuleHint.URL, FGUICompRuleHint);
