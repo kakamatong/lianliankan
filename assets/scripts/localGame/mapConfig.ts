@@ -37,7 +37,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 8,
         defaultCols: 14,
         iconTypes: 22,
-        totalTime: 120,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -63,7 +63,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 8,
         defaultCols: 12,
         iconTypes: 22,
-        totalTime: 90,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -89,7 +89,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 8,
         defaultCols: 12,
         iconTypes: 22,
-        totalTime: 60,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -115,7 +115,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 6,
         defaultCols: 6,
         iconTypes: 22,
-        totalTime: 60,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -141,7 +141,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 8,
         defaultCols: 14,
         iconTypes: 22,
-        totalTime: 60,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -167,7 +167,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 6,
         defaultCols: 12,
         iconTypes: 22,
-        totalTime: 60,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -193,7 +193,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 8,
         defaultCols: 14,
         iconTypes: 22,
-        totalTime: 60,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -219,7 +219,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 8,
         defaultCols: 14,
         iconTypes: 22,
-        totalTime: 70,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -245,7 +245,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 8,
         defaultCols: 14,
         iconTypes: 15,
-        totalTime: 60,
+        totalTime: 0,
         endTime: 10,
     },
     {
@@ -271,7 +271,7 @@ export const MAP_DESIGN_CONFIG = [
         defaultRows: 8,
         defaultCols: 14,
         iconTypes: 22,
-        totalTime: 60,
+        totalTime: 0,
         endTime: 10,
     },
     // {
