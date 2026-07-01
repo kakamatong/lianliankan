@@ -3,6 +3,7 @@ import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "@frameworks/Framework";
 import { DataCenter } from "@datacenter/Datacenter";
 import { GameData } from "../../../data/GameData";
+import { LocalSvr } from "@localGame/LocalSvr";
 import {
     PLAYER_STATUS,
     ROOM_END_FLAG,
@@ -1179,6 +1180,10 @@ export class CompGameMain extends FGUICompGameMain {
      * 切换到大厅场景
      */
     changeToLobbyScene(): void {
+        // 单机模式：清理本地服务器
+        if (GameData.instance.isLocalGame) {
+            LocalSvr.instance.destroy();
+        }
         if (GameSocketManager.instance.isOpen()) {
             GameSocketManager.instance.close();
         }
