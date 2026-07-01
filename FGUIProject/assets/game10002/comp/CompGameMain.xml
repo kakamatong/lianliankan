@@ -103,8 +103,8 @@
       <relation target="" sidePair="left-right,bottom-bottom"/>
       <Button icon="ui://2zsfe53xpxa5o"/>
     </component>
-    <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,447" visible="false">
-      <gearXY controller="ctrl_roomtype" pages="0,1,2" values="63,447|62,447|63,212" default="63,447"/>
+    <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,129" visible="false">
+      <gearXY controller="ctrl_roomtype" pages="0,1,2,3" values="63,447|62,447|63,212|63,129"/>
       <relation target="" sidePair="center-center,top-top"/>
     </component>
     <component id="n76_mnt1" name="UI_COMP_FINSH_INFO" src="mnt118" fileName="comp/CompFinshInfo.xml" xy="208,801">
@@ -112,7 +112,8 @@
       <gearXY controller="ctrl_roomtype" pages="2" values="208,592" default="208,801"/>
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n80_tw1h" name="UI_COMP_PROP" src="tw1h1g" fileName="comp/CompPropPanel.xml" xy="381,1557" pivot="1,1" visible="false">
+    <component id="n80_tw1h" name="UI_COMP_PROP" src="tw1h1g" fileName="comp/CompPropPanel.xml" xy="485,1557" pivot="1,1" visible="false">
+      <gearXY controller="ctrl_roomtype" pages="2,3" values="485,1557|485,1557" default="381,1557"/>
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </component>
     <component id="n82_jt3f" name="UI_COMP_COMB" src="jt3f1k" fileName="comp/CompComb.xml" xy="27,1605">

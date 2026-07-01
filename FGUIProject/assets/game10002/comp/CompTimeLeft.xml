@@ -6,7 +6,7 @@
     <action type="play_transition" fromPage="0" toPage="1" transition="act" repeat="-1" stopOnExit="true"/>
     <action type="play_transition" fromPage="1" toPage="0" transition=""/>
   </controller>
-  <controller name="ctrl_type" pages="0,,1," selected="0">
+  <controller name="ctrl_type" pages="0,,1," selected="1">
     <remark page="0" value="普通"/>
     <remark page="1" value="闯关时间"/>
   </controller>
