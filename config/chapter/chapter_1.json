@@ -24,6 +24,7 @@
     "totalTime": 120,
     "type": 1,
     "boss":0,
+    "energy":5,
     "starTime":[30,40,60]
   },
 {
@@ -51,6 +52,7 @@
     "totalTime": 90,
     "type": 1,
     "boss":0,
+    "energy":5,
     "starTime":[30,40,60]
   },
 {
@@ -78,6 +80,7 @@
     "totalTime": 60,
     "type": 1,
     "boss":0,
+    "energy":5,
     "starTime":[30,40,60]
   },
 {
@@ -105,6 +108,7 @@
     "totalTime": 60,
     "type": 1,
     "boss":0,
+    "energy":5,
     "starTime":[30,40,60]
   },
 {
@@ -132,6 +136,7 @@
     "totalTime": 60,
     "type": 1,
     "boss":0,
+    "energy":5,
     "starTime":[30,40,60]
   }
 ]

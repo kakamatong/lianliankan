@@ -58,6 +58,8 @@ export interface MAP_LEVEL_CONFIG {
     type: number;
     /** 获取星星限制时间 */
     starTime: number[];
+    /** 体力消耗 */
+    energy?: number;
 }
 
 /**
