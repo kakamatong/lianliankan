@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="776,1688">
-  <controller name="ctrl_btn" pages="0,,1,,2,,3,,4,,5," selected="5">
+  <controller name="ctrl_btn" pages="0,,1,,2,,3,,4,,5," selected="0">
     <remark page="0" value="都不显示"/>
     <remark page="1" value="确定"/>
     <remark page="2" value="更换"/>
@@ -8,10 +8,11 @@
     <remark page="4" value="准备"/>
     <remark page="5" value="重新开始"/>
   </controller>
-  <controller name="ctrl_roomtype" pages="0,,1,,2," selected="0">
+  <controller name="ctrl_roomtype" pages="0,,1,,2,,3," selected="3">
     <remark page="0" value="普通房"/>
     <remark page="1" value="私人房"/>
     <remark page="2" value="单机房"/>
+    <remark page="3" value="闯关房"/>
     <action type="change_page" fromPage="" toPage="1" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="1"/>
     <action type="change_page" fromPage="" toPage="0" objectId="n62_gk14" controller="ctrl_roomtype" targetPage="0"/>
     <action type="change_page" fromPage="" toPage="1" objectId="n63_gk14" controller="ctrl_roomtype" targetPage="1"/>
@@ -45,8 +46,8 @@
     <component id="n71_pgw3" name="UI_COMP_PLAYERS" src="pgw3x" fileName="comp/CompPlayers.xml" xy="9,2">
       <relation target="" sidePair="width-width,top-top"/>
     </component>
-    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,540" pivot="0.5,0.5" visible="false">
-      <gearXY controller="ctrl_roomtype" pages="0,1,2" values="0,540|0,540|0,108"/>
+    <component id="n70_8yj8" name="UI_COMP_MAP" src="hs3tq" fileName="comp/map/CompMap.xml" xy="0,243" pivot="0.5,0.5" visible="false">
+      <gearXY controller="ctrl_roomtype" pages="0,1,2,3" values="0,540|0,540|0,108|0,243"/>
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
     <component id="n53_mwa6" name="UI_BTN_INVITE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="272,1275" size="230,98" group="n78_ouez" controller="ctrl_color,2">
@@ -60,9 +61,11 @@
       <relation target="" sidePair="center-center,middle-middle"/>
     </group>
     <component id="n62_gk14" name="UI_COMP_SELFPLAYER" src="gk14j" fileName="comp/CompPlayerHead.xml" xy="18,1506" group="n75_mnt1">
+      <gearDisplay controller="ctrl_roomtype" pages="0,1"/>
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
     <component id="n74_mnt1" name="UI_COMP_SELF_MEDAL" src="eijp1f" fileName="comp/CompMedal.xml" pkg="so20wr0w" xy="123,1501" group="n75_mnt1">
+      <gearDisplay controller="ctrl_roomtype" pages="0,1"/>
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
     <group id="n75_mnt1" name="n75" xy="18,1501" size="165,166"/>
@@ -101,7 +104,7 @@
       <Button icon="ui://2zsfe53xpxa5o"/>
     </component>
     <component id="n73_mnt1" name="UI_COMP_CLOCK" src="mnt112" fileName="comp/CompTimeLeft.xml" xy="63,447" visible="false">
-      <gearXY controller="ctrl_roomtype" pages="0,1,2" values="63,447|62,447|63,212"/>
+      <gearXY controller="ctrl_roomtype" pages="0,1,2" values="63,447|62,447|63,212" default="63,447"/>
       <relation target="" sidePair="center-center,top-top"/>
     </component>
     <component id="n76_mnt1" name="UI_COMP_FINSH_INFO" src="mnt118" fileName="comp/CompFinshInfo.xml" xy="208,801">
@@ -112,7 +115,8 @@
     <component id="n80_tw1h" name="UI_COMP_PROP" src="tw1h1g" fileName="comp/CompPropPanel.xml" xy="381,1557" pivot="1,1" visible="false">
       <relation target="" sidePair="right-right,bottom-bottom"/>
     </component>
-    <component id="n82_jt3f" name="UI_COMP_COMB" src="jt3f1k" fileName="comp/CompComb.xml" xy="27,1438">
+    <component id="n82_jt3f" name="UI_COMP_COMB" src="jt3f1k" fileName="comp/CompComb.xml" xy="27,1605">
+      <gearXY controller="ctrl_roomtype" pages="2,3" values="27,1605|27,1605" default="27,1438"/>
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
   </displayList>
