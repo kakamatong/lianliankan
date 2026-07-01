@@ -146,7 +146,7 @@ export class CompChapter extends FGUICompChapter {
                 chapterItem.touchable = true;
                 this.UI_LV_ITEMS.scrollPane.scrollToView(index, true, true);
                 chapterItem.onClick(() => {
-                    this.onBtnLevel(this._chapterIndex, config.index);
+                    this.onBtnLevel(this._chapterIndex, config.index, config.energy ?? 0);
                 });
             } else {
                 chapterItem.setStatus(LEVEL_STATUS.LOCKED);
@@ -163,19 +163,19 @@ export class CompChapter extends FGUICompChapter {
             }
 
             chapterItem.onClick(() => {
-                this.onBtnLevel(this._chapterIndex, config.index);
+                this.onBtnLevel(this._chapterIndex, config.index, config.energy ?? 0);
             });
         }
     }
 
-    private onBtnLevel(chapter: number, level: number) {
+    private onBtnLevel(chapter: number, level: number, energy: number) {
         Logger.log(`点击关卡: ${chapter}-${level}`);
         // 这里可以添加点击关卡后的逻辑，例如进入关卡详情或开始挑战
         const msg = this.getRule(chapter, level);
         ChallengeRuleHintView.showView({
             title: "温馨提示",
             content: msg,
-            energy: -5,
+            energy: -energy,
             sureBack: () => {
                 Logger.log("进入对战");
             },
