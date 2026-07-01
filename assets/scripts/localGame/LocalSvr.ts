@@ -1,4 +1,5 @@
 import { AddEventListener, DispatchEvent, RemoveEventListener } from "@frameworks/Framework";
+import { Logger } from "@frameworks/utils/Utils";
 import {
     SprotoGameStart,
     SprotoMapData,
@@ -14,6 +15,7 @@ import {
     SprotoPlayerEnter,
     SprotoStepId,
     SprotoRoomInfo,
+    SprotoGameClock,
 } from "../../types/protocol/game10002/s2c";
 import {
     SprotoClickTiles,
@@ -73,6 +75,13 @@ export class LocalSvr {
     /** 记录初始可填充位置（用于重新填入时只填充到有效位置） */
     private _validPositions: { row: number; col: number }[] = [];
 
+    /** 当前地图的总时间（秒），从 mapConfig 读取 */
+    private _totalTime: number = 0;
+    /** 剩余时间（秒） */
+    private _remainTime: number = 0;
+    /** 服务器端时钟定时器 */
+    private _clockTimer: any = null;
+
     constructor() {}
 
     /**
@@ -100,6 +109,7 @@ export class LocalSvr {
         RemoveEventListener(SprotoGameReady.Name, this.onGameReady);
         RemoveEventListener(SprotoLeaveRoom.Name, this.onLeaveRoom);
         RemoveEventListener(SprotoOwnerStartGame.Name, this.onOwnerStartGame);
+        this._stopClock();
     }
 
     /** 分发响应事件（"resp" + 协议名，供 GameSocketManager 的回调使用） */
@@ -324,6 +334,9 @@ export class LocalSvr {
     randomMap(): void {
         const { map, design } = generateRandomMap();
 
+        // 保存当前地图的总时间
+        this._totalTime = design.TOTAL_TIME || 0;
+
         // 扩展为 16×10，底部 6 行补零（超出地图设计范围默认隐藏）
         const mapLength = map ? map.length : 0;
         for (let row = mapLength; row < this._rows; row++) {
@@ -353,12 +366,20 @@ export class LocalSvr {
             this.dispatchEvent(SprotoMapShuffled.Name, { seat: 1, reason: 1 });
         }
         this._dispatchMapData();
+
+        // 启动时钟
+        this._startClock();
     }
 
     /**
      * 游戏完成处理
      */
     onGameFinished(): void {
+        // 停止时钟
+        this._stopClock();
+        // 下发时钟归零，隐藏客户端倒计时
+        this.dispatchEvent(SprotoGameClock.Name, { time: 0, seat: 1 });
+
         const usedTime = Date.now() - this._startTime;
         const selfSeat = 1;
 
@@ -684,6 +705,56 @@ export class LocalSvr {
         }
 
         return shuffled;
+    }
+
+    // ============================================
+    // 时钟管理
+    // ============================================
+
+    /**
+     * 启动服务器端时钟，每秒检查是否超时
+     * 超时后强制结束游戏
+     */
+    private _startClock(): void {
+        this._stopClock();
+        this._remainTime = this._totalTime;
+
+        // 下发初始时钟，触发客户端显示倒计时
+        this.dispatchEvent(SprotoGameClock.Name, { time: this._remainTime, seat: 1 });
+
+        if (this._totalTime <= 0) {
+            return;
+        }
+
+        this._clockTimer = setInterval(() => {
+            this._remainTime--;
+
+            if (this._remainTime <= 0) {
+                this._remainTime = 0;
+                this._stopClock();
+                this._onTimeout();
+            }
+        }, 1000);
+    }
+
+    /**
+     * 停止服务器端时钟
+     */
+    private _stopClock(): void {
+        if (this._clockTimer) {
+            clearInterval(this._clockTimer);
+            this._clockTimer = null;
+        }
+    }
+
+    /**
+     * 超时处理：强制结束游戏
+     */
+    private _onTimeout(): void {
+        Logger.log("[LocalSvr] 游戏超时，强制结束");
+        // 下发时钟归零，隐藏客户端倒计时
+        this.dispatchEvent(SprotoGameClock.Name, { time: 0, seat: 1 });
+        this.onGameFinished();
     }
 
     /**
