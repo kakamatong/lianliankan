@@ -2,6 +2,7 @@ import FGUICompGameMain from "@fgui/game10002/FGUICompGameMain";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "@frameworks/Framework";
 import { DataCenter } from "@datacenter/Datacenter";
+import { ChallengeData, CHALLENGE_LEVEL_TYPE } from "@datacenter/ChallengeData";
 import { GameData } from "../../../data/GameData";
 import { LocalSvr } from "@localGame/LocalSvr";
 import {
@@ -344,6 +345,15 @@ export class CompGameMain extends FGUICompGameMain {
             if (clock && clock > 0) {
                 const totalTime = GameData.instance.playingStepTime || clock;
                 compTimeLeft.visible = true;
+
+                if (GameData.instance.isChallengeMode) {
+                    const levelConfig = ChallengeData.instance.getSelectedLevelConfig();
+                    if (levelConfig && levelConfig.type === CHALLENGE_LEVEL_TYPE.TIMING && levelConfig.starTime) {
+                        compTimeLeft.start(clock, totalTime, 1, levelConfig.starTime);
+                        return;
+                    }
+                }
+
                 compTimeLeft.start(clock, totalTime);
             }
         } else {

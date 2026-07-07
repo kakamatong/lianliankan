@@ -10,6 +10,17 @@ import { LOCAL_KEY } from "./InterfaceConfig";
 import { ChallengeLevelData } from "../../types/protocol/lobby/c2s";
 
 /**
+ * @enum CHALLENGE_LEVEL_TYPE
+ * @description 闯关关卡类型
+ */
+export enum CHALLENGE_LEVEL_TYPE {
+    /** 计时规则 */
+    TIMING = 1,
+    /** 计分规则 */
+    SCORING = 2,
+}
+
+/**
  * @interface CHALLENGE_CHAPTER
  * @description 闯关章节配置
  */

@@ -13,9 +13,6 @@
   <displayList>
     <image id="n10_jt3f" name="n10" src="jt3f1i" fileName="imgs/clockBG.png" xy="0,0" size="650,80"/>
     <image id="n13_jt3f" name="UI_IMG_BAR" src="jt3f1j" fileName="imgs/clockIn.png" xy="4,4" fillMethod="hz"/>
-    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="320,8" pivot="0.5,0.5" size="10,64" fontSize="48" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#5ca48e" strokeSize="2" text="">
-      <gearColor controller="ctrl_warn" pages="0,1" values="#ffffff,#5ca48e|#ff0000,#6699cc"/>
-    </text>
     <component id="n14_kq4j" name="UI_COMP_STAR_1" src="kq4j1z" fileName="comp/CompTimeStar.xml" xy="-11,-33" controller="ctrl_stars,1">
       <gearDisplay controller="ctrl_type" pages="1"/>
       <Label title="10s"/>
@@ -28,6 +25,9 @@
       <gearDisplay controller="ctrl_type" pages="1"/>
       <Label title="10s"/>
     </component>
+    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="320,8" pivot="0.5,0.5" size="10,64" fontSize="48" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#5ca48e" strokeSize="2" text="">
+      <gearColor controller="ctrl_warn" pages="0,1" values="#ffffff,#5ca48e|#ff0000,#6699cc"/>
+    </text>
   </displayList>
   <transition name="act" options="4">
     <item time="0" type="Rotation" target="n9_mnt1" tween="true" startValue="0" endValue="10" duration="3"/>
