@@ -96,6 +96,22 @@ export class LocalSvr {
         return this._mode === LOCAL_SVR_MODE.CHALLENGE;
     }
 
+    /**
+     * 设置运行模式
+     * @param mode 运行模式
+     */
+    setMode(mode: LOCAL_SVR_MODE): void {
+        this._mode = mode;
+    }
+
+    /**
+     * 设置闯关模式的关卡配置
+     * @param config 关卡配置
+     */
+    setChallengeConfig(config: MAP_LEVEL_CONFIG): void {
+        this._challengeConfig = config;
+    }
+
     /** 记录初始可填充位置（用于重新填入时只填充到有效位置） */
     private _validPositions: { row: number; col: number }[] = [];
 
@@ -110,19 +126,10 @@ export class LocalSvr {
 
     /**
      * 启动本地服务器，注册所有 C2S 协议监听
-     * @param config 闯关模式关卡配置，传入则进入闯关模式，不传则为单机模式
      */
-    start(config?: MAP_LEVEL_CONFIG): void {
+    start(): void {
         // 先清理旧监听，确保多次调用不累积
         this.destroy();
-
-        if (config) {
-            this._mode = LOCAL_SVR_MODE.CHALLENGE;
-            this._challengeConfig = config;
-        } else {
-            this._mode = LOCAL_SVR_MODE.STANDALONE;
-            this._challengeConfig = null;
-        }
 
         AddEventListener(SprotoClientReady.Name, this.onClientReady, this);
         AddEventListener(SprotoClickTiles.Name, this.onClickTiles, this);

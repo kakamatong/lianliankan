@@ -10,7 +10,7 @@ import { LogColors } from "@frameworks/Framework";
 import { AuthGame } from "./AuthGame";
 import { BaseModule } from "@frameworks/base/BaseModule";
 import { Logger } from "@frameworks/utils/Utils";
-import { LocalSvr } from "@localGame/LocalSvr";
+import { LocalSvr, LOCAL_SVR_MODE } from "@localGame/LocalSvr";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
 
@@ -52,7 +52,13 @@ export class ConnectGameSvr extends BaseModule {
             callBack && callBack(success);
         };
 
-        LocalSvr.instance.start(data.challengeConfig);
+        if (data.challengeConfig) {
+            LocalSvr.instance.setMode(LOCAL_SVR_MODE.CHALLENGE);
+            LocalSvr.instance.setChallengeConfig(data.challengeConfig);
+        } else {
+            LocalSvr.instance.setMode(LOCAL_SVR_MODE.STANDALONE);
+        }
+        LocalSvr.instance.start();
         DataCenter.instance.shortRoomid = 0
         GameSocketManager.instance.start(true);
         authCallBack(true);
