@@ -24,6 +24,13 @@ export class CompTimeLeft extends FGUICompTimeLeft {
     private _totalTime: number = 0;
 
     /**
+     * @property {number[]} _starTimes
+     * @description 各星级对应的时间阈值（秒），长度为3，索引0/1/2对应1/2/3颗星
+     * @private
+     */
+    private _starTimes: number[] = [];
+
+    /**
      * @property {(() => void) | null} _scheduleId
      * @description 计时器ID
      * @private
@@ -73,17 +80,68 @@ export class CompTimeLeft extends FGUICompTimeLeft {
     }
 
     /**
+     * @method _initStarMode
+     * @description 初始化闯关限时模式的星星（设置标题和位置）
+     * @private
+     */
+    private _initStarMode(): void {
+        const stars = [this.UI_COMP_STAR_1, this.UI_COMP_STAR_2, this.UI_COMP_STAR_3];
+        for (let i = 0; i < stars.length; i++) {
+            const star = stars[i];
+            if (!star || i >= this._starTimes.length) continue;
+            star.title = `${this._starTimes[i]}s`;
+        }
+        this._updateStarPositions();
+    }
+
+    /**
+     * @method _updateStarPositions
+     * @description 根据各星星时间阈值占总时间的比例，动态调整星星在进度条上的位置（居中对齐）
+     * @private
+     */
+    private _updateStarPositions(): void {
+        if (!this.UI_IMG_BAR || this._totalTime <= 0) return;
+
+        const barWidth = this.UI_IMG_BAR.width;
+        const barX = this.UI_IMG_BAR.x;
+        const stars = [this.UI_COMP_STAR_1, this.UI_COMP_STAR_2, this.UI_COMP_STAR_3];
+
+        for (let i = 0; i < stars.length; i++) {
+            const star = stars[i];
+            if (!star || i >= this._starTimes.length) continue;
+
+            const ratio = Math.min(this._starTimes[i] / this._totalTime, 1);
+            star.x = barX + ratio * barWidth - star.width / 2;
+        }
+    }
+
+    /**
      * @method start
      * @description 开始倒计时
      * @param {number} remainingTime - 剩余时间（秒）
      * @param {number} totalTime - 总时间（秒）
+     * @param {number} [mode=0] - 模式：0=普通倒计时，1=闯关限时模式
+     * @param {number[]} [starTimes] - 闯关模式下各星级时间阈值（秒），长度为3，索引0/1/2对应1/2/3颗星
      */
-    start(remainingTime: number, totalTime: number): void {
+    start(remainingTime: number, totalTime: number, mode: number = 0, starTimes?: number[]): void {
         this._remainingTime = remainingTime;
         this._totalTime = totalTime;
+
+        if (mode === 1 && starTimes && starTimes.length >= 3) {
+            this._starTimes = [...starTimes];
+            if (this.ctrl_type) {
+                this.ctrl_type.selectedIndex = 1;
+            }
+            this._initStarMode();
+        } else {
+            this._starTimes = [];
+            if (this.ctrl_type) {
+                this.ctrl_type.selectedIndex = 0;
+            }
+        }
+
         this.updateDisplay();
 
-        // 确保计时器在运行
         if (this._scheduleId) {
             this.unschedule(this._scheduleId);
             this.schedule(this._scheduleId, 1);
@@ -107,6 +165,10 @@ export class CompTimeLeft extends FGUICompTimeLeft {
     reset(): void {
         this.stop();
         this._totalTime = 0;
+        this._starTimes = [];
+        if (this.ctrl_type) {
+            this.ctrl_type.selectedIndex = 0;
+        }
         if (this.UI_IMG_BAR) {
             this.UI_IMG_BAR.fillAmount = 1;
         }
