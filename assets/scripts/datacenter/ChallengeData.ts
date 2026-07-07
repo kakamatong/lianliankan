@@ -111,6 +111,18 @@ export class ChallengeData {
     private _curLevel: number = 0;
 
     /**
+     * @property {number} _selectedChapter - 当前选中的章节ID（玩家在UI中选中但未必是对战中的关卡）
+     * @private
+     */
+    private _selectedChapter: number = 0;
+
+    /**
+     * @property {number} _selectedLevel - 当前选中的关卡ID（玩家在UI中选中但未必是对战中的关卡）
+     * @private
+     */
+    private _selectedLevel: number = 0;
+
+    /**
      * @property {ChallengeData} _instance - 单例实例
      * @private
      * @static
@@ -182,6 +194,26 @@ export class ChallengeData {
     }
     set curLevel(v: number) {
         this._curLevel = v;
+    }
+
+    /**
+     * @property {number} selectedChapter - 当前选中的章节ID（玩家在UI中选中但未必是对战中的关卡）
+     */
+    get selectedChapter(): number {
+        return this._selectedChapter;
+    }
+    set selectedChapter(v: number) {
+        this._selectedChapter = v;
+    }
+
+    /**
+     * @property {number} selectedLevel - 当前选中的关卡ID（玩家在UI中选中但未必是对战中的关卡）
+     */
+    get selectedLevel(): number {
+        return this._selectedLevel;
+    }
+    set selectedLevel(v: number) {
+        this._selectedLevel = v;
     }
 
     /**

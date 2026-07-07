@@ -201,6 +201,9 @@ export class CompChapter extends FGUICompChapter {
             return;
         }
 
+        ChallengeData.instance.selectedChapter = chapter;
+        ChallengeData.instance.selectedLevel = level;
+
         if (energy > 0) {
             const state = DataCenter.instance.getCurrentEnergyState();
             if (state.currentTotal < energy) {
