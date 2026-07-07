@@ -250,6 +250,17 @@ export class ChallengeData {
     }
 
     /**
+     * @method getSelectedLevelConfig
+     * @description 获取当前选中关卡的配置数据
+     * @returns {MAP_LEVEL_CONFIG | undefined} 关卡配置对象
+     */
+    getSelectedLevelConfig(): MAP_LEVEL_CONFIG | undefined {
+        const maps = this._chapterMaps.get(this._selectedChapter);
+        if (!maps) return undefined;
+        return maps.find((m) => m.index === this._selectedLevel);
+    }
+
+    /**
      * @method updateSingleLevelData
      * @description 更新单个关卡数据（本地缓存），通关后更新分数、星级和挑战次数
      * @param {number} chapter - 章节索引
