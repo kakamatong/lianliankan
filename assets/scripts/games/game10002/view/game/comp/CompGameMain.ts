@@ -113,9 +113,10 @@ export class CompGameMain extends FGUICompGameMain {
         }
 
         if (GameSocketManager.instance.isLocalGame()) {
-            GameData.instance.isLocalGame = true;
             if (LocalSvr.instance.isChallengeMode()) {
                 GameData.instance.isChallengeMode = true;
+            } else {
+                GameData.instance.isLocalGame = true;
             }
         } else {
             GameData.instance.isLocalGame = false;
