@@ -1027,10 +1027,6 @@ export class CompGameMain extends FGUICompGameMain {
         } else {
             // TODO: 后续展示闯关失败结算界面
         }
-
-        // 闯关模式结束后返回大厅
-        this.changeToLobbyScene();
-    }
     }
 
     /**
