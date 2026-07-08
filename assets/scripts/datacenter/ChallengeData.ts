@@ -283,6 +283,24 @@ export class ChallengeData {
     }
 
     /**
+     * @method getNextLevel
+     * @description 计算指定关卡的下一个关卡（用于上传进度时告知服务端下一关位置）
+     * @param {number} chapter - 当前章节索引
+     * @param {number} level - 当前关卡索引
+     * @returns {{ chapter: number; level: number }} 下一关的章节和关卡索引
+     */
+    getNextLevel(chapter: number, level: number): { chapter: number; level: number } {
+        const maps = this._chapterMaps.get(chapter);
+        if (maps && level < maps.length - 1) {
+            return { chapter, level: level + 1 };
+        }
+        if (chapter < this.chapterCount - 1) {
+            return { chapter: chapter + 1, level: 0 };
+        }
+        return { chapter, level };
+    }
+
+    /**
      * @method updateSingleLevelData
      * @description 更新单个关卡数据（本地缓存），通关后更新分数、星级和挑战次数
      * @param {number} chapter - 章节索引

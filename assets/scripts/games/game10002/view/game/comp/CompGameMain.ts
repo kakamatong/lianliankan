@@ -23,6 +23,7 @@ import { ResultView } from "../../result/ResultView";
 import { UserStatus } from "@modules/UserStatus";
 import { MatchView } from "@view/match/MatchView";
 import { Match } from "@modules/Match";
+import { Challenge } from "@modules/Challenge";
 import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import { AuthGame } from "@modules/AuthGame";
 import { TotalResultView } from "../../result/TotalResultView";
@@ -1014,11 +1015,22 @@ export class CompGameMain extends FGUICompGameMain {
         const level = ChallengeData.instance.selectedLevel;
 
         if (endType === CHALLENGE_END_TYPE.SUCCESS) {
-            ChallengeData.instance.updateSingleLevelData(chapter, level, 0, stars);
+            const next = ChallengeData.instance.getNextLevel(chapter, level);
+            Challenge.instance.updateLevelData(chapter, level, 0, stars, next.chapter, next.level, (success) => {
+                if (success) {
+                    Logger.log("闯关进度已同步到服务器");
+                } else {
+                    Logger.warn("闯关进度同步失败");
+                }
+            });
             // TODO: 后续展示闯关成功结算界面
         } else {
             // TODO: 后续展示闯关失败结算界面
         }
+
+        // 闯关模式结束后返回大厅
+        this.changeToLobbyScene();
+    }
     }
 
     /**
