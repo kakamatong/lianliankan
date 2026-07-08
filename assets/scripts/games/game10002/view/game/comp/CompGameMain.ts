@@ -2,7 +2,7 @@ import FGUICompGameMain from "@fgui/game10002/FGUICompGameMain";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "@frameworks/Framework";
 import { DataCenter } from "@datacenter/Datacenter";
-import { ChallengeData, CHALLENGE_LEVEL_TYPE } from "@datacenter/ChallengeData";
+import { ChallengeData, CHALLENGE_LEVEL_TYPE, CHALLENGE_END_TYPE } from "@datacenter/ChallengeData";
 import { GameData } from "../../../data/GameData";
 import { LocalSvr } from "@localGame/LocalSvr";
 import {
@@ -929,6 +929,11 @@ export class CompGameMain extends FGUICompGameMain {
             compTimeLeft.stop();
         }
 
+        if (GameData.instance.isChallengeMode) {
+            this.onChallengeGameEnd(data);
+            return;
+        }
+
         // 处理连连看游戏结束数据
         if (data.rankings && data.rankings.length > 0) {
             // 处理未完成的其他玩家
@@ -988,6 +993,31 @@ export class CompGameMain extends FGUICompGameMain {
             this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.NONE;
         } else {
             this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.CONTINUE;
+        }
+    }
+
+    /**
+     * @method onChallengeGameEnd
+     * @description 闯关模式游戏结束处理（数据层）
+     * @param {SprotoGameEnd.Request} data - 游戏结束数据
+     * @private
+     */
+    private onChallengeGameEnd(data: SprotoGameEnd.Request): void {
+        const endType = data.endType;
+        const ranking = data.rankings?.[0];
+        const stars = ranking?.rank ?? 0;
+        const usedTime = ranking?.usedTime ?? 0;
+
+        Logger.log(`闯关模式结束: endType=${endType}, stars=${stars}, usedTime=${usedTime}`);
+
+        const chapter = ChallengeData.instance.selectedChapter;
+        const level = ChallengeData.instance.selectedLevel;
+
+        if (endType === CHALLENGE_END_TYPE.SUCCESS) {
+            ChallengeData.instance.updateSingleLevelData(chapter, level, 0, stars);
+            // TODO: 后续展示闯关成功结算界面
+        } else {
+            // TODO: 后续展示闯关失败结算界面
         }
     }
 

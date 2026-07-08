@@ -21,6 +21,17 @@ export enum CHALLENGE_LEVEL_TYPE {
 }
 
 /**
+ * @enum CHALLENGE_END_TYPE
+ * @description 闯关游戏结束类型
+ */
+export enum CHALLENGE_END_TYPE {
+    /** 闯关失败 */
+    FAIL = 0,
+    /** 闯关成功 */
+    SUCCESS = 1,
+}
+
+/**
  * @interface CHALLENGE_CHAPTER
  * @description 闯关章节配置
  */

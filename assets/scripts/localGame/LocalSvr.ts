@@ -28,7 +28,7 @@ import {
 import { MAIN_GAME_ID, RICH_TYPE } from "@datacenter/InterfaceConfig";
 import { DataCenter } from "@datacenter/Datacenter";
 import { generateRandomMap, generateFromDesign } from "./mapGenerator";
-import { MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
+import { MAP_LEVEL_CONFIG, CHALLENGE_END_TYPE } from "@datacenter/ChallengeData";
 
 /**
  * @enum LOCAL_SVR_MODE
@@ -121,6 +121,8 @@ export class LocalSvr {
     private _remainTime: number = 0;
     /** 服务器端时钟定时器 */
     private _clockTimer: any = null;
+    /** 本次游戏是否因超时结束 */
+    private _isTimeout: boolean = false;
 
     constructor() {}
 
@@ -425,6 +427,19 @@ export class LocalSvr {
     }
 
     /**
+     * 根据剩余时间计算闯关星星数量
+     * @returns 星星数 0-3
+     */
+    private _calculateStars(): number {
+        if (!this._challengeConfig?.starTime || this._challengeConfig.starTime.length < 3) return 0;
+        const starTime = this._challengeConfig.starTime;
+        if (this._remainTime >= starTime[2]) return 3;
+        if (this._remainTime >= starTime[1]) return 2;
+        if (this._remainTime >= starTime[0]) return 1;
+        return 0;
+    }
+
+    /**
      * 游戏完成处理
      */
     onGameFinished(): void {
@@ -438,6 +453,19 @@ export class LocalSvr {
         const usedTime = Date.now() - this._startTime;
         const selfSeat = 1;
 
+        let endType = 1;
+        let rank = 1;
+
+        if (this._mode === LOCAL_SVR_MODE.CHALLENGE && this._challengeConfig) {
+            if (this._isTimeout) {
+                endType = CHALLENGE_END_TYPE.FAIL;
+                rank = 0;
+            } else {
+                endType = CHALLENGE_END_TYPE.SUCCESS;
+                rank = this._calculateStars();
+            }
+        }
+
         // 下发游戏步骤 = END
         this.dispatchEvent(SprotoStepId.Name, { step: 3 });
 
@@ -445,20 +473,20 @@ export class LocalSvr {
         this.dispatchEvent(SprotoPlayerFinished.Name, {
             seat: selfSeat,
             usedTime: usedTime,
-            rank: 1,
+            rank: rank,
         });
 
         // 广播游戏结束
         this.dispatchEvent(SprotoGameEnd.Name, {
             roundNum: this._roundNum,
             endTime: Date.now(),
-            endType: 1,
+            endType: endType,
             rankings: [
                 {
                     seat: selfSeat,
                     usedTime: usedTime,
                     eliminated: this._eliminated,
-                    rank: 1,
+                    rank: rank,
                     maxCombo: this._comboCount,
                 },
             ],
@@ -777,6 +805,7 @@ export class LocalSvr {
     private _startClock(): void {
         this._stopClock();
         this._remainTime = this._totalTime;
+        this._isTimeout = false;
 
         // TOTAL_TIME=0 表示不需要倒计时，不下发协议
         if (this._totalTime <= 0) {
@@ -812,7 +841,7 @@ export class LocalSvr {
      */
     private _onTimeout(): void {
         Logger.log("[LocalSvr] 游戏超时，强制结束");
-        // 下发时钟归零，隐藏客户端倒计时
+        this._isTimeout = true;
         this.dispatchEvent(SprotoGameClock.Name, { time: 0, seat: 1 });
         this.onGameFinished();
     }
