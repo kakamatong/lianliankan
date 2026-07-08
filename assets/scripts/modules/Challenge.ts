@@ -12,6 +12,17 @@ import { BaseModule } from "@frameworks/base/BaseModule";
 import { SprotoGetChallengeChapterData, SprotoGetCurChallengeChapterData, SprotoUpdateChallengeLevelData } from "../../types/protocol/lobby/c2s";
 
 /**
+ * @enum USER_ENERGY_CHANGE_TYPE
+ * @description 体力变更类型
+ */
+export enum USER_ENERGY_CHANGE_TYPE {
+    /** 测试 */
+    TEST = 0,
+    /** 闯关 */
+    CHALLENGE = 1,
+}
+
+/**
  * @class Challenge
  * @description 闯关管理类，负责请求闯关模式配置，使用单例模式
  * @category 网络请求模块

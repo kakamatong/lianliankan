@@ -269,6 +269,8 @@ export interface UserenergyResponse {
 /** 增减用户能量 - 请求参数 */
 export interface UserenergychangeRequest {
     change: number;
+    type: number;
+    strData: string;
 }
 
 /** 增减用户能量 - 响应参数 */

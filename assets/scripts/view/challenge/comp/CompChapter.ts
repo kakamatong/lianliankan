@@ -10,7 +10,7 @@ import { ChangeScene, ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { CompLevel, LEVEL_STATUS, STAR_COUNT } from "./CompLevel";
 import { Logger } from "@frameworks/utils/Utils";
-import { Challenge } from "@modules/Challenge";
+import { Challenge, USER_ENERGY_CHANGE_TYPE } from "@modules/Challenge";
 import { ChallengeRuleHintView } from "@view/challenge/ChallengeRuleHintView";
 import { DataCenter } from "@datacenter/Datacenter";
 import { UserEnergy } from "@modules/UserEnergy";
@@ -210,7 +210,7 @@ export class CompChapter extends FGUICompChapter {
                 TipsView.showView({ content: "体力不足" });
                 return;
             }
-            UserEnergy.instance.changeReq(-energy, (data) => {
+            UserEnergy.instance.changeReq(-energy, USER_ENERGY_CHANGE_TYPE.CHALLENGE, JSON.stringify({ chapter, level }), (data) => {
                 if (data && data.code === 1) {
                     this.doStartChallenge(config);
                 } else {
