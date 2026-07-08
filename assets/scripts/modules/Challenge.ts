@@ -121,6 +121,10 @@ export class Challenge extends BaseModule {
             (data: SprotoUpdateChallengeLevelData.Response) => {
                 if (data && data.code === 1) {
                     ChallengeData.instance.updateSingleLevelData(chapter, level, score, stars);
+                    if (chapter === ChallengeData.instance.curChapter && level === ChallengeData.instance.curLevel) {
+                        ChallengeData.instance.curChapter = nextChapter;
+                        ChallengeData.instance.curLevel = nextLevel;
+                    }
                     Logger.log(LogColors.green(`关卡 ${chapter}-${level} 数据更新成功, 分数: ${score}, 星级: ${stars}`));
                     callBack && callBack(true);
                 } else {
