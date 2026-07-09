@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="87,45" pivot="0.5,0.5" extention="Button" bgColorEnabled="true" bgColor="#333333">
+  <displayList>
+    <text id="n3_f9cy" name="n3" xy="16,0" size="54,45" fontSize="33" color="#ffffff" text="GM">
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </text>
+  </displayList>
+  <Button downEffect="scale" downEffectValue="0.9"/>
+</component>
