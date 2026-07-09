@@ -22,14 +22,14 @@ export class CompMessage extends FGUICompPopMessage {
     }
 
     onBtnCancel(): void {
-        this._data && this._data.closeBack && this._data.cancelBack();
+        this._data && this._data.cancelBack && this._data.cancelBack();
         this.hideAnimation(() => {
             PopMessageView.hideView();
         });
     }
 
     onBtnSure(): void {
-        this._data && this._data.closeBack && this._data.sureBack();
+        this._data && this._data.sureBack && this._data.sureBack();
         this.hideAnimation(() => {
             PopMessageView.hideView();
         });
