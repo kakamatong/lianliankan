@@ -9,6 +9,7 @@ import { ViewClass, AddEventListener, RemoveEventListener } from "@frameworks/Fr
 import * as fgui from "fairygui-cc";
 import { DataCenter } from "@datacenter/Datacenter";
 import { EVENT_NAMES } from "@datacenter/CommonConfig";
+import { UserEnergy } from "@modules/UserEnergy";
 
 /**
  * @class CompEnergy
@@ -34,6 +35,7 @@ export class CompEnergy extends FGUICompEnergy {
         super.onConstruct();
         this._scheduleId = this.tick.bind(this);
         AddEventListener(EVENT_NAMES.USER_ENERGY, this.onUserEnergy, this);
+        UserEnergy.instance.req();
         this.show();
     }
 
