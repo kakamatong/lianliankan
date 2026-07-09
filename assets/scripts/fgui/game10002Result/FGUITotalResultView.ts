@@ -17,7 +17,7 @@ export default class FGUITotalResultView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUITotalResultView.instance) {
@@ -79,7 +79,7 @@ export default class FGUITotalResultView extends fgui.GComponent {
 		this.UI_BTN_EXIT.onClick(this.onBtnExit, this);
 		this.UI_BTN_BACK = <fgui.GButton>(this.getChildAt(5));
 		this.UI_BTN_BACK.onClick(this.onBtnBack, this);
-		if (FGUITotalResultView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

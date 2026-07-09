@@ -15,7 +15,7 @@ export default class FGUICompTimeStar extends fgui.GLabel {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompTimeStar.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompTimeStar extends fgui.GLabel {
 
 	protected onConstruct():void {
 		this.ctrl_stars = this.getControllerAt(0);
-		if (FGUICompTimeStar.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

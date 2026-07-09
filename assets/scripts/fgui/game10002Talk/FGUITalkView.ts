@@ -18,7 +18,7 @@ export default class FGUITalkView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUITalkView.instance) {
@@ -78,7 +78,7 @@ export default class FGUITalkView extends fgui.GComponent {
 		this.UI_COMP_MAIN = <FGUICompMainTalk>(this.getChildAt(0));
 		this.in = this.getTransitionAt(0);
 		this.out = this.getTransitionAt(1);
-		if (FGUITalkView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

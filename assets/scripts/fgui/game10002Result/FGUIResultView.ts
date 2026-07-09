@@ -21,7 +21,7 @@ export default class FGUIResultView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIResultView.instance) {
@@ -87,7 +87,7 @@ export default class FGUIResultView extends fgui.GComponent {
 		this.UI_LV_GAME_INFO = <fgui.GList>(this.getChildAt(5));
 		this.UI_GROP_RESULT = <fgui.GGroup>(this.getChildAt(10));
 		this.act = this.getTransitionAt(0);
-		if (FGUIResultView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

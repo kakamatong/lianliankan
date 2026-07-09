@@ -24,7 +24,7 @@ export default class FGUICompResultInfo extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompResultInfo.instance) {
@@ -91,7 +91,7 @@ export default class FGUICompResultInfo extends fgui.GComponent {
 		this.UI_TXT_SCORE = <fgui.GTextField>(this.getChildAt(6));
 		this.UI_TXT_MAX_COMB = <fgui.GTextField>(this.getChildAt(7));
 		this.UI_TXT_TOTALSCORE = <fgui.GTextField>(this.getChildAt(8));
-		if (FGUICompResultInfo.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -20,7 +20,7 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompOtherPlayer.instance) {
@@ -81,7 +81,7 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 		this.UI_COMP_HEAD = <FGUICompPlayerHead>(this.getChildAt(0));
 		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(1));
 		this.UI_COMP_MEDAL = <fgui.GComponent>(this.getChildAt(3));
-		if (FGUICompOtherPlayer.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

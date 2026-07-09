@@ -15,7 +15,7 @@ export default class FGUICompBtnScale extends fgui.GButton {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompBtnScale.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompBtnScale extends fgui.GButton {
 
 	protected onConstruct():void {
 		this.ctrl_color = this.getControllerAt(0);
-		if (FGUICompBtnScale.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

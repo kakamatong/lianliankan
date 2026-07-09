@@ -17,7 +17,7 @@ import { Prop } from "@modules/Prop";
  * @description 背包主组件，负责背包物品列表展示与交互
  * @category 背包视图
  */
-@ViewClass({ curveScreenAdapt: true, enableAnimation: true })
+@ViewClass({ enableAnimation: true })
 export class CompBag extends FGUICompBag {
     private _richList: Array<{ richType: number; richNums: number }> = [];
     /**
@@ -27,7 +27,6 @@ export class CompBag extends FGUICompBag {
     onConstruct() {
         super.onConstruct();
         this.show();
-        this.enterAnimation();
     }
 
     /**

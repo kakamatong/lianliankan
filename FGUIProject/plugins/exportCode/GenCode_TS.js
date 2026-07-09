@@ -58,7 +58,7 @@ function genCode(handler) {
 
         writer.writeln("public static instance:any | null = null;");
         writer.writeln();
-        writer.writeln("public static enableAnimation: boolean = false;");
+        writer.writeln("public enableAnimation: boolean = false;");
         writer.writeln();
 
         // showView 用于显示，但只能同时显示一个
@@ -167,7 +167,7 @@ function genCode(handler) {
             }
         }
 
-        writer.writeln("if (%s.enableAnimation) this.enterAnimation();", classInfo.className);
+        writer.writeln("if (this.enableAnimation) this.enterAnimation();");
         writer.endBlock();
         writer.writeln("scheduleOnce(callback: () => void, delay: number):void{};");
         writer.writeln("unscheduleAllCallbacks():void{};");

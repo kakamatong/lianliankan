@@ -15,7 +15,7 @@ export default class FGUICompMedal extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMedal.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompMedal extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.ctrl_rank = this.getControllerAt(0);
-		if (FGUICompMedal.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

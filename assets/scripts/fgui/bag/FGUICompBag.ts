@@ -20,7 +20,7 @@ export default class FGUICompBag extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompBag.instance) {
@@ -84,7 +84,7 @@ export default class FGUICompBag extends fgui.GComponent {
 		this.UI_LV_BAGS = <fgui.GList>(this.getChildAt(5));
 		this.UI_COMP_ICON = <fgui.GButton>(this.getChildAt(6));
 		this.UI_COMP_DIS = <fgui.GTextField>(this.getChildAt(7));
-		if (FGUICompBag.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

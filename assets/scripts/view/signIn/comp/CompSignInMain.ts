@@ -18,7 +18,7 @@ import FGUIComProp from "@fgui/props/FGUIComProp";
 /**
  * 签到视图
  */
-@ViewClass()
+@ViewClass({ enableAnimation: true })
 export class CompSignInMain extends FGUICompSignInMain {
     // 签到配置
     private _signInConfig: Array<SignInConfig> = [];
@@ -28,6 +28,10 @@ export class CompSignInMain extends FGUICompSignInMain {
     private _nowIndex: number = 0;
     // 签到模块
     private _reqSign: SignIn | null = null;
+
+    protected onConstruct(): void {
+        super.onConstruct();
+    }
 
     show(args: any) {
         this.UI_LIST_SIGN.itemRenderer = this.itemRenderer.bind(this);
@@ -218,7 +222,9 @@ export class CompSignInMain extends FGUICompSignInMain {
      * 关闭按钮点击
      */
     onBtnClose(): void {
-        SignInView.hideView();
+        this.hideAnimation(() => {
+            SignInView.hideView();
+        });
     }
 }
 fgui.UIObjectFactory.setExtension(CompSignInMain.URL, CompSignInMain);

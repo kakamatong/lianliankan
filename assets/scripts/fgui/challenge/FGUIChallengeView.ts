@@ -16,7 +16,7 @@ export default class FGUIChallengeView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIChallengeView.instance) {
@@ -74,7 +74,7 @@ export default class FGUIChallengeView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_COMP_MAIN = <FGUICompChallenge>(this.getChildAt(1));
-		if (FGUIChallengeView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

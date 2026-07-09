@@ -17,7 +17,7 @@ export default class FGUICompRankInfo extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompRankInfo.instance) {
@@ -77,7 +77,7 @@ export default class FGUICompRankInfo extends fgui.GComponent {
 		this.UI_TXT_RANK = <fgui.GTextField>(this.getChildAt(0));
 		this.UI_TXT_NAME = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_TXT_SCORE = <fgui.GTextField>(this.getChildAt(2));
-		if (FGUICompRankInfo.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

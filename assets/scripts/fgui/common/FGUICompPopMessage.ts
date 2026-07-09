@@ -21,7 +21,7 @@ export default class FGUICompPopMessage extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompPopMessage.instance) {
@@ -87,7 +87,7 @@ export default class FGUICompPopMessage extends fgui.GComponent {
 		this.UI_BTN_CANCEL.onClick(this.onBtnCancel, this);
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_TXT_CONTENT = <fgui.GTextField>(this.getChildAt(5));
-		if (FGUICompPopMessage.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

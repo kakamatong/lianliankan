@@ -16,7 +16,7 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompFinshInfo.instance) {
@@ -75,7 +75,7 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 	protected onConstruct():void {
 		this.UI_TXT_RANK = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_TXT_TIME = <fgui.GTextField>(this.getChildAt(5));
-		if (FGUICompFinshInfo.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

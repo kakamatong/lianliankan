@@ -15,7 +15,7 @@ export default class FGUICompPlayers extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompPlayers.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompPlayers extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_LIST_OTHER_PLAYERS = <fgui.GList>(this.getChildAt(0));
-		if (FGUICompPlayers.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

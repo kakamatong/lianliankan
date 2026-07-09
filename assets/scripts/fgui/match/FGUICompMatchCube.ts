@@ -15,7 +15,7 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMatchCube.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 
 	protected onConstruct():void {
 		this.ficon = <fgui.GLoader>(this.getChildAt(1));
-		if (FGUICompMatchCube.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

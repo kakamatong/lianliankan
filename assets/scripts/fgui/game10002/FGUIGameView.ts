@@ -20,7 +20,7 @@ export default class FGUIGameView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIGameView.instance) {
@@ -82,7 +82,7 @@ export default class FGUIGameView extends fgui.GComponent {
 		this.ctrl_roomtype = this.getControllerAt(2);
 		this.ctrl_playerCnt = this.getControllerAt(3);
 		this.UI_COMP_MAIN = <FGUICompGameMain>(this.getChildAt(1));
-		if (FGUIGameView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

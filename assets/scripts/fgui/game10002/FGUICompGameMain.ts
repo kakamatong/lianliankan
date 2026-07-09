@@ -47,7 +47,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompGameMain.instance) {
@@ -138,7 +138,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(23));
 		this.UI_COMP_PROP = <FGUICompPropPanel>(this.getChildAt(24));
 		this.UI_COMP_COMB = <FGUICompComb>(this.getChildAt(25));
-		if (FGUICompGameMain.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

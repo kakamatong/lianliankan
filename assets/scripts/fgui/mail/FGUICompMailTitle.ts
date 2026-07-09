@@ -17,7 +17,7 @@ export default class FGUICompMailTitle extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMailTitle.instance) {
@@ -77,7 +77,7 @@ export default class FGUICompMailTitle extends fgui.GComponent {
 		this.ctrl_read = this.getControllerAt(0);
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_TXT_TIME = <fgui.GTextField>(this.getChildAt(3));
-		if (FGUICompMailTitle.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -22,7 +22,7 @@ export default class FGUICompLevel extends fgui.GButton {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompLevel.instance) {
@@ -86,7 +86,7 @@ export default class FGUICompLevel extends fgui.GButton {
 		this.UI_COMP_STAR_1 = <FGUICompStar>(this.getChildAt(2));
 		this.UI_COMP_STAR_2 = <FGUICompStar>(this.getChildAt(3));
 		this.UI_TXT_INDEX = <fgui.GTextField>(this.getChildAt(4));
-		if (FGUICompLevel.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

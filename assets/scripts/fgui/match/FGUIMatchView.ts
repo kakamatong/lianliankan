@@ -23,7 +23,7 @@ export default class FGUIMatchView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIMatchView.instance) {
@@ -92,7 +92,7 @@ export default class FGUIMatchView extends fgui.GComponent {
 		this.UI_GROUP_AUTO = <fgui.GGroup>(this.getChildAt(8));
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(9));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
-		if (FGUIMatchView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -16,7 +16,7 @@ export default class FGUICompPirvateInfo extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompPirvateInfo.instance) {
@@ -75,7 +75,7 @@ export default class FGUICompPirvateInfo extends fgui.GComponent {
 	protected onConstruct():void {
 		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_TXT_RULE = <fgui.GTextField>(this.getChildAt(2));
-		if (FGUICompPirvateInfo.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

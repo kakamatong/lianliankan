@@ -18,7 +18,7 @@ export default class FGUICompMatchAct extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMatchAct.instance) {
@@ -79,7 +79,7 @@ export default class FGUICompMatchAct extends fgui.GComponent {
 		this.ctrl_act_1 = this.getControllerAt(1);
 		this.ctrl_act_2 = this.getControllerAt(2);
 		this.act = this.getTransitionAt(0);
-		if (FGUICompMatchAct.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

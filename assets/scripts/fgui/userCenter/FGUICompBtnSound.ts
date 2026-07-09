@@ -15,7 +15,7 @@ export default class FGUICompBtnSound extends fgui.GButton {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompBtnSound.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompBtnSound extends fgui.GButton {
 
 	protected onConstruct():void {
 		this.ctrl_status = this.getControllerAt(1);
-		if (FGUICompBtnSound.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

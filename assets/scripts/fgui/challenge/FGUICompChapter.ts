@@ -17,7 +17,7 @@ export default class FGUICompChapter extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompChapter.instance) {
@@ -79,7 +79,7 @@ export default class FGUICompChapter extends fgui.GComponent {
 		this.UI_BTN_NEXT.onClick(this.onBtnNext, this);
 		this.UI_BTN_PRE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_PRE.onClick(this.onBtnPre, this);
-		if (FGUICompChapter.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

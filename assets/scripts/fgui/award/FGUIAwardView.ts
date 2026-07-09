@@ -18,7 +18,7 @@ export default class FGUIAwardView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIAwardView.instance) {
@@ -78,7 +78,7 @@ export default class FGUIAwardView extends fgui.GComponent {
 		this.UI_BG = <fgui.GGraph>(this.getChildAt(0));
 		this.UI_COMP_MAIN = <FGUICompAwardMain>(this.getChildAt(1));
 		this.enter = this.getTransitionAt(0);
-		if (FGUIAwardView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

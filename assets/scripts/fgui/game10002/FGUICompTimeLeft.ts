@@ -23,7 +23,7 @@ export default class FGUICompTimeLeft extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompTimeLeft.instance) {
@@ -88,7 +88,7 @@ export default class FGUICompTimeLeft extends fgui.GComponent {
 		this.UI_COMP_STAR_3 = <FGUICompTimeStar>(this.getChildAt(4));
 		this.UI_TXT_TIME_MSG = <fgui.GTextField>(this.getChildAt(5));
 		this.act = this.getTransitionAt(0);
-		if (FGUICompTimeLeft.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

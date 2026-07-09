@@ -27,7 +27,7 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompLobbyMain.instance) {
@@ -106,7 +106,7 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 		this.UI_BTN_BAG.onClick(this.onBtnBag, this);
 		this.UI_BTN_CHALLENGE = <fgui.GButton>(this.getChildAt(11));
 		this.UI_BTN_CHALLENGE.onClick(this.onBtnChallenge, this);
-		if (FGUICompLobbyMain.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -17,7 +17,7 @@ export default class FGUIComProp extends fgui.GButton {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIComProp.instance) {
@@ -77,7 +77,7 @@ export default class FGUIComProp extends fgui.GButton {
 		this.ctrl_num = this.getControllerAt(0);
 		this.UI_LOADER_ICON = <fgui.GLoader>(this.getChildAt(1));
 		this.UI_TXT_NUM = <fgui.GTextField>(this.getChildAt(3));
-		if (FGUIComProp.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

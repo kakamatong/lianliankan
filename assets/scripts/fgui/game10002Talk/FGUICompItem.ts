@@ -15,7 +15,7 @@ export default class FGUICompItem extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompItem.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompItem extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_TXT_TALK = <fgui.GTextField>(this.getChildAt(0));
-		if (FGUICompItem.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

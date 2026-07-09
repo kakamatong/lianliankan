@@ -110,17 +110,16 @@ export const PackageLoad = (packages: string[]) => {
  */
 export const ViewClass = (data?: { curveScreenAdapt?: boolean; enableAnimation?: boolean }) => {
     return function <T extends new (...args: any[]) => any>(constructor: T) {
-        if (data && data.enableAnimation) {
-            (constructor as any).enableAnimation = true;
-        }
         const newConstructor = class extends constructor {
             private _curveScreenApplied = false;
 
             constructor(...args: any[]) {
                 super(...args);
-                // 如果配置了曲面屏适配，则标记需要适配
                 if (data && data.curveScreenAdapt) {
                     this._curveScreenApplied = true;
+                }
+                if (data && data.enableAnimation) {
+                    (this as any).enableAnimation = true;
                 }
             }
 

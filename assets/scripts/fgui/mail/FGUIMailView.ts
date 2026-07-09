@@ -20,7 +20,7 @@ export default class FGUIMailView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIMailView.instance) {
@@ -83,7 +83,7 @@ export default class FGUIMailView extends fgui.GComponent {
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_LV_LIST = <fgui.GList>(this.getChildAt(5));
 		this.UI_COMP_CONTENT = <FGUICompMailContent>(this.getChildAt(8));
-		if (FGUIMailView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

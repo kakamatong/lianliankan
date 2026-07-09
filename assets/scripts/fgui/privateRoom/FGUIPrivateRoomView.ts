@@ -20,7 +20,7 @@ export default class FGUIPrivateRoomView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIPrivateRoomView.instance) {
@@ -82,7 +82,7 @@ export default class FGUIPrivateRoomView extends fgui.GComponent {
 		this.UI_COMP_JOIN = <FGUICompPrivateJoin>(this.getChildAt(5));
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(6));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
-		if (FGUIPrivateRoomView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

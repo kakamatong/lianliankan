@@ -15,7 +15,7 @@ export default class FGUICompAwardMain extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompAwardMain.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompAwardMain extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_LIST_AWARD = <fgui.GList>(this.getChildAt(2));
-		if (FGUICompAwardMain.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

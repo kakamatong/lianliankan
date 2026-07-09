@@ -17,7 +17,7 @@ export default class FGUICompChallenge extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompChallenge.instance) {
@@ -77,7 +77,7 @@ export default class FGUICompChallenge extends fgui.GComponent {
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
 		this.UI_COMP_CHAPTER = <FGUICompChapter>(this.getChildAt(3));
-		if (FGUICompChallenge.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

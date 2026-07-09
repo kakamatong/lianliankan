@@ -29,7 +29,7 @@ export default class FGUIUserCenterView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIUserCenterView.instance) {
@@ -105,7 +105,7 @@ export default class FGUIUserCenterView extends fgui.GComponent {
 		this.UI_BTN_DEL_ACC = <fgui.GButton>(this.getChildAt(21));
 		this.UI_BTN_DEL_ACC.onClick(this.onBtnDelAcc, this);
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(22));
-		if (FGUIUserCenterView.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

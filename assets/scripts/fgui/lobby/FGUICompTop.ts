@@ -17,7 +17,7 @@ export default class FGUICompTop extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompTop.instance) {
@@ -77,7 +77,7 @@ export default class FGUICompTop extends fgui.GComponent {
 		this.UI_COMP_HEAD = <fgui.GComponent>(this.getChildAt(1));
 		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(2));
 		this.UI_TXT_USERID = <fgui.GTextField>(this.getChildAt(3));
-		if (FGUICompTop.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

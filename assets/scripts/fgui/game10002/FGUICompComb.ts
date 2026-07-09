@@ -15,7 +15,7 @@ export default class FGUICompComb extends fgui.GLabel {
 
 	public static instance:any | null = null;
 
-	public static enableAnimation: boolean = false;
+	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompComb.instance) {
@@ -73,7 +73,7 @@ export default class FGUICompComb extends fgui.GLabel {
 
 	protected onConstruct():void {
 		this.act = this.getTransitionAt(0);
-		if (FGUICompComb.enableAnimation) this.enterAnimation();
+		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
