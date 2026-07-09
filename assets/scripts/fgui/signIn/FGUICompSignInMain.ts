@@ -48,6 +48,27 @@ export default class FGUICompSignInMain extends fgui.GComponent {
 
 	show(data?:any):void{};
 
+	enterAnimation(): void {
+		fgui.GTween.to2(0, 0, 1, 1, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackOut)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    });
+	}
+
+	hideAnimation(): void {
+		fgui.GTween.to2(1, 1, 0, 0, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackIn)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    })
+		    .onComplete(() => {
+		        FGUICompSignInMain.hideView();
+		    });
+	}
+
 	public static createInstance():FGUICompSignInMain {
 		return <FGUICompSignInMain>(fgui.UIPackage.createObject("signIn", "CompSignInMain"));
 	}

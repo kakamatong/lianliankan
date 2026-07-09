@@ -44,6 +44,27 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 
 	show(data?:any):void{};
 
+	enterAnimation(): void {
+		fgui.GTween.to2(0, 0, 1, 1, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackOut)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    });
+	}
+
+	hideAnimation(): void {
+		fgui.GTween.to2(1, 1, 0, 0, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackIn)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    })
+		    .onComplete(() => {
+		        FGUICompMatchCube.hideView();
+		    });
+	}
+
 	public static createInstance():FGUICompMatchCube {
 		return <FGUICompMatchCube>(fgui.UIPackage.createObject("match", "CompMatchCube"));
 	}

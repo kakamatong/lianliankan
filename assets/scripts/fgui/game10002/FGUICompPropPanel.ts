@@ -45,6 +45,27 @@ export default class FGUICompPropPanel extends fgui.GComponent {
 
 	show(data?:any):void{};
 
+	enterAnimation(): void {
+		fgui.GTween.to2(0, 0, 1, 1, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackOut)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    });
+	}
+
+	hideAnimation(): void {
+		fgui.GTween.to2(1, 1, 0, 0, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackIn)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    })
+		    .onComplete(() => {
+		        FGUICompPropPanel.hideView();
+		    });
+	}
+
 	public static createInstance():FGUICompPropPanel {
 		return <FGUICompPropPanel>(fgui.UIPackage.createObject("game10002", "CompPropPanel"));
 	}

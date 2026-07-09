@@ -44,6 +44,27 @@ export default class FGUILoadingView extends fgui.GComponent {
 
 	show(data?:any):void{};
 
+	enterAnimation(): void {
+		fgui.GTween.to2(0, 0, 1, 1, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackOut)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    });
+	}
+
+	hideAnimation(): void {
+		fgui.GTween.to2(1, 1, 0, 0, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackIn)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    })
+		    .onComplete(() => {
+		        FGUILoadingView.hideView();
+		    });
+	}
+
 	public static createInstance():FGUILoadingView {
 		return <FGUILoadingView>(fgui.UIPackage.createObject("common", "LoadingView"));
 	}

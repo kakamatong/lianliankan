@@ -27,6 +27,7 @@ export class CompBag extends FGUICompBag {
     onConstruct() {
         super.onConstruct();
         this.show();
+        this.enterAnimation();
     }
 
     /**

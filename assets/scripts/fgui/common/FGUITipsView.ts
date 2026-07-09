@@ -44,6 +44,27 @@ export default class FGUITipsView extends fgui.GComponent {
 
 	show(data?:any):void{};
 
+	enterAnimation(): void {
+		fgui.GTween.to2(0, 0, 1, 1, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackOut)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    });
+	}
+
+	hideAnimation(): void {
+		fgui.GTween.to2(1, 1, 0, 0, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackIn)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    })
+		    .onComplete(() => {
+		        FGUITipsView.hideView();
+		    });
+	}
+
 	public static createInstance():FGUITipsView {
 		return <FGUITipsView>(fgui.UIPackage.createObject("common", "TipsView"));
 	}
