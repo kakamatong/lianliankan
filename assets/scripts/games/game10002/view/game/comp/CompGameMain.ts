@@ -1235,7 +1235,7 @@ export class CompGameMain extends FGUICompGameMain {
      */
     changeToLobbyScene(): void {
         // 单机模式：清理本地服务器
-        if (GameData.instance.isLocalGame) {
+        if (GameData.instance.isLocalGame || GameData.instance.isChallengeMode) {
             LocalSvr.instance.destroy();
         }
         if (GameSocketManager.instance.isOpen()) {
