@@ -16,23 +16,23 @@ export class CompMessage extends FGUICompPopMessage {
 
     onBtnClose(): void {
         this._data && this._data.closeBack && this._data.closeBack();
-        this.hideAnimation(() => {
-            PopMessageView.hideView();
-        });
+        //this.hideAnimation(() => {
+        PopMessageView.hideView();
+        //});
     }
 
     onBtnCancel(): void {
         this._data && this._data.cancelBack && this._data.cancelBack();
-        this.hideAnimation(() => {
-            PopMessageView.hideView();
-        });
+        //this.hideAnimation(() => {
+        PopMessageView.hideView();
+        //});
     }
 
     onBtnSure(): void {
         this._data && this._data.sureBack && this._data.sureBack();
-        this.hideAnimation(() => {
-            PopMessageView.hideView();
-        });
+        //this.hideAnimation(() => {
+        PopMessageView.hideView();
+        //});
     }
 }
 fgui.UIObjectFactory.setExtension(CompMessage.URL, CompMessage);
