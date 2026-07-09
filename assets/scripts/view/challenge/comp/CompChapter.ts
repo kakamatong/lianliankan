@@ -141,7 +141,7 @@ export class CompChapter extends FGUICompChapter {
 
         if (!levelData) {
             // 如果当前章节是玩家所在章节，并且关卡索引是当前关卡，则设置为进行中状态
-            if (this._chapterIndex === ChallengeData.instance.curChapter && index === ChallengeData.instance.curLevel) {
+            if (this._chapterIndex === ChallengeData.instance.curChapter && config.index === ChallengeData.instance.curLevel) {
                 if (config.boss === 1) {
                     chapterItem.setStatus(LEVEL_STATUS.BOSS);
                 } else {
