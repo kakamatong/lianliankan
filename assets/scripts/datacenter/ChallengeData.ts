@@ -291,13 +291,13 @@ export class ChallengeData {
      */
     getNextLevel(chapter: number, level: number): { chapter: number; level: number } {
         const maps = this._chapterMaps.get(chapter);
-        if (maps && level < maps.length - 1) {
-            return { chapter, level: level + 1 };
+        const nextLevel = level + 1;
+        const nextLevelConfig = maps?.find((m) => m.index === nextLevel);
+        if (nextLevelConfig) {
+            return { chapter, level: nextLevel };
+        } else {
+            return { chapter: chapter + 1, level: nextLevel };
         }
-        if (chapter < this.chapterCount - 1) {
-            return { chapter: chapter + 1, level: 0 };
-        }
-        return { chapter, level };
     }
 
     /**
