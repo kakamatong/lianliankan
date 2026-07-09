@@ -123,6 +123,7 @@ export class CompLobbyMain extends FGUICompLobbyMain {
     allreadyLogin(): void {
         this.updateUserInfo();
         this.initRichs();
+        this.checkGotoChallenge();
     }
 
     /**
@@ -162,6 +163,7 @@ export class CompLobbyMain extends FGUICompLobbyMain {
         this.checkPrivateRoomid(options);
         this.autoShowSignIn();
         this.reqAdInfo();
+        this.checkGotoChallenge();
     }
 
     /**
@@ -376,6 +378,18 @@ export class CompLobbyMain extends FGUICompLobbyMain {
      */
     onBtnChallenge(): void {
         ChallengeView.showView();
+    }
+
+    /**
+     * @method checkGotoChallenge
+     * @description 检查是否需要自动跳转到闯关页面（闯关模式游戏结束后使用）
+     * @private
+     */
+    private checkGotoChallenge(): void {
+        if (DataCenter.instance.shouldGotoChallenge) {
+            DataCenter.instance.shouldGotoChallenge = false;
+            this.onBtnChallenge();
+        }
     }
 
     /**

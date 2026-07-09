@@ -1238,6 +1238,9 @@ export class CompGameMain extends FGUICompGameMain {
         if (GameData.instance.isLocalGame || GameData.instance.isChallengeMode) {
             LocalSvr.instance.destroy();
         }
+        if (GameData.instance.isChallengeMode) {
+            DataCenter.instance.shouldGotoChallenge = true;
+        }
         if (GameSocketManager.instance.isOpen()) {
             GameSocketManager.instance.close();
         }
