@@ -35,6 +35,15 @@ export class CompPropPanel extends FGUICompPropPanel {
         }
     }
     /**
+     * @method isLocalGame
+     * @description 判断当前是否为本地游戏（单机游戏或闯关模式）
+     * @returns {boolean} true=本地游戏，false=在线游戏
+     */
+    private isLocalGame(): boolean {
+        return GameData.instance.isLocalGame || GameData.instance.isChallengeMode;
+    }
+
+    /**
      * 使用道具
      * @param itemId 道具ID (1:重排, 2:提示, 3:加时等)
      */
@@ -66,7 +75,7 @@ export class CompPropPanel extends FGUICompPropPanel {
     }
 
     useLocalGameProp(itemId: number, callBack?: (b: boolean, response: SprotoLocalGameUseProps.Response) => void): void {
-        if (!GameData.instance.isLocalGame) {
+        if (!this.isLocalGame()) {
             Logger.warn("非本地游戏无法使用本地道具");
             return;
         }
@@ -93,7 +102,7 @@ export class CompPropPanel extends FGUICompPropPanel {
      */
     onBtnUpset(): void {
         Logger.log("使用道具: 打乱");
-        if (GameData.instance.isLocalGame) {
+        if (this.isLocalGame()) {
             this.useLocalGameProp(RICH_TYPE.UPSET, (b, response) => {
                 if (b) {
                     // todo: 本地游戏打乱后需要重置地图数据
@@ -114,7 +123,7 @@ export class CompPropPanel extends FGUICompPropPanel {
 
     onBtnAutoRemove(): void {
         Logger.log("使用道具: 自动移除");
-        if (GameData.instance.isLocalGame) {
+        if (this.isLocalGame()) {
             this.useLocalGameProp(RICH_TYPE.AUTO_REMOVE, (b, response) => {
                 if (b) {
                     // todo: 本地游戏自动移除后需要重置地图数据
