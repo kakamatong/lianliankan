@@ -28,35 +28,11 @@ export class PopMessageView extends FGUIPopMessageView {
             type: data.type ?? ENUM_POP_MESSAGE_TYPE.NUM0,
             title: data.title ?? "温馨提示",
             content: data.content ?? "",
-            closeBack: this.onBtnClose.bind(this) ?? null,
-            cancelBack: this.onBtnCancel.bind(this) ?? null,
-            sureBack: this.onBtnSure.bind(this) ?? null,
+            closeBack: data.closeBack ?? null,
+            cancelBack: data.cancelBack ?? null,
+            sureBack: data.sureBack ?? null,
         };
         this.UI_COMP_MAIN.show(data2);
-    }
-
-    /**
-     * @description 关闭按钮点击事件
-     */
-    onBtnClose(): void {
-        this._data.closeBack && this._data.closeBack();
-        PopMessageView.hideView();
-    }
-
-    /**
-     * @description 取消按钮点击事件
-     */
-    onBtnCancel(): void {
-        this._data.cancelBack && this._data.cancelBack();
-        PopMessageView.hideView();
-    }
-
-    /**
-     * @description 确定按钮点击事件
-     */
-    onBtnSure(): void {
-        this._data.sureBack && this._data.sureBack();
-        PopMessageView.hideView();
     }
 }
 fgui.UIObjectFactory.setExtension(PopMessageView.URL, PopMessageView);
