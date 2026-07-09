@@ -9,7 +9,11 @@ import { ChallengeData } from "@datacenter/ChallengeData";
 import { LogColors } from "@frameworks/Framework";
 import { HttpPostWithDefaultJWT, Logger } from "@frameworks/utils/Utils";
 import { BaseModule } from "@frameworks/base/BaseModule";
-import { SprotoGetChallengeChapterData, SprotoGetCurChallengeChapterData, SprotoUpdateChallengeLevelData } from "../../types/protocol/lobby/c2s";
+import {
+    SprotoGetChallengeChapterData,
+    SprotoGetCurChallengeChapterData,
+    SprotoUpdateChallengeLevelData,
+} from "../../types/protocol/lobby/c2s";
 
 /**
  * @enum USER_ENERGY_CHANGE_TYPE
@@ -93,11 +97,12 @@ export class Challenge extends BaseModule {
      */
     getCurChapterData(callBack?: (success: boolean, curChapter?: number) => void) {
         this.reqLobby(SprotoGetCurChallengeChapterData, {}, (data: SprotoGetCurChallengeChapterData.Response) => {
-            if (data && data.list) {
+            if (data) {
+                const list = data.list || [];
                 ChallengeData.instance.curChapter = data.curChapter;
                 ChallengeData.instance.curLevel = data.curLevel;
-                ChallengeData.instance.setChapterLevelData(data.curChapter, data.list);
-                Logger.log(LogColors.green(`当前章节 ${data.curChapter} 关卡数据获取成功, 共 ${data.list.length} 关`));
+                ChallengeData.instance.setChapterLevelData(data.curChapter, list);
+                Logger.log(LogColors.green(`当前章节 ${data.curChapter} 关卡数据获取成功, 共 ${list.length} 关`));
                 callBack && callBack(true, data.curChapter);
             } else {
                 Logger.warn(LogColors.red("当前章节关卡数据获取失败"));
