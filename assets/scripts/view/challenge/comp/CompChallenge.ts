@@ -3,9 +3,7 @@ import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { ChallengeView } from "../ChallengeView";
 import { UserEnergy } from "@modules/UserEnergy";
-import { Challenge } from "@modules/Challenge";
 import { BezierTween, Logger } from "@frameworks/utils/Utils";
-import { ChallengeData } from "@datacenter/ChallengeData";
 import FGUICompStar from "@fgui/challenge/FGUICompStar";
 
 @ViewClass({ curveScreenAdapt: true })

@@ -309,14 +309,26 @@ export class ChallengeData {
      * @param {number} stars - 本次星级
      */
     updateSingleLevelData(chapter: number, level: number, score: number, stars: number): void {
-        const list = this._chapterLevelData.get(chapter);
-        if (!list) return;
+        let list = this._chapterLevelData.get(chapter);
+        if (!list) {
+            list = [];
+            this._chapterLevelData.set(chapter, list);
+        }
         const item = list.find((i) => i.level === level);
         if (item) {
             if (score > item.scoreMax) item.scoreMax = score;
             if (stars > item.stars) item.stars = stars;
             item.isGet = 1;
             item.challengeCount++;
+        } else {
+            list.push({
+                chapter,
+                level,
+                isGet: 1,
+                stars,
+                scoreMax: score,
+                challengeCount: 1,
+            });
         }
     }
 
