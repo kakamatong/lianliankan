@@ -41,12 +41,7 @@ export default class FGUILoadingView extends fgui.GComponent {
 		FGUILoadingView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUILoadingView.instance) return;
-		if (FGUILoadingView.enableAnimation) {
-			FGUILoadingView.instance.hideAnimation();
-			return;
-		}
-		FGUILoadingView.instance.dispose();
+		FGUILoadingView.instance && FGUILoadingView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -60,7 +55,7 @@ export default class FGUILoadingView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -68,7 +63,7 @@ export default class FGUILoadingView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUILoadingView.instance && FGUILoadingView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

@@ -100,13 +100,7 @@ function genCode(handler) {
         // hideView 用于隐藏，跟showView 是一对
         writer.writeln("public static hideView():void");
         writer.startBlock();
-        writer.writeln("if (!%s.instance) return;", classInfo.className);
-        writer.writeln("if (%s.enableAnimation)", classInfo.className);
-        writer.startBlock();
-        writer.writeln("%s.instance.hideAnimation();", classInfo.className);
-        writer.writeln("return;");
-        writer.endBlock();
-        writer.writeln("%s.instance.dispose();", classInfo.className);
+        writer.writeln("%s.instance && %s.instance.dispose();", classInfo.className, classInfo.className);
         writer.endBlock();
 
         // show 接口
@@ -123,7 +117,7 @@ function genCode(handler) {
         writer.writeln("    });");
         writer.endBlock();
         writer.writeln();
-        writer.writeln("hideAnimation(): void");
+        writer.writeln("hideAnimation(onComplete?: () => void): void");
         writer.startBlock();
         writer.writeln("fgui.GTween.to2(1, 1, 0, 0, 0.3)");
         writer.writeln("    .setTarget(this)");
@@ -132,7 +126,7 @@ function genCode(handler) {
         writer.writeln("        this.setScale(tween.value.x, tween.value.y);");
         writer.writeln("    })");
         writer.writeln("    .onComplete(() => {");
-        writer.writeln("        %s.instance && %s.instance.dispose();", classInfo.className, classInfo.className);
+        writer.writeln("        onComplete && onComplete();");
         writer.writeln("    });");
         writer.endBlock();
         writer.writeln();

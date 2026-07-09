@@ -46,12 +46,7 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 		FGUICompOtherPlayer.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompOtherPlayer.instance) return;
-		if (FGUICompOtherPlayer.enableAnimation) {
-			FGUICompOtherPlayer.instance.hideAnimation();
-			return;
-		}
-		FGUICompOtherPlayer.instance.dispose();
+		FGUICompOtherPlayer.instance && FGUICompOtherPlayer.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -65,7 +60,7 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -73,7 +68,7 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompOtherPlayer.instance && FGUICompOtherPlayer.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

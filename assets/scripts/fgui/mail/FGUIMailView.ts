@@ -46,12 +46,7 @@ export default class FGUIMailView extends fgui.GComponent {
 		FGUIMailView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUIMailView.instance) return;
-		if (FGUIMailView.enableAnimation) {
-			FGUIMailView.instance.hideAnimation();
-			return;
-		}
-		FGUIMailView.instance.dispose();
+		FGUIMailView.instance && FGUIMailView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -65,7 +60,7 @@ export default class FGUIMailView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -73,7 +68,7 @@ export default class FGUIMailView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIMailView.instance && FGUIMailView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

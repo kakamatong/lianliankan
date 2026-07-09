@@ -48,12 +48,7 @@ export default class FGUICompLevel extends fgui.GButton {
 		FGUICompLevel.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompLevel.instance) return;
-		if (FGUICompLevel.enableAnimation) {
-			FGUICompLevel.instance.hideAnimation();
-			return;
-		}
-		FGUICompLevel.instance.dispose();
+		FGUICompLevel.instance && FGUICompLevel.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -67,7 +62,7 @@ export default class FGUICompLevel extends fgui.GButton {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -75,7 +70,7 @@ export default class FGUICompLevel extends fgui.GButton {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompLevel.instance && FGUICompLevel.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

@@ -42,12 +42,7 @@ export default class FGUICompTalk extends fgui.GComponent {
 		FGUICompTalk.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompTalk.instance) return;
-		if (FGUICompTalk.enableAnimation) {
-			FGUICompTalk.instance.hideAnimation();
-			return;
-		}
-		FGUICompTalk.instance.dispose();
+		FGUICompTalk.instance && FGUICompTalk.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +56,7 @@ export default class FGUICompTalk extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -69,7 +64,7 @@ export default class FGUICompTalk extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompTalk.instance && FGUICompTalk.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

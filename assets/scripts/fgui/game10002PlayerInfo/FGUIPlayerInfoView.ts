@@ -51,12 +51,7 @@ export default class FGUIPlayerInfoView extends fgui.GComponent {
 		FGUIPlayerInfoView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUIPlayerInfoView.instance) return;
-		if (FGUIPlayerInfoView.enableAnimation) {
-			FGUIPlayerInfoView.instance.hideAnimation();
-			return;
-		}
-		FGUIPlayerInfoView.instance.dispose();
+		FGUIPlayerInfoView.instance && FGUIPlayerInfoView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -70,7 +65,7 @@ export default class FGUIPlayerInfoView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -78,7 +73,7 @@ export default class FGUIPlayerInfoView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIPlayerInfoView.instance && FGUIPlayerInfoView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

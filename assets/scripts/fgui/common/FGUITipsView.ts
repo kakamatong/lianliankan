@@ -41,12 +41,7 @@ export default class FGUITipsView extends fgui.GComponent {
 		FGUITipsView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUITipsView.instance) return;
-		if (FGUITipsView.enableAnimation) {
-			FGUITipsView.instance.hideAnimation();
-			return;
-		}
-		FGUITipsView.instance.dispose();
+		FGUITipsView.instance && FGUITipsView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -60,7 +55,7 @@ export default class FGUITipsView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -68,7 +63,7 @@ export default class FGUITipsView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUITipsView.instance && FGUITipsView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

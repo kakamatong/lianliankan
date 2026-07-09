@@ -44,12 +44,7 @@ export default class FGUIAwardView extends fgui.GComponent {
 		FGUIAwardView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUIAwardView.instance) return;
-		if (FGUIAwardView.enableAnimation) {
-			FGUIAwardView.instance.hideAnimation();
-			return;
-		}
-		FGUIAwardView.instance.dispose();
+		FGUIAwardView.instance && FGUIAwardView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -63,7 +58,7 @@ export default class FGUIAwardView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -71,7 +66,7 @@ export default class FGUIAwardView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIAwardView.instance && FGUIAwardView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

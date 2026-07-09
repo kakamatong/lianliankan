@@ -43,12 +43,7 @@ export default class FGUICompEnergy extends fgui.GComponent {
 		FGUICompEnergy.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompEnergy.instance) return;
-		if (FGUICompEnergy.enableAnimation) {
-			FGUICompEnergy.instance.hideAnimation();
-			return;
-		}
-		FGUICompEnergy.instance.dispose();
+		FGUICompEnergy.instance && FGUICompEnergy.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +57,7 @@ export default class FGUICompEnergy extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -70,7 +65,7 @@ export default class FGUICompEnergy extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompEnergy.instance && FGUICompEnergy.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

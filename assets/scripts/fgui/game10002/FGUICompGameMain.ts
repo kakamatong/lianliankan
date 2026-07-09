@@ -73,12 +73,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		FGUICompGameMain.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompGameMain.instance) return;
-		if (FGUICompGameMain.enableAnimation) {
-			FGUICompGameMain.instance.hideAnimation();
-			return;
-		}
-		FGUICompGameMain.instance.dispose();
+		FGUICompGameMain.instance && FGUICompGameMain.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -92,7 +87,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -100,7 +95,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompGameMain.instance && FGUICompGameMain.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

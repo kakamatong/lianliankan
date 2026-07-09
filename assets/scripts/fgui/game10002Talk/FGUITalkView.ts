@@ -44,12 +44,7 @@ export default class FGUITalkView extends fgui.GComponent {
 		FGUITalkView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUITalkView.instance) return;
-		if (FGUITalkView.enableAnimation) {
-			FGUITalkView.instance.hideAnimation();
-			return;
-		}
-		FGUITalkView.instance.dispose();
+		FGUITalkView.instance && FGUITalkView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -63,7 +58,7 @@ export default class FGUITalkView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -71,7 +66,7 @@ export default class FGUITalkView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUITalkView.instance && FGUITalkView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

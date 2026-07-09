@@ -49,12 +49,7 @@ export default class FGUIMatchView extends fgui.GComponent {
 		FGUIMatchView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUIMatchView.instance) return;
-		if (FGUIMatchView.enableAnimation) {
-			FGUIMatchView.instance.hideAnimation();
-			return;
-		}
-		FGUIMatchView.instance.dispose();
+		FGUIMatchView.instance && FGUIMatchView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -68,7 +63,7 @@ export default class FGUIMatchView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -76,7 +71,7 @@ export default class FGUIMatchView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIMatchView.instance && FGUIMatchView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

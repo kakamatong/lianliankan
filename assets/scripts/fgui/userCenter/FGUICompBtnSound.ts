@@ -41,12 +41,7 @@ export default class FGUICompBtnSound extends fgui.GButton {
 		FGUICompBtnSound.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompBtnSound.instance) return;
-		if (FGUICompBtnSound.enableAnimation) {
-			FGUICompBtnSound.instance.hideAnimation();
-			return;
-		}
-		FGUICompBtnSound.instance.dispose();
+		FGUICompBtnSound.instance && FGUICompBtnSound.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -60,7 +55,7 @@ export default class FGUICompBtnSound extends fgui.GButton {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -68,7 +63,7 @@ export default class FGUICompBtnSound extends fgui.GButton {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompBtnSound.instance && FGUICompBtnSound.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

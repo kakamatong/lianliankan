@@ -49,12 +49,7 @@ export default class FGUICompTimeLeft extends fgui.GComponent {
 		FGUICompTimeLeft.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompTimeLeft.instance) return;
-		if (FGUICompTimeLeft.enableAnimation) {
-			FGUICompTimeLeft.instance.hideAnimation();
-			return;
-		}
-		FGUICompTimeLeft.instance.dispose();
+		FGUICompTimeLeft.instance && FGUICompTimeLeft.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -68,7 +63,7 @@ export default class FGUICompTimeLeft extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -76,7 +71,7 @@ export default class FGUICompTimeLeft extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompTimeLeft.instance && FGUICompTimeLeft.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

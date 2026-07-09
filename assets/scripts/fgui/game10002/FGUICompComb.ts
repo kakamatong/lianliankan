@@ -41,12 +41,7 @@ export default class FGUICompComb extends fgui.GLabel {
 		FGUICompComb.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompComb.instance) return;
-		if (FGUICompComb.enableAnimation) {
-			FGUICompComb.instance.hideAnimation();
-			return;
-		}
-		FGUICompComb.instance.dispose();
+		FGUICompComb.instance && FGUICompComb.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -60,7 +55,7 @@ export default class FGUICompComb extends fgui.GLabel {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -68,7 +63,7 @@ export default class FGUICompComb extends fgui.GLabel {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompComb.instance && FGUICompComb.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

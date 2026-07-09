@@ -41,12 +41,7 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 		FGUICompMatchCube.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompMatchCube.instance) return;
-		if (FGUICompMatchCube.enableAnimation) {
-			FGUICompMatchCube.instance.hideAnimation();
-			return;
-		}
-		FGUICompMatchCube.instance.dispose();
+		FGUICompMatchCube.instance && FGUICompMatchCube.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -60,7 +55,7 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -68,7 +63,7 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompMatchCube.instance && FGUICompMatchCube.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

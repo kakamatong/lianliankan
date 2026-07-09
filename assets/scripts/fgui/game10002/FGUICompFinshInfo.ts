@@ -42,12 +42,7 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 		FGUICompFinshInfo.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompFinshInfo.instance) return;
-		if (FGUICompFinshInfo.enableAnimation) {
-			FGUICompFinshInfo.instance.hideAnimation();
-			return;
-		}
-		FGUICompFinshInfo.instance.dispose();
+		FGUICompFinshInfo.instance && FGUICompFinshInfo.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +56,7 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -69,7 +64,7 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompFinshInfo.instance && FGUICompFinshInfo.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

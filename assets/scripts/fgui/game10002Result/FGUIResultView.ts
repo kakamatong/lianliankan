@@ -47,12 +47,7 @@ export default class FGUIResultView extends fgui.GComponent {
 		FGUIResultView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUIResultView.instance) return;
-		if (FGUIResultView.enableAnimation) {
-			FGUIResultView.instance.hideAnimation();
-			return;
-		}
-		FGUIResultView.instance.dispose();
+		FGUIResultView.instance && FGUIResultView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -66,7 +61,7 @@ export default class FGUIResultView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -74,7 +69,7 @@ export default class FGUIResultView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIResultView.instance && FGUIResultView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

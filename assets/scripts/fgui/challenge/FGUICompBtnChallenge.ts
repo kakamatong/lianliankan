@@ -41,12 +41,7 @@ export default class FGUICompBtnChallenge extends fgui.GButton {
 		FGUICompBtnChallenge.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompBtnChallenge.instance) return;
-		if (FGUICompBtnChallenge.enableAnimation) {
-			FGUICompBtnChallenge.instance.hideAnimation();
-			return;
-		}
-		FGUICompBtnChallenge.instance.dispose();
+		FGUICompBtnChallenge.instance && FGUICompBtnChallenge.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -60,7 +55,7 @@ export default class FGUICompBtnChallenge extends fgui.GButton {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -68,7 +63,7 @@ export default class FGUICompBtnChallenge extends fgui.GButton {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompBtnChallenge.instance && FGUICompBtnChallenge.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

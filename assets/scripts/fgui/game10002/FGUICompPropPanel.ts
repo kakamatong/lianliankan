@@ -42,12 +42,7 @@ export default class FGUICompPropPanel extends fgui.GComponent {
 		FGUICompPropPanel.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompPropPanel.instance) return;
-		if (FGUICompPropPanel.enableAnimation) {
-			FGUICompPropPanel.instance.hideAnimation();
-			return;
-		}
-		FGUICompPropPanel.instance.dispose();
+		FGUICompPropPanel.instance && FGUICompPropPanel.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +56,7 @@ export default class FGUICompPropPanel extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -69,7 +64,7 @@ export default class FGUICompPropPanel extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompPropPanel.instance && FGUICompPropPanel.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

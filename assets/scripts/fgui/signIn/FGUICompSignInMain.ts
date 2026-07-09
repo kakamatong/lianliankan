@@ -45,12 +45,7 @@ export default class FGUICompSignInMain extends fgui.GComponent {
 		FGUICompSignInMain.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompSignInMain.instance) return;
-		if (FGUICompSignInMain.enableAnimation) {
-			FGUICompSignInMain.instance.hideAnimation();
-			return;
-		}
-		FGUICompSignInMain.instance.dispose();
+		FGUICompSignInMain.instance && FGUICompSignInMain.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -64,7 +59,7 @@ export default class FGUICompSignInMain extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -72,7 +67,7 @@ export default class FGUICompSignInMain extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompSignInMain.instance && FGUICompSignInMain.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

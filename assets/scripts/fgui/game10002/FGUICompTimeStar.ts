@@ -41,12 +41,7 @@ export default class FGUICompTimeStar extends fgui.GLabel {
 		FGUICompTimeStar.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompTimeStar.instance) return;
-		if (FGUICompTimeStar.enableAnimation) {
-			FGUICompTimeStar.instance.hideAnimation();
-			return;
-		}
-		FGUICompTimeStar.instance.dispose();
+		FGUICompTimeStar.instance && FGUICompTimeStar.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -60,7 +55,7 @@ export default class FGUICompTimeStar extends fgui.GLabel {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -68,7 +63,7 @@ export default class FGUICompTimeStar extends fgui.GLabel {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompTimeStar.instance && FGUICompTimeStar.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

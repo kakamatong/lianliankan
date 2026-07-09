@@ -43,12 +43,7 @@ export default class FGUICompMailTitle extends fgui.GComponent {
 		FGUICompMailTitle.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompMailTitle.instance) return;
-		if (FGUICompMailTitle.enableAnimation) {
-			FGUICompMailTitle.instance.hideAnimation();
-			return;
-		}
-		FGUICompMailTitle.instance.dispose();
+		FGUICompMailTitle.instance && FGUICompMailTitle.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +57,7 @@ export default class FGUICompMailTitle extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -70,7 +65,7 @@ export default class FGUICompMailTitle extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompMailTitle.instance && FGUICompMailTitle.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

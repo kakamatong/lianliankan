@@ -49,12 +49,7 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 		FGUICompPrivateCreate.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUICompPrivateCreate.instance) return;
-		if (FGUICompPrivateCreate.enableAnimation) {
-			FGUICompPrivateCreate.instance.hideAnimation();
-			return;
-		}
-		FGUICompPrivateCreate.instance.dispose();
+		FGUICompPrivateCreate.instance && FGUICompPrivateCreate.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -68,7 +63,7 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -76,7 +71,7 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompPrivateCreate.instance && FGUICompPrivateCreate.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

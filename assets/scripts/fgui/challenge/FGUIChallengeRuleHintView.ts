@@ -42,12 +42,7 @@ export default class FGUIChallengeRuleHintView extends fgui.GComponent {
 		FGUIChallengeRuleHintView.instance = null;
 	}
 	public static hideView():void {
-		if (!FGUIChallengeRuleHintView.instance) return;
-		if (FGUIChallengeRuleHintView.enableAnimation) {
-			FGUIChallengeRuleHintView.instance.hideAnimation();
-			return;
-		}
-		FGUIChallengeRuleHintView.instance.dispose();
+		FGUIChallengeRuleHintView.instance && FGUIChallengeRuleHintView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +56,7 @@ export default class FGUIChallengeRuleHintView extends fgui.GComponent {
 		    });
 	}
 
-	hideAnimation(): void {
+	hideAnimation(onComplete?: () => void): void {
 		fgui.GTween.to2(1, 1, 0, 0, 0.3)
 		    .setTarget(this)
 		    .setEase(fgui.EaseType.BackIn)
@@ -69,7 +64,7 @@ export default class FGUIChallengeRuleHintView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIChallengeRuleHintView.instance && FGUIChallengeRuleHintView.instance.dispose();
+		        onComplete && onComplete();
 		    });
 	}
 

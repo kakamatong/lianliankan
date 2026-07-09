@@ -43,8 +43,9 @@ export class CompBag extends FGUICompBag {
      * @description 关闭按钮点击回调
      */
     onBtnClose() {
-        // TODO: 实现关闭逻辑
-        BagView.hideView();
+        this.hideAnimation(() => {
+            BagView.hideView();
+        });
     }
 
     /**
