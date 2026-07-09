@@ -4,5 +4,5 @@
     <component id="f9cy0" name="GmView.xml" path="/" exported="true"/>
     <component id="f9cy1" name="CompGm.xml" path="/comp/"/>
   </resources>
-  <publish name=""/>
+  <publish name="" genCode="true"/>
 </packageDescription>

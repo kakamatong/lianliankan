@@ -50,6 +50,23 @@ FGUIProject/        # FairyGUI 编辑器资源目录（UI 布局、图片等）
 
 **FGUI 基类禁止修改**，所有逻辑写在业务子类中。修改 UI 组件前，必须先阅读对应的 FGUI 基类及其子类的代码。
 
+### 新增 View 模块流程
+
+以 `gm` 包为例，新增一个 View 模块的步骤：
+
+1. **FairyGUI 编辑器**中创建 UI 布局（`GmView.xml` + `comp/CompGm.xml`），按钮命名遵循 `UI_BTN_*` 前缀
+2. **Cocos Creator 中发布** FGUI 包 → 自动生成 `assets/scripts/fgui/{包名}/` 下的 TS 基类（含 `onBtnXxx()` 空方法存根、`UI_*` 对象引用、`showView/hideView` 静态方法）
+3. **创建业务子类**，遵循 `View入口 + comp/子组件` 的目录结构：
+
+```
+assets/scripts/view/{包名}/
+├── XxxView.ts          # 视图入口，继承 FGUIGmView，声明 @PackageLoad
+└── comp/
+    └── CompXxx.ts      # 子组件，继承 FGUICompXxx，重写 onBtnXxx() 添加逻辑
+```
+
+4. `fgui.UIObjectFactory.setExtension(类名.URL, 类名)` 注册组件，使 FGUI 引擎使用业务子类实例化
+
 ## 必须遵守的约定
 
 ### 命名

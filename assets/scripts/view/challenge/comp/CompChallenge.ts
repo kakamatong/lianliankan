@@ -2,7 +2,6 @@ import FGUICompChallenge from "@fgui/challenge/FGUICompChallenge";
 import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { ChallengeView } from "../ChallengeView";
-import { UserEnergy } from "@modules/UserEnergy";
 import { BezierTween, Logger } from "@frameworks/utils/Utils";
 import FGUICompStar from "@fgui/challenge/FGUICompStar";
 
@@ -10,12 +9,7 @@ import FGUICompStar from "@fgui/challenge/FGUICompStar";
 export class CompChallenge extends FGUICompChallenge {
     onConstruct() {
         super.onConstruct();
-        this.init();
         this.show();
-    }
-
-    init() {
-        UserEnergy.instance.req();
     }
 
     onDestroy() {
@@ -27,15 +21,6 @@ export class CompChallenge extends FGUICompChallenge {
     }
 
     show(data?: any): void {
-        // TODO: 实现业务逻辑
-    }
-
-    onBtnTestAdd() {
-        UserEnergy.instance.changeReq(1);
-    }
-
-    onBtnTestReduce() {
-        UserEnergy.instance.changeReq(-1);
     }
 
     testBezier() {
