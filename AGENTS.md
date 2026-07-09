@@ -54,13 +54,13 @@ FGUIProject/        # FairyGUI 编辑器资源目录（UI 布局、图片等）
 
 以 `gm` 包为例，新增一个 View 模块的步骤：
 
-1. **FairyGUI 编辑器**中创建 UI 布局（`GmView.xml` + `comp/CompGm.xml`），按钮命名遵循 `UI_BTN_*` 前缀
-2. **Cocos Creator 中发布** FGUI 包 → 自动生成 `assets/scripts/fgui/{包名}/` 下的 TS 基类（含 `onBtnXxx()` 空方法存根、`UI_*` 对象引用、`showView/hideView` 静态方法）
+1. **FairyGUI 编辑器**中创建 UI 布局（`GmView.xml` + `comp/CompGm.xml`），按钮命名遵循 `UI_BTN_*` 前缀（*由用户操作*）
+2. **Cocos Creator 中发布** FGUI 包 → 自动生成 `assets/scripts/fgui/{包名}/` 下的 TS 基类（含 `onBtnXxx()` 空方法存根、`UI_*` 对象引用、`showView/hideView` 静态方法）（*由用户操作*）
 3. **创建业务子类**，遵循 `View入口 + comp/子组件` 的目录结构：
 
 ```
 assets/scripts/view/{包名}/
-├── XxxView.ts          # 视图入口，继承 FGUIGmView，声明 @PackageLoad
+├── XxxView.ts          # 视图入口，继承 FGUIXxxView，声明 @PackageLoad
 └── comp/
     └── CompXxx.ts      # 子组件，继承 FGUICompXxx，重写 onBtnXxx() 添加逻辑
 ```
