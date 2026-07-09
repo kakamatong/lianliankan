@@ -15,6 +15,8 @@ export default class FGUICompHead extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompHead.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompHead extends fgui.GComponent {
 		FGUICompHead.instance = null;
 	}
 	public static hideView():void {
-		FGUICompHead.instance && FGUICompHead.instance.dispose();
+		if (!FGUICompHead.instance) return;
+		if (FGUICompHead.enableAnimation) {
+			FGUICompHead.instance.hideAnimation();
+			return;
+		}
+		FGUICompHead.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompHead extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompHead.hideView();
+		        FGUICompHead.instance && FGUICompHead.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompHead extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_LOADER_HEAD = <fgui.GLoader>(this.getChildAt(1));
+		if (FGUICompHead.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

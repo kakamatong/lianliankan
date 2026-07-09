@@ -16,6 +16,8 @@ export default class FGUICompPirvateInfo extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompPirvateInfo.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUICompPirvateInfo extends fgui.GComponent {
 		FGUICompPirvateInfo.instance = null;
 	}
 	public static hideView():void {
-		FGUICompPirvateInfo.instance && FGUICompPirvateInfo.instance.dispose();
+		if (!FGUICompPirvateInfo.instance) return;
+		if (FGUICompPirvateInfo.enableAnimation) {
+			FGUICompPirvateInfo.instance.hideAnimation();
+			return;
+		}
+		FGUICompPirvateInfo.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUICompPirvateInfo extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompPirvateInfo.hideView();
+		        FGUICompPirvateInfo.instance && FGUICompPirvateInfo.instance.dispose();
 		    });
 	}
 
@@ -73,6 +80,7 @@ export default class FGUICompPirvateInfo extends fgui.GComponent {
 	protected onConstruct():void {
 		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_TXT_RULE = <fgui.GTextField>(this.getChildAt(2));
+		if (FGUICompPirvateInfo.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

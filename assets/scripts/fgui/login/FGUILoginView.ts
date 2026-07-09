@@ -15,6 +15,8 @@ export default class FGUILoginView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUILoginView.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUILoginView extends fgui.GComponent {
 		FGUILoginView.instance = null;
 	}
 	public static hideView():void {
-		FGUILoginView.instance && FGUILoginView.instance.dispose();
+		if (!FGUILoginView.instance) return;
+		if (FGUILoginView.enableAnimation) {
+			FGUILoginView.instance.hideAnimation();
+			return;
+		}
+		FGUILoginView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUILoginView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUILoginView.hideView();
+		        FGUILoginView.instance && FGUILoginView.instance.dispose();
 		    });
 	}
 
@@ -72,6 +79,7 @@ export default class FGUILoginView extends fgui.GComponent {
 	protected onConstruct():void {
 		this.UI_BTN_START = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_START.onClick(this.onBtnStart, this);
+		if (FGUILoginView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

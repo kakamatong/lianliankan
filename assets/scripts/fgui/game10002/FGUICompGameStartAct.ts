@@ -15,6 +15,8 @@ export default class FGUICompGameStartAct extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompGameStartAct.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompGameStartAct extends fgui.GComponent {
 		FGUICompGameStartAct.instance = null;
 	}
 	public static hideView():void {
-		FGUICompGameStartAct.instance && FGUICompGameStartAct.instance.dispose();
+		if (!FGUICompGameStartAct.instance) return;
+		if (FGUICompGameStartAct.enableAnimation) {
+			FGUICompGameStartAct.instance.hideAnimation();
+			return;
+		}
+		FGUICompGameStartAct.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompGameStartAct extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompGameStartAct.hideView();
+		        FGUICompGameStartAct.instance && FGUICompGameStartAct.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompGameStartAct extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.act = this.getTransitionAt(0);
+		if (FGUICompGameStartAct.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -25,6 +25,8 @@ export default class FGUIPlayerInfoView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIPlayerInfoView.instance) {
 			console.log("allready show");
@@ -49,7 +51,12 @@ export default class FGUIPlayerInfoView extends fgui.GComponent {
 		FGUIPlayerInfoView.instance = null;
 	}
 	public static hideView():void {
-		FGUIPlayerInfoView.instance && FGUIPlayerInfoView.instance.dispose();
+		if (!FGUIPlayerInfoView.instance) return;
+		if (FGUIPlayerInfoView.enableAnimation) {
+			FGUIPlayerInfoView.instance.hideAnimation();
+			return;
+		}
+		FGUIPlayerInfoView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -71,7 +78,7 @@ export default class FGUIPlayerInfoView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIPlayerInfoView.hideView();
+		        FGUIPlayerInfoView.instance && FGUIPlayerInfoView.instance.dispose();
 		    });
 	}
 
@@ -92,6 +99,7 @@ export default class FGUIPlayerInfoView extends fgui.GComponent {
 		this.UI_TXT_RATE = <fgui.GTextField>(this.getChildAt(15));
 		this.UI_TXT_CP = <fgui.GTextField>(this.getChildAt(16));
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(17));
+		if (FGUIPlayerInfoView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

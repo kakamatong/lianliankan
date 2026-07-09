@@ -23,6 +23,8 @@ export default class FGUIMatchView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIMatchView.instance) {
 			console.log("allready show");
@@ -47,7 +49,12 @@ export default class FGUIMatchView extends fgui.GComponent {
 		FGUIMatchView.instance = null;
 	}
 	public static hideView():void {
-		FGUIMatchView.instance && FGUIMatchView.instance.dispose();
+		if (!FGUIMatchView.instance) return;
+		if (FGUIMatchView.enableAnimation) {
+			FGUIMatchView.instance.hideAnimation();
+			return;
+		}
+		FGUIMatchView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -69,7 +76,7 @@ export default class FGUIMatchView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIMatchView.hideView();
+		        FGUIMatchView.instance && FGUIMatchView.instance.dispose();
 		    });
 	}
 
@@ -90,6 +97,7 @@ export default class FGUIMatchView extends fgui.GComponent {
 		this.UI_GROUP_AUTO = <fgui.GGroup>(this.getChildAt(8));
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(9));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
+		if (FGUIMatchView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

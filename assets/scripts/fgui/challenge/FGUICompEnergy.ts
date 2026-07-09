@@ -17,6 +17,8 @@ export default class FGUICompEnergy extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompEnergy.instance) {
 			console.log("allready show");
@@ -41,7 +43,12 @@ export default class FGUICompEnergy extends fgui.GComponent {
 		FGUICompEnergy.instance = null;
 	}
 	public static hideView():void {
-		FGUICompEnergy.instance && FGUICompEnergy.instance.dispose();
+		if (!FGUICompEnergy.instance) return;
+		if (FGUICompEnergy.enableAnimation) {
+			FGUICompEnergy.instance.hideAnimation();
+			return;
+		}
+		FGUICompEnergy.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -63,7 +70,7 @@ export default class FGUICompEnergy extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompEnergy.hideView();
+		        FGUICompEnergy.instance && FGUICompEnergy.instance.dispose();
 		    });
 	}
 
@@ -75,6 +82,7 @@ export default class FGUICompEnergy extends fgui.GComponent {
 		this.ctrl_showTime = this.getControllerAt(0);
 		this.UI_TXT_TOTAL = <fgui.GTextField>(this.getChildAt(2));
 		this.UI_TXT_TIME = <fgui.GTextField>(this.getChildAt(4));
+		if (FGUICompEnergy.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

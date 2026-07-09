@@ -20,6 +20,8 @@ export default class FGUIPrivateRoomView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIPrivateRoomView.instance) {
 			console.log("allready show");
@@ -44,7 +46,12 @@ export default class FGUIPrivateRoomView extends fgui.GComponent {
 		FGUIPrivateRoomView.instance = null;
 	}
 	public static hideView():void {
-		FGUIPrivateRoomView.instance && FGUIPrivateRoomView.instance.dispose();
+		if (!FGUIPrivateRoomView.instance) return;
+		if (FGUIPrivateRoomView.enableAnimation) {
+			FGUIPrivateRoomView.instance.hideAnimation();
+			return;
+		}
+		FGUIPrivateRoomView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -66,7 +73,7 @@ export default class FGUIPrivateRoomView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIPrivateRoomView.hideView();
+		        FGUIPrivateRoomView.instance && FGUIPrivateRoomView.instance.dispose();
 		    });
 	}
 
@@ -80,6 +87,7 @@ export default class FGUIPrivateRoomView extends fgui.GComponent {
 		this.UI_COMP_JOIN = <FGUICompPrivateJoin>(this.getChildAt(5));
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(6));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
+		if (FGUIPrivateRoomView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

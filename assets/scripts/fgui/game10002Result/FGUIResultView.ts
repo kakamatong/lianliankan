@@ -21,6 +21,8 @@ export default class FGUIResultView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIResultView.instance) {
 			console.log("allready show");
@@ -45,7 +47,12 @@ export default class FGUIResultView extends fgui.GComponent {
 		FGUIResultView.instance = null;
 	}
 	public static hideView():void {
-		FGUIResultView.instance && FGUIResultView.instance.dispose();
+		if (!FGUIResultView.instance) return;
+		if (FGUIResultView.enableAnimation) {
+			FGUIResultView.instance.hideAnimation();
+			return;
+		}
+		FGUIResultView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -67,7 +74,7 @@ export default class FGUIResultView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIResultView.hideView();
+		        FGUIResultView.instance && FGUIResultView.instance.dispose();
 		    });
 	}
 
@@ -85,6 +92,7 @@ export default class FGUIResultView extends fgui.GComponent {
 		this.UI_LV_GAME_INFO = <fgui.GList>(this.getChildAt(5));
 		this.UI_GROP_RESULT = <fgui.GGroup>(this.getChildAt(10));
 		this.act = this.getTransitionAt(0);
+		if (FGUIResultView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

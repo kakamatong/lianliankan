@@ -22,6 +22,8 @@ export default class FGUICompLevel extends fgui.GButton {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompLevel.instance) {
 			console.log("allready show");
@@ -46,7 +48,12 @@ export default class FGUICompLevel extends fgui.GButton {
 		FGUICompLevel.instance = null;
 	}
 	public static hideView():void {
-		FGUICompLevel.instance && FGUICompLevel.instance.dispose();
+		if (!FGUICompLevel.instance) return;
+		if (FGUICompLevel.enableAnimation) {
+			FGUICompLevel.instance.hideAnimation();
+			return;
+		}
+		FGUICompLevel.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -68,7 +75,7 @@ export default class FGUICompLevel extends fgui.GButton {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompLevel.hideView();
+		        FGUICompLevel.instance && FGUICompLevel.instance.dispose();
 		    });
 	}
 
@@ -84,6 +91,7 @@ export default class FGUICompLevel extends fgui.GButton {
 		this.UI_COMP_STAR_1 = <FGUICompStar>(this.getChildAt(2));
 		this.UI_COMP_STAR_2 = <FGUICompStar>(this.getChildAt(3));
 		this.UI_TXT_INDEX = <fgui.GTextField>(this.getChildAt(4));
+		if (FGUICompLevel.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

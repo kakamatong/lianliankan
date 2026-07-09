@@ -15,6 +15,8 @@ export default class FGUICompLine extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompLine.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompLine extends fgui.GComponent {
 		FGUICompLine.instance = null;
 	}
 	public static hideView():void {
-		FGUICompLine.instance && FGUICompLine.instance.dispose();
+		if (!FGUICompLine.instance) return;
+		if (FGUICompLine.enableAnimation) {
+			FGUICompLine.instance.hideAnimation();
+			return;
+		}
+		FGUICompLine.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompLine extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompLine.hideView();
+		        FGUICompLine.instance && FGUICompLine.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompLine extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.line = <fgui.GImage>(this.getChildAt(0));
+		if (FGUICompLine.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

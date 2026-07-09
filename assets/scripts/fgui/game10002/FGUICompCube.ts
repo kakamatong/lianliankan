@@ -17,6 +17,8 @@ export default class FGUICompCube extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompCube.instance) {
 			console.log("allready show");
@@ -41,7 +43,12 @@ export default class FGUICompCube extends fgui.GComponent {
 		FGUICompCube.instance = null;
 	}
 	public static hideView():void {
-		FGUICompCube.instance && FGUICompCube.instance.dispose();
+		if (!FGUICompCube.instance) return;
+		if (FGUICompCube.enableAnimation) {
+			FGUICompCube.instance.hideAnimation();
+			return;
+		}
+		FGUICompCube.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -63,7 +70,7 @@ export default class FGUICompCube extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompCube.hideView();
+		        FGUICompCube.instance && FGUICompCube.instance.dispose();
 		    });
 	}
 
@@ -75,6 +82,7 @@ export default class FGUICompCube extends fgui.GComponent {
 		this.ctrl_selected = this.getControllerAt(0);
 		this.UI_LOADER_ICOM = <fgui.GLoader>(this.getChildAt(2));
 		this.UI_SP_ANI = <fgui.GLoader3D>(this.getChildAt(3));
+		if (FGUICompCube.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

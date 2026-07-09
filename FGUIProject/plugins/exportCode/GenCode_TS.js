@@ -58,6 +58,8 @@ function genCode(handler) {
 
         writer.writeln("public static instance:any | null = null;");
         writer.writeln();
+        writer.writeln("public static enableAnimation: boolean = false;");
+        writer.writeln();
 
         // showView 用于显示，但只能同时显示一个
         writer.writeln("public static showView(params?:any, callBack?:(b:boolean)=>void):void", classInfo.className);
@@ -98,7 +100,13 @@ function genCode(handler) {
         // hideView 用于隐藏，跟showView 是一对
         writer.writeln("public static hideView():void");
         writer.startBlock();
-        writer.writeln("%s.instance && %s.instance.dispose();", classInfo.className, classInfo.className);
+        writer.writeln("if (!%s.instance) return;", classInfo.className);
+        writer.writeln("if (%s.enableAnimation)", classInfo.className);
+        writer.startBlock();
+        writer.writeln("%s.instance.hideAnimation();", classInfo.className);
+        writer.writeln("return;");
+        writer.endBlock();
+        writer.writeln("%s.instance.dispose();", classInfo.className);
         writer.endBlock();
 
         // show 接口
@@ -165,6 +173,7 @@ function genCode(handler) {
             }
         }
 
+        writer.writeln("if (%s.enableAnimation) this.enterAnimation();", classInfo.className);
         writer.endBlock();
         writer.writeln("scheduleOnce(callback: () => void, delay: number):void{};");
         writer.writeln("unscheduleAllCallbacks():void{};");

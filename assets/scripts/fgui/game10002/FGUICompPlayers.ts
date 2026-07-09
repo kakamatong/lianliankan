@@ -15,6 +15,8 @@ export default class FGUICompPlayers extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompPlayers.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompPlayers extends fgui.GComponent {
 		FGUICompPlayers.instance = null;
 	}
 	public static hideView():void {
-		FGUICompPlayers.instance && FGUICompPlayers.instance.dispose();
+		if (!FGUICompPlayers.instance) return;
+		if (FGUICompPlayers.enableAnimation) {
+			FGUICompPlayers.instance.hideAnimation();
+			return;
+		}
+		FGUICompPlayers.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompPlayers extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompPlayers.hideView();
+		        FGUICompPlayers.instance && FGUICompPlayers.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompPlayers extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_LIST_OTHER_PLAYERS = <fgui.GList>(this.getChildAt(0));
+		if (FGUICompPlayers.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

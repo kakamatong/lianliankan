@@ -29,6 +29,8 @@ export default class FGUIUserCenterView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIUserCenterView.instance) {
 			console.log("allready show");
@@ -53,7 +55,12 @@ export default class FGUIUserCenterView extends fgui.GComponent {
 		FGUIUserCenterView.instance = null;
 	}
 	public static hideView():void {
-		FGUIUserCenterView.instance && FGUIUserCenterView.instance.dispose();
+		if (!FGUIUserCenterView.instance) return;
+		if (FGUIUserCenterView.enableAnimation) {
+			FGUIUserCenterView.instance.hideAnimation();
+			return;
+		}
+		FGUIUserCenterView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -75,7 +82,7 @@ export default class FGUIUserCenterView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIUserCenterView.hideView();
+		        FGUIUserCenterView.instance && FGUIUserCenterView.instance.dispose();
 		    });
 	}
 
@@ -103,6 +110,7 @@ export default class FGUIUserCenterView extends fgui.GComponent {
 		this.UI_BTN_DEL_ACC = <fgui.GButton>(this.getChildAt(21));
 		this.UI_BTN_DEL_ACC.onClick(this.onBtnDelAcc, this);
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(22));
+		if (FGUIUserCenterView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -20,6 +20,8 @@ export default class FGUIMailView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIMailView.instance) {
 			console.log("allready show");
@@ -44,7 +46,12 @@ export default class FGUIMailView extends fgui.GComponent {
 		FGUIMailView.instance = null;
 	}
 	public static hideView():void {
-		FGUIMailView.instance && FGUIMailView.instance.dispose();
+		if (!FGUIMailView.instance) return;
+		if (FGUIMailView.enableAnimation) {
+			FGUIMailView.instance.hideAnimation();
+			return;
+		}
+		FGUIMailView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -66,7 +73,7 @@ export default class FGUIMailView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIMailView.hideView();
+		        FGUIMailView.instance && FGUIMailView.instance.dispose();
 		    });
 	}
 
@@ -81,6 +88,7 @@ export default class FGUIMailView extends fgui.GComponent {
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_LV_LIST = <fgui.GList>(this.getChildAt(5));
 		this.UI_COMP_CONTENT = <FGUICompMailContent>(this.getChildAt(8));
+		if (FGUIMailView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

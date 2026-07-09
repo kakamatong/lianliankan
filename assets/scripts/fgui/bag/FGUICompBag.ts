@@ -20,6 +20,8 @@ export default class FGUICompBag extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompBag.instance) {
 			console.log("allready show");
@@ -44,7 +46,12 @@ export default class FGUICompBag extends fgui.GComponent {
 		FGUICompBag.instance = null;
 	}
 	public static hideView():void {
-		FGUICompBag.instance && FGUICompBag.instance.dispose();
+		if (!FGUICompBag.instance) return;
+		if (FGUICompBag.enableAnimation) {
+			FGUICompBag.instance.hideAnimation();
+			return;
+		}
+		FGUICompBag.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -66,7 +73,7 @@ export default class FGUICompBag extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompBag.hideView();
+		        FGUICompBag.instance && FGUICompBag.instance.dispose();
 		    });
 	}
 
@@ -82,6 +89,7 @@ export default class FGUICompBag extends fgui.GComponent {
 		this.UI_LV_BAGS = <fgui.GList>(this.getChildAt(5));
 		this.UI_COMP_ICON = <fgui.GButton>(this.getChildAt(6));
 		this.UI_COMP_DIS = <fgui.GTextField>(this.getChildAt(7));
+		if (FGUICompBag.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

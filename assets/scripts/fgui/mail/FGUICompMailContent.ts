@@ -16,6 +16,8 @@ export default class FGUICompMailContent extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMailContent.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUICompMailContent extends fgui.GComponent {
 		FGUICompMailContent.instance = null;
 	}
 	public static hideView():void {
-		FGUICompMailContent.instance && FGUICompMailContent.instance.dispose();
+		if (!FGUICompMailContent.instance) return;
+		if (FGUICompMailContent.enableAnimation) {
+			FGUICompMailContent.instance.hideAnimation();
+			return;
+		}
+		FGUICompMailContent.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUICompMailContent extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompMailContent.hideView();
+		        FGUICompMailContent.instance && FGUICompMailContent.instance.dispose();
 		    });
 	}
 
@@ -74,6 +81,7 @@ export default class FGUICompMailContent extends fgui.GComponent {
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(1));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
 		this.title = <fgui.GTextField>(this.getChildAt(3));
+		if (FGUICompMailContent.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

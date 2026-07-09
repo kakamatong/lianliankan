@@ -15,6 +15,8 @@ export default class FGUICompItem extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompItem.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompItem extends fgui.GComponent {
 		FGUICompItem.instance = null;
 	}
 	public static hideView():void {
-		FGUICompItem.instance && FGUICompItem.instance.dispose();
+		if (!FGUICompItem.instance) return;
+		if (FGUICompItem.enableAnimation) {
+			FGUICompItem.instance.hideAnimation();
+			return;
+		}
+		FGUICompItem.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompItem extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompItem.hideView();
+		        FGUICompItem.instance && FGUICompItem.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompItem extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_TXT_TALK = <fgui.GTextField>(this.getChildAt(0));
+		if (FGUICompItem.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -16,6 +16,8 @@ export default class FGUIGmView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIGmView.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUIGmView extends fgui.GComponent {
 		FGUIGmView.instance = null;
 	}
 	public static hideView():void {
-		FGUIGmView.instance && FGUIGmView.instance.dispose();
+		if (!FGUIGmView.instance) return;
+		if (FGUIGmView.enableAnimation) {
+			FGUIGmView.instance.hideAnimation();
+			return;
+		}
+		FGUIGmView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUIGmView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIGmView.hideView();
+		        FGUIGmView.instance && FGUIGmView.instance.dispose();
 		    });
 	}
 
@@ -72,6 +79,7 @@ export default class FGUIGmView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_MAIN_NODE = <FGUICompGm>(this.getChildAt(1));
+		if (FGUIGmView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -16,6 +16,8 @@ export default class FGUILobbyView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUILobbyView.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUILobbyView extends fgui.GComponent {
 		FGUILobbyView.instance = null;
 	}
 	public static hideView():void {
-		FGUILobbyView.instance && FGUILobbyView.instance.dispose();
+		if (!FGUILobbyView.instance) return;
+		if (FGUILobbyView.enableAnimation) {
+			FGUILobbyView.instance.hideAnimation();
+			return;
+		}
+		FGUILobbyView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUILobbyView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUILobbyView.hideView();
+		        FGUILobbyView.instance && FGUILobbyView.instance.dispose();
 		    });
 	}
 
@@ -72,6 +79,7 @@ export default class FGUILobbyView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_COMP_MAIN = <FGUICompLobbyMain>(this.getChildAt(1));
+		if (FGUILobbyView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

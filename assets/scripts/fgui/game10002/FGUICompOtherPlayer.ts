@@ -20,6 +20,8 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompOtherPlayer.instance) {
 			console.log("allready show");
@@ -44,7 +46,12 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 		FGUICompOtherPlayer.instance = null;
 	}
 	public static hideView():void {
-		FGUICompOtherPlayer.instance && FGUICompOtherPlayer.instance.dispose();
+		if (!FGUICompOtherPlayer.instance) return;
+		if (FGUICompOtherPlayer.enableAnimation) {
+			FGUICompOtherPlayer.instance.hideAnimation();
+			return;
+		}
+		FGUICompOtherPlayer.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -66,7 +73,7 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompOtherPlayer.hideView();
+		        FGUICompOtherPlayer.instance && FGUICompOtherPlayer.instance.dispose();
 		    });
 	}
 
@@ -79,6 +86,7 @@ export default class FGUICompOtherPlayer extends fgui.GComponent {
 		this.UI_COMP_HEAD = <FGUICompPlayerHead>(this.getChildAt(0));
 		this.UI_COMP_MAP = <FGUICompMap>(this.getChildAt(1));
 		this.UI_COMP_MEDAL = <fgui.GComponent>(this.getChildAt(3));
+		if (FGUICompOtherPlayer.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -21,6 +21,8 @@ export default class FGUICompDisband extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompDisband.instance) {
 			console.log("allready show");
@@ -45,7 +47,12 @@ export default class FGUICompDisband extends fgui.GComponent {
 		FGUICompDisband.instance = null;
 	}
 	public static hideView():void {
-		FGUICompDisband.instance && FGUICompDisband.instance.dispose();
+		if (!FGUICompDisband.instance) return;
+		if (FGUICompDisband.enableAnimation) {
+			FGUICompDisband.instance.hideAnimation();
+			return;
+		}
+		FGUICompDisband.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -67,7 +74,7 @@ export default class FGUICompDisband extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompDisband.hideView();
+		        FGUICompDisband.instance && FGUICompDisband.instance.dispose();
 		    });
 	}
 
@@ -85,6 +92,7 @@ export default class FGUICompDisband extends fgui.GComponent {
 		this.UI_TXT_LEFT_TIME = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_TXT_MSG = <fgui.GTextField>(this.getChildAt(6));
 		this.UI_TXT_DISBAN = <fgui.GTextField>(this.getChildAt(7));
+		if (FGUICompDisband.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

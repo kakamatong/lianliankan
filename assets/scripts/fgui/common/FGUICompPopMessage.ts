@@ -21,6 +21,8 @@ export default class FGUICompPopMessage extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompPopMessage.instance) {
 			console.log("allready show");
@@ -45,7 +47,12 @@ export default class FGUICompPopMessage extends fgui.GComponent {
 		FGUICompPopMessage.instance = null;
 	}
 	public static hideView():void {
-		FGUICompPopMessage.instance && FGUICompPopMessage.instance.dispose();
+		if (!FGUICompPopMessage.instance) return;
+		if (FGUICompPopMessage.enableAnimation) {
+			FGUICompPopMessage.instance.hideAnimation();
+			return;
+		}
+		FGUICompPopMessage.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -67,7 +74,7 @@ export default class FGUICompPopMessage extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompPopMessage.hideView();
+		        FGUICompPopMessage.instance && FGUICompPopMessage.instance.dispose();
 		    });
 	}
 
@@ -85,6 +92,7 @@ export default class FGUICompPopMessage extends fgui.GComponent {
 		this.UI_BTN_CANCEL.onClick(this.onBtnCancel, this);
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_TXT_CONTENT = <fgui.GTextField>(this.getChildAt(5));
+		if (FGUICompPopMessage.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

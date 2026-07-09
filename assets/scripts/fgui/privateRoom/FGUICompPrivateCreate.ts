@@ -23,6 +23,8 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompPrivateCreate.instance) {
 			console.log("allready show");
@@ -47,7 +49,12 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 		FGUICompPrivateCreate.instance = null;
 	}
 	public static hideView():void {
-		FGUICompPrivateCreate.instance && FGUICompPrivateCreate.instance.dispose();
+		if (!FGUICompPrivateCreate.instance) return;
+		if (FGUICompPrivateCreate.enableAnimation) {
+			FGUICompPrivateCreate.instance.hideAnimation();
+			return;
+		}
+		FGUICompPrivateCreate.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -69,7 +76,7 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompPrivateCreate.hideView();
+		        FGUICompPrivateCreate.instance && FGUICompPrivateCreate.instance.dispose();
 		    });
 	}
 
@@ -94,6 +101,7 @@ export default class FGUICompPrivateCreate extends fgui.GComponent {
 		this.UI_BTN_ENABLE.onClick(this.onBtnEnable, this);
 		this.UI_BTN_DISENABLE = <fgui.GButton>(this.getChildAt(10));
 		this.UI_BTN_DISENABLE.onClick(this.onBtnDisenable, this);
+		if (FGUICompPrivateCreate.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

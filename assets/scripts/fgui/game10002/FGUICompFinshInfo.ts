@@ -16,6 +16,8 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompFinshInfo.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 		FGUICompFinshInfo.instance = null;
 	}
 	public static hideView():void {
-		FGUICompFinshInfo.instance && FGUICompFinshInfo.instance.dispose();
+		if (!FGUICompFinshInfo.instance) return;
+		if (FGUICompFinshInfo.enableAnimation) {
+			FGUICompFinshInfo.instance.hideAnimation();
+			return;
+		}
+		FGUICompFinshInfo.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompFinshInfo.hideView();
+		        FGUICompFinshInfo.instance && FGUICompFinshInfo.instance.dispose();
 		    });
 	}
 
@@ -73,6 +80,7 @@ export default class FGUICompFinshInfo extends fgui.GComponent {
 	protected onConstruct():void {
 		this.UI_TXT_RANK = <fgui.GTextField>(this.getChildAt(4));
 		this.UI_TXT_TIME = <fgui.GTextField>(this.getChildAt(5));
+		if (FGUICompFinshInfo.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

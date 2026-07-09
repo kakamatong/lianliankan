@@ -15,6 +15,8 @@ export default class FGUICompMedal extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMedal.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompMedal extends fgui.GComponent {
 		FGUICompMedal.instance = null;
 	}
 	public static hideView():void {
-		FGUICompMedal.instance && FGUICompMedal.instance.dispose();
+		if (!FGUICompMedal.instance) return;
+		if (FGUICompMedal.enableAnimation) {
+			FGUICompMedal.instance.hideAnimation();
+			return;
+		}
+		FGUICompMedal.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompMedal extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompMedal.hideView();
+		        FGUICompMedal.instance && FGUICompMedal.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompMedal extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.ctrl_rank = this.getControllerAt(0);
+		if (FGUICompMedal.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

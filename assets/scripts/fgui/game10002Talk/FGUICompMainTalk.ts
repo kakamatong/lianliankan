@@ -15,6 +15,8 @@ export default class FGUICompMainTalk extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMainTalk.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompMainTalk extends fgui.GComponent {
 		FGUICompMainTalk.instance = null;
 	}
 	public static hideView():void {
-		FGUICompMainTalk.instance && FGUICompMainTalk.instance.dispose();
+		if (!FGUICompMainTalk.instance) return;
+		if (FGUICompMainTalk.enableAnimation) {
+			FGUICompMainTalk.instance.hideAnimation();
+			return;
+		}
+		FGUICompMainTalk.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompMainTalk extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompMainTalk.hideView();
+		        FGUICompMainTalk.instance && FGUICompMainTalk.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompMainTalk extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_LIST_TALK = <fgui.GList>(this.getChildAt(1));
+		if (FGUICompMainTalk.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

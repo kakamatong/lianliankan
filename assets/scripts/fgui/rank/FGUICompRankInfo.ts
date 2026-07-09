@@ -17,6 +17,8 @@ export default class FGUICompRankInfo extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompRankInfo.instance) {
 			console.log("allready show");
@@ -41,7 +43,12 @@ export default class FGUICompRankInfo extends fgui.GComponent {
 		FGUICompRankInfo.instance = null;
 	}
 	public static hideView():void {
-		FGUICompRankInfo.instance && FGUICompRankInfo.instance.dispose();
+		if (!FGUICompRankInfo.instance) return;
+		if (FGUICompRankInfo.enableAnimation) {
+			FGUICompRankInfo.instance.hideAnimation();
+			return;
+		}
+		FGUICompRankInfo.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -63,7 +70,7 @@ export default class FGUICompRankInfo extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompRankInfo.hideView();
+		        FGUICompRankInfo.instance && FGUICompRankInfo.instance.dispose();
 		    });
 	}
 
@@ -75,6 +82,7 @@ export default class FGUICompRankInfo extends fgui.GComponent {
 		this.UI_TXT_RANK = <fgui.GTextField>(this.getChildAt(0));
 		this.UI_TXT_NAME = <fgui.GTextField>(this.getChildAt(1));
 		this.UI_TXT_SCORE = <fgui.GTextField>(this.getChildAt(2));
+		if (FGUICompRankInfo.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -15,6 +15,8 @@ export default class FGUICompTips extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompTips.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompTips extends fgui.GComponent {
 		FGUICompTips.instance = null;
 	}
 	public static hideView():void {
-		FGUICompTips.instance && FGUICompTips.instance.dispose();
+		if (!FGUICompTips.instance) return;
+		if (FGUICompTips.enableAnimation) {
+			FGUICompTips.instance.hideAnimation();
+			return;
+		}
+		FGUICompTips.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompTips extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompTips.hideView();
+		        FGUICompTips.instance && FGUICompTips.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompTips extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.title = <fgui.GTextField>(this.getChildAt(1));
+		if (FGUICompTips.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -15,6 +15,8 @@ export default class FGUICompStar extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompStar.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompStar extends fgui.GComponent {
 		FGUICompStar.instance = null;
 	}
 	public static hideView():void {
-		FGUICompStar.instance && FGUICompStar.instance.dispose();
+		if (!FGUICompStar.instance) return;
+		if (FGUICompStar.enableAnimation) {
+			FGUICompStar.instance.hideAnimation();
+			return;
+		}
+		FGUICompStar.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompStar extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompStar.hideView();
+		        FGUICompStar.instance && FGUICompStar.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompStar extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.ctrl_status = this.getControllerAt(0);
+		if (FGUICompStar.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -15,6 +15,8 @@ export default class FGUICompBtnChallenge extends fgui.GButton {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompBtnChallenge.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompBtnChallenge extends fgui.GButton {
 		FGUICompBtnChallenge.instance = null;
 	}
 	public static hideView():void {
-		FGUICompBtnChallenge.instance && FGUICompBtnChallenge.instance.dispose();
+		if (!FGUICompBtnChallenge.instance) return;
+		if (FGUICompBtnChallenge.enableAnimation) {
+			FGUICompBtnChallenge.instance.hideAnimation();
+			return;
+		}
+		FGUICompBtnChallenge.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompBtnChallenge extends fgui.GButton {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompBtnChallenge.hideView();
+		        FGUICompBtnChallenge.instance && FGUICompBtnChallenge.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompBtnChallenge extends fgui.GButton {
 
 	protected onConstruct():void {
 		this.UI_TXT_ENERGY = <fgui.GTextField>(this.getChildAt(3));
+		if (FGUICompBtnChallenge.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

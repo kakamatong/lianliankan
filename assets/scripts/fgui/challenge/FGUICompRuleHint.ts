@@ -19,6 +19,8 @@ export default class FGUICompRuleHint extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompRuleHint.instance) {
 			console.log("allready show");
@@ -43,7 +45,12 @@ export default class FGUICompRuleHint extends fgui.GComponent {
 		FGUICompRuleHint.instance = null;
 	}
 	public static hideView():void {
-		FGUICompRuleHint.instance && FGUICompRuleHint.instance.dispose();
+		if (!FGUICompRuleHint.instance) return;
+		if (FGUICompRuleHint.enableAnimation) {
+			FGUICompRuleHint.instance.hideAnimation();
+			return;
+		}
+		FGUICompRuleHint.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -65,7 +72,7 @@ export default class FGUICompRuleHint extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompRuleHint.hideView();
+		        FGUICompRuleHint.instance && FGUICompRuleHint.instance.dispose();
 		    });
 	}
 
@@ -80,6 +87,7 @@ export default class FGUICompRuleHint extends fgui.GComponent {
 		this.UI_TXT_CONTENT = <fgui.GRichTextField>(this.getChildAt(3));
 		this.UI_BTN_SURE = <FGUICompBtnChallenge>(this.getChildAt(4));
 		this.UI_BTN_SURE.onClick(this.onBtnSure, this);
+		if (FGUICompRuleHint.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

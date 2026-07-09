@@ -176,6 +176,8 @@ export default class FGUICompMap extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMap.instance) {
 			console.log("allready show");
@@ -200,7 +202,12 @@ export default class FGUICompMap extends fgui.GComponent {
 		FGUICompMap.instance = null;
 	}
 	public static hideView():void {
-		FGUICompMap.instance && FGUICompMap.instance.dispose();
+		if (!FGUICompMap.instance) return;
+		if (FGUICompMap.enableAnimation) {
+			FGUICompMap.instance.hideAnimation();
+			return;
+		}
+		FGUICompMap.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -222,7 +229,7 @@ export default class FGUICompMap extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompMap.hideView();
+		        FGUICompMap.instance && FGUICompMap.instance.dispose();
 		    });
 	}
 
@@ -392,6 +399,7 @@ export default class FGUICompMap extends fgui.GComponent {
 		this.CUTE_15_7 = <FGUICompCube>(this.getChildAt(157));
 		this.CUTE_15_8 = <FGUICompCube>(this.getChildAt(158));
 		this.CUTE_15_9 = <FGUICompCube>(this.getChildAt(159));
+		if (FGUICompMap.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

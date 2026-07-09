@@ -17,6 +17,8 @@ export default class FGUICompVoteInfo extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompVoteInfo.instance) {
 			console.log("allready show");
@@ -41,7 +43,12 @@ export default class FGUICompVoteInfo extends fgui.GComponent {
 		FGUICompVoteInfo.instance = null;
 	}
 	public static hideView():void {
-		FGUICompVoteInfo.instance && FGUICompVoteInfo.instance.dispose();
+		if (!FGUICompVoteInfo.instance) return;
+		if (FGUICompVoteInfo.enableAnimation) {
+			FGUICompVoteInfo.instance.hideAnimation();
+			return;
+		}
+		FGUICompVoteInfo.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -63,7 +70,7 @@ export default class FGUICompVoteInfo extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompVoteInfo.hideView();
+		        FGUICompVoteInfo.instance && FGUICompVoteInfo.instance.dispose();
 		    });
 	}
 
@@ -75,6 +82,7 @@ export default class FGUICompVoteInfo extends fgui.GComponent {
 		this.ctrl_result = this.getControllerAt(0);
 		this.UI_COMP_HEAD = <fgui.GComponent>(this.getChildAt(0));
 		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(1));
+		if (FGUICompVoteInfo.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

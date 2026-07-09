@@ -27,6 +27,8 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompLobbyMain.instance) {
 			console.log("allready show");
@@ -51,7 +53,12 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 		FGUICompLobbyMain.instance = null;
 	}
 	public static hideView():void {
-		FGUICompLobbyMain.instance && FGUICompLobbyMain.instance.dispose();
+		if (!FGUICompLobbyMain.instance) return;
+		if (FGUICompLobbyMain.enableAnimation) {
+			FGUICompLobbyMain.instance.hideAnimation();
+			return;
+		}
+		FGUICompLobbyMain.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -73,7 +80,7 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompLobbyMain.hideView();
+		        FGUICompLobbyMain.instance && FGUICompLobbyMain.instance.dispose();
 		    });
 	}
 
@@ -104,6 +111,7 @@ export default class FGUICompLobbyMain extends fgui.GComponent {
 		this.UI_BTN_BAG.onClick(this.onBtnBag, this);
 		this.UI_BTN_CHALLENGE = <fgui.GButton>(this.getChildAt(11));
 		this.UI_BTN_CHALLENGE.onClick(this.onBtnChallenge, this);
+		if (FGUICompLobbyMain.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

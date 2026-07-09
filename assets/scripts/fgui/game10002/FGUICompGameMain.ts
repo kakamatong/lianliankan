@@ -47,6 +47,8 @@ export default class FGUICompGameMain extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompGameMain.instance) {
 			console.log("allready show");
@@ -71,7 +73,12 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		FGUICompGameMain.instance = null;
 	}
 	public static hideView():void {
-		FGUICompGameMain.instance && FGUICompGameMain.instance.dispose();
+		if (!FGUICompGameMain.instance) return;
+		if (FGUICompGameMain.enableAnimation) {
+			FGUICompGameMain.instance.hideAnimation();
+			return;
+		}
+		FGUICompGameMain.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -93,7 +100,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompGameMain.hideView();
+		        FGUICompGameMain.instance && FGUICompGameMain.instance.dispose();
 		    });
 	}
 
@@ -136,6 +143,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(23));
 		this.UI_COMP_PROP = <FGUICompPropPanel>(this.getChildAt(24));
 		this.UI_COMP_COMB = <FGUICompComb>(this.getChildAt(25));
+		if (FGUICompGameMain.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

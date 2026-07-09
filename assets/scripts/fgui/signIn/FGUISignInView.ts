@@ -16,6 +16,8 @@ export default class FGUISignInView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUISignInView.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUISignInView extends fgui.GComponent {
 		FGUISignInView.instance = null;
 	}
 	public static hideView():void {
-		FGUISignInView.instance && FGUISignInView.instance.dispose();
+		if (!FGUISignInView.instance) return;
+		if (FGUISignInView.enableAnimation) {
+			FGUISignInView.instance.hideAnimation();
+			return;
+		}
+		FGUISignInView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUISignInView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUISignInView.hideView();
+		        FGUISignInView.instance && FGUISignInView.instance.dispose();
 		    });
 	}
 
@@ -72,6 +79,7 @@ export default class FGUISignInView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_MAIN_NODE = <FGUICompSignInMain>(this.getChildAt(1));
+		if (FGUISignInView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

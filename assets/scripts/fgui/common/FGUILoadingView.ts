@@ -15,6 +15,8 @@ export default class FGUILoadingView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUILoadingView.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUILoadingView extends fgui.GComponent {
 		FGUILoadingView.instance = null;
 	}
 	public static hideView():void {
-		FGUILoadingView.instance && FGUILoadingView.instance.dispose();
+		if (!FGUILoadingView.instance) return;
+		if (FGUILoadingView.enableAnimation) {
+			FGUILoadingView.instance.hideAnimation();
+			return;
+		}
+		FGUILoadingView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUILoadingView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUILoadingView.hideView();
+		        FGUILoadingView.instance && FGUILoadingView.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUILoadingView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.title = <fgui.GTextField>(this.getChildAt(1));
+		if (FGUILoadingView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

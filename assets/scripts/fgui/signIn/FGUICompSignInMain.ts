@@ -19,6 +19,8 @@ export default class FGUICompSignInMain extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompSignInMain.instance) {
 			console.log("allready show");
@@ -43,7 +45,12 @@ export default class FGUICompSignInMain extends fgui.GComponent {
 		FGUICompSignInMain.instance = null;
 	}
 	public static hideView():void {
-		FGUICompSignInMain.instance && FGUICompSignInMain.instance.dispose();
+		if (!FGUICompSignInMain.instance) return;
+		if (FGUICompSignInMain.enableAnimation) {
+			FGUICompSignInMain.instance.hideAnimation();
+			return;
+		}
+		FGUICompSignInMain.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -65,7 +72,7 @@ export default class FGUICompSignInMain extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompSignInMain.hideView();
+		        FGUICompSignInMain.instance && FGUICompSignInMain.instance.dispose();
 		    });
 	}
 
@@ -82,6 +89,7 @@ export default class FGUICompSignInMain extends fgui.GComponent {
 		this.UI_BTN_MULT.onClick(this.onBtnMult, this);
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(5));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
+		if (FGUICompSignInMain.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -15,6 +15,8 @@ export default class FGUICompComb extends fgui.GLabel {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompComb.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompComb extends fgui.GLabel {
 		FGUICompComb.instance = null;
 	}
 	public static hideView():void {
-		FGUICompComb.instance && FGUICompComb.instance.dispose();
+		if (!FGUICompComb.instance) return;
+		if (FGUICompComb.enableAnimation) {
+			FGUICompComb.instance.hideAnimation();
+			return;
+		}
+		FGUICompComb.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompComb extends fgui.GLabel {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompComb.hideView();
+		        FGUICompComb.instance && FGUICompComb.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompComb extends fgui.GLabel {
 
 	protected onConstruct():void {
 		this.act = this.getTransitionAt(0);
+		if (FGUICompComb.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

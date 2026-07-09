@@ -19,6 +19,8 @@ export default class FGUIPrivacyView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIPrivacyView.instance) {
 			console.log("allready show");
@@ -43,7 +45,12 @@ export default class FGUIPrivacyView extends fgui.GComponent {
 		FGUIPrivacyView.instance = null;
 	}
 	public static hideView():void {
-		FGUIPrivacyView.instance && FGUIPrivacyView.instance.dispose();
+		if (!FGUIPrivacyView.instance) return;
+		if (FGUIPrivacyView.enableAnimation) {
+			FGUIPrivacyView.instance.hideAnimation();
+			return;
+		}
+		FGUIPrivacyView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -65,7 +72,7 @@ export default class FGUIPrivacyView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIPrivacyView.hideView();
+		        FGUIPrivacyView.instance && FGUIPrivacyView.instance.dispose();
 		    });
 	}
 
@@ -82,6 +89,7 @@ export default class FGUIPrivacyView extends fgui.GComponent {
 		this.UI_BTN_PRIVACY = <fgui.GButton>(this.getChildAt(6));
 		this.UI_BTN_PRIVACY.onClick(this.onBtnPrivacy, this);
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(7));
+		if (FGUIPrivacyView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

@@ -15,6 +15,8 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompMatchCube.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 		FGUICompMatchCube.instance = null;
 	}
 	public static hideView():void {
-		FGUICompMatchCube.instance && FGUICompMatchCube.instance.dispose();
+		if (!FGUICompMatchCube.instance) return;
+		if (FGUICompMatchCube.enableAnimation) {
+			FGUICompMatchCube.instance.hideAnimation();
+			return;
+		}
+		FGUICompMatchCube.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompMatchCube.hideView();
+		        FGUICompMatchCube.instance && FGUICompMatchCube.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompMatchCube extends fgui.GLabel {
 
 	protected onConstruct():void {
 		this.ficon = <fgui.GLoader>(this.getChildAt(1));
+		if (FGUICompMatchCube.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

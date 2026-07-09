@@ -15,6 +15,8 @@ export default class FGUITipsView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUITipsView.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUITipsView extends fgui.GComponent {
 		FGUITipsView.instance = null;
 	}
 	public static hideView():void {
-		FGUITipsView.instance && FGUITipsView.instance.dispose();
+		if (!FGUITipsView.instance) return;
+		if (FGUITipsView.enableAnimation) {
+			FGUITipsView.instance.hideAnimation();
+			return;
+		}
+		FGUITipsView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUITipsView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUITipsView.hideView();
+		        FGUITipsView.instance && FGUITipsView.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUITipsView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_LV_TIPS = <fgui.GList>(this.getChildAt(0));
+		if (FGUITipsView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

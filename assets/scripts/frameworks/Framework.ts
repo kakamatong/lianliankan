@@ -108,8 +108,11 @@ export const PackageLoad = (packages: string[]) => {
 /**
  * 视图类
  */
-export const ViewClass = (data?: any) => {
+export const ViewClass = (data?: { curveScreenAdapt?: boolean; enableAnimation?: boolean }) => {
     return function <T extends new (...args: any[]) => any>(constructor: T) {
+        if (data && data.enableAnimation) {
+            (constructor as any).enableAnimation = true;
+        }
         const newConstructor = class extends constructor {
             private _curveScreenApplied = false;
 

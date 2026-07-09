@@ -17,6 +17,8 @@ export default class FGUICompTop extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompTop.instance) {
 			console.log("allready show");
@@ -41,7 +43,12 @@ export default class FGUICompTop extends fgui.GComponent {
 		FGUICompTop.instance = null;
 	}
 	public static hideView():void {
-		FGUICompTop.instance && FGUICompTop.instance.dispose();
+		if (!FGUICompTop.instance) return;
+		if (FGUICompTop.enableAnimation) {
+			FGUICompTop.instance.hideAnimation();
+			return;
+		}
+		FGUICompTop.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -63,7 +70,7 @@ export default class FGUICompTop extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompTop.hideView();
+		        FGUICompTop.instance && FGUICompTop.instance.dispose();
 		    });
 	}
 
@@ -75,6 +82,7 @@ export default class FGUICompTop extends fgui.GComponent {
 		this.UI_COMP_HEAD = <fgui.GComponent>(this.getChildAt(1));
 		this.UI_TXT_NICKNAME = <fgui.GTextField>(this.getChildAt(2));
 		this.UI_TXT_USERID = <fgui.GTextField>(this.getChildAt(3));
+		if (FGUICompTop.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

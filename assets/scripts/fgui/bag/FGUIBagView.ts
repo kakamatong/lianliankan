@@ -16,6 +16,8 @@ export default class FGUIBagView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIBagView.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUIBagView extends fgui.GComponent {
 		FGUIBagView.instance = null;
 	}
 	public static hideView():void {
-		FGUIBagView.instance && FGUIBagView.instance.dispose();
+		if (!FGUIBagView.instance) return;
+		if (FGUIBagView.enableAnimation) {
+			FGUIBagView.instance.hideAnimation();
+			return;
+		}
+		FGUIBagView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUIBagView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIBagView.hideView();
+		        FGUIBagView.instance && FGUIBagView.instance.dispose();
 		    });
 	}
 
@@ -72,6 +79,7 @@ export default class FGUIBagView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_COMP_MAIN = <FGUICompBag>(this.getChildAt(1));
+		if (FGUIBagView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

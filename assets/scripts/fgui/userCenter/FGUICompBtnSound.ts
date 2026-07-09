@@ -15,6 +15,8 @@ export default class FGUICompBtnSound extends fgui.GButton {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompBtnSound.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompBtnSound extends fgui.GButton {
 		FGUICompBtnSound.instance = null;
 	}
 	public static hideView():void {
-		FGUICompBtnSound.instance && FGUICompBtnSound.instance.dispose();
+		if (!FGUICompBtnSound.instance) return;
+		if (FGUICompBtnSound.enableAnimation) {
+			FGUICompBtnSound.instance.hideAnimation();
+			return;
+		}
+		FGUICompBtnSound.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompBtnSound extends fgui.GButton {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompBtnSound.hideView();
+		        FGUICompBtnSound.instance && FGUICompBtnSound.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompBtnSound extends fgui.GButton {
 
 	protected onConstruct():void {
 		this.ctrl_status = this.getControllerAt(1);
+		if (FGUICompBtnSound.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

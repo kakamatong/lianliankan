@@ -17,6 +17,8 @@ export default class FGUIRankView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIRankView.instance) {
 			console.log("allready show");
@@ -41,7 +43,12 @@ export default class FGUIRankView extends fgui.GComponent {
 		FGUIRankView.instance = null;
 	}
 	public static hideView():void {
-		FGUIRankView.instance && FGUIRankView.instance.dispose();
+		if (!FGUIRankView.instance) return;
+		if (FGUIRankView.enableAnimation) {
+			FGUIRankView.instance.hideAnimation();
+			return;
+		}
+		FGUIRankView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -63,7 +70,7 @@ export default class FGUIRankView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIRankView.hideView();
+		        FGUIRankView.instance && FGUIRankView.instance.dispose();
 		    });
 	}
 
@@ -76,6 +83,7 @@ export default class FGUIRankView extends fgui.GComponent {
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
 		this.UI_TXT_SELF_RANK = <fgui.GTextField>(this.getChildAt(6));
+		if (FGUIRankView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

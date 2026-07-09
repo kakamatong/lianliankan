@@ -15,6 +15,8 @@ export default class FGUICompBtnScale extends fgui.GButton {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompBtnScale.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompBtnScale extends fgui.GButton {
 		FGUICompBtnScale.instance = null;
 	}
 	public static hideView():void {
-		FGUICompBtnScale.instance && FGUICompBtnScale.instance.dispose();
+		if (!FGUICompBtnScale.instance) return;
+		if (FGUICompBtnScale.enableAnimation) {
+			FGUICompBtnScale.instance.hideAnimation();
+			return;
+		}
+		FGUICompBtnScale.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompBtnScale extends fgui.GButton {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompBtnScale.hideView();
+		        FGUICompBtnScale.instance && FGUICompBtnScale.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompBtnScale extends fgui.GButton {
 
 	protected onConstruct():void {
 		this.ctrl_color = this.getControllerAt(0);
+		if (FGUICompBtnScale.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

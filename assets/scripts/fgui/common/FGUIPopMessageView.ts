@@ -16,6 +16,8 @@ export default class FGUIPopMessageView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIPopMessageView.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUIPopMessageView extends fgui.GComponent {
 		FGUIPopMessageView.instance = null;
 	}
 	public static hideView():void {
-		FGUIPopMessageView.instance && FGUIPopMessageView.instance.dispose();
+		if (!FGUIPopMessageView.instance) return;
+		if (FGUIPopMessageView.enableAnimation) {
+			FGUIPopMessageView.instance.hideAnimation();
+			return;
+		}
+		FGUIPopMessageView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUIPopMessageView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIPopMessageView.hideView();
+		        FGUIPopMessageView.instance && FGUIPopMessageView.instance.dispose();
 		    });
 	}
 
@@ -72,6 +79,7 @@ export default class FGUIPopMessageView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_COMP_MAIN = <FGUICompPopMessage>(this.getChildAt(1));
+		if (FGUIPopMessageView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

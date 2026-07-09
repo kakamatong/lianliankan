@@ -15,6 +15,8 @@ export default class FGUICompBtnCommon extends fgui.GButton {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompBtnCommon.instance) {
 			console.log("allready show");
@@ -39,7 +41,12 @@ export default class FGUICompBtnCommon extends fgui.GButton {
 		FGUICompBtnCommon.instance = null;
 	}
 	public static hideView():void {
-		FGUICompBtnCommon.instance && FGUICompBtnCommon.instance.dispose();
+		if (!FGUICompBtnCommon.instance) return;
+		if (FGUICompBtnCommon.enableAnimation) {
+			FGUICompBtnCommon.instance.hideAnimation();
+			return;
+		}
+		FGUICompBtnCommon.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -61,7 +68,7 @@ export default class FGUICompBtnCommon extends fgui.GButton {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompBtnCommon.hideView();
+		        FGUICompBtnCommon.instance && FGUICompBtnCommon.instance.dispose();
 		    });
 	}
 
@@ -71,6 +78,7 @@ export default class FGUICompBtnCommon extends fgui.GButton {
 
 	protected onConstruct():void {
 		this.ctrl_color = this.getControllerAt(1);
+		if (FGUICompBtnCommon.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

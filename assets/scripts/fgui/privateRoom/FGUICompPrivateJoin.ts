@@ -27,6 +27,8 @@ export default class FGUICompPrivateJoin extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUICompPrivateJoin.instance) {
 			console.log("allready show");
@@ -51,7 +53,12 @@ export default class FGUICompPrivateJoin extends fgui.GComponent {
 		FGUICompPrivateJoin.instance = null;
 	}
 	public static hideView():void {
-		FGUICompPrivateJoin.instance && FGUICompPrivateJoin.instance.dispose();
+		if (!FGUICompPrivateJoin.instance) return;
+		if (FGUICompPrivateJoin.enableAnimation) {
+			FGUICompPrivateJoin.instance.hideAnimation();
+			return;
+		}
+		FGUICompPrivateJoin.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -73,7 +80,7 @@ export default class FGUICompPrivateJoin extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUICompPrivateJoin.hideView();
+		        FGUICompPrivateJoin.instance && FGUICompPrivateJoin.instance.dispose();
 		    });
 	}
 
@@ -107,6 +114,7 @@ export default class FGUICompPrivateJoin extends fgui.GComponent {
 		this.UI_BTN_JOIN = <fgui.GButton>(this.getChildAt(13));
 		this.UI_BTN_JOIN.onClick(this.onBtnJoin, this);
 		this.UI_TXT_ROOMID = <fgui.GTextField>(this.getChildAt(14));
+		if (FGUICompPrivateJoin.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};

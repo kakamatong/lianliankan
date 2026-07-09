@@ -16,6 +16,8 @@ export default class FGUIChallengeRuleHintView extends fgui.GComponent {
 
 	public static instance:any | null = null;
 
+	public static enableAnimation: boolean = false;
+
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
 		if(FGUIChallengeRuleHintView.instance) {
 			console.log("allready show");
@@ -40,7 +42,12 @@ export default class FGUIChallengeRuleHintView extends fgui.GComponent {
 		FGUIChallengeRuleHintView.instance = null;
 	}
 	public static hideView():void {
-		FGUIChallengeRuleHintView.instance && FGUIChallengeRuleHintView.instance.dispose();
+		if (!FGUIChallengeRuleHintView.instance) return;
+		if (FGUIChallengeRuleHintView.enableAnimation) {
+			FGUIChallengeRuleHintView.instance.hideAnimation();
+			return;
+		}
+		FGUIChallengeRuleHintView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -62,7 +69,7 @@ export default class FGUIChallengeRuleHintView extends fgui.GComponent {
 		        this.setScale(tween.value.x, tween.value.y);
 		    })
 		    .onComplete(() => {
-		        FGUIChallengeRuleHintView.hideView();
+		        FGUIChallengeRuleHintView.instance && FGUIChallengeRuleHintView.instance.dispose();
 		    });
 	}
 
@@ -72,6 +79,7 @@ export default class FGUIChallengeRuleHintView extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_COMP_MAIN = <FGUICompRuleHint>(this.getChildAt(1));
+		if (FGUIChallengeRuleHintView.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
