@@ -1,6 +1,6 @@
 /**
  * @file CompWin.ts
- * @description 挑战赛胜利子组件
+ * @description 闯关胜利子组件
  * @category 游戏 10002 - 连连看
  */
 
@@ -12,7 +12,7 @@ import { GameChallengeWinView } from "../GameChallengeWinView";
 
 /**
  * @class CompWin
- * @description 挑战赛胜利子组件，继承自 FGUI 自动生成的 FGUICompWin
+ * @description 闯关胜利子组件，继承自 FGUI 自动生成的 FGUICompWin
  * @category 游戏 10002 - 连连看
  */
 @ViewClass()
