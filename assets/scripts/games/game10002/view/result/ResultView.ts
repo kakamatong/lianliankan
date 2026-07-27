@@ -36,7 +36,7 @@ export class ResultView extends FGUIResultView {
 
         this._continueFunc = data?.continueFunc;
         this.act.play(() => {
-            MiniGameUtils.instance.showInterstitialAd("adunit-5189637d1c76ffbc");
+            MiniGameUtils.instance.showInterstitialAd("adunit-60af440d294b0df5");
         });
 
         if (data.scores && data.scores.length > 0) {
