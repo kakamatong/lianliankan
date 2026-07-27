@@ -3,5 +3,6 @@
   <displayList>
     <image id="n0_iccm" name="n0" src="iccm1" fileName="imgs/challengeWinBg.png" xy="0,0"/>
     <image id="n4_iccm" name="n4" src="iccm5" fileName="imgs/pass.png" xy="135,33" size="400,90" aspect="true"/>
+    <component id="n5_iccm" name="n5" src="iccmb" fileName="comp/CompStarAni.xml" xy="58,189"/>
   </displayList>
 </component>
