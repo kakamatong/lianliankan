@@ -10,5 +10,8 @@
     <component id="n4_f9cy" name="UI_BTN_ENERGY_REDUCE" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="28,268" size="235,95">
       <Button title="减少体力" icon="ui://gj0r6g5ijorf1h"/>
     </component>
+    <component id="n5_iccm" name="UI_BTN_TEST" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="29,373" size="235,95">
+      <Button title="测试页面" icon="ui://gj0r6g5ijorf1h"/>
+    </component>
   </displayList>
 </component>

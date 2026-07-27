@@ -12,6 +12,7 @@ export default class FGUICompGm extends fgui.GComponent {
 	public UI_TXT_TITLE:fgui.GTextField;
 	public UI_BTN_ENERGY_ADD:fgui.GButton;
 	public UI_BTN_ENERGY_REDUCE:fgui.GButton;
+	public UI_BTN_TEST:fgui.GButton;
 	public static URL:string = "ui://vljlqy6gf9cy1";
 
 	public static packageName:string = "gm";
@@ -82,6 +83,8 @@ export default class FGUICompGm extends fgui.GComponent {
 		this.UI_BTN_ENERGY_ADD.onClick(this.onBtnEnergyAdd, this);
 		this.UI_BTN_ENERGY_REDUCE = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_ENERGY_REDUCE.onClick(this.onBtnEnergyReduce, this);
+		this.UI_BTN_TEST = <fgui.GButton>(this.getChildAt(5));
+		this.UI_BTN_TEST.onClick(this.onBtnTest, this);
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
@@ -91,5 +94,6 @@ export default class FGUICompGm extends fgui.GComponent {
 	onBtnClose():void{};
 	onBtnEnergyAdd():void{};
 	onBtnEnergyReduce():void{};
+	onBtnTest():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompGm.URL, FGUICompGm);

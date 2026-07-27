@@ -9,6 +9,7 @@ import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { UserEnergy } from "@modules/UserEnergy";
 import { GmView } from "../GmView";
+import { GameChallengeWinView } from "@game10002/view/challengeResult/GameChallengeWinView";
 
 @PackageLoad(["gm"])
 @ViewClass()
@@ -23,6 +24,10 @@ export class CompGm extends FGUICompGm {
 
     onBtnClose(): void {
         GmView.hideView();
+    }
+
+    onBtnTest(): void {
+        GameChallengeWinView.showView();
     }
 }
 fgui.UIObjectFactory.setExtension(CompGm.URL, CompGm);

@@ -5,6 +5,7 @@
         "@modules/": "./assets/scripts/modules/",
         "@datacenter/": "./assets/scripts/datacenter/",
         "@view/": "./assets/scripts/view/",
-        "@localGame/": "./assets/scripts/localGame/"
+        "@localGame/": "./assets/scripts/localGame/",
+        "@game10002/": "./assets/scripts/games/game10002/"
     }
 }
