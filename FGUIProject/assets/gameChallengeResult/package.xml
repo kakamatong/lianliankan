@@ -13,5 +13,5 @@
     <component id="iccma" name="CompStarAni3.xml" path="/comp/"/>
     <component id="iccmb" name="CompStarAni.xml" path="/comp/"/>
   </resources>
-  <publish name=""/>
+  <publish name="" genCode="true"/>
 </packageDescription>
