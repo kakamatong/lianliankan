@@ -17,6 +17,10 @@ import { GameChallengeWinView } from "../GameChallengeWinView";
  */
 @ViewClass()
 export class CompWin extends FGUICompWin {
+    onConstruct(): void {
+        super.onConstruct();
+        this.test();
+    }
     test(): void {
         const actNode = this.UI_COMP_STAR as CompStarAni;
         actNode.play(3, () => {

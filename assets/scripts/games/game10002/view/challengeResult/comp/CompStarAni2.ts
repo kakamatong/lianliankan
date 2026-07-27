@@ -16,6 +16,7 @@ import * as fgui from "fairygui-cc";
 @ViewClass()
 export class CompStarAni2 extends FGUICompStarAni2 {
     play(onComplete?: () => void): void {
+        this.ctrl_get.selectedIndex = 1;
         this.UI_COMP_BIG.act.play(() => {
             onComplete && onComplete();
         });
