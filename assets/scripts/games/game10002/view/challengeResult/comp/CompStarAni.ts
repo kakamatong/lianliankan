@@ -19,21 +19,18 @@ import { CompStarAni3 } from "./CompStarAni3";
 @ViewClass()
 export class CompStarAni extends FGUICompStarAni {
     play(num: number, onComplete?: () => void): void {
-        const dt = 0.5; // 每颗星星的延迟时间
+        const dt = 0.2; // 每颗星星的延迟时间
         for (let i = 1; i <= num; i++) {
             const delay = (i - 1) * dt;
-            this.scheduleOnce(
-                () => {
-                    if (i === 1) {
-                        this.playStar1(i === num ? onComplete : undefined);
-                    } else if (i === 2) {
-                        this.playStar2(i === num ? onComplete : undefined);
-                    } else if (i === 3) {
-                        this.playStar3(i === num ? onComplete : undefined);
-                    }
-                },
-                delay * (i - 1)
-            );
+            this.scheduleOnce(() => {
+                if (i === 1) {
+                    this.playStar1(i === num ? onComplete : undefined);
+                } else if (i === 2) {
+                    this.playStar2(i === num ? onComplete : undefined);
+                } else if (i === 3) {
+                    this.playStar3(i === num ? onComplete : undefined);
+                }
+            }, delay);
         }
     }
 
