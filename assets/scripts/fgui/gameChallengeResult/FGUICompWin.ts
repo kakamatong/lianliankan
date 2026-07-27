@@ -10,6 +10,7 @@ import { Logger } from "@frameworks/utils/Utils";
 export default class FGUICompWin extends fgui.GComponent {
 
 	public UI_COMP_STAR:FGUICompStarAni;
+	public UI_BTN_NEXT:fgui.GButton;
 	public static URL:string = "ui://xjoxe981iccm3";
 
 	public static packageName:string = "gameChallengeResult";
@@ -74,11 +75,14 @@ export default class FGUICompWin extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_COMP_STAR = <FGUICompStarAni>(this.getChildAt(2));
+		this.UI_BTN_NEXT = <fgui.GButton>(this.getChildAt(3));
+		this.UI_BTN_NEXT.onClick(this.onBtnNext, this);
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
 	unscheduleAllCallbacks():void{};
 	unschedule(callback: () => void):void{};
 	schedule(callback: () => void, interval: number):void{};
+	onBtnNext():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompWin.URL, FGUICompWin);

@@ -7,6 +7,8 @@
 import { ViewClass } from "@frameworks/Framework";
 import FGUICompWin from "@fgui/gameChallengeResult/FGUICompWin";
 import * as fgui from "fairygui-cc";
+import { CompStarAni } from "./CompStarAni";
+import { GameChallengeWinView } from "../GameChallengeWinView";
 
 /**
  * @class CompWin
@@ -14,6 +16,17 @@ import * as fgui from "fairygui-cc";
  * @category 游戏 10002 - 连连看
  */
 @ViewClass()
-export class CompWin extends FGUICompWin {}
+export class CompWin extends FGUICompWin {
+    test(): void {
+        const actNode = this.UI_COMP_STAR as CompStarAni;
+        actNode.play(3, () => {
+            console.log("All stars animation completed.");
+        });
+    }
+
+    onBtnNext(): void {
+        GameChallengeWinView.hideView();
+    }
+}
 
 fgui.UIObjectFactory.setExtension(CompWin.URL, CompWin);
