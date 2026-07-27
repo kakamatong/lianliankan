@@ -6,6 +6,8 @@
     <component id="iccm2" name="GameChallengeWinView.xml" path="/" exported="true"/>
     <component id="iccm3" name="CompWin.xml" path="/comp/"/>
     <image id="iccm5" name="pass.png" path="/imgs/"/>
+    <component id="iccm6" name="CompStarAct1.xml" path="/comp/"/>
+    <component id="iccm7" name="CompStarActShow.xml" path="/comp/"/>
   </resources>
   <publish name=""/>
 </packageDescription>
