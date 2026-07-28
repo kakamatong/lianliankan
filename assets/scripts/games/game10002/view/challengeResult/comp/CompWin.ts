@@ -9,6 +9,7 @@ import FGUICompWin from "@fgui/gameChallengeResult/FGUICompWin";
 import * as fgui from "fairygui-cc";
 import { CompStarAni } from "./CompStarAni";
 import { GameChallengeWinView } from "../GameChallengeWinView";
+import { SoundManager } from "@frameworks/SoundManager";
 
 /**
  * @class CompWin
@@ -19,6 +20,7 @@ import { GameChallengeWinView } from "../GameChallengeWinView";
 export class CompWin extends FGUICompWin {
     onConstruct(): void {
         super.onConstruct();
+        SoundManager.instance.playSoundEffect("game10002/win");
         this.test();
     }
     test(): void {
