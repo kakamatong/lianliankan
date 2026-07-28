@@ -11,5 +11,11 @@
       <Button title="重新挑战" titleFontSize="60" icon="ui://gj0r6g5ijorf1h"/>
     </component>
     <image id="n8_gt9r" name="n8" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="52,489" size="561,326"/>
+    <text id="n9_gt9r" name="UI_TXT_SCORE" xy="102,525" pivot="0.5,0.5" size="460,74" font="ui://2zsfe53xjt3f1l" fontSize="24" text="得分:100000">
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </text>
+    <text id="n10_gt9r" name="UI_TXT_TIME" xy="58,646" pivot="0.5,0.5" size="546,74" font="ui://2zsfe53xjt3f1l" fontSize="24" text="用时:100.567秒">
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </text>
   </displayList>
 </component>

@@ -12,6 +12,8 @@ export default class FGUICompWin extends fgui.GComponent {
 	public UI_COMP_STAR:FGUICompStarAni;
 	public UI_BTN_NEXT:fgui.GButton;
 	public UI_BTN_REPLAY:fgui.GButton;
+	public UI_TXT_SCORE:fgui.GTextField;
+	public UI_TXT_TIME:fgui.GTextField;
 	public static URL:string = "ui://xjoxe981iccm3";
 
 	public static packageName:string = "gameChallengeResult";
@@ -80,6 +82,8 @@ export default class FGUICompWin extends fgui.GComponent {
 		this.UI_BTN_NEXT.onClick(this.onBtnNext, this);
 		this.UI_BTN_REPLAY = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_REPLAY.onClick(this.onBtnReplay, this);
+		this.UI_TXT_SCORE = <fgui.GTextField>(this.getChildAt(6));
+		this.UI_TXT_TIME = <fgui.GTextField>(this.getChildAt(7));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

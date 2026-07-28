@@ -21,16 +21,31 @@ export class CompWin extends FGUICompWin {
     onConstruct(): void {
         super.onConstruct();
         SoundManager.instance.playSoundEffect("game10002/win");
-        this.test();
+        this.initUI();
     }
-    test(): void {
+
+    /**
+     * 播放星星动画
+     * @param number 星星数量
+     */
+    playStar(number: number): void {
         const actNode = this.UI_COMP_STAR as CompStarAni;
-        actNode.play(3, () => {
+        actNode.play(number, () => {
             console.log("All stars animation completed.");
         });
     }
 
+    initUI(): void {
+        this.UI_TXT_SCORE.text = `得分:${1000}`;
+        this.UI_TXT_TIME.text = `用时:${30}秒`;
+        this.playStar(3);
+    }
+
     onBtnNext(): void {
+        GameChallengeWinView.hideView();
+    }
+
+    onBtnReplay(): void {
         GameChallengeWinView.hideView();
     }
 }

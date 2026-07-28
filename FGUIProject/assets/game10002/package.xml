@@ -56,6 +56,13 @@
     <image id="jt3f1x" name="char_2.png" path="/font/"/>
     <image id="jt3f1y" name="char_3.png" path="/font/"/>
     <component id="kq4j1z" name="CompTimeStar.xml" path="/comp/"/>
+    <image id="gt9r20" name="char_de.png" path="/font/"/>
+    <image id="gt9r21" name="char_dian.png" path="/font/"/>
+    <image id="gt9r22" name="char_fen.png" path="/font/"/>
+    <image id="gt9r23" name="char_maohao.png" path="/font/"/>
+    <image id="gt9r24" name="char_shi.png" path="/font/"/>
+    <image id="gt9r25" name="char_yong.png" path="/font/"/>
+    <image id="gt9r26" name="char_miao.png" path="/font/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
