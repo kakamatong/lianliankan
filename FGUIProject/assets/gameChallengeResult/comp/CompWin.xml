@@ -4,8 +4,12 @@
     <image id="n0_iccm" name="n0" src="iccm1" fileName="imgs/challengeWinBg.png" xy="0,0"/>
     <image id="n4_iccm" name="n4" src="iccm5" fileName="imgs/pass.png" xy="135,33" size="400,90" aspect="true"/>
     <component id="n5_iccm" name="UI_COMP_STAR" src="iccmb" fileName="comp/CompStarAni.xml" xy="58,189"/>
-    <component id="n6_iccm" name="UI_BTN_NEXT" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="217,922" size="231,95" controller="ctrl_color,3">
-      <Button title="下一关" icon="ui://gj0r6g5ijorf1g"/>
+    <component id="n6_iccm" name="UI_BTN_NEXT" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="345,917" size="290,125" controller="ctrl_color,3">
+      <Button title="下一关" titleFontSize="60" icon="ui://gj0r6g5ijorf1g"/>
     </component>
+    <component id="n7_gt9r" name="UI_BTN_REPLAY" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="31,917" size="290,125" controller="ctrl_color,2">
+      <Button title="重新挑战" titleFontSize="60" icon="ui://gj0r6g5ijorf1h"/>
+    </component>
+    <image id="n8_gt9r" name="n8" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="52,489" size="561,326"/>
   </displayList>
 </component>
