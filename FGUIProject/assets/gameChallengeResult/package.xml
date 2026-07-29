@@ -3,8 +3,8 @@
   <resources>
     <image id="iccm0" name="challengeWinStar.png" path="/imgs/"/>
     <image id="iccm1" name="challengeWinBg.png" path="/imgs/"/>
-    <component id="iccm2" name="GameChallengeWinView.xml" path="/" exported="true"/>
-    <component id="iccm3" name="CompWin.xml" path="/comp/"/>
+    <component id="iccm2" name="GameChallengeResultView.xml" path="/" exported="true"/>
+    <component id="iccm3" name="CompResult.xml" path="/comp/"/>
     <image id="iccm5" name="pass.png" path="/imgs/"/>
     <component id="iccm6" name="CompStarAct1.xml" path="/comp/"/>
     <component id="iccm7" name="CompStarActShow.xml" path="/comp/"/>

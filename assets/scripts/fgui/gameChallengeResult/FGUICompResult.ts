@@ -7,7 +7,7 @@ import FGUICompStarAni from "./FGUICompStarAni";
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
 
-export default class FGUICompWin extends fgui.GComponent {
+export default class FGUICompResult extends fgui.GComponent {
 
 	public UI_COMP_STAR:FGUICompStarAni;
 	public UI_BTN_NEXT:fgui.GButton;
@@ -23,17 +23,17 @@ export default class FGUICompWin extends fgui.GComponent {
 	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
-		if(FGUICompWin.instance) {
+		if(FGUICompResult.instance) {
 			console.log("allready show");
 			callBack&&callBack(false);
 			return;
 		}
 		PackageManager.instance.loadPackage("fgui", this.packageName).then(()=> {
 
-			const view = fgui.UIPackage.createObject("gameChallengeResult", "CompWin") as FGUICompWin;
+			const view = fgui.UIPackage.createObject("gameChallengeResult", "CompResult") as FGUICompResult;
 
 			view.makeFullScreen();
-			FGUICompWin.instance = view;
+			FGUICompResult.instance = view;
 			fgui.GRoot.inst.addChild(view);
 			view.show && view.show(params);
 			callBack&&callBack(true);
@@ -43,10 +43,10 @@ export default class FGUICompWin extends fgui.GComponent {
 
 	protected onDestroy():void {
 		super.onDestroy();
-		FGUICompWin.instance = null;
+		FGUICompResult.instance = null;
 	}
 	public static hideView():void {
-		FGUICompWin.instance && FGUICompWin.instance.dispose();
+		FGUICompResult.instance && FGUICompResult.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -72,8 +72,8 @@ export default class FGUICompWin extends fgui.GComponent {
 		    });
 	}
 
-	public static createInstance():FGUICompWin {
-		return <FGUICompWin>(fgui.UIPackage.createObject("gameChallengeResult", "CompWin"));
+	public static createInstance():FGUICompResult {
+		return <FGUICompResult>(fgui.UIPackage.createObject("gameChallengeResult", "CompResult"));
 	}
 
 	protected onConstruct():void {
@@ -93,4 +93,4 @@ export default class FGUICompWin extends fgui.GComponent {
 	onBtnNext():void{};
 	onBtnReplay():void{};
 }
-fgui.UIObjectFactory.setExtension(FGUICompWin.URL, FGUICompWin);
+fgui.UIObjectFactory.setExtension(FGUICompResult.URL, FGUICompResult);

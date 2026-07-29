@@ -2,14 +2,14 @@
 
 import { assetManager, AssetManager } from "cc";
 import * as fgui from "fairygui-cc";
-import FGUICompWin from "./FGUICompWin";
+import FGUICompResult from "./FGUICompResult";
 
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
 
-export default class FGUIGameChallengeWinView extends fgui.GComponent {
+export default class FGUIGameChallengeResultView extends fgui.GComponent {
 
-	public UI_COMP_MAIN:FGUICompWin;
+	public UI_COMP_MAIN:FGUICompResult;
 	public static URL:string = "ui://xjoxe981iccm2";
 
 	public static packageName:string = "gameChallengeResult";
@@ -19,17 +19,17 @@ export default class FGUIGameChallengeWinView extends fgui.GComponent {
 	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
-		if(FGUIGameChallengeWinView.instance) {
+		if(FGUIGameChallengeResultView.instance) {
 			console.log("allready show");
 			callBack&&callBack(false);
 			return;
 		}
 		PackageManager.instance.loadPackage("fgui", this.packageName).then(()=> {
 
-			const view = fgui.UIPackage.createObject("gameChallengeResult", "GameChallengeWinView") as FGUIGameChallengeWinView;
+			const view = fgui.UIPackage.createObject("gameChallengeResult", "GameChallengeResultView") as FGUIGameChallengeResultView;
 
 			view.makeFullScreen();
-			FGUIGameChallengeWinView.instance = view;
+			FGUIGameChallengeResultView.instance = view;
 			fgui.GRoot.inst.addChild(view);
 			view.show && view.show(params);
 			callBack&&callBack(true);
@@ -39,10 +39,10 @@ export default class FGUIGameChallengeWinView extends fgui.GComponent {
 
 	protected onDestroy():void {
 		super.onDestroy();
-		FGUIGameChallengeWinView.instance = null;
+		FGUIGameChallengeResultView.instance = null;
 	}
 	public static hideView():void {
-		FGUIGameChallengeWinView.instance && FGUIGameChallengeWinView.instance.dispose();
+		FGUIGameChallengeResultView.instance && FGUIGameChallengeResultView.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -68,12 +68,12 @@ export default class FGUIGameChallengeWinView extends fgui.GComponent {
 		    });
 	}
 
-	public static createInstance():FGUIGameChallengeWinView {
-		return <FGUIGameChallengeWinView>(fgui.UIPackage.createObject("gameChallengeResult", "GameChallengeWinView"));
+	public static createInstance():FGUIGameChallengeResultView {
+		return <FGUIGameChallengeResultView>(fgui.UIPackage.createObject("gameChallengeResult", "GameChallengeResultView"));
 	}
 
 	protected onConstruct():void {
-		this.UI_COMP_MAIN = <FGUICompWin>(this.getChildAt(1));
+		this.UI_COMP_MAIN = <FGUICompResult>(this.getChildAt(1));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
@@ -81,4 +81,4 @@ export default class FGUIGameChallengeWinView extends fgui.GComponent {
 	unschedule(callback: () => void):void{};
 	schedule(callback: () => void, interval: number):void{};
 }
-fgui.UIObjectFactory.setExtension(FGUIGameChallengeWinView.URL, FGUIGameChallengeWinView);
+fgui.UIObjectFactory.setExtension(FGUIGameChallengeResultView.URL, FGUIGameChallengeResultView);

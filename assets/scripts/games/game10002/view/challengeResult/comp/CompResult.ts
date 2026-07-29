@@ -1,23 +1,23 @@
 /**
- * @file CompWin.ts
+ * @file CompResult.ts
  * @description 闯关胜利子组件
  * @category 游戏 10002 - 连连看
  */
 
 import { ViewClass } from "@frameworks/Framework";
-import FGUICompWin from "@fgui/gameChallengeResult/FGUICompWin";
+import FGUICompResult from "@fgui/gameChallengeResult/FGUICompResult";
 import * as fgui from "fairygui-cc";
 import { CompStarAni } from "./CompStarAni";
-import { GameChallengeWinView } from "../GameChallengeWinView";
+import { GameChallengeResultView } from "../GameChallengeResultView";
 import { SoundManager } from "@frameworks/SoundManager";
 
 /**
- * @class CompWin
- * @description 闯关胜利子组件，继承自 FGUI 自动生成的 FGUICompWin
+ * @class CompResult
+ * @description 闯关胜利子组件，继承自 FGUI 自动生成的 FGUICompResult
  * @category 游戏 10002 - 连连看
  */
 @ViewClass()
-export class CompWin extends FGUICompWin {
+export class CompResult extends FGUICompResult {
     onConstruct(): void {
         super.onConstruct();
         SoundManager.instance.playSoundEffect("game10002/win");
@@ -42,12 +42,12 @@ export class CompWin extends FGUICompWin {
     }
 
     onBtnNext(): void {
-        GameChallengeWinView.hideView();
+        GameChallengeResultView.hideView();
     }
 
     onBtnReplay(): void {
-        GameChallengeWinView.hideView();
+        GameChallengeResultView.hideView();
     }
 }
 
-fgui.UIObjectFactory.setExtension(CompWin.URL, CompWin);
+fgui.UIObjectFactory.setExtension(CompResult.URL, CompResult);
