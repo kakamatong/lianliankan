@@ -71,6 +71,7 @@ import { LineSegment } from "../../../logic/TileMapData";
 import FGUICompMedal from "@fgui/gameCommon/FGUICompMedal";
 import { Logger } from "@frameworks/utils/Utils";
 import { TipsView } from "@view/common/TipsView";
+import { GameChallengeResultView } from "../../challengeResult/GameChallengeResultView";
 
 /**
  * 游戏主体组件
@@ -999,34 +1000,53 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * @method onChallengeGameEnd
-     * @description 闯关模式游戏结束处理（数据层）
+     * @description 闯关模式游戏结束处理（数据层 + 展示结算面板）
      * @param {SprotoGameEnd.Request} data - 游戏结束数据
      * @private
      */
     private onChallengeGameEnd(data: SprotoGameEnd.Request): void {
         const endType = data.endType;
         const ranking = data.rankings?.[0];
-        const stars = ranking?.rank ?? 0;
         const usedTime = ranking?.usedTime ?? 0;
+        const score = data.scores?.[0]?.delta ?? 0;
 
-        Logger.log(`闯关模式结束: endType=${endType}, stars=${stars}, usedTime=${usedTime}`);
+        Logger.log(`闯关模式结束: endType=${endType}, usedTime=${usedTime}, score=${score}`);
 
         const chapter = ChallengeData.instance.selectedChapter;
         const level = ChallengeData.instance.selectedLevel;
+        const pass = endType === CHALLENGE_END_TYPE.SUCCESS;
 
-        if (endType === CHALLENGE_END_TYPE.SUCCESS) {
+        let stars = 0;
+
+        if (pass) {
+            const levelConfig = ChallengeData.instance.getSelectedLevelConfig();
+            if (levelConfig?.starTime && levelConfig.starTime.length > 0) {
+                for (let i = levelConfig.starTime.length - 1; i >= 0; i--) {
+                    if (usedTime <= levelConfig.starTime[i]) {
+                        stars = i + 1;
+                        break;
+                    }
+                }
+            }
+
             const next = ChallengeData.instance.getNextLevel(chapter, level);
-            Challenge.instance.updateLevelData(chapter, level, 0, stars, next.chapter, next.level, (success) => {
+            Challenge.instance.updateLevelData(chapter, level, score, stars, next.chapter, next.level, (success) => {
                 if (success) {
                     Logger.log("闯关进度已同步到服务器");
                 } else {
                     Logger.warn("闯关进度同步失败");
                 }
             });
-            // TODO: 后续展示闯关成功结算界面
-        } else {
-            // TODO: 后续展示闯关失败结算界面
         }
+
+        this.scheduleOnce(() => {
+            GameChallengeResultView.showView({
+                score: score,
+                time: usedTime,
+                pass: pass,
+                stars: stars,
+            });
+        }, 0.3);
     }
 
     /**

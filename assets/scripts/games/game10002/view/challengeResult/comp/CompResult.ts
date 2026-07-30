@@ -15,6 +15,7 @@ export type CompResultData = {
     score: number; // 得分
     time: number; // 用时
     pass: boolean; // 是否通关
+    stars: number; // 获得星星数
 };
 
 /**
@@ -49,9 +50,15 @@ export class CompResult extends FGUICompResult {
     }
 
     initUI(): void {
-        this.UI_TXT_SCORE.text = `得分:${1000}`;
-        this.UI_TXT_TIME.text = `用时:${30}秒`;
-        this.playStar(3);
+        if (!this._data) return;
+        this.UI_TXT_SCORE.text = `得分:${this._data.score}`;
+        this.UI_TXT_TIME.text = `用时:${this._data.time}秒`;
+        if (this._data.pass) {
+            this.ctrl_result.selectedIndex = 1;
+            this.playStar(this._data.stars);
+        } else {
+            this.ctrl_result.selectedIndex = 0;
+        }
     }
 
     onBtnNext(): void {
