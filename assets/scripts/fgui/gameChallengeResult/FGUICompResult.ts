@@ -79,13 +79,13 @@ export default class FGUICompResult extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.ctrl_result = this.getControllerAt(0);
-		this.UI_COMP_STAR = <FGUICompStarAni>(this.getChildAt(2));
-		this.UI_BTN_NEXT = <fgui.GButton>(this.getChildAt(3));
+		this.UI_COMP_STAR = <FGUICompStarAni>(this.getChildAt(3));
+		this.UI_BTN_NEXT = <fgui.GButton>(this.getChildAt(4));
 		this.UI_BTN_NEXT.onClick(this.onBtnNext, this);
-		this.UI_BTN_REPLAY = <fgui.GButton>(this.getChildAt(4));
+		this.UI_BTN_REPLAY = <fgui.GButton>(this.getChildAt(5));
 		this.UI_BTN_REPLAY.onClick(this.onBtnReplay, this);
-		this.UI_TXT_SCORE = <fgui.GTextField>(this.getChildAt(6));
-		this.UI_TXT_TIME = <fgui.GTextField>(this.getChildAt(7));
+		this.UI_TXT_SCORE = <fgui.GTextField>(this.getChildAt(7));
+		this.UI_TXT_TIME = <fgui.GTextField>(this.getChildAt(8));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

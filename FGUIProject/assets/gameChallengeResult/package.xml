@@ -12,6 +12,7 @@
     <component id="iccm9" name="CompStarAni2.xml" path="/comp/"/>
     <component id="iccma" name="CompStarAni3.xml" path="/comp/"/>
     <component id="iccmb" name="CompStarAni.xml" path="/comp/"/>
+    <image id="k2hqc" name="passFail.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
