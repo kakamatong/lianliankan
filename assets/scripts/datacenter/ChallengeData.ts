@@ -145,6 +145,18 @@ export class ChallengeData {
     private _selectedLevel: number = 0;
 
     /**
+     * @property {number} _pendingDirectChapter - 待直接挑战的章节索引（从结算页点击"下一关"/"重新挑战"后设置，-1 表示无）
+     * @private
+     */
+    private _pendingDirectChapter: number = -1;
+
+    /**
+     * @property {number} _pendingDirectLevel - 待直接挑战的关卡索引（-1 表示无）
+     * @private
+     */
+    private _pendingDirectLevel: number = -1;
+
+    /**
      * @property {ChallengeData} _instance - 单例实例
      * @private
      * @static
@@ -236,6 +248,26 @@ export class ChallengeData {
     }
     set selectedLevel(v: number) {
         this._selectedLevel = v;
+    }
+
+    /**
+     * @property {number} pendingDirectChapter - 待直接挑战的章节索引（-1 表示无）
+     */
+    get pendingDirectChapter(): number {
+        return this._pendingDirectChapter;
+    }
+    set pendingDirectChapter(v: number) {
+        this._pendingDirectChapter = v;
+    }
+
+    /**
+     * @property {number} pendingDirectLevel - 待直接挑战的关卡索引（-1 表示无）
+     */
+    get pendingDirectLevel(): number {
+        return this._pendingDirectLevel;
+    }
+    set pendingDirectLevel(v: number) {
+        this._pendingDirectLevel = v;
     }
 
     /**

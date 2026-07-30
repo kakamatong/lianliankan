@@ -56,6 +56,10 @@ export class CompChapter extends FGUICompChapter {
                     if (ok && curChapter !== undefined) {
                         this._chapterIndex = curChapter;
                     }
+                    const pendingChapter = ChallengeData.instance.pendingDirectChapter;
+                    if (pendingChapter >= 0) {
+                        this._chapterIndex = pendingChapter;
+                    }
                     this.showChapter(this._chapterIndex);
                 });
                 Logger.log("闯关配置获取成功");
@@ -85,6 +89,7 @@ export class CompChapter extends FGUICompChapter {
         this._chapterConfig = config ?? [];
         this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
         this.updateButtons();
+        this.checkPendingDirectChallenge();
     }
 
     /**
@@ -120,6 +125,24 @@ export class CompChapter extends FGUICompChapter {
         }
         if (this.UI_BTN_NEXT) {
             this.UI_BTN_NEXT.visible = this._chapterIndex < this._chapterCount - 1;
+        }
+    }
+
+    /**
+     * @method checkPendingDirectChallenge
+     * @description 检测是否存在待直接挑战的关卡，若有则触发 onBtnLevel 弹出确认弹窗
+     * @private
+     */
+    private checkPendingDirectChallenge(): void {
+        const pendingChapter = ChallengeData.instance.pendingDirectChapter;
+        const pendingLevel = ChallengeData.instance.pendingDirectLevel;
+        if (pendingChapter >= 0 && pendingLevel >= 0 && pendingChapter === this._chapterIndex) {
+            ChallengeData.instance.pendingDirectChapter = -1;
+            ChallengeData.instance.pendingDirectLevel = -1;
+            const config = this._chapterConfig.find((c) => c.index === pendingLevel);
+            if (config) {
+                this.onBtnLevel(pendingChapter, pendingLevel, config.energy ?? 0);
+            }
         }
     }
 

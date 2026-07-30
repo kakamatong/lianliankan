@@ -33,6 +33,7 @@ import { SoundManager } from "@frameworks/SoundManager";
 import { BagView } from "@view/bag/BagView";
 import { Prop } from "@modules/Prop";
 import { ChallengeView } from "@view/challenge/ChallengeView";
+import { ChallengeData } from "@datacenter/ChallengeData";
 /**
  * 大厅主界面组件
  * 负责大厅界面的初始化、用户登录管理、用户信息展示、功能入口处理等
@@ -388,6 +389,9 @@ export class CompLobbyMain extends FGUICompLobbyMain {
     private checkGotoChallenge(): void {
         if (DataCenter.instance.shouldGotoChallenge) {
             DataCenter.instance.shouldGotoChallenge = false;
+            this.onBtnChallenge();
+        }
+        if (ChallengeData.instance.pendingDirectChapter >= 0) {
             this.onBtnChallenge();
         }
     }

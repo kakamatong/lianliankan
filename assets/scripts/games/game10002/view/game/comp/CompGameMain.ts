@@ -164,6 +164,12 @@ export class CompGameMain extends FGUICompGameMain {
     onDestroy() {
         super.onDestroy();
         this.removeListeners();
+        if (GameData.instance.isLocalGame || GameData.instance.isChallengeMode) {
+            LocalSvr.instance.destroy();
+        }
+        if (GameSocketManager.instance.isOpen()) {
+            GameSocketManager.instance.close();
+        }
     }
 
     /**
@@ -1045,6 +1051,8 @@ export class CompGameMain extends FGUICompGameMain {
                 time: usedTime,
                 pass: pass,
                 stars: stars,
+                chapter: chapter,
+                level: level,
             });
         }, 0.3);
     }

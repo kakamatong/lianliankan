@@ -4,18 +4,21 @@
  * @category 游戏 10002 - 连连看
  */
 
-import { ViewClass } from "@frameworks/Framework";
+import { ChangeScene, ViewClass } from "@frameworks/Framework";
 import FGUICompResult from "@fgui/gameChallengeResult/FGUICompResult";
 import * as fgui from "fairygui-cc";
 import { CompStarAni } from "./CompStarAni";
 import { GameChallengeResultView } from "../GameChallengeResultView";
 import { SoundManager } from "@frameworks/SoundManager";
+import { ChallengeData } from "@datacenter/ChallengeData";
 
 export type CompResultData = {
     score: number; // 得分
     time: number; // 用时
     pass: boolean; // 是否通关
     stars: number; // 获得星星数
+    chapter: number; // 当前章节
+    level: number; // 当前关卡
 };
 
 /**
@@ -62,11 +65,20 @@ export class CompResult extends FGUICompResult {
     }
 
     onBtnNext(): void {
+        if (!this._data) return;
+        const next = ChallengeData.instance.getNextLevel(this._data.chapter, this._data.level);
+        ChallengeData.instance.pendingDirectChapter = next.chapter;
+        ChallengeData.instance.pendingDirectLevel = next.level;
         GameChallengeResultView.hideView();
+        ChangeScene("LobbyScene");
     }
 
     onBtnReplay(): void {
+        if (!this._data) return;
+        ChallengeData.instance.pendingDirectChapter = this._data.chapter;
+        ChallengeData.instance.pendingDirectLevel = this._data.level;
         GameChallengeResultView.hideView();
+        ChangeScene("LobbyScene");
     }
 }
 
