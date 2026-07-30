@@ -11,6 +11,12 @@ import { CompStarAni } from "./CompStarAni";
 import { GameChallengeResultView } from "../GameChallengeResultView";
 import { SoundManager } from "@frameworks/SoundManager";
 
+export type CompResultData = {
+    score: number; // 得分
+    time: number; // 用时
+    pass: boolean; // 是否通关
+};
+
 /**
  * @class CompResult
  * @description 闯关胜利子组件，继承自 FGUI 自动生成的 FGUICompResult
@@ -18,9 +24,16 @@ import { SoundManager } from "@frameworks/SoundManager";
  */
 @ViewClass()
 export class CompResult extends FGUICompResult {
+    private _data?: CompResultData;
     onConstruct(): void {
         super.onConstruct();
         SoundManager.instance.playSoundEffect("game10002/win");
+        //this.initUI();
+    }
+
+    show(data?: CompResultData): void {
+        super.show();
+        this._data = data;
         this.initUI();
     }
 

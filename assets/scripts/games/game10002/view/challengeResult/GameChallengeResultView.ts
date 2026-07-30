@@ -7,6 +7,7 @@
 import FGUIGameChallengeResultView from "@fgui/gameChallengeResult/FGUIGameChallengeResultView";
 import * as fgui from "fairygui-cc";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
+import { CompResultData } from "./comp/CompResult";
 
 /**
  * @class GameChallengeResultView
@@ -15,6 +16,11 @@ import { PackageLoad, ViewClass } from "@frameworks/Framework";
  */
 @PackageLoad(["gameCommon", "gameChallengeResult"])
 @ViewClass()
-export class GameChallengeResultView extends FGUIGameChallengeResultView {}
+export class GameChallengeResultView extends FGUIGameChallengeResultView {
+    show(data?: CompResultData): void {
+        super.show(data);
+        this.UI_COMP_MAIN.show(data);
+    }
+}
 
 fgui.UIObjectFactory.setExtension(GameChallengeResultView.URL, GameChallengeResultView);
