@@ -9,6 +9,7 @@ import { Logger } from "@frameworks/utils/Utils";
 
 export default class FGUICompResult extends fgui.GComponent {
 
+	public ctrl_result:fgui.Controller;
 	public UI_COMP_STAR:FGUICompStarAni;
 	public UI_BTN_NEXT:fgui.GButton;
 	public UI_BTN_REPLAY:fgui.GButton;
@@ -77,6 +78,7 @@ export default class FGUICompResult extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
+		this.ctrl_result = this.getControllerAt(0);
 		this.UI_COMP_STAR = <FGUICompStarAni>(this.getChildAt(2));
 		this.UI_BTN_NEXT = <fgui.GButton>(this.getChildAt(3));
 		this.UI_BTN_NEXT.onClick(this.onBtnNext, this);
