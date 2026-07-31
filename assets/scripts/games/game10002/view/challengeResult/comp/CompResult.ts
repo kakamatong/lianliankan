@@ -55,7 +55,7 @@ export class CompResult extends FGUICompResult {
     initUI(): void {
         if (!this._data) return;
         this.UI_TXT_SCORE.text = `得分:${this._data.score}`;
-        this.UI_TXT_TIME.text = `用时:${this._data.time / 1000}秒`;
+        this.UI_TXT_TIME.text = `用时:${this._data.time}秒`;
         if (this._data.pass) {
             this.ctrl_result.selectedIndex = 1;
             this.playStar(this._data.stars);

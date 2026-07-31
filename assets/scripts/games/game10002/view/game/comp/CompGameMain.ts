@@ -1013,7 +1013,7 @@ export class CompGameMain extends FGUICompGameMain {
     private onChallengeGameEnd(data: SprotoGameEnd.Request): void {
         const endType = data.endType;
         const ranking = data.rankings?.[0];
-        const usedTime = ranking?.usedTime ?? 0;
+        const usedTime = (ranking?.usedTime ?? 0) / 1000;
         const score = data.scores?.[0]?.delta ?? 0;
 
         Logger.log(`闯关模式结束: endType=${endType}, usedTime=${usedTime}, score=${score}`);
