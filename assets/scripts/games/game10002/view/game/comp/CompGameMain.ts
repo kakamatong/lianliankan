@@ -1279,6 +1279,18 @@ export class CompGameMain extends FGUICompGameMain {
      * 返回按钮处理
      */
     onBtnBack(): void {
+        // 闯关模式：游戏开始状态下退出增加二级确认弹窗
+        if (GameData.instance.isChallengeMode && GameData.instance.gameStart) {
+            PopMessageView.showView({
+                title: "温馨提示",
+                content: "退出将放弃本局进度",
+                type: ENUM_POP_MESSAGE_TYPE.NUM2,
+                sureBack: () => {
+                    this.changeToLobbyScene();
+                },
+            });
+            return;
+        }
         // 如果房间的socket已经断开，直接退出
         if (!GameSocketManager.instance.isOpen()) {
             return this.changeToLobbyScene();
