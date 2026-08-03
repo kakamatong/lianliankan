@@ -49,6 +49,8 @@ export enum LOCAL_SVR_MODE {
 export class LocalSvr {
     /** 障碍物判定阈值（值 >= 100 为障碍物，不可通过也不可消除） */
     private static readonly DECORATION_VALUE = 100;
+    /** 每次消除一对的基础分（可在此处调整） */
+    private static readonly SCORE_PER_PAIR: number = 1;
 
     /** 单例实例 */
     private static _instance: LocalSvr;
@@ -77,12 +79,14 @@ export class LocalSvr {
     private _startTime: number = 0;
     /** 当前回合数 */
     private _roundNum: number = 0;
-    /** 连击计数 */
+    /** 连击计数（0 基：首对为 0，窗口内连续消除 +1，中断后从 0 重新计算） */
     private _comboCount: number = 0;
     /** 上次消除时间戳（用于连击判定） */
     private _lastRemoveTime: number = 0;
     /** 连击时间窗口（毫秒） */
     private readonly COMBO_WINDOW: number = 3000;
+    /** 本局总分（每次开始对局重置） */
+    private _totalScore: number = 0;
 
     /** 当前运行模式 */
     private _mode: LOCAL_SVR_MODE = LOCAL_SVR_MODE.STANDALONE;
@@ -191,13 +195,17 @@ export class LocalSvr {
         const remaining = this._totalBlocks - this._eliminated;
         const now = Date.now();
 
-        // 连击判定
+        // 连击判定（0 基：首对为 0，窗口内连续消除 +1，中断后从 0 重新计算）
         if (this._lastRemoveTime > 0 && now - this._lastRemoveTime < this.COMBO_WINDOW) {
             this._comboCount++;
         } else {
-            this._comboCount = 1;
+            this._comboCount = 0;
         }
         this._lastRemoveTime = now;
+
+        // 算分：本次得分 = 基础分 + 当前连击数
+        const gainedScore = LocalSvr.SCORE_PER_PAIR + this._comboCount;
+        this._totalScore += gainedScore;
 
         // 发送 clickTiles 响应
         this.dispatchEventResp(SprotoClickTiles.Name, {
@@ -205,6 +213,8 @@ export class LocalSvr {
             msg: "",
             eliminated: this._eliminated,
             remaining: remaining,
+            score: gainedScore,
+            totalScore: this._totalScore,
         });
 
         // 广播方块消除通知
@@ -217,6 +227,8 @@ export class LocalSvr {
             eliminated: this._eliminated,
             remaining: remaining,
             seat: selfSeat,
+            score: gainedScore,
+            totalScore: this._totalScore,
         });
 
         // 广播进度更新
@@ -228,10 +240,12 @@ export class LocalSvr {
             percentage: percentage,
             finished: remaining === 0 ? 1 : 0,
             usedTime: now - this._startTime,
+            score: gainedScore,
+            totalScore: this._totalScore,
         });
 
-        // 连击通知
-        if (this._comboCount >= 2) {
+        // 连击通知（0 基连击 >= 1 即产生连击，下发 0 基值）
+        if (this._comboCount >= 1) {
             this.dispatchEvent(SprotoComboSuccess.Name, {
                 seat: selfSeat,
                 comboCount: this._comboCount,
@@ -309,6 +323,7 @@ export class LocalSvr {
         this._eliminated = 0;
         this._comboCount = 0;
         this._lastRemoveTime = 0;
+        this._totalScore = 0;
 
         this.dispatchRoomInfo();
         this.dispatchEvent(SprotoGameStart.Name, {});
@@ -493,8 +508,8 @@ export class LocalSvr {
             scores: [
                 {
                     seat: selfSeat,
-                    newScore: 0,
-                    delta: 0,
+                    newScore: this._totalScore,
+                    delta: this._totalScore,
                 },
             ],
         });
