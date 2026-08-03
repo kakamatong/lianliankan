@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="650,80">
+<component size="748,122">
   <controller name="ctrl_warn" pages="0,,1," selected="0">
     <remark page="0" value="普通"/>
     <remark page="1" value="告警"/>
@@ -12,7 +12,7 @@
   </controller>
   <displayList>
     <image id="n10_jt3f" name="n10" src="jt3f1i" fileName="imgs/clockBG.png" xy="0,0" size="650,80"/>
-    <image id="n13_jt3f" name="UI_IMG_BAR" src="jt3f1j" fileName="imgs/clockIn.png" xy="4,4" fillMethod="hz"/>
+    <image id="n13_jt3f" name="UI_IMG_BAR" src="jt3f1j" fileName="imgs/clockIn.png" xy="3,4" fillMethod="hz"/>
     <component id="n14_kq4j" name="UI_COMP_STAR_1" src="kq4j1z" fileName="comp/CompTimeStar.xml" xy="-11,-33" controller="ctrl_stars,1">
       <gearDisplay controller="ctrl_type" pages="1"/>
       <Label title="10s"/>
@@ -25,7 +25,7 @@
       <gearDisplay controller="ctrl_type" pages="1"/>
       <Label title="10s"/>
     </component>
-    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="320,8" pivot="0.5,0.5" size="10,64" fontSize="48" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#5ca48e" strokeSize="2" text="">
+    <text id="n9_mnt1" name="UI_TXT_TIME_MSG" xy="660,6" pivot="0.5,0.5" size="88,64" fontSize="48" color="#ffffff" align="center" vAlign="middle" bold="true" strokeColor="#5ca48e" strokeSize="2" text="999">
       <gearColor controller="ctrl_warn" pages="0,1" values="#ffffff,#5ca48e|#ff0000,#6699cc"/>
     </text>
   </displayList>
