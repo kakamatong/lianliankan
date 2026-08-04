@@ -182,6 +182,7 @@ export class CompChapter extends FGUICompChapter {
 
             chapterItem.setStars(STAR_COUNT.HIDE);
         } else {
+            chapterItem.touchable = true;
             chapterItem.setStars(levelData.stars);
             if (config.boss === 1) {
                 chapterItem.setStatus(LEVEL_STATUS.BOSS);
