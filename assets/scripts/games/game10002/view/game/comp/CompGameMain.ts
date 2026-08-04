@@ -1082,11 +1082,26 @@ export class CompGameMain extends FGUICompGameMain {
 
         if (pass) {
             const levelConfig = ChallengeData.instance.getSelectedLevelConfig();
-            if (levelConfig?.starTime && levelConfig.starTime.length > 0) {
-                for (let i = levelConfig.starTime.length - 1; i >= 0; i--) {
-                    if (usedTime <= levelConfig.starTime[i]) {
-                        stars = i + 1;
-                        break;
+
+            if (levelConfig?.type === CHALLENGE_LEVEL_TYPE.TIMING) {
+                // 计时规则：用时小于等于各星级限制时间
+                if (levelConfig.starTime && levelConfig.starTime.length > 0) {
+                    for (let i = levelConfig.starTime.length - 1; i >= 0; i--) {
+                        if (usedTime <= levelConfig.starTime[i]) {
+                            stars = i + 1;
+                            break;
+                        }
+                    }
+                }
+            } else if (levelConfig?.type === CHALLENGE_LEVEL_TYPE.SCORING) {
+                // 计分规则：本局总分大于等于各星级限制分数
+                const totalScore = data.scores?.[0]?.newScore ?? 0;
+                if (levelConfig.starScore && levelConfig.starScore.length > 0) {
+                    for (let i = levelConfig.starScore.length - 1; i >= 0; i--) {
+                        if (totalScore >= levelConfig.starScore[i]) {
+                            stars = i + 1;
+                            break;
+                        }
                     }
                 }
             }
