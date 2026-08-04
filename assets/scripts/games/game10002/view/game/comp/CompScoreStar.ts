@@ -56,6 +56,7 @@ export class CompScoreStar extends FGUICompScoreStar {
         if (this.UI_IMG_BAR) {
             this.UI_IMG_BAR.fillAmount = this._calcFillAmount(this._currentScore);
         }
+        this._updateStars();
     }
 
     /**
@@ -65,6 +66,7 @@ export class CompScoreStar extends FGUICompScoreStar {
      */
     updateScore(currentScore: number): void {
         this._currentScore = Math.max(currentScore, 0);
+        this._updateStars();
         this._animateBar();
     }
 
@@ -78,6 +80,30 @@ export class CompScoreStar extends FGUICompScoreStar {
         this._currentScore = 0;
         if (this.UI_IMG_BAR) {
             this.UI_IMG_BAR.fillAmount = 0;
+        }
+        const stars = [this.UI_IMG_STAR_0, this.UI_IMG_STAR_1, this.UI_IMG_STAR_2];
+        for (let i = 0; i < stars.length; i++) {
+            const star = stars[i];
+            if (star) {
+                star.grayed = true;
+            }
+        }
+    }
+
+    /**
+     * @method _updateStars
+     * @description 根据当前分数更新3颗星星的亮暗状态，达到限制分数的星星点亮（grayed=false），未达到的保持灰置
+     * @private
+     */
+    private _updateStars(): void {
+        const stars = [this.UI_IMG_STAR_0, this.UI_IMG_STAR_1, this.UI_IMG_STAR_2];
+        for (let i = 0; i < stars.length; i++) {
+            const star = stars[i];
+            if (!star) {
+                continue;
+            }
+            const reached = i < this._starScores.length && this._currentScore >= this._starScores[i];
+            star.grayed = !reached;
         }
     }
 

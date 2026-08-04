@@ -9,6 +9,9 @@ import { Logger } from "@frameworks/utils/Utils";
 export default class FGUICompScoreStar extends fgui.GComponent {
 
 	public UI_IMG_BAR:fgui.GImage;
+	public UI_IMG_STAR_0:fgui.GImage;
+	public UI_IMG_STAR_1:fgui.GImage;
+	public UI_IMG_STAR_2:fgui.GImage;
 	public static URL:string = "ui://2zsfe53xgxvf20";
 
 	public static packageName:string = "game10002";
@@ -73,6 +76,9 @@ export default class FGUICompScoreStar extends fgui.GComponent {
 
 	protected onConstruct():void {
 		this.UI_IMG_BAR = <fgui.GImage>(this.getChildAt(1));
+		this.UI_IMG_STAR_0 = <fgui.GImage>(this.getChildAt(2));
+		this.UI_IMG_STAR_1 = <fgui.GImage>(this.getChildAt(3));
+		this.UI_IMG_STAR_2 = <fgui.GImage>(this.getChildAt(4));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
