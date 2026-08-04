@@ -11,6 +11,7 @@ import FGUICompTimeLeft from "./FGUICompTimeLeft";
 import FGUICompFinshInfo from "./FGUICompFinshInfo";
 import FGUICompPropPanel from "./FGUICompPropPanel";
 import FGUICompComb from "./FGUICompComb";
+import FGUICompScoreStar from "./FGUICompScoreStar";
 
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
@@ -41,6 +42,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_COMP_FINSH_INFO:FGUICompFinshInfo;
 	public UI_COMP_PROP:FGUICompPropPanel;
 	public UI_COMP_COMB:FGUICompComb;
+	public UI_COMP_SCORE_STAR:FGUICompScoreStar;
 	public static URL:string = "ui://2zsfe53xln74p";
 
 	public static packageName:string = "game10002";
@@ -138,6 +140,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_COMP_FINSH_INFO = <FGUICompFinshInfo>(this.getChildAt(23));
 		this.UI_COMP_PROP = <FGUICompPropPanel>(this.getChildAt(24));
 		this.UI_COMP_COMB = <FGUICompComb>(this.getChildAt(25));
+		this.UI_COMP_SCORE_STAR = <FGUICompScoreStar>(this.getChildAt(26));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

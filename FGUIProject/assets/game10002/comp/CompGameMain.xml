@@ -120,5 +120,9 @@
       <gearXY controller="ctrl_roomtype" pages="2,3" values="27,1605|27,1605" default="27,1438"/>
       <relation target="" sidePair="left-left,bottom-bottom"/>
     </component>
+    <component id="n88_eqzm" name="UI_COMP_SCORE_STAR" src="gxvf20" fileName="comp/CompScoreStar.xml" xy="454,25">
+      <gearDisplay controller="ctrl_roomtype" pages="3"/>
+      <relation target="" sidePair="right-right,top-top"/>
+    </component>
   </displayList>
 </component>

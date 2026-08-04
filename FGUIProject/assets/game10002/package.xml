@@ -42,6 +42,8 @@
     <image id="jt3f1j" name="clockIn.png" path="/imgs/"/>
     <component id="jt3f1k" name="CompComb.xml" path="/comp/"/>
     <component id="kq4j1z" name="CompTimeStar.xml" path="/comp/"/>
+    <component id="gxvf20" name="CompScoreStar.xml" path="/comp/"/>
+    <image id="eqzm21" name="bar.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
