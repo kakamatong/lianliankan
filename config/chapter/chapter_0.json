@@ -49,11 +49,10 @@
       [0,0,0,0,0,0,0,0,0,0]
     ],
     "iconTypes": 22,
-    "totalTime": 90,
-    "type": 1,
+    "type": 2,
     "boss":0,
     "energy":5,
-    "starTime":[30,40,60]
+    "starScore":[10,20,40]
   },
 {
     "chapter": 0,

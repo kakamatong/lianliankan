@@ -72,14 +72,16 @@ export interface MAP_LEVEL_CONFIG {
     iconTypes: number;
     /** 总时间(秒) */
     totalTime: number;
-    /** 结束倒计时(秒) */
-    endTime: number;
+    /** 结束倒计时(秒)，可选 */
+    endTime?: number;
     /** boss 关卡标识 */
     boss: number;
     /** 关卡类型 1是计时规则，2是计分规则 */
     type: number;
-    /** 获取星星限制时间 */
-    starTime: number[];
+    /** 获取星星限制时间(秒)，计时规则使用，可选 */
+    starTime?: number[];
+    /** 获取星星限制分数，计分规则使用，可选 */
+    starScore?: number[];
     /** 体力消耗 */
     energy?: number;
 }
