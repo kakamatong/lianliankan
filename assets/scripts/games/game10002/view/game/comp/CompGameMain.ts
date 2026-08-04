@@ -15,6 +15,7 @@ import {
 } from "../../../data/InterfaceGameConfig";
 import * as fgui from "fairygui-cc";
 import { CompTimeLeft } from "./CompTimeLeft";
+import { CompScoreStar } from "./CompScoreStar";
 import { CompFinshInfo } from "./CompFinshInfo";
 import { PopMessageView } from "@view/common/PopMessageView";
 import { ENUM_POP_MESSAGE_TYPE, RICH_TYPE } from "@datacenter/InterfaceConfig";
@@ -98,6 +99,9 @@ export class CompGameMain extends FGUICompGameMain {
         } else if (GameData.instance.isLocalGame) {
             this.ctrl_roomtype.selectedIndex = ROOM_TYPE.LOCAL;
         }
+
+        // 初始化分数星星组件（闯关计分规则显示，其他情况隐藏）
+        this._setupScoreStar();
 
         // 延迟发送客户端进入完成
         this.scheduleOnce(() => {
@@ -343,6 +347,40 @@ export class CompGameMain extends FGUICompGameMain {
     }
 
     /**
+     * @method _isScoreChallengeMode
+     * @description 是否闯关计分规则（type=2）模式：当前为闯关模式且关卡配置类型为计分规则
+     * @returns {boolean} 是否为计分规则闯关模式
+     * @private
+     */
+    private _isScoreChallengeMode(): boolean {
+        if (!GameData.instance.isChallengeMode) {
+            return false;
+        }
+        const levelConfig = ChallengeData.instance.getSelectedLevelConfig();
+        return !!levelConfig && levelConfig.type === CHALLENGE_LEVEL_TYPE.SCORING;
+    }
+
+    /**
+     * @method _setupScoreStar
+     * @description 初始化分数星星组件：计分规则(type=2)闯关模式显示并传入星级分数，其他情况隐藏并重置
+     * @private
+     */
+    private _setupScoreStar(): void {
+        const compScoreStar = this.UI_COMP_SCORE_STAR as CompScoreStar;
+        if (!compScoreStar) {
+            return;
+        }
+        if (this._isScoreChallengeMode()) {
+            const levelConfig = ChallengeData.instance.getSelectedLevelConfig();
+            compScoreStar.visible = true;
+            compScoreStar.init(levelConfig?.starScore ?? [], 0);
+        } else {
+            compScoreStar.visible = false;
+            compScoreStar.reset();
+        }
+    }
+
+    /**
      * 显示或隐藏倒计时
      * @param bshow 是否显示
      * @param clock 倒计时时间
@@ -350,6 +388,12 @@ export class CompGameMain extends FGUICompGameMain {
     showClock(bshow: boolean, clock?: number): void {
         const compTimeLeft = this.UI_COMP_CLOCK as CompTimeLeft;
         if (bshow) {
+            // 计分规则(type=2)闯关模式不显示时钟
+            if (this._isScoreChallengeMode()) {
+                compTimeLeft.visible = false;
+                compTimeLeft.stop();
+                return;
+            }
             if (clock && clock > 0) {
                 const totalTime = GameData.instance.playingStepTime || clock;
                 compTimeLeft.visible = true;
@@ -532,6 +576,15 @@ export class CompGameMain extends FGUICompGameMain {
         const selfSeat = GameData.instance.getSelfSeat();
 
         if (data.seat === selfSeat) {
+            // 闯关计分规则：同步总分数到分数星星组件（本次加分仅记录日志）
+            if (this._isScoreChallengeMode() && data.totalScore !== undefined) {
+                const compScoreStar = this.UI_COMP_SCORE_STAR as CompScoreStar;
+                if (compScoreStar) {
+                    compScoreStar.updateScore(data.totalScore);
+                    Logger.log(`本次消除加分: ${data.score ?? 0}，当前总分: ${data.totalScore}`);
+                }
+            }
+
             const playerMap = GameData.instance.getPlayerMapData(data.seat);
             const isAlreadyRemoved =
                 playerMap?.mapData?.[data.p1.row]?.[data.p1.col] === 0 && playerMap?.mapData?.[data.p2.row]?.[data.p2.col] === 0;
@@ -888,6 +941,9 @@ export class CompGameMain extends FGUICompGameMain {
      */
     onSvrGameStart(data: any): void {
         GameData.instance.gameStart = true;
+
+        // 每局开始重新初始化分数星星组件（重连和开局均处理）
+        this._setupScoreStar();
 
         // 隐藏开始,邀请游戏按钮
         if (GameData.instance.isPrivateRoom) {

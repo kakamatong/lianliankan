@@ -209,6 +209,8 @@ export interface TilesremovedRequest {
     eliminated: number;
     remaining: number;
     seat: number;
+    score: number;
+    totalScore: number;
 }
 
 /** 玩家完成游戏 - 请求参数 */
