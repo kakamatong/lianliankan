@@ -200,7 +200,7 @@ export class CompChapter extends FGUICompChapter {
         const msg = this.getRule(chapter, level);
         const config = this._chapterConfig.find((c) => c.index === level);
         ChallengeRuleHintView.showView({
-            title: "温馨提示",
+            title: `第${level + 1}关`,
             content: msg,
             energy: -energy,
             sureBack: () => {
