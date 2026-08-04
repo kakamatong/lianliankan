@@ -62,9 +62,11 @@ export class CompBag extends FGUICompBag {
      * 初始化财富
      */
     initRiches(): void {
+        // 体力类道具 ID 列表（背包中不展示）
+        const ENERGY_PROP_IDS = [20001, 20002, 20003, 20004];
         const riches = DataCenter.instance.userRiches;
         riches.forEach((element) => {
-            if (element.richType > 10000) {
+            if (element.richType > 10000 && !ENERGY_PROP_IDS.includes(element.richType)) {
                 this._richList.push(element);
             }
         });
