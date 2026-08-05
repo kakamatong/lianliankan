@@ -44,6 +44,20 @@ export class CompScoreStar extends FGUICompScoreStar {
     private _animDuration: number = 0.5;
 
     /**
+     * @property {number} _scaleAnimHalfDuration
+     * @description 总分文本放大回弹动画的单段时长（秒），放大+回弹两段合计 0.05s
+     * @private
+     */
+    private _scaleAnimHalfDuration: number = 0.025;
+
+    /**
+     * @property {object} _scaleTweenTarget
+     * @description 总分文本放大回弹补间的独立目标，避免与进度条补间（target=this）互相误杀
+     * @private
+     */
+    private _scaleTweenTarget: object = {};
+
+    /**
      * @method init
      * @description 初始化星星限制分数并显示当前进度（无动画）
      * @param {number[]} starScores - 3颗星星对应的限制分数（如 [200, 500, 1000]）
@@ -57,17 +71,20 @@ export class CompScoreStar extends FGUICompScoreStar {
             this.UI_IMG_BAR.fillAmount = this._calcFillAmount(this._currentScore);
         }
         this._updateStars();
+        this._updateTotalScoreText();
     }
 
     /**
      * @method updateScore
-     * @description 更新当前分数并带动画刷新进度条
+     * @description 更新当前分数并带动画刷新进度条，总分文本执行放大回弹动画
      * @param {number} currentScore - 当前分数
      */
     updateScore(currentScore: number): void {
         this._currentScore = Math.max(currentScore, 0);
         this._updateStars();
         this._animateBar();
+        this._updateTotalScoreText();
+        this._animateTotalScore();
     }
 
     /**
@@ -76,10 +93,14 @@ export class CompScoreStar extends FGUICompScoreStar {
      */
     reset(): void {
         fgui.GTween.kill(this);
+        fgui.GTween.kill(this._scaleTweenTarget);
         this._starScores = [];
         this._currentScore = 0;
         if (this.UI_IMG_BAR) {
             this.UI_IMG_BAR.fillAmount = 0;
+        }
+        if (this.UI_TXT_TOTAL_SCORE) {
+            this.UI_TXT_TOTAL_SCORE.text = "0";
         }
         const stars = [this.UI_IMG_STAR_0, this.UI_IMG_STAR_1, this.UI_IMG_STAR_2];
         for (let i = 0; i < stars.length; i++) {
@@ -180,8 +201,51 @@ export class CompScoreStar extends FGUICompScoreStar {
             });
     }
 
+    /**
+     * @method _updateTotalScoreText
+     * @description 更新总分文本显示
+     * @private
+     */
+    private _updateTotalScoreText(): void {
+        if (this.UI_TXT_TOTAL_SCORE) {
+            this.UI_TXT_TOTAL_SCORE.text = String(this._currentScore);
+        }
+    }
+
+    /**
+     * @method _animateTotalScore
+     * @description 总分文本放大回弹动画：先放大到1.2倍，再回弹到原始大小，两段合计0.05s
+     * @private
+     */
+    private _animateTotalScore(): void {
+        if (!this.UI_TXT_TOTAL_SCORE) {
+            return;
+        }
+        fgui.GTween.kill(this._scaleTweenTarget);
+        fgui.GTween.to2(1, 1, 1.2, 1.2, this._scaleAnimHalfDuration)
+            .setTarget(this._scaleTweenTarget)
+            .setEase(fgui.EaseType.QuadOut)
+            .onUpdate((tween) => {
+                if (this.UI_TXT_TOTAL_SCORE) {
+                    this.UI_TXT_TOTAL_SCORE.setScale(tween.value.x, tween.value.y);
+                }
+            })
+            .onComplete(() => {
+                fgui.GTween.kill(this._scaleTweenTarget);
+                fgui.GTween.to2(1.2, 1.2, 1, 1, this._scaleAnimHalfDuration)
+                    .setTarget(this._scaleTweenTarget)
+                    .setEase(fgui.EaseType.QuadOut)
+                    .onUpdate((tween) => {
+                        if (this.UI_TXT_TOTAL_SCORE) {
+                            this.UI_TXT_TOTAL_SCORE.setScale(tween.value.x, tween.value.y);
+                        }
+                    });
+            });
+    }
+
     protected onDestroy(): void {
         fgui.GTween.kill(this);
+        fgui.GTween.kill(this._scaleTweenTarget);
         super.onDestroy();
     }
 }

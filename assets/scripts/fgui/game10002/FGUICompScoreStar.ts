@@ -12,6 +12,7 @@ export default class FGUICompScoreStar extends fgui.GComponent {
 	public UI_IMG_STAR_0:fgui.GImage;
 	public UI_IMG_STAR_1:fgui.GImage;
 	public UI_IMG_STAR_2:fgui.GImage;
+	public UI_TXT_TOTAL_SCORE:fgui.GTextField;
 	public static URL:string = "ui://2zsfe53xgxvf20";
 
 	public static packageName:string = "game10002";
@@ -79,6 +80,7 @@ export default class FGUICompScoreStar extends fgui.GComponent {
 		this.UI_IMG_STAR_0 = <fgui.GImage>(this.getChildAt(2));
 		this.UI_IMG_STAR_1 = <fgui.GImage>(this.getChildAt(3));
 		this.UI_IMG_STAR_2 = <fgui.GImage>(this.getChildAt(4));
+		this.UI_TXT_TOTAL_SCORE = <fgui.GTextField>(this.getChildAt(5));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
