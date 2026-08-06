@@ -9,11 +9,13 @@ import { ChallengeData } from "@datacenter/ChallengeData";
 import { LogColors } from "@frameworks/Framework";
 import { HttpPostWithDefaultJWT, Logger } from "@frameworks/utils/Utils";
 import { BaseModule } from "@frameworks/base/BaseModule";
+import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import {
     SprotoGetChallengeChapterData,
     SprotoGetCurChallengeChapterData,
     SprotoUpdateChallengeLevelData,
 } from "../../types/protocol/lobby/c2s";
+import { ConnectSvr } from "./ConnectSvr";
 
 /**
  * @enum USER_ENERGY_CHANGE_TYPE
@@ -113,7 +115,7 @@ export class Challenge extends BaseModule {
 
     /**
      * @method updateLevelData
-     * @description 更新关卡数据（上传分数和星级）
+     * @description 更新关卡数据（上传分数和星级）。大厅连接断开时先自动重连，重连成功后再发送，重连失败则直接回调失败
      * @param {number} chapter - 章节索引
      * @param {number} level - 关卡索引
      * @param {number} score - 本次分数
@@ -131,23 +133,39 @@ export class Challenge extends BaseModule {
         nextLevel: number,
         callBack?: (success: boolean) => void
     ) {
-        this.reqLobby(
-            SprotoUpdateChallengeLevelData,
-            { chapter, level, score, stars, nextChapter, nextLevel },
-            (data: SprotoUpdateChallengeLevelData.Response) => {
-                if (data && data.code === 1) {
-                    ChallengeData.instance.updateSingleLevelData(chapter, level, score, stars);
-                    if (chapter === ChallengeData.instance.curChapter && level === ChallengeData.instance.curLevel) {
-                        ChallengeData.instance.curChapter = nextChapter;
-                        ChallengeData.instance.curLevel = nextLevel;
+        const send = () => {
+            this.reqLobby(
+                SprotoUpdateChallengeLevelData,
+                { chapter, level, score, stars, nextChapter, nextLevel },
+                (data: SprotoUpdateChallengeLevelData.Response) => {
+                    if (data && data.code === 1) {
+                        ChallengeData.instance.updateSingleLevelData(chapter, level, score, stars);
+                        if (chapter === ChallengeData.instance.curChapter && level === ChallengeData.instance.curLevel) {
+                            ChallengeData.instance.curChapter = nextChapter;
+                            ChallengeData.instance.curLevel = nextLevel;
+                        }
+                        Logger.log(LogColors.green(`关卡 ${chapter}-${level} 数据更新成功, 分数: ${score}, 星级: ${stars}`));
+                        callBack && callBack(true);
+                    } else {
+                        Logger.warn(LogColors.red(`关卡 ${chapter}-${level} 数据更新失败`));
+                        callBack && callBack(false);
                     }
-                    Logger.log(LogColors.green(`关卡 ${chapter}-${level} 数据更新成功, 分数: ${score}, 星级: ${stars}`));
-                    callBack && callBack(true);
+                }
+            );
+        };
+
+        if (LobbySocketManager.instance.isOpen()) {
+            send();
+        } else {
+            // 大厅断开，先自动重连再发送
+            ConnectSvr.instance.checkAutoLogin((b: boolean) => {
+                if (b) {
+                    send();
                 } else {
-                    Logger.warn(LogColors.red(`关卡 ${chapter}-${level} 数据更新失败`));
+                    Logger.warn(LogColors.red(`关卡 ${chapter}-${level} 数据更新失败: 大厅重连失败`));
                     callBack && callBack(false);
                 }
-            }
-        );
+            });
+        }
     }
 }
