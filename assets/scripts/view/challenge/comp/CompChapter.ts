@@ -88,6 +88,7 @@ export class CompChapter extends FGUICompChapter {
         const [config] = await Promise.all([configPromise, levelDataPromise]);
         this._chapterConfig = config ?? [];
         this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
+        //this.UI_LV_ITEMS.scrollPane.scrollToView(ChallengeData.instance.curLevel, true, true);
         this.updateButtons();
         this.checkPendingDirectChallenge();
     }
@@ -171,7 +172,6 @@ export class CompChapter extends FGUICompChapter {
                     chapterItem.setStatus(LEVEL_STATUS.IN_PROGRESS);
                 }
                 chapterItem.touchable = true;
-                this.UI_LV_ITEMS.scrollPane.scrollToView(index, true, true);
                 chapterItem.onClick(() => {
                     this.onBtnLevel(this._chapterIndex, config.index, config.energy ?? 0);
                 });
