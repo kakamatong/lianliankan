@@ -82,6 +82,8 @@ export interface MAP_LEVEL_CONFIG {
     starTime?: number[];
     /** 获取星星限制分数，计分规则使用，可选 */
     starScore?: number[];
+    /** 目标分数（计分规则过关门槛，可选，缺省按 0 分门槛处理） */
+    targetScore?: number;
     /** 体力消耗 */
     energy?: number;
 }

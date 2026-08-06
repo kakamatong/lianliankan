@@ -52,7 +52,8 @@
     "type": 2,
     "boss":0,
     "energy":5,
-    "starScore":[10,20,40]
+    "starScore":[10,20,40],
+    "targetScore": 10
   },
 {
     "chapter": 0,

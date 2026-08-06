@@ -269,7 +269,7 @@ export class CompChapter extends FGUICompChapter {
         if (config.type == 1) {
             return `在 [color=#FF0000]${config.totalTime}[/color] 秒内完成挑战`;
         } else if (config.type == 2) {
-            const targetScore = config.starScore?.[0] ?? 1;
+            const targetScore = config.targetScore ?? 0;
             return `达到 [color=#FF0000]${targetScore}[/color] 分并完成关卡（消除一对方块[color=#FF0000]1[/color]分再加上当前连击分数）`;
         }
     }

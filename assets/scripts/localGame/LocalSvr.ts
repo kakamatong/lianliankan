@@ -28,7 +28,7 @@ import {
 import { MAIN_GAME_ID, RICH_TYPE } from "@datacenter/InterfaceConfig";
 import { DataCenter } from "@datacenter/Datacenter";
 import { generateRandomMap, generateFromDesign } from "./mapGenerator";
-import { MAP_LEVEL_CONFIG, CHALLENGE_END_TYPE } from "@datacenter/ChallengeData";
+import { MAP_LEVEL_CONFIG, CHALLENGE_LEVEL_TYPE, CHALLENGE_END_TYPE } from "@datacenter/ChallengeData";
 
 /**
  * @enum LOCAL_SVR_MODE
@@ -476,8 +476,15 @@ export class LocalSvr {
                 endType = CHALLENGE_END_TYPE.FAIL;
                 rank = 0;
             } else {
-                endType = CHALLENGE_END_TYPE.SUCCESS;
-                rank = this._calculateStars();
+                const cfg = this._challengeConfig;
+                const targetScore = cfg.targetScore ?? 0;
+                if (cfg.type === CHALLENGE_LEVEL_TYPE.SCORING && this._totalScore < targetScore) {
+                    endType = CHALLENGE_END_TYPE.FAIL;
+                    rank = 0;
+                } else {
+                    endType = CHALLENGE_END_TYPE.SUCCESS;
+                    rank = this._calculateStars();
+                }
             }
         }
 
