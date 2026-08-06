@@ -1084,10 +1084,10 @@ export class CompGameMain extends FGUICompGameMain {
             const levelConfig = ChallengeData.instance.getSelectedLevelConfig();
 
             if (levelConfig?.type === CHALLENGE_LEVEL_TYPE.TIMING) {
-                // 计时规则：用时小于等于各星级限制时间
+                // 计时规则：通关时剩余时间大于等于各星级限制时间
                 if (levelConfig.starTime && levelConfig.starTime.length > 0) {
                     for (let i = levelConfig.starTime.length - 1; i >= 0; i--) {
-                        if (usedTime <= levelConfig.starTime[i]) {
+                        if (levelConfig.totalTime - usedTime >= levelConfig.starTime[i]) {
                             stars = i + 1;
                             break;
                         }
