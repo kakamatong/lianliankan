@@ -79,9 +79,7 @@ export class CompSignInMain extends FGUICompSignInMain {
         const config = this._signInConfig[index];
         const item = obj as FGUICompSignItem;
         item.UI_TXT_DAY.text = `第${index + 1}天`;
-        // 补签显示，展示隐藏
-        // item.ctrl_geted.selectedIndex = this._signInStatus[index] ? 1 : index >= this._nowIndex - 1 ? 0 : 2;
-        item.ctrl_geted.selectedIndex = this._signInStatus[index] ? 1 : index >= this._nowIndex - 1 ? 0 : 0;
+        item.ctrl_geted.selectedIndex = this._signInStatus[index] ? 1 : index >= this._nowIndex - 1 ? 0 : 2;
         item.ctrl_today.selectedIndex = index == this._nowIndex - 1 ? 1 : 0;
 
         // richNums =(1) [2]
@@ -159,7 +157,7 @@ export class CompSignInMain extends FGUICompSignInMain {
      */
     playAdVideo(successCallBack: () => void): void {
         LoadingView.showView({ content: "载入中...", time: 12 });
-        MiniGameUtils.instance.showRewardedVideoAd("adunit-21e58350c401d5b6", (code: number) => {
+        MiniGameUtils.instance.showRewardedVideoAd("adunit-cfaba8598989ee54", (code: number) => {
             LoadingView.hideView();
             // 广告关闭时恢复播放背景音乐
             SoundManager.instance.adCloseMusicPlay();
