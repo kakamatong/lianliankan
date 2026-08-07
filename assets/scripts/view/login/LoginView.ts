@@ -19,7 +19,7 @@ import { PackageLoad, ViewClass } from "@frameworks/Framework";
  * @category 登录视图
  */
 @ViewClass()
-@PackageLoad(["common", "lobbyBg"])
+@PackageLoad(["common", , "resFruit", "lobbyBg"])
 export class LoginView extends FGUILoginView {
     /**
      * @description 显示登录视图
