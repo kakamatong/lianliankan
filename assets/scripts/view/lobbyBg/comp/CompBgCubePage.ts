@@ -18,9 +18,6 @@ import { CompBgCubeLine } from "./CompBgCubeLine";
 @PackageLoad(["lobbyBg"])
 @ViewClass()
 export class CompBgCubePage extends FGUICompBgCubePage {
-    /** 行间距（与编辑器布局一致，单位 px） @private */
-    private static readonly LINE_PITCH: number = 80;
-
     /** 移动速度（px/s），可动态修改以配置动效快慢 */
     public static ANIM_SPEED: number = 10;
 
@@ -29,6 +26,9 @@ export class CompBgCubePage extends FGUICompBgCubePage {
 
     /** 顶部行的初始 y（编辑器布局的最小值） @private */
     private _topY: number = 0;
+
+    /** 行间距（编辑器布局相邻行的最小差值，运行时动态推导） @private */
+    private _pitch: number = 0;
 
     /** 回卷阈值：行移动到该位置视为移出屏幕底部 @private */
     private _wrapY: number = 0;
@@ -69,8 +69,14 @@ export class CompBgCubePage extends FGUICompBgCubePage {
             this.UI_COMP_CUBE_LINE_24,
             this.UI_COMP_CUBE_LINE_25,
         ] as CompBgCubeLine[];
-        this._topY = Math.min(...this._lines.map((line) => line.y));
-        this._span = this._lines.length * CompBgCubePage.LINE_PITCH;
+        const ys = this._lines.map((line) => line.y).sort((a, b) => a - b);
+        this._topY = ys[0];
+        let minGap = Number.POSITIVE_INFINITY;
+        for (let i = 1; i < ys.length; i++) {
+            minGap = Math.min(minGap, ys[i] - ys[i - 1]);
+        }
+        this._pitch = minGap;
+        this._span = this._lines.length * this._pitch;
         this._wrapY = this._topY + this._span;
         this.randomAll();
     }
