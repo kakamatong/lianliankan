@@ -26,6 +26,8 @@ export enum USER_ENERGY_CHANGE_TYPE {
     TEST = 0,
     /** 闯关 */
     CHALLENGE = 1,
+    /** 广告 */
+    AD = 2,
 }
 
 /**

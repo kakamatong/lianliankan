@@ -10,6 +10,14 @@ import * as fgui from "fairygui-cc";
 import { DataCenter } from "@datacenter/Datacenter";
 import { EVENT_NAMES } from "@datacenter/CommonConfig";
 import { UserEnergy } from "@modules/UserEnergy";
+import { USER_ENERGY_CHANGE_TYPE } from "@modules/Challenge";
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
+import { REWORD_VIDEOAD_CODE } from "@frameworks/config/Config";
+import { SoundManager } from "@frameworks/SoundManager";
+import { PopMessageView } from "@view/common/PopMessageView";
+import { TipsView } from "@view/common/TipsView";
+import { LoadingView } from "@view/common/LoadingView";
+import { ENUM_POP_MESSAGE_TYPE } from "@datacenter/InterfaceConfig";
 
 /**
  * @class CompEnergy
@@ -51,12 +59,55 @@ export class CompEnergy extends FGUICompEnergy {
 
     /**
      * @method show
-     * @description 显示组件，刷新显示并启动计时器
+     * @description 显示组件，刷新显示并启动计时器，注册自身点击事件（点击看广告领取体力）
      * @param {any} [data] - 传入数据（预留）
      */
     show(data?: any): void {
         this.refreshDisplay();
         this.startTimerIfNeeded();
+        this.clearClick();
+        this.onClick(this.onClickSelf.bind(this));
+    }
+
+    /**
+     * @method onClickSelf
+     * @description 点击体力组件，弹出看广告领取体力确认弹窗
+     * @private
+     */
+    private onClickSelf(): void {
+        PopMessageView.showView({
+            title: "温馨提示",
+            content: "看视频广告可以领取10体力",
+            type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+            sureBack: this.playAdAndReceiveEnergy.bind(this),
+        });
+    }
+
+    /**
+     * @method playAdAndReceiveEnergy
+     * @description 播放激励视频广告，广告成功后请求服务端领取体力
+     * @private
+     */
+    private playAdAndReceiveEnergy(): void {
+        LoadingView.showView({ content: "载入中...", time: 12 });
+        MiniGameUtils.instance.showRewardedVideoAd("adunit-21e58350c401d5b6", (code: number) => {
+            LoadingView.hideView();
+            // 广告关闭时恢复播放背景音乐
+            SoundManager.instance.adCloseMusicPlay();
+            if (code == REWORD_VIDEOAD_CODE.SUCCESS) {
+                UserEnergy.instance.changeReq(10, USER_ENERGY_CHANGE_TYPE.AD, undefined, (data: any) => {
+                    if (data && data.code === 1) {
+                        TipsView.showView({ content: "领取成功" });
+                    } else {
+                        TipsView.showView({ content: "领取体力失败" });
+                    }
+                });
+            } else if (code == REWORD_VIDEOAD_CODE.NOT_OVER) {
+                TipsView.showView({ content: "看完视频才能获取奖励哦" });
+            } else {
+                TipsView.showView({ content: "视频广告播放失败" });
+            }
+        });
     }
 
     /**

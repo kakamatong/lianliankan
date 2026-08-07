@@ -32,6 +32,7 @@
     <image id="oott1p" name="btnBack.png" path="/imgs/" exported="true"/>
     <image id="vcww8" name="star.png" path="/imgs/" exported="true"/>
     <image id="vcww9" name="starGray.png" path="/imgs/" exported="true"/>
+    <image id="ddk11q" name="add.png" path="/imgs/" exported="true"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
