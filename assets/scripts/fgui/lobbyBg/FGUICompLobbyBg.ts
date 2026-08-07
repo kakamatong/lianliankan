@@ -73,7 +73,7 @@ export default class FGUICompLobbyBg extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.UI_COMP_CUBE_PAGE = <FGUICompBgCubePage>(this.getChildAt(1));
+		this.UI_COMP_CUBE_PAGE = <FGUICompBgCubePage>(this.getChildAt(2));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
