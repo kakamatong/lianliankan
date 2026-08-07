@@ -7,6 +7,7 @@
 import FGUILobbyView from "@fgui/lobby/FGUILobbyView";
 import * as fgui from "fairygui-cc";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
+import "../lobbyBg/CompLobbyBg";
 
 /**
  * @class LobbyView
