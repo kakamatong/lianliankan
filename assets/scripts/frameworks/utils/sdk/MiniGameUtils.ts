@@ -61,8 +61,11 @@ export class MiniGameUtils {
                     DispatchEvent(FW_EVENT_NAMES.ON_SHOW, res);
                 });
 
-            const key = "adunit-21e58350c401d5b6";
+            const key = "adunit-51ac86a12a85009b";
             this.createRewardedVideoAd(key);
+
+            const key2 = "adunit-cfaba8598989ee54";
+            this.createRewardedVideoAd(key2);
         }
     }
 

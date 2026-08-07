@@ -90,7 +90,7 @@ export class CompEnergy extends FGUICompEnergy {
      */
     private playAdAndReceiveEnergy(): void {
         LoadingView.showView({ content: "载入中...", time: 12 });
-        MiniGameUtils.instance.showRewardedVideoAd("adunit-21e58350c401d5b6", (code: number) => {
+        MiniGameUtils.instance.showRewardedVideoAd("adunit-51ac86a12a85009b", (code: number) => {
             LoadingView.hideView();
             // 广告关闭时恢复播放背景音乐
             SoundManager.instance.adCloseMusicPlay();
