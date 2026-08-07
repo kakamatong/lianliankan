@@ -29,18 +29,19 @@ export class AdReward extends BaseModule {
     /**
      * 请求每日看广告领奖信息
      * @param callBack 回调函数
+     * @param cfgId 广告配置ID（2=大厅道具奖励，3=体力奖励）
      */
-    reqGetAdInfo(callBack: (success: boolean, data: any) => void) {
+    reqGetAdInfo(callBack: (success: boolean, data: any) => void, cfgId: number = 2) {
         this._getAdInfoCallBack = callBack;
         this.reqLobby(
             SprotoCallActivityFunc,
-            { moduleName: "ad", funcName: "getAdInfo", args: JSON.stringify({ cfgId: 2 }) },
+            { moduleName: "ad", funcName: "getAdInfo", args: JSON.stringify({ cfgId }) },
             this.respGetAdInfo.bind(this)
         );
     }
 
     /**
-     * @description 处理获取广告信息的响应回调
+     * @description 处理获取广告信息的响应回调，按响应回带的配置ID存储到数据中心
      * @param result 服务器返回的广告信息
      */
     respGetAdInfo(result: SprotoCallActivityFunc.Response): void {
@@ -50,7 +51,7 @@ export class AdReward extends BaseModule {
                 Logger.log(LogColors.red(res.error));
                 this._getAdInfoCallBack && this._getAdInfoCallBack(false, res);
             } else {
-                DataCenter.instance.adRewardInfo = res;
+                DataCenter.instance.setAdRewardInfo(res.cfgId, res);
                 this._getAdInfoCallBack && this._getAdInfoCallBack(true, res);
             }
         } else {
@@ -61,18 +62,19 @@ export class AdReward extends BaseModule {
     /**
      * 领取看广告奖励
      * @param callBack 回调函数
+     * @param cfgId 广告配置ID（2=大厅道具奖励，3=体力奖励）
      */
-    reqReceiveAdReward(callBack: (success: boolean, data: any) => void) {
+    reqReceiveAdReward(callBack: (success: boolean, data: any) => void, cfgId: number = 2) {
         this._receiveAdRewardCallBack = callBack;
         this.reqLobby(
             SprotoCallActivityFunc,
-            { moduleName: "ad", funcName: "getAdReward", args: JSON.stringify({ cfgId: 2 }) },
+            { moduleName: "ad", funcName: "getAdReward", args: JSON.stringify({ cfgId }) },
             this.respReceiveAdReward.bind(this)
         );
     }
 
     /**
-     * @description 处理领取广告奖励的响应回调
+     * @description 处理领取广告奖励的响应回调，按响应回带的配置ID维护对应数据的次数
      * @param result 服务器返回的领取结果
      */
     respReceiveAdReward(result: SprotoCallActivityFunc.Response): void {
@@ -83,7 +85,7 @@ export class AdReward extends BaseModule {
                 this._receiveAdRewardCallBack && this._receiveAdRewardCallBack(false, res);
             } else {
                 const rewardRes = res as AD_RECEIVE_REWARD_RESULT;
-                const adRewardInfo = DataCenter.instance.adRewardInfo;
+                const adRewardInfo = DataCenter.instance.getAdRewardInfo(rewardRes.cfgId);
                 if (adRewardInfo) {
                     adRewardInfo.currentRewardCount = rewardRes.currentRewardCount;
                     adRewardInfo.canReward = rewardRes.currentRewardCount < rewardRes.maxDailyRewardCount;

@@ -400,7 +400,7 @@ export class CompLobbyMain extends FGUICompLobbyMain {
      * 点击广告奖励
      */
     onBtnAd(): void {
-        const adRewardInfo = DataCenter.instance.adRewardInfo;
+        const adRewardInfo = DataCenter.instance.getAdRewardInfo(2);
         if (!adRewardInfo) {
             TipsView.showView({ content: "广告奖励信息未加载" });
             return;

@@ -161,6 +161,7 @@ export interface AD_REWARD {
  * 广告奖励信息结构
  */
 export interface AD_REWARD_INFO {
+    cfgId: number;
     maxDailyRewardCount: number;
     currentRewardCount: number;
     rewards: AD_REWARD[];
@@ -171,6 +172,7 @@ export interface AD_REWARD_INFO {
  * 领取广告奖励返回结果结构
  */
 export interface AD_RECEIVE_REWARD_RESULT {
+    cfgId: number;
     noticeid: number;
     reward: AD_REWARD;
     currentRewardCount: number;

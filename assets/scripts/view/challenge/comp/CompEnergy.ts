@@ -10,7 +10,7 @@ import * as fgui from "fairygui-cc";
 import { DataCenter } from "@datacenter/Datacenter";
 import { EVENT_NAMES } from "@datacenter/CommonConfig";
 import { UserEnergy } from "@modules/UserEnergy";
-import { USER_ENERGY_CHANGE_TYPE } from "@modules/Challenge";
+import { AdReward } from "@modules/AdReward";
 import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 import { REWORD_VIDEOAD_CODE } from "@frameworks/config/Config";
 import { SoundManager } from "@frameworks/SoundManager";
@@ -37,13 +37,14 @@ export class CompEnergy extends FGUICompEnergy {
 
     /**
      * @method onConstruct
-     * @description 组件构建回调，初始化计时器和事件监听
+     * @description 组件构建回调，初始化计时器、事件监听，拉取体力和广告奖励数据
      */
     onConstruct() {
         super.onConstruct();
         this._scheduleId = this.tick.bind(this);
         AddEventListener(EVENT_NAMES.USER_ENERGY, this.onUserEnergy, this);
         UserEnergy.instance.req();
+        AdReward.instance.reqGetAdInfo(() => {}, 3);
         this.show();
     }
 
@@ -71,21 +72,39 @@ export class CompEnergy extends FGUICompEnergy {
 
     /**
      * @method onClickSelf
-     * @description 点击体力组件，弹出看广告领取体力确认弹窗
+     * @description 点击体力组件，弹出看广告领取体力确认弹窗，弹窗内容展示今日剩余次数
      * @private
      */
     private onClickSelf(): void {
-        PopMessageView.showView({
-            title: "温馨提示",
-            content: "看视频广告可以领取10体力",
-            type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
-            sureBack: this.playAdAndReceiveEnergy.bind(this),
-        });
+        const adRewardInfo = DataCenter.instance.getAdRewardInfo(3);
+        if (!adRewardInfo) {
+            TipsView.showView({ content: "广告奖励信息未加载" });
+            return;
+        }
+        const leftCount = adRewardInfo.maxDailyRewardCount - adRewardInfo.currentRewardCount;
+        const content = `看视频广告可以领取10体力，今日剩余${leftCount}次`;
+        if (adRewardInfo.canReward) {
+            PopMessageView.showView({
+                title: "温馨提示",
+                content: content,
+                type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+                sureBack: this.playAdAndReceiveEnergy.bind(this),
+            });
+        } else {
+            PopMessageView.showView({
+                title: "温馨提示",
+                content: content,
+                type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+                sureBack: () => {
+                    TipsView.showView({ content: "今日次数已用完，明天再来" });
+                },
+            });
+        }
     }
 
     /**
      * @method playAdAndReceiveEnergy
-     * @description 播放激励视频广告，广告成功后请求服务端领取体力
+     * @description 播放激励视频广告，广告成功后请求服务端领取体力奖励
      * @private
      */
     private playAdAndReceiveEnergy(): void {
@@ -95,13 +114,14 @@ export class CompEnergy extends FGUICompEnergy {
             // 广告关闭时恢复播放背景音乐
             SoundManager.instance.adCloseMusicPlay();
             if (code == REWORD_VIDEOAD_CODE.SUCCESS) {
-                UserEnergy.instance.changeReq(10, USER_ENERGY_CHANGE_TYPE.AD, undefined, (data: any) => {
-                    if (data && data.code === 1) {
-                        TipsView.showView({ content: "领取成功" });
-                    } else {
+                AdReward.instance.reqReceiveAdReward((success: boolean) => {
+                    if (!success) {
                         TipsView.showView({ content: "领取体力失败" });
+                        return;
                     }
-                });
+                    UserEnergy.instance.req();
+                    TipsView.showView({ content: "领取成功" });
+                }, 3);
             } else if (code == REWORD_VIDEOAD_CODE.NOT_OVER) {
                 TipsView.showView({ content: "看完视频才能获取奖励哦" });
             } else {

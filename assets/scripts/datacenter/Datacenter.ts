@@ -157,10 +157,10 @@ export class DataCenter {
     private _allreadyThirdLogin: boolean = false;
 
     /**
-     * @property {AD_REWARD_INFO | null} _adRewardInfo - 广告奖励信息
+     * @property {Record<number, AD_REWARD_INFO>} _adRewardInfoMap - 广告奖励信息（按配置ID存储，支持并发管理）
      * @private
      */
-    private _adRewardInfo: AD_REWARD_INFO | null = null;
+    private _adRewardInfoMap: Record<number, AD_REWARD_INFO> = {};
 
     /**
      * @property {boolean} _shouldGotoChallenge - 从游戏场景返回后是否需要跳转到闯关页面
@@ -692,21 +692,23 @@ export class DataCenter {
     }
 
     /**
-     * @method adRewardInfo
-     * @description 设置广告奖励信息
-     * @param {AD_REWARD_INFO | null} data - 广告奖励信息，可为null
+     * @method setAdRewardInfo
+     * @description 按配置ID设置广告奖励信息
+     * @param {number} cfgId - 广告配置ID
+     * @param {AD_REWARD_INFO} data - 广告奖励信息
      */
-    set adRewardInfo(data: AD_REWARD_INFO | null) {
-        this._adRewardInfo = data;
+    setAdRewardInfo(cfgId: number, data: AD_REWARD_INFO): void {
+        this._adRewardInfoMap[cfgId] = data;
     }
 
     /**
-     * @method adRewardInfo
-     * @description 获取广告奖励信息
-     * @returns {AD_REWARD_INFO | null} 广告奖励信息，未获取时返回null
+     * @method getAdRewardInfo
+     * @description 按配置ID获取广告奖励信息
+     * @param {number} cfgId - 广告配置ID
+     * @returns {AD_REWARD_INFO | undefined} 广告奖励信息，未获取时返回undefined
      */
-    get adRewardInfo(): AD_REWARD_INFO | null {
-        return this._adRewardInfo;
+    getAdRewardInfo(cfgId: number): AD_REWARD_INFO | undefined {
+        return this._adRewardInfoMap[cfgId];
     }
 
     /**
