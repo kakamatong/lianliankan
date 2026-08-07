@@ -370,6 +370,10 @@ export class DataCenter {
             timeLeft = Math.max(0, nextRecoverSec - nowSec);
         }
 
+        // 回写基准数据时必须同步推进 updateTime，否则每次调用都会把 recovered 重复累加到 leftEnergy（每次调用 +1/秒）
+        if (recovered > 0) {
+            this._userEnergy.updateTime += recovered * recoverySecs;
+        }
         this._userEnergy.leftEnergy = currentLeft;
 
         return { isFull, currentLeft, currentTotal, timeLeft };
