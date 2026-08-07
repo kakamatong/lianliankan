@@ -3,6 +3,10 @@
   <resources>
     <component id="d01o0" name="ComLobbyBg.xml" path="/comp/" exported="true"/>
     <image id="jorfn" name="bg2.jpg" path="/imgs/" atlas="alone_npot"/>
+    <component id="ddk1o" name="CompBgCube.xml" path="/comp/"/>
+    <image id="ddk1p" name="bg1.png" path="/imgs/"/>
+    <component id="ddk1q" name="CompBgCubeLine.xml" path="/comp/"/>
+    <component id="ddk1r" name="CompBgCubePage.xml" path="/comp/"/>
   </resources>
   <publish name=""/>
 </packageDescription>
