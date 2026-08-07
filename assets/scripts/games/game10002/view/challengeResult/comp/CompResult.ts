@@ -11,6 +11,7 @@ import { CompStarAni } from "./CompStarAni";
 import { GameChallengeResultView } from "../GameChallengeResultView";
 import { SoundManager } from "@frameworks/SoundManager";
 import { ChallengeData } from "@datacenter/ChallengeData";
+import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
 
 export type CompResultData = {
     score: number; // 得分
@@ -62,6 +63,7 @@ export class CompResult extends FGUICompResult {
         } else {
             this.ctrl_result.selectedIndex = 0;
         }
+        MiniGameUtils.instance.showInterstitialAd("adunit-60af440d294b0df5");
     }
 
     onBtnNext(): void {
