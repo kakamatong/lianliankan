@@ -21,6 +21,7 @@
     <image id="bj8qw" name="btnBag.png" path="/imgs/"/>
     <image id="dr1xx" name="btnFreeItem.png" path="/imgs/"/>
     <image id="djnjy" name="lobbybutton3.png" path="/imgs/"/>
+    <image id="gnq2z" name="lobbyButton4.png" path="/imgs/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
