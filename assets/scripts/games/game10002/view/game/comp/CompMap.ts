@@ -233,6 +233,7 @@ export class CompMap extends FGUICompMap {
 
         // 设置选中控制器
         cube.ctrl_selected.selectedIndex = 1;
+        cube.act.play();
     }
 
     /**
