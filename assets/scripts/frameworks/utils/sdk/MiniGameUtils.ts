@@ -413,6 +413,11 @@ export class MiniGameUtils {
      */
     createRewardedVideoAd(key: string): void {
         if (this.isWeChatGame()) {
+            // 如果已经创建过该广告，则不再创建
+            if (this._rewardedVideoAdList[key]) {
+                return;
+            }
+
             const ad =
                 wx &&
                 wx.createRewardedVideoAd({
