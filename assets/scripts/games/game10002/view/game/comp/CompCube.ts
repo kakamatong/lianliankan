@@ -98,7 +98,7 @@ export class CompCube extends FGUICompCube {
      * @description 单个动画（一格距离）的播放时长（秒）
      * @private
      */
-    private readonly _moveDuration: number = 0.1;
+    private readonly _moveDuration: number = 0.08;
 
     /**
      * @property {number} _moveElapsed

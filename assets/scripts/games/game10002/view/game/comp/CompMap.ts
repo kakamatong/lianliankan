@@ -285,9 +285,9 @@ export class CompMap extends FGUICompMap {
         }
 
         // 移动动画播放期间不处理点击（数据与画面处于过渡状态）
-        if (this._isShifting) {
-            return;
-        }
+        // if (this._isShifting) {
+        //     return;
+        // }
 
         SoundManager.instance.playSoundEffect("game10002/cubeClick");
 
@@ -391,6 +391,8 @@ export class CompMap extends FGUICompMap {
             this._showPathLines(result.lines);
             first.cube.UI_SP_ANI.visible = true;
             second.cube.UI_SP_ANI.visible = true;
+            this._unbindCubeClickEvent(first.cube);
+            this._unbindCubeClickEvent(second.cube);
             SpinePlay(first.cube.UI_SP_ANI, "action", false);
             SpinePlay(second.cube.UI_SP_ANI, "action", false);
             !this._readonly && SoundManager.instance.playSoundEffect("game10002/bomb");
