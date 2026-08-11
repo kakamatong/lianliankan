@@ -372,7 +372,7 @@ export class CompGameMain extends FGUICompGameMain {
         if (this._isScoreChallengeMode()) {
             const levelConfig = ChallengeData.instance.getSelectedLevelConfig();
             compScoreStar.visible = true;
-            compScoreStar.init(levelConfig?.starScore ?? [], 0);
+            compScoreStar.init(levelConfig?.starScore ?? [], 0, levelConfig?.targetScore ?? 0);
         } else {
             compScoreStar.visible = false;
             compScoreStar.reset();

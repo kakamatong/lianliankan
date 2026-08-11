@@ -37,6 +37,13 @@ export class CompScoreStar extends FGUICompScoreStar {
     private _currentScore: number = 0;
 
     /**
+     * @property {number} _passScore
+     * @description 过关分数（计分规则闯关模式的过关门槛）
+     * @private
+     */
+    private _passScore: number = 0;
+
+    /**
      * @property {number} _animDuration
      * @description 进度条补间动画时长（秒）
      * @private
@@ -62,16 +69,19 @@ export class CompScoreStar extends FGUICompScoreStar {
      * @description 初始化星星限制分数并显示当前进度（无动画）
      * @param {number[]} starScores - 3颗星星对应的限制分数（如 [200, 500, 1000]）
      * @param {number} currentScore - 当前分数
+     * @param {number} passScore - 过关分数（计分规则闯关模式的过关门槛）
      */
-    init(starScores: number[], currentScore: number): void {
+    init(starScores: number[], currentScore: number, passScore: number): void {
         this._starScores = starScores.slice(0, 3);
         this._sanitizeStarScores();
         this._currentScore = Math.max(currentScore, 0);
+        this._passScore = Math.max(passScore, 0);
         if (this.UI_IMG_BAR) {
             this.UI_IMG_BAR.fillAmount = this._calcFillAmount(this._currentScore);
         }
         this._updateStars();
         this._updateTotalScoreText();
+        this._updatePassScoreText();
     }
 
     /**
@@ -96,11 +106,15 @@ export class CompScoreStar extends FGUICompScoreStar {
         fgui.GTween.kill(this._scaleTweenTarget);
         this._starScores = [];
         this._currentScore = 0;
+        this._passScore = 0;
         if (this.UI_IMG_BAR) {
             this.UI_IMG_BAR.fillAmount = 0;
         }
         if (this.UI_TXT_TOTAL_SCORE) {
             this.UI_TXT_TOTAL_SCORE.text = "0";
+        }
+        if (this.UI_TXT_PASS_SCORE) {
+            this.UI_TXT_PASS_SCORE.text = "";
         }
         const stars = [this.UI_IMG_STAR_0, this.UI_IMG_STAR_1, this.UI_IMG_STAR_2];
         for (let i = 0; i < stars.length; i++) {
@@ -209,6 +223,17 @@ export class CompScoreStar extends FGUICompScoreStar {
     private _updateTotalScoreText(): void {
         if (this.UI_TXT_TOTAL_SCORE) {
             this.UI_TXT_TOTAL_SCORE.text = String(this._currentScore);
+        }
+    }
+
+    /**
+     * @method _updatePassScoreText
+     * @description 更新过关分数文本显示（格式："过关分数:xxxx"）
+     * @private
+     */
+    private _updatePassScoreText(): void {
+        if (this.UI_TXT_PASS_SCORE) {
+            this.UI_TXT_PASS_SCORE.text = "过关分数:" + this._passScore;
         }
     }
 
