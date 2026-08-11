@@ -136,9 +136,8 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
             if (lines && lines.length > 0) {
                 this._compMap.showOtherPlayerRemoveAnimation(p1, p2, lines);
             }
-            // 在地图上隐藏这两个方块
-            this._compMap.hideCube(p1.row, p1.col);
-            this._compMap.hideCube(p2.row, p2.col);
+            // 隐藏这两个方块并执行数据移动与移动动画
+            this._compMap.removeTilesWithShift(p1, p2);
         }
     }
 

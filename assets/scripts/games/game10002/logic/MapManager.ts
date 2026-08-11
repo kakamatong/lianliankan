@@ -5,7 +5,7 @@
  */
 
 import { Logger } from "@frameworks/utils/Utils";
-import { Point, TileUtils } from "./TileMapData";
+import { Point, TileUtils, shiftMap } from "./TileMapData";
 
 /**
  * @class MapManager
@@ -125,6 +125,17 @@ export class MapManager {
 
         Logger.log(`[MapManager] 消除方块: (${p1.row},${p1.col}) 和 (${p2.row},${p2.col})`);
         return true;
+    }
+
+    /**
+     * @method shiftBlocks
+     * @description 消除后将剩余方块向指定方向移动（压缩靠边），与服务器逻辑保持一致
+     * @param {number} dir - 移动方向（SHIFT_DIR 枚举值，<= RANDOM 表示关闭）
+     * @param {number} edge - 最边边位置（默认 2）
+     * @returns {void}
+     */
+    public shiftBlocks(dir: number, edge: number = 2): void {
+        shiftMap(this._map, dir, edge);
     }
 
     /**

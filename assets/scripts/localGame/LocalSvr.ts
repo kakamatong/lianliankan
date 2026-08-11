@@ -29,6 +29,7 @@ import { MAIN_GAME_ID, RICH_TYPE } from "@datacenter/InterfaceConfig";
 import { DataCenter } from "@datacenter/Datacenter";
 import { generateRandomMap, generateFromDesign } from "./mapGenerator";
 import { MAP_LEVEL_CONFIG, CHALLENGE_LEVEL_TYPE, CHALLENGE_END_TYPE } from "@datacenter/ChallengeData";
+import { shiftMap, SHIFT_DIR } from "../games/game10002/logic/TileMapData";
 
 /**
  * @enum LOCAL_SVR_MODE
@@ -92,6 +93,10 @@ export class LocalSvr {
     private _mode: LOCAL_SVR_MODE = LOCAL_SVR_MODE.STANDALONE;
     /** 闯关模式下的关卡配置 */
     private _challengeConfig: MAP_LEVEL_CONFIG | null = null;
+    /** 消除后方块移动方向（SHIFT_DIR 枚举值，0=关闭，每局从地图配置读取） */
+    private _shiftDir: number = SHIFT_DIR.OFF;
+    /** 消除后方块移动的最边边位置（默认 2，每局从地图配置读取） */
+    private _shiftEdge: number = 2;
 
     /**
      * 判断当前是否为闯关模式
@@ -254,7 +259,11 @@ export class LocalSvr {
             });
         }
 
-        // 检查地图是否还有可消除对，没有则自动打乱
+        // 消除后将剩余方块向指定方向移动（与客户端逻辑一致，客户端消除后自行移动，不额外通知）
+        // 注意：连线 lines 已在移动前的地图上计算完成，移动不影响连线展示
+        shiftMap(this._map, this._shiftDir, this._shiftEdge);
+
+        // 检查地图是否还有可消除对（在移动后的地图上判断），没有则自动打乱，打乱后不再移动
         if (remaining > 0 && !this._hasValidPair()) {
             const didShuffle = this._ensureSolvable();
             if (didShuffle) {
@@ -328,12 +337,19 @@ export class LocalSvr {
         this.dispatchRoomInfo();
         this.dispatchEvent(SprotoGameStart.Name, {});
         this.dispatchEvent(SprotoStepId.Name, { step: 2 });
-        this.dispatchEvent(SprotoLogicInfo.Name, { playerCnt: 1, playingStepTime: 0, ext: "" });
 
         // 下发自己的用户信息
         this.dispatchSelfPlayerInfo();
 
+        // 生成地图并下发 mapData（内部会设置 shiftDir/shiftEdge）
         this.randomMap();
+
+        // 下发游戏逻辑信息（含方块移动配置，需在 randomMap 之后取到配置）
+        this.dispatchEvent(SprotoLogicInfo.Name, {
+            playerCnt: 1,
+            playingStepTime: 0,
+            ext: JSON.stringify({ shiftDir: this._shiftDir, shiftEdge: this._shiftEdge }),
+        });
     }
 
     /**
@@ -398,10 +414,16 @@ export class LocalSvr {
             const cfg = this._challengeConfig;
             totalTime = cfg.totalTime || 0;
             map = generateFromDesign(cfg.map, cfg.map.length, cfg.map[0].length, cfg.iconTypes);
+            // 读取关卡配置的方块移动配置（缺省关闭）
+            this._shiftDir = cfg.shiftDir ?? SHIFT_DIR.OFF;
+            this._shiftEdge = cfg.shiftEdge ?? 2;
         } else {
             const result = generateRandomMap();
             map = result.map;
             totalTime = result.design.totalTime || 0;
+            // 读取设计模板的方块移动配置（缺省关闭）
+            this._shiftDir = result.design.shiftDir ?? SHIFT_DIR.OFF;
+            this._shiftEdge = result.design.shiftEdge ?? 2;
         }
 
         // 保存当前地图的总时间
@@ -769,16 +791,21 @@ export class LocalSvr {
     }
 
     /**
-     * 收集剩余方块值 → 洗牌 → 按原有效位置重新填入
+     * 收集剩余方块值 → 洗牌 → 按原位置重新填入
+     * 全图扫描收集：方块移动后可能已不在初始填充位（_validPositions），
+     * 洗牌在移动后的地图上进行，方块在原位置就地随机排列
      */
     private _shuffleRemainingTiles(): void {
-        // 收集所有剩余非障碍方块的值
+        // 收集所有剩余方块的值及所在位置
         const tiles: number[] = [];
-        for (let i = 0; i < this._validPositions.length; i++) {
-            const { row, col } = this._validPositions[i];
-            const val = this._map[row][col];
-            if (val > 0 && val < LocalSvr.DECORATION_VALUE) {
-                tiles.push(val);
+        const positions: { row: number; col: number }[] = [];
+        for (let row = 0; row < this._rows; row++) {
+            for (let col = 0; col < this._cols; col++) {
+                const val = this._map[row][col];
+                if (val > 0 && val < LocalSvr.DECORATION_VALUE) {
+                    tiles.push(val);
+                    positions.push({ row, col });
+                }
             }
         }
 
@@ -788,13 +815,10 @@ export class LocalSvr {
             [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
         }
 
-        // 重新填入有效位置（跳过已消除的）
-        let idx = 0;
-        for (let i = 0; i < this._validPositions.length; i++) {
-            const { row, col } = this._validPositions[i];
-            if (this._map[row][col] > 0 && this._map[row][col] < LocalSvr.DECORATION_VALUE) {
-                this._map[row][col] = idx < tiles.length ? tiles[idx++] : 0;
-            }
+        // 重新填入原来的方块位置
+        for (let i = 0; i < positions.length; i++) {
+            const { row, col } = positions[i];
+            this._map[row][col] = tiles[i];
         }
     }
 

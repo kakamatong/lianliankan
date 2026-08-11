@@ -504,6 +504,22 @@ export class CompGameMain extends FGUICompGameMain {
         if (data.playingStepTime !== undefined) {
             GameData.instance.playingStepTime = data.playingStepTime;
         }
+
+        // 解析方块移动配置（ext = {"shiftDir": 4, "shiftEdge": 2}），未收到时保持默认关闭
+        if (data.ext) {
+            try {
+                const ext = JSON.parse(data.ext);
+                if (typeof ext.shiftDir === "number") {
+                    GameData.instance.shiftDir = ext.shiftDir;
+                }
+                if (typeof ext.shiftEdge === "number") {
+                    GameData.instance.shiftEdge = ext.shiftEdge;
+                }
+                Logger.log(`方块移动配置: shiftDir=${GameData.instance.shiftDir}, shiftEdge=${GameData.instance.shiftEdge}`);
+            } catch (e) {
+                Logger.error("解析 logicInfo.ext 失败:", e);
+            }
+        }
     }
 
     /**
@@ -586,13 +602,14 @@ export class CompGameMain extends FGUICompGameMain {
             }
 
             const playerMap = GameData.instance.getPlayerMapData(data.seat);
-            const isAlreadyRemoved =
-                playerMap?.mapData?.[data.p1.row]?.[data.p1.col] === 0 && playerMap?.mapData?.[data.p2.row]?.[data.p2.col] === 0;
+            // const isAlreadyRemoved =
+            //     playerMap?.mapData?.[data.p1.row]?.[data.p1.col] === 0 && playerMap?.mapData?.[data.p2.row]?.[data.p2.col] === 0;
+            const compMap = this.getCompMap();
+            const isAlreadyRemoved = compMap?.checkClientRemoved(data.p1, data.p2);
 
             if (isAlreadyRemoved) {
                 GameData.instance.updatePlayerMapTilesRemoved(data.seat, data.p1.row, data.p1.col, data.p2.row, data.p2.col);
             } else {
-                const compMap = this.getCompMap();
                 if (compMap) {
                     compMap.removeTilesWithAnimation(data.p1, data.p2, data.lines);
                 }

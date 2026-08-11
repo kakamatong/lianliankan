@@ -86,6 +86,10 @@ export interface MAP_LEVEL_CONFIG {
     targetScore?: number;
     /** 体力消耗 */
     energy?: number;
+    /** 消除后方块移动方向（0=关闭 2=向上 3=向下 4=向左 5=向右，可选，缺省关闭） */
+    shiftDir?: number;
+    /** 消除后方块移动的最边边位置（可选，缺省 2） */
+    shiftEdge?: number;
 }
 
 /**

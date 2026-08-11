@@ -12,6 +12,10 @@
  *   0 = 边界空白
  *   1 = 可填充方块位置
  *   9 = 障碍物
+ *
+ * shiftDir（消除后方块移动方向）：
+ *   0=关闭 1=随机一个方向 2=向上 3=向下 4=向左 5=向右（当前均占位默认关闭）
+ * shiftEdge（最边边位置）：方块最多贴到的第 edge 行/列，外圈留空供连线走位，默认 2
  */
 export const MAP_DESIGN_CONFIG = [
     {
@@ -39,6 +43,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // 上下分屏布局（中间两行空白隔断）
@@ -65,6 +71,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // 左右分屏 + 中间竖列空白隔断
@@ -91,6 +99,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // 居中 6x6 区域
@@ -117,6 +127,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // 十字空白 + 四角 3x3 区块
@@ -143,6 +155,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // H 型布局（上下连通，左右分块）
@@ -169,6 +183,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // 回字形（外圈 + 内圈，中间带状空白）
@@ -195,6 +211,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // 田字形（四宫格，中间十字空白）
@@ -221,6 +239,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // 三明治布局（三层横向分隔）
@@ -247,6 +267,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 15,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     {
         // 栅栏布局（竖列条形分隔）
@@ -273,6 +295,8 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
+        shiftDir: 0,
+        shiftEdge: 2,
     },
     // {
     //     // 栅栏布局（竖列条形分隔）

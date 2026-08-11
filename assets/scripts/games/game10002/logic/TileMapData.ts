@@ -152,3 +152,226 @@ export const DIRECTION_DELTAS = [
     { row: 1, col: 0 },  // 下
     { row: 0, col: -1 }, // 左
 ];
+
+/**
+ * @enum SHIFT_DIR
+ * @description 消除后方块移动方向枚举（与服务器 mapConfig.SHIFT_DIR 保持一致）
+ */
+export enum SHIFT_DIR {
+    /** 关闭 */
+    OFF = 0,
+    /** 随机一个方向（当前未使用，视为关闭） */
+    RANDOM = 1,
+    /** 向上 */
+    UP = 2,
+    /** 向下 */
+    DOWN = 3,
+    /** 向左 */
+    LEFT = 4,
+    /** 向右 */
+    RIGHT = 5,
+}
+
+/**
+ * @method shiftMap
+ * @description 消除后将剩余方块向指定方向移动（压缩靠边），与服务器逻辑保持一致
+ * @param {number[][]} map - 地图二维数组（原地修改，0 基索引）
+ * @param {number} dir - 移动方向（SHIFT_DIR 枚举值）
+ * @param {number} edge - 最边边位置（默认 2，如 2=左移靠第 2 列/上移靠第 2 行）
+ * @returns {void}
+ *
+ * 规则：
+ * 1. 移动范围限制在 edge-1..rows-edge 行、edge-1..cols-edge 列（0 基索引，对应服务器 1 基 edge..rows-edge+1），
+ *    外圈留空供连线走位，方块最多贴到第 edge 行/列（0 基第 edge-1 行/列）
+ * 2. 装饰物(>=100)固定不动，方块不能穿过装饰物（同一行/列内装饰物两侧各自压缩）
+ */
+export function shiftMap(map: number[][], dir: number, edge: number = 2): void {
+    // 关闭或随机方向不移动
+    if (!dir || dir <= SHIFT_DIR.RANDOM) {
+        return;
+    }
+
+    if (!map || map.length === 0 || !map[0] || map[0].length === 0) {
+        return;
+    }
+
+    const rows = map.length;
+    const cols = map[0].length;
+
+    if (edge < 1) {
+        edge = 1;
+    }
+
+    // 边缘过大时没有可移动区域，直接返回（edge..rows-edge+1 或 edge..cols-edge+1 为空）
+    if (edge * 2 > rows + 1 || edge * 2 > cols + 1) {
+        return;
+    }
+
+    if (dir === SHIFT_DIR.LEFT) {
+        // 向左靠：每行方块从第 edge 列起向左压缩，中间被消除的空位由右侧方块补上
+        for (let row = edge - 1; row <= rows - edge; row++) {
+            let w = edge - 1;
+            for (let col = edge - 1; col <= cols - edge; col++) {
+                const value = map[row][col];
+                if (TileUtils.isBlock(value)) {
+                    if (col !== w) {
+                        map[row][w] = value;
+                        map[row][col] = 0;
+                    }
+                    w++;
+                } else if (TileUtils.isDecoration(value)) {
+                    // 装饰物固定不动，后续方块不能越过它，压缩在装饰物右侧重新开始
+                    w = col + 1;
+                }
+            }
+        }
+    } else if (dir === SHIFT_DIR.RIGHT) {
+        // 向右靠：每行方块从倒数第 edge 列起向右压缩
+        for (let row = edge - 1; row <= rows - edge; row++) {
+            let w = cols - edge;
+            for (let col = cols - edge; col >= edge - 1; col--) {
+                const value = map[row][col];
+                if (TileUtils.isBlock(value)) {
+                    if (col !== w) {
+                        map[row][w] = value;
+                        map[row][col] = 0;
+                    }
+                    w--;
+                } else if (TileUtils.isDecoration(value)) {
+                    w = col - 1;
+                }
+            }
+        }
+    } else if (dir === SHIFT_DIR.UP) {
+        // 向上靠：每列方块从第 edge 行起向上压缩
+        for (let col = edge - 1; col <= cols - edge; col++) {
+            let w = edge - 1;
+            for (let row = edge - 1; row <= rows - edge; row++) {
+                const value = map[row][col];
+                if (TileUtils.isBlock(value)) {
+                    if (row !== w) {
+                        map[w][col] = value;
+                        map[row][col] = 0;
+                    }
+                    w++;
+                } else if (TileUtils.isDecoration(value)) {
+                    w = row + 1;
+                }
+            }
+        }
+    } else if (dir === SHIFT_DIR.DOWN) {
+        // 向下靠：每列方块从倒数第 edge 行起向下压缩
+        for (let col = edge - 1; col <= cols - edge; col++) {
+            let w = rows - edge;
+            for (let row = rows - edge; row >= edge - 1; row--) {
+                const value = map[row][col];
+                if (TileUtils.isBlock(value)) {
+                    if (row !== w) {
+                        map[w][col] = value;
+                        map[row][col] = 0;
+                    }
+                    w--;
+                } else if (TileUtils.isDecoration(value)) {
+                    w = row - 1;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * @interface ShiftMoveInfo
+ * @description 移动任务信息
+ * @property {Point} from - 起始坐标
+ * @property {Point[]} path - 移动路径（逐格坐标，不含起点，含终点）
+ */
+export interface ShiftMoveInfo {
+    from: Point;
+    path: Point[];
+}
+
+/**
+ * @method computeShiftMoves
+ * @description 对比移动前后的地图，计算每个方块需要执行的移动路径（逐格路径，供客户端播放移动动画使用）
+ * @param {number[][]} oldMap - 移动前的地图数据
+ * @param {number[][]} newMap - 移动后的地图数据
+ * @param {number} dir - 移动方向（SHIFT_DIR 枚举值，<= RANDOM 表示关闭）
+ * @returns {ShiftMoveInfo[]} 移动任务数组，path 为逐格路径（如 from col5 -> col2 的 path 为 [4, 3, 2]，对应 A-B, B-C, C-D 多个动画）
+ */
+export function computeShiftMoves(oldMap: number[][], newMap: number[][], dir: number): ShiftMoveInfo[] {
+    const moves: ShiftMoveInfo[] = [];
+    if (!dir || dir <= SHIFT_DIR.RANDOM) {
+        return moves;
+    }
+
+    if (!oldMap || !newMap || oldMap.length === 0 || newMap.length === 0) {
+        return moves;
+    }
+
+    const rows = oldMap.length;
+    const cols = oldMap[0] ? oldMap[0].length : 0;
+
+    if (dir === SHIFT_DIR.LEFT || dir === SHIFT_DIR.RIGHT) {
+        // 水平移动：逐行对比，方块保持相对顺序，按序配对
+        for (let row = 0; row < rows; row++) {
+            const oldCols: number[] = [];
+            const newCols: number[] = [];
+            for (let col = 0; col < cols; col++) {
+                if (TileUtils.isBlock(oldMap[row][col])) {
+                    oldCols.push(col);
+                }
+                if (TileUtils.isBlock(newMap[row][col])) {
+                    newCols.push(col);
+                }
+            }
+            if (oldCols.length !== newCols.length) {
+                continue;
+            }
+            for (let i = 0; i < oldCols.length; i++) {
+                const fromCol = oldCols[i];
+                const toCol = newCols[i];
+                if (fromCol === toCol) {
+                    continue;
+                }
+                const path: Point[] = [];
+                const step = dir === SHIFT_DIR.LEFT ? -1 : 1;
+                for (let col = fromCol + step; col !== toCol + step; col += step) {
+                    path.push({ row, col });
+                }
+                moves.push({ from: { row, col: fromCol }, path });
+            }
+        }
+    } else if (dir === SHIFT_DIR.UP || dir === SHIFT_DIR.DOWN) {
+        // 垂直移动：逐列对比，方块保持相对顺序，按序配对
+        for (let col = 0; col < cols; col++) {
+            const oldRows: number[] = [];
+            const newRows: number[] = [];
+            for (let row = 0; row < rows; row++) {
+                if (TileUtils.isBlock(oldMap[row][col])) {
+                    oldRows.push(row);
+                }
+                if (TileUtils.isBlock(newMap[row][col])) {
+                    newRows.push(row);
+                }
+            }
+            if (oldRows.length !== newRows.length) {
+                continue;
+            }
+            for (let i = 0; i < oldRows.length; i++) {
+                const fromRow = oldRows[i];
+                const toRow = newRows[i];
+                if (fromRow === toRow) {
+                    continue;
+                }
+                const path: Point[] = [];
+                const step = dir === SHIFT_DIR.UP ? -1 : 1;
+                for (let row = fromRow + step; row !== toRow + step; row += step) {
+                    path.push({ row, col });
+                }
+                moves.push({ from: { row: fromRow, col }, path });
+            }
+        }
+    }
+
+    return moves;
+}

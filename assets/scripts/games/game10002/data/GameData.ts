@@ -6,6 +6,7 @@
 
 import { DEFAULT_HEADURL } from "@datacenter/InterfaceConfig";
 import { GAME_PLAYER_INFO, ENUM_GAME_STEP, GAME_DATA } from "./InterfaceGameConfig";
+import { shiftMap, SHIFT_DIR } from "../logic/TileMapData";
 
 /**
  * @interface PLAYER_MAP_DATA
@@ -43,6 +44,10 @@ export class GameData {
     /** 对局阶段时间（秒） */
     private _playingStepTime: number = 0;
     private _itemEnabled: boolean = false; // 道具是否可用
+    /** 消除后方块移动方向（SHIFT_DIR 枚举值，0=关闭，由服务器 logicInfo.ext 下发） */
+    private _shiftDir: number = SHIFT_DIR.OFF;
+    /** 消除后方块移动的最边边位置（默认 2，由服务器 logicInfo.ext 下发） */
+    private _shiftEdge: number = 2;
 
     /**
      * @description 是否是本地游戏
@@ -90,6 +95,8 @@ export class GameData {
         this._isLocalGame = false;
         this._isChallengeMode = false;
         this._itemEnabled = false;
+        this._shiftDir = SHIFT_DIR.OFF;
+        this._shiftEdge = 2;
     }
 
     get gameStep(): ENUM_GAME_STEP {
@@ -314,6 +321,8 @@ export class GameData {
             if (row2 >= 0 && row2 < playerMap.mapData.length && col2 >= 0 && col2 < playerMap.mapData[0].length) {
                 playerMap.mapData[row2][col2] = 0;
             }
+            // 消除后将剩余方块向指定方向移动（与服务器保持一致，服务器每次消除后执行相同移动）
+            shiftMap(playerMap.mapData, this._shiftDir, this._shiftEdge);
         }
     }
 
@@ -362,5 +371,37 @@ export class GameData {
      */
     get itemEnabled(): boolean {
         return this._itemEnabled;
+    }
+
+    /**
+     * @description 设置消除后方块移动方向
+     * @param {number} dir - SHIFT_DIR 枚举值（0=关闭）
+     */
+    set shiftDir(dir: number) {
+        this._shiftDir = dir;
+    }
+
+    /**
+     * @description 获取消除后方块移动方向
+     * @returns {number} SHIFT_DIR 枚举值
+     */
+    get shiftDir(): number {
+        return this._shiftDir;
+    }
+
+    /**
+     * @description 设置消除后方块移动的最边边位置
+     * @param {number} edge - 最边边位置（默认 2）
+     */
+    set shiftEdge(edge: number) {
+        this._shiftEdge = edge;
+    }
+
+    /**
+     * @description 获取消除后方块移动的最边边位置
+     * @returns {number} 最边边位置
+     */
+    get shiftEdge(): number {
+        return this._shiftEdge;
     }
 }
