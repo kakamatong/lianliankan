@@ -177,13 +177,13 @@ export enum SHIFT_DIR {
  * @description 消除后将剩余方块向指定方向移动（压缩靠边），与服务器逻辑保持一致
  * @param {number[][]} map - 地图二维数组（原地修改，0 基索引）
  * @param {number} dir - 移动方向（SHIFT_DIR 枚举值）
- * @param {number} edge - 最边边位置（默认 2，如 2=左移靠第 2 列/上移靠第 2 行）
+ * @param {number} edge - 最边边位置（默认 2，如 2=上移靠第 2 行/左移靠第 2 列）
  * @returns {void}
  *
  * 规则：
- * 1. 移动范围限制在 edge-1..rows-edge 行、edge-1..cols-edge 列（0 基索引，对应服务器 1 基 edge..rows-edge+1），
- *    外圈留空供连线走位，方块最多贴到第 edge 行/列（0 基第 edge-1 行/列）
- * 2. 装饰物(>=100)固定不动，方块不能穿过装饰物（同一行/列内装饰物两侧各自压缩）
+ * 1. 采用分段提取-重放：全行/全列扫描，所有方块（含边缘行/列内的方块）都参与压缩，
+ *    方块最多贴到第 edge 行/列（0 基第 edge-1 行/列），外圈（0..edge-2）留空供连线走位
+ * 2. 装饰物(>=100)固定不动，方块不能穿过装饰物：按装饰物分段，每段独立提取并独立压缩
  */
 export function shiftMap(map: number[][], dir: number, edge: number = 2): void {
     // 关闭或随机方向不移动
@@ -207,72 +207,95 @@ export function shiftMap(map: number[][], dir: number, edge: number = 2): void {
         return;
     }
 
-    if (dir === SHIFT_DIR.LEFT) {
-        // 向左靠：每行方块从第 edge 列起向左压缩，中间被消除的空位由右侧方块补上
-        for (let row = edge - 1; row <= rows - edge; row++) {
-            let w = edge - 1;
-            for (let col = edge - 1; col <= cols - edge; col++) {
+    if (dir === SHIFT_DIR.LEFT || dir === SHIFT_DIR.RIGHT) {
+        // 水平移动：逐行处理（全行扫描，保证边缘列内方块也参与压缩）
+        for (let row = 0; row < rows; row++) {
+            // 1. 按装饰物分段提取该行方块（保持相对顺序），清空该行（装饰物保留原位）
+            const segments: Array<{ w: number; blocks: number[] }> = [];
+            let curBlocks: number[] = [];
+            let w = dir === SHIFT_DIR.LEFT ? edge - 1 : cols - edge;
+            for (let col = 0; col < cols; col++) {
                 const value = map[row][col];
                 if (TileUtils.isBlock(value)) {
-                    if (col !== w) {
-                        map[row][w] = value;
-                        map[row][col] = 0;
-                    }
-                    w++;
+                    curBlocks.push(value);
+                    map[row][col] = 0;
                 } else if (TileUtils.isDecoration(value)) {
-                    // 装饰物固定不动，后续方块不能越过它，压缩在装饰物右侧重新开始
-                    w = col + 1;
+                    // 装饰物固定不动，作为分段屏障：当前段结束，下一段从装饰物后重新开始
+                    segments.push({ w, blocks: curBlocks });
+                    curBlocks = [];
+                    w = dir === SHIFT_DIR.LEFT ? col + 1 : col - 1;
+                }
+            }
+            segments.push({ w, blocks: curBlocks });
+
+            // 2. 每段独立重放：从段起点 w 开始向移动方向连续放置
+            for (const seg of segments) {
+                if (seg.blocks.length === 0) {
+                    continue;
+                }
+                if (dir === SHIFT_DIR.LEFT) {
+                    let idx = 0;
+                    for (let col = seg.w; col < cols && idx < seg.blocks.length; col++) {
+                        if (TileUtils.isDecoration(map[row][col])) {
+                            break;
+                        }
+                        map[row][col] = seg.blocks[idx++];
+                    }
+                } else {
+                    // 向右靠：最右的方块放到最右位置（blocks 末尾先放）
+                    let idx = seg.blocks.length - 1;
+                    for (let col = seg.w; col >= 0 && idx >= 0; col--) {
+                        if (TileUtils.isDecoration(map[row][col])) {
+                            break;
+                        }
+                        map[row][col] = seg.blocks[idx--];
+                    }
                 }
             }
         }
-    } else if (dir === SHIFT_DIR.RIGHT) {
-        // 向右靠：每行方块从倒数第 edge 列起向右压缩
-        for (let row = edge - 1; row <= rows - edge; row++) {
-            let w = cols - edge;
-            for (let col = cols - edge; col >= edge - 1; col--) {
+    } else {
+        // 垂直移动：逐列处理（全列扫描，保证边缘行内方块也参与压缩）
+        for (let col = 0; col < cols; col++) {
+            // 1. 按装饰物分段提取该列方块（保持相对顺序），清空该列（装饰物保留原位）
+            const segments: Array<{ w: number; blocks: number[] }> = [];
+            let curBlocks: number[] = [];
+            let w = dir === SHIFT_DIR.UP ? edge - 1 : rows - edge;
+            for (let row = 0; row < rows; row++) {
                 const value = map[row][col];
                 if (TileUtils.isBlock(value)) {
-                    if (col !== w) {
-                        map[row][w] = value;
-                        map[row][col] = 0;
-                    }
-                    w--;
+                    curBlocks.push(value);
+                    map[row][col] = 0;
                 } else if (TileUtils.isDecoration(value)) {
-                    w = col - 1;
+                    // 装饰物固定不动，作为分段屏障：当前段结束，下一段从装饰物后重新开始
+                    segments.push({ w, blocks: curBlocks });
+                    curBlocks = [];
+                    w = dir === SHIFT_DIR.UP ? row + 1 : row - 1;
                 }
             }
-        }
-    } else if (dir === SHIFT_DIR.UP) {
-        // 向上靠：每列方块从第 edge 行起向上压缩
-        for (let col = edge - 1; col <= cols - edge; col++) {
-            let w = edge - 1;
-            for (let row = edge - 1; row <= rows - edge; row++) {
-                const value = map[row][col];
-                if (TileUtils.isBlock(value)) {
-                    if (row !== w) {
-                        map[w][col] = value;
-                        map[row][col] = 0;
-                    }
-                    w++;
-                } else if (TileUtils.isDecoration(value)) {
-                    w = row + 1;
+            segments.push({ w, blocks: curBlocks });
+
+            // 2. 每段独立重放：从段起点 w 开始向移动方向连续放置
+            for (const seg of segments) {
+                if (seg.blocks.length === 0) {
+                    continue;
                 }
-            }
-        }
-    } else if (dir === SHIFT_DIR.DOWN) {
-        // 向下靠：每列方块从倒数第 edge 行起向下压缩
-        for (let col = edge - 1; col <= cols - edge; col++) {
-            let w = rows - edge;
-            for (let row = rows - edge; row >= edge - 1; row--) {
-                const value = map[row][col];
-                if (TileUtils.isBlock(value)) {
-                    if (row !== w) {
-                        map[w][col] = value;
-                        map[row][col] = 0;
+                if (dir === SHIFT_DIR.UP) {
+                    let idx = 0;
+                    for (let row = seg.w; row < rows && idx < seg.blocks.length; row++) {
+                        if (TileUtils.isDecoration(map[row][col])) {
+                            break;
+                        }
+                        map[row][col] = seg.blocks[idx++];
                     }
-                    w--;
-                } else if (TileUtils.isDecoration(value)) {
-                    w = row - 1;
+                } else {
+                    // 向下靠：最下的方块放到最下位置（blocks 末尾先放）
+                    let idx = seg.blocks.length - 1;
+                    for (let row = seg.w; row >= 0 && idx >= 0; row--) {
+                        if (TileUtils.isDecoration(map[row][col])) {
+                            break;
+                        }
+                        map[row][col] = seg.blocks[idx--];
+                    }
                 }
             }
         }

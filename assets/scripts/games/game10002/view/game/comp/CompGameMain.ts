@@ -60,7 +60,6 @@ import {
     SprotoClientReady,
     SprotoGameReady,
     SprotoLeaveRoom,
-    SprotoUseItem,
     SprotoVoteDisbandRoom,
     SprotoOwnerStartGame,
 } from "../../../../../../types/protocol/game10002/c2s";
@@ -505,15 +504,17 @@ export class CompGameMain extends FGUICompGameMain {
             GameData.instance.playingStepTime = data.playingStepTime;
         }
 
-        // 解析方块移动配置（ext = {"shiftDir": 4, "shiftEdge": 2}），未收到时保持默认关闭
+        // 解析方块移动配置（ext = {"shiftDir": 2, "edge": 3}），兼容服务端字段名差异：shiftDir/dir、shiftEdge/edge/shift_edge
         if (data.ext) {
             try {
                 const ext = JSON.parse(data.ext);
-                if (typeof ext.shiftDir === "number") {
-                    GameData.instance.shiftDir = ext.shiftDir;
+                const dir = ext.shiftDir ?? ext.dir ?? ext.shift_dir;
+                const edge = ext.shiftEdge ?? ext.edge ?? ext.shift_edge;
+                if (typeof dir === "number") {
+                    GameData.instance.shiftDir = dir;
                 }
-                if (typeof ext.shiftEdge === "number") {
-                    GameData.instance.shiftEdge = ext.shiftEdge;
+                if (typeof edge === "number") {
+                    GameData.instance.shiftEdge = edge;
                 }
                 Logger.log(`方块移动配置: shiftDir=${GameData.instance.shiftDir}, shiftEdge=${GameData.instance.shiftEdge}`);
             } catch (e) {
