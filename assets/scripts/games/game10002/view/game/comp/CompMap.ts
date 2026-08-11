@@ -27,11 +27,11 @@ export class CompMap extends FGUICompMap {
     private _cubeMap: CompCube[][] = [];
 
     /**
-     * @property {Array<Array<{x: number, y: number}>>} _cellPositions
-     * @description 每个格子（行列）对应的初始像素坐标表，移动动画的目标坐标据此计算（格子坐标固定，不受方块移动影响）
+     * @property {Array<Array<{x: number, y: number, cx: number, cy: number}>>} _cellPositions
+     * @description 每个格子（行列）对应的初始像素坐标表，x/y 为格子左上角（移动动画目标坐标），cx/cy 为格子中心（连线绘制坐标），不随方块移动改变
      * @private
      */
-    private _cellPositions: Array<Array<{ x: number; y: number }>> = [];
+    private _cellPositions: Array<Array<{ x: number; y: number; cx: number; cy: number }>> = [];
 
     /**
      * @property {number} _rows
@@ -188,8 +188,13 @@ export class CompMap extends FGUICompMap {
                     // 存储方块引用
                     this._cubeMap[row][col] = child;
 
-                    // 记录格子初始像素坐标（布局坐标，不随方块移动改变）
-                    this._cellPositions[row][col] = { x: child.x, y: child.y };
+                    // 记录格子初始像素坐标（布局坐标，不随方块移动改变；x/y 为左上角，cx/cy 为格子中心）
+                    this._cellPositions[row][col] = {
+                        x: child.x,
+                        y: child.y,
+                        cx: child.x + child.width / 2,
+                        cy: child.y + child.height / 2,
+                    };
 
                     // 记录方块初始坐标，方便一局结束后重置
                     child.setInitPosition(row, col);
@@ -207,7 +212,7 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method _getCellPos
-     * @description 获取指定格子的初始像素坐标
+     * @description 获取指定格子的初始像素坐标（左上角）
      * @param {number} row - 行索引
      * @param {number} col - 列索引
      * @returns {{x: number, y: number}} 格子像素坐标
@@ -216,6 +221,22 @@ export class CompMap extends FGUICompMap {
     private _getCellPos(row: number, col: number): { x: number; y: number } {
         if (this._cellPositions[row] && this._cellPositions[row][col]) {
             return this._cellPositions[row][col];
+        }
+        return { x: 0, y: 0 };
+    }
+
+    /**
+     * @method _getCellCenter
+     * @description 获取指定格子的中心像素坐标（连线绘制用，不依赖方块对象，方块移动后依然准确）
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @returns {{x: number, y: number}} 格子中心像素坐标
+     * @private
+     */
+    private _getCellCenter(row: number, col: number): { x: number; y: number } {
+        if (this._cellPositions[row] && this._cellPositions[row][col]) {
+            const pos = this._cellPositions[row][col];
+            return { x: pos.cx, y: pos.cy };
         }
         return { x: 0, y: 0 };
     }
@@ -387,7 +408,7 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method _showPathLines
-     * @description 显示连接路径线条
+     * @description 显示连接路径线条（使用静态格位中心坐标绘制，方块移动后仍准确，不依赖方块对象）
      * @param {LineSegment[]} lines - 路径线段数组
      * @private
      */
@@ -398,21 +419,13 @@ export class CompMap extends FGUICompMap {
         const lineThickness = 15; // 线条粗细固定
 
         for (const line of lines) {
-            // 获取起点和终点对应的方块
-            const startCube = this.getCube(line.start.row, line.start.col);
-            const destCube = this.getCube(line.dest.row, line.dest.col);
-
-            if (!startCube || !destCube) continue;
-
-            // 获取方块的实际坐标和尺寸
-            const startX = startCube.x + startCube.width / 2;
-            const startY = startCube.y + startCube.height / 2;
-            const endX = destCube.x + destCube.width / 2;
-            const endY = destCube.y + destCube.height / 2;
+            // 获取起点和终点对应的格子中心坐标（格位固定，方块移动不影响）
+            const startPos = this._getCellCenter(line.start.row, line.start.col);
+            const destPos = this._getCellCenter(line.dest.row, line.dest.col);
 
             // 计算线段差值
-            const deltaX = endX - startX;
-            const deltaY = endY - startY;
+            const deltaX = destPos.x - startPos.x;
+            const deltaY = destPos.y - startPos.y;
 
             // 创建线条节点
             const lineNode = fgui.UIPackage.createObject("game10002", "CompLine") as fgui.GComponent;
@@ -422,14 +435,14 @@ export class CompMap extends FGUICompMap {
                 // 水平线：通过改变 width 实现
                 lineNode.width = Math.abs(deltaX);
                 lineNode.height = lineThickness;
-                lineNode.x = Math.min(startX, endX);
-                lineNode.y = startY - lineThickness / 2; // 居中对齐
+                lineNode.x = Math.min(startPos.x, destPos.x);
+                lineNode.y = startPos.y - lineThickness / 2; // 居中对齐
             } else {
                 // 垂直线：通过改变 height 实现
                 lineNode.width = lineThickness;
                 lineNode.height = Math.abs(deltaY);
-                lineNode.x = startX - lineThickness / 2; // 居中对齐
-                lineNode.y = Math.min(startY, endY);
+                lineNode.x = startPos.x - lineThickness / 2; // 居中对齐
+                lineNode.y = Math.min(startPos.y, destPos.y);
             }
 
             // 设置较高的sortingOrder确保线条显示在方块上方

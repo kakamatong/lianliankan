@@ -29,21 +29,16 @@ const DECORATION_VALUE = 100;
  * @param iconTypes - 图标类型数量
  * @returns 生成的地图（0=空, 1~iconTypes=图标, 100+=障碍）
  */
-export function generateFromDesign(
-    designMap: number[][],
-    rows: number,
-    cols: number,
-    iconTypes: number
-): number[][] {
+export function generateFromDesign(designMap: number[][], rows: number, cols: number, iconTypes: number): number[][] {
     // 收集可填充位置
     const fillPositions: { row: number; col: number }[] = [];
 
     // 初始化地图（全 0）
-    const map: number[][] = []
+    const map: number[][] = [];
 
     const mapLength = designMap ? designMap.length : 0;
     for (let row = 0; row < mapLength; row++) {
-        map[row] = []
+        map[row] = [];
         for (let col = 0; col < designMap[row].length; col++) {
             map[row][col] = 0; // 默认空
             if (designMap[row][col] === 1) {
@@ -111,7 +106,7 @@ export function generateRandomMap(): { map: number[][]; design: (typeof MAP_DESI
     let index = Math.floor(Math.random() * MAP_DESIGN_CONFIG.length);
     Logger.log(`随机选择地图设计索引: ${index}`);
     //index = MAP_DESIGN_CONFIG.length - 1
-    const design = MAP_DESIGN_CONFIG[index];
+    const design = MAP_DESIGN_CONFIG[0];
     const map = generateFromDesign(design.map, design.defaultRows, design.defaultCols, design.iconTypes);
     return { map, design };
 }
