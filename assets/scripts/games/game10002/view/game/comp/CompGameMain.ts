@@ -811,8 +811,6 @@ export class CompGameMain extends FGUICompGameMain {
         if (this.UI_COMP_SELF_MEDAL) {
             this.UI_COMP_SELF_MEDAL.ctrl_rank.selectedIndex = 0;
         }
-        // 隐藏特殊规则提示组件，等待新一局 logicInfo 重新下发
-        this.UI_COMP_SPE_RULE_HINT.visible = false;
     }
 
     /**
