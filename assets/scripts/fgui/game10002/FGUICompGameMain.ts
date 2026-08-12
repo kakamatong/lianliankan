@@ -43,6 +43,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 	public UI_COMP_PROP:FGUICompPropPanel;
 	public UI_COMP_COMB:FGUICompComb;
 	public UI_COMP_SCORE_STAR:FGUICompScoreStar;
+	public UI_COMP_SPE_RULE_HINT:fgui.GLabel;
 	public static URL:string = "ui://2zsfe53xln74p";
 
 	public static packageName:string = "game10002";
@@ -141,6 +142,7 @@ export default class FGUICompGameMain extends fgui.GComponent {
 		this.UI_COMP_PROP = <FGUICompPropPanel>(this.getChildAt(24));
 		this.UI_COMP_COMB = <FGUICompComb>(this.getChildAt(25));
 		this.UI_COMP_SCORE_STAR = <FGUICompScoreStar>(this.getChildAt(26));
+		this.UI_COMP_SPE_RULE_HINT = <fgui.GLabel>(this.getChildAt(27));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

@@ -67,7 +67,7 @@ import { SprotoGameRoomReady } from "../../../../../../types/protocol/lobby/s2c"
 import { TALK_LIST, FORWARD_MESSAGE_TYPE } from "../../talk/TalkConfig";
 import { TalkView } from "../../talk/TalkView";
 import { CompMap } from "./CompMap";
-import { LineSegment } from "../../../logic/TileMapData";
+import { LineSegment, SHIFT_DIR } from "../../../logic/TileMapData";
 import FGUICompMedal from "@fgui/gameCommon/FGUICompMedal";
 import { Logger } from "@frameworks/utils/Utils";
 import { TipsView } from "@view/common/TipsView";
@@ -101,6 +101,10 @@ export class CompGameMain extends FGUICompGameMain {
 
         // 初始化分数星星组件（闯关计分规则显示，其他情况隐藏）
         this._setupScoreStar();
+
+        // 注册特殊规则提示点击事件，默认隐藏
+        this.UI_COMP_SPE_RULE_HINT.onClick(this.onSpeRuleHintClick, this);
+        this.UI_COMP_SPE_RULE_HINT.visible = false;
 
         // 延迟发送客户端进入完成
         this.scheduleOnce(() => {
@@ -521,6 +525,62 @@ export class CompGameMain extends FGUICompGameMain {
                 Logger.error("解析 logicInfo.ext 失败:", e);
             }
         }
+
+        // 根据特殊规则更新提示组件显示
+        this._setupSpeRuleHint();
+    }
+
+    /**
+     * @method _setupSpeRuleHint
+     * @description 根据特殊规则（shiftDir）更新特殊规则提示组件的显示：无特殊规则时隐藏，否则显示并设置标题
+     * @private
+     */
+    private _setupSpeRuleHint(): void {
+        const shiftDir = GameData.instance.shiftDir;
+        const dirText = this._getShiftDirText(shiftDir);
+        if (!dirText) {
+            this.UI_COMP_SPE_RULE_HINT.visible = false;
+            return;
+        }
+        this.UI_COMP_SPE_RULE_HINT.title = `消除后${dirText}移动`;
+        this.UI_COMP_SPE_RULE_HINT.visible = true;
+    }
+
+    /**
+     * @method _getShiftDirText
+     * @description 将移动方向枚举转为中文方向文本，无有效方向返回空字符串
+     * @param {number} shiftDir - SHIFT_DIR 枚举值
+     * @returns {string} 方向文本（向上/向下/向左/向右），无有效方向返回空
+     * @private
+     */
+    private _getShiftDirText(shiftDir: number): string {
+        switch (shiftDir) {
+            case SHIFT_DIR.UP:
+                return "向上";
+            case SHIFT_DIR.DOWN:
+                return "向下";
+            case SHIFT_DIR.LEFT:
+                return "向左";
+            case SHIFT_DIR.RIGHT:
+                return "向右";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * @method onSpeRuleHintClick
+     * @description 特殊规则提示点击事件：弹出规则说明弹窗
+     */
+    onSpeRuleHintClick(): void {
+        const dirText = this._getShiftDirText(GameData.instance.shiftDir);
+        if (!dirText) {
+            return;
+        }
+        PopMessageView.showView({
+            content: `消除后，所有方块会${dirText}移动压缩`,
+            type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+        });
     }
 
     /**
@@ -751,6 +811,8 @@ export class CompGameMain extends FGUICompGameMain {
         if (this.UI_COMP_SELF_MEDAL) {
             this.UI_COMP_SELF_MEDAL.ctrl_rank.selectedIndex = 0;
         }
+        // 隐藏特殊规则提示组件，等待新一局 logicInfo 重新下发
+        this.UI_COMP_SPE_RULE_HINT.visible = false;
     }
 
     /**
