@@ -27,7 +27,10 @@ export interface PLAYER_MAP_DATA {
  * @singleton 单例模式
  */
 export class GameData {
+    /** 所有玩家信息，key 为 userid */
     private _playerInfoMap: Map<number, GAME_PLAYER_INFO> = new Map();
+    /** 服务器座位号到 userid 的映射，座位权威来源为 playerEnter/playerLeave */
+    private _seatUseridMap: Map<number, number> = new Map();
     private _selfSeat: number = 1;
     private _maxPlayer = 2;
     private _gameStep: ENUM_GAME_STEP = ENUM_GAME_STEP.NONE;
@@ -83,6 +86,7 @@ export class GameData {
     init() {
         this.gameStep = ENUM_GAME_STEP.NONE;
         this._playerInfoMap.clear();
+        this._seatUseridMap.clear();
         this._selfSeat = 0;
         this.roomEnd = false;
         this.gameStart = false;
@@ -130,8 +134,8 @@ export class GameData {
     set playerList(list: Array<GAME_PLAYER_INFO>) {
         this._playerInfoMap.clear();
         for (const player of list) {
-            if (player && player.svrSeat) {
-                this._playerInfoMap.set(player.svrSeat, player);
+            if (player && player.userid) {
+                this._playerInfoMap.set(player.userid, player);
             }
         }
     }
@@ -149,9 +153,39 @@ export class GameData {
      * @param player 玩家信息
      */
     addPlayer(player: GAME_PLAYER_INFO): void {
-        if (player && player.svrSeat) {
-            this._playerInfoMap.set(player.svrSeat, player);
+        if (player && player.userid) {
+            this._playerInfoMap.set(player.userid, player);
         }
+    }
+
+    /**
+     * @description 设置玩家服务器座位号映射（座位权威入口，由 playerEnter 调用）
+     * @param userid 玩家用户ID
+     * @param svrSeat 服务器座位号
+     */
+    setSeatForUserid(userid: number, svrSeat: number): void {
+        // 该玩家已有旧座位时先清除
+        for (const [seat, uid] of this._seatUseridMap) {
+            if (uid === userid && seat !== svrSeat) {
+                this._seatUseridMap.delete(seat);
+                break;
+            }
+        }
+        this._seatUseridMap.set(svrSeat, userid);
+    }
+
+    /**
+     * @description 根据用户ID获取服务器座位号
+     * @param userid 玩家用户ID
+     * @returns 服务器座位号，未知返回 0
+     */
+    getSeatByUserid(userid: number): number {
+        for (const [seat, uid] of this._seatUseridMap) {
+            if (uid === userid) {
+                return seat;
+            }
+        }
+        return 0;
     }
 
     /**
@@ -159,7 +193,11 @@ export class GameData {
      * @param svrSeat 服务器座位号
      */
     removePlayerBySeat(svrSeat: number): void {
-        this._playerInfoMap.delete(svrSeat);
+        const userid = this._seatUseridMap.get(svrSeat);
+        if (userid !== undefined) {
+            this._playerInfoMap.delete(userid);
+        }
+        this._seatUseridMap.delete(svrSeat);
     }
 
     /**
@@ -168,7 +206,7 @@ export class GameData {
      * @returns 头像 URL
      */
     getHeadurl(svrSeat: number): string {
-        const player = this._playerInfoMap.get(svrSeat);
+        const player = this.getPlayerBySeat(svrSeat);
         if (!player || !player.headurl) {
             return DEFAULT_HEADURL;
         }
@@ -177,23 +215,22 @@ export class GameData {
 
     getHeadurlByUserid(userid: number): string {
         const player = this.getPlayerByUserid(userid);
-        if (!player) {
+        if (!player || !player.headurl) {
             return DEFAULT_HEADURL;
         }
-        return this.getHeadurl(player.svrSeat);
+        return player.headurl;
     }
 
     getPlayerBySeat(seat: number): GAME_PLAYER_INFO | null {
-        return this._playerInfoMap.get(seat) || null;
+        const userid = this._seatUseridMap.get(seat);
+        if (userid === undefined) {
+            return null;
+        }
+        return this._playerInfoMap.get(userid) || null;
     }
 
     getPlayerByUserid(userid: number): GAME_PLAYER_INFO | null {
-        for (const player of this._playerInfoMap.values()) {
-            if (player.userid === userid) {
-                return player;
-            }
-        }
-        return null;
+        return this._playerInfoMap.get(userid) || null;
     }
 
     getPlayerCnt(): number {

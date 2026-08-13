@@ -13,7 +13,6 @@ export interface GAME_PLAYER_INFO {
     nickname?: string;
     headurl?: string;
     sex?: number;
-    svrSeat: number;
     status?: number;
     ip?: string;
     province?: string;

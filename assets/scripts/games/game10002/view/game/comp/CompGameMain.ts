@@ -478,10 +478,11 @@ export class CompGameMain extends FGUICompGameMain {
             }
         } else {
             // 其他玩家，使用 UI_COMP_PLAYERS 列表
-            Logger.log("[聊天] 处理其他玩家消息，svrSeat:", player.svrSeat);
+            const svrSeat = GameData.instance.getSeatByUserid(player.userid);
+            Logger.log("[聊天] 处理其他玩家消息，svrSeat:", svrSeat);
             const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
             Logger.log("[聊天] compPlayers:", compPlayers ? "存在" : "不存在");
-            const otherPlayer = compPlayers?.getOtherPlayer(player.svrSeat);
+            const otherPlayer = compPlayers?.getOtherPlayer(svrSeat);
             Logger.log("[聊天] otherPlayer:", otherPlayer ? "存在" : "不存在");
             if (otherPlayer) {
                 const headComp = otherPlayer.getHeadComponent();
@@ -493,7 +494,7 @@ export class CompGameMain extends FGUICompGameMain {
                     Logger.warn("[聊天] headComponent 为空");
                 }
             } else {
-                Logger.warn("[聊天] 未找到其他玩家组件，svrSeat:", player.svrSeat);
+                Logger.warn("[聊天] 未找到其他玩家组件，svrSeat:", svrSeat);
             }
         }
     }
@@ -976,22 +977,24 @@ export class CompGameMain extends FGUICompGameMain {
                 ip: info.ip,
                 status: info.status,
                 cp: info.cp ?? 0,
-                svrSeat: i + 1,
                 userid: info.userid,
             };
 
             GameData.instance.addPlayer(player);
 
-            // 更新玩家信息
+            // 座位未知（playerEnter 之前）时跳过 UI 更新，等待 playerEnter 处理
+            const svrSeat = GameData.instance.getSeatByUserid(info.userid);
+            if (svrSeat === 0) {
+                continue;
+            }
 
-            if (player) {
-                if (info.userid === selfid) {
-                    // 自己，更新自己的头像
-                    this.showPlayerInfoBySeat(player.svrSeat);
-                } else {
-                    // 其他玩家，更新列表中的头像
-                    this.updateOtherPlayerHead(player.svrSeat, player);
-                }
+            // 更新玩家信息
+            if (info.userid === selfid) {
+                // 自己，更新自己的头像
+                this.showPlayerInfoBySeat(svrSeat);
+            } else {
+                // 其他玩家，更新列表中的头像
+                this.updateOtherPlayerHead(svrSeat, player);
             }
         }
     }
@@ -1214,30 +1217,37 @@ export class CompGameMain extends FGUICompGameMain {
         const selfid = DataCenter.instance.userid;
         const svrSeat = data.seat;
         const userid = data.userid;
+
+        // 座位权威入口：无条件记录座位映射，自己的座位同步到 GameData
+        GameData.instance.setSeatForUserid(userid, svrSeat);
+        if (selfid == userid) {
+            GameData.instance.setSelfSeat(svrSeat);
+        }
+
         const playerInfo = GameData.instance.getPlayerByUserid(userid);
-        if (playerInfo) {
-            if (selfid == userid) {
-                // 设置自己的服务器座位号
-                GameData.instance.setSelfSeat(svrSeat);
-                // 自己使用 UI_COMP_SELFPLAYER
-                this.showPlayerInfoBySeat(svrSeat);
-            } else {
-                // 其他玩家使用 UI_COMP_PLAYERS 列表
-                this.addOtherPlayer(svrSeat, playerInfo);
-            }
+        if (!playerInfo) {
+            return;
+        }
 
-            if (GameData.instance.isPrivateRoom) {
-                if (playerInfo.status == PLAYER_STATUS.ONLINE && selfid == userid) {
-                    // 房主在第一局开始前(privateNowCnt=0)不显示准备按钮
-                    const isOwner = GameData.instance.owner === selfid;
-                    if (!isOwner || GameData.instance.privateNowCnt > 0) {
-                        this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.READY;
-                    }
+        if (selfid == userid) {
+            // 自己使用 UI_COMP_SELFPLAYER
+            this.showPlayerInfoBySeat(svrSeat);
+        } else {
+            // 其他玩家使用 UI_COMP_PLAYERS 列表
+            this.addOtherPlayer(svrSeat, playerInfo);
+        }
+
+        if (GameData.instance.isPrivateRoom) {
+            if (playerInfo.status == PLAYER_STATUS.ONLINE && selfid == userid) {
+                // 房主在第一局开始前(privateNowCnt=0)不显示准备按钮
+                const isOwner = GameData.instance.owner === selfid;
+                if (!isOwner || GameData.instance.privateNowCnt > 0) {
+                    this.ctrl_btn.selectedIndex = CTRL_BTN_INDEX.READY;
                 }
-
-                this.checkShowInviteBtn();
-                this.checkShowStartGameBtn();
             }
+
+            this.checkShowInviteBtn();
+            this.checkShowStartGameBtn();
         }
     }
 
@@ -1266,10 +1276,11 @@ export class CompGameMain extends FGUICompGameMain {
         if (!player) return;
 
         player.status = data.status;
+        const svrSeat = GameData.instance.getSeatByUserid(player.userid);
 
         if (data.userid === selfid) {
             // 自己状态更新
-            this.showPlayerInfoBySeat(player.svrSeat);
+            this.showPlayerInfoBySeat(svrSeat);
             if (data.status == PLAYER_STATUS.ONLINE) {
                 // 房主在第一局开始前(privateNowCnt=0)不显示准备按钮
                 const isOwner = GameData.instance.owner === selfid;
@@ -1280,7 +1291,7 @@ export class CompGameMain extends FGUICompGameMain {
         } else {
             // 其他玩家状态更新
             const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-            const otherPlayer = compPlayers?.getOtherPlayer(player.svrSeat);
+            const otherPlayer = compPlayers?.getOtherPlayer(svrSeat);
             if (otherPlayer) {
                 const headurl = GameData.instance.getHeadurlByUserid(player.userid);
                 otherPlayer.updatePlayerInfo(player, headurl);
