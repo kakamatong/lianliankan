@@ -284,7 +284,6 @@ export class CompGameMain extends FGUICompGameMain {
                 this.UI_COMP_PRIVITE_INFO.UI_TXT_RULE.text = `准备后继续游戏`;
             }
 
-            this.showWinLost(JSON.parse(data.ext));
             this.checkShowStartGameBtn();
         }
     }
@@ -301,33 +300,6 @@ export class CompGameMain extends FGUICompGameMain {
     playComb(count: number) {
         this.UI_COMP_COMB.text = `连击X${count}`;
         this.UI_COMP_COMB.act.play();
-    }
-
-    /**
-     * 显示胜负战绩
-     * @param data 胜负数据
-     */
-    showWinLost(data: any): void {
-        // if (!data || data.length === 0) return;
-        // for (let index = 0; index < data.length; index++) {
-        //     const element = data[index];
-        //     const svrSeat = index + 1; // 服务器座位号从1开始
-        //     const selfSeat = GameData.instance.getSelfSeat();
-        //     if (svrSeat === selfSeat) {
-        //         // 自己，使用 UI_COMP_SELFPLAYER
-        //         const selfPlayer = this.UI_COMP_SELFPLAYER as CompPlayerHead;
-        //         if (selfPlayer) {
-        //             selfPlayer.setWinLost(element.win);
-        //         }
-        //     } else {
-        //         // 其他玩家，使用 UI_COMP_PLAYERS 列表
-        //         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-        //         const otherPlayer = compPlayers?.getOtherPlayer(svrSeat);
-        //         if (otherPlayer) {
-        //             otherPlayer.getHeadComponent()?.setWinLost(element.win);
-        //         }
-        //     }
-        // }
     }
 
     /**
@@ -822,14 +794,10 @@ export class CompGameMain extends FGUICompGameMain {
             return;
         }
 
-        // 清理其他玩家组件
-        const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
-        if (compPlayers) {
-            if (GameData.instance.isPrivateRoom) {
-                // 私人房：只重置状态，不清空列表（第二局不下发头像信息）
-                compPlayers.resetAllPlayers();
-            } else {
-                // 匹配房：直接清空列表
+        // 匹配房：清理其他玩家列表（私人房列表保留，状态重置由 onBtnReady 统一处理）
+        if (!GameData.instance.isPrivateRoom) {
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            if (compPlayers) {
                 compPlayers.clear();
             }
         }
@@ -1001,17 +969,17 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * 更新其他玩家头像
-     * @param localSeat 本地座位号
+     * @param svrSeat 服务器座位号
      * @param player 玩家信息
      */
-    updateOtherPlayerHead(localSeat: number, player: any): void {
+    updateOtherPlayerHead(svrSeat: number, player: any): void {
         const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
         if (!compPlayers) return;
 
         const headurl = GameData.instance.getHeadurlByUserid(player.userid);
-        if (compPlayers.hasPlayer(localSeat)) {
+        if (compPlayers.hasPlayer(svrSeat)) {
             // 已存在，更新信息
-            compPlayers.updateOtherPlayerHead(localSeat, player, headurl);
+            compPlayers.updateOtherPlayerHead(svrSeat, player, headurl);
         }
         // 如果不存在，等待 onSvrPlayerEnter 时创建
     }
@@ -1035,6 +1003,15 @@ export class CompGameMain extends FGUICompGameMain {
 
         // 非重连情况
         if (!data.brelink) {
+            // 私人房：新一局开始时权威重置其他玩家组件状态（完成标识、名次、小地图）
+            // 无论玩家通过何种路径进入准备状态，开局时状态必然干净
+            if (GameData.instance.isPrivateRoom) {
+                const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+                if (compPlayers) {
+                    compPlayers.resetAllPlayers();
+                }
+            }
+
             this.UI_COMP_GAME_START.visible = true;
             this.UI_COMP_GAME_START.act.play(() => {
                 this.UI_COMP_GAME_START.visible = false;
@@ -1092,9 +1069,10 @@ export class CompGameMain extends FGUICompGameMain {
 
             // 组装用户数据
             const scoreData = data.rankings.map((rank: any) => {
-                const key = data.rankings.indexOf(rank);
                 const player = GameData.instance.getPlayerBySeat(rank.seat);
-                const headurl = GameData.instance.getHeadurlByUserid(player.userid);
+                const headurl = player ? GameData.instance.getHeadurlByUserid(player.userid) : "";
+                // 分数按座位号匹配（scores 与 rankings 顺序可能不一致）
+                const scoreInfo = data.scores?.find((s) => s.seat === rank.seat);
                 return {
                     userid: player?.userid ?? 0,
                     nickname: player?.nickname ?? "",
@@ -1102,9 +1080,9 @@ export class CompGameMain extends FGUICompGameMain {
                     eliminated: rank.eliminated,
                     rank: rank.rank,
                     headurl: headurl,
-                    score: data.scores[key].delta,
+                    score: scoreInfo?.delta ?? 0,
                     maxComb: rank.maxCombo,
-                    totalScore: data.scores[key].newScore,
+                    totalScore: scoreInfo?.newScore ?? 0,
                 };
             });
 
@@ -1480,6 +1458,13 @@ export class CompGameMain extends FGUICompGameMain {
      * 准备按钮处理
      */
     onBtnReady(): void {
+        // 私人房：准备时重置其他玩家组件状态（完成标识、名次、小地图），为新一局做准备
+        if (GameData.instance.isPrivateRoom) {
+            const compPlayers = this.UI_COMP_PLAYERS as CompPlayers;
+            if (compPlayers) {
+                compPlayers.resetAllPlayers();
+            }
+        }
         const func = (res: any) => {
             if (res.code) {
                 Logger.log(res.msg);

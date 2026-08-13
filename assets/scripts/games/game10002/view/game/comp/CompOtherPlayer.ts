@@ -242,7 +242,6 @@ export class CompOtherPlayer extends FGUICompOtherPlayer {
         if (this._compMap) {
             this._compMap.clearMap();
         }
-        this._svrSeat = 0;
         this.setCompleteStatus("playing");
         this.setRank(0);
     }

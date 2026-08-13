@@ -4,7 +4,6 @@ import * as fgui from "fairygui-cc";
 
 @ViewClass()
 export class CompTalk extends FGUICompTalk {
-    private _localSeat: number = 0;
     private _talkMsg: string = "";
 
     public set talkMsg(value: string) {
@@ -27,19 +26,6 @@ export class CompTalk extends FGUICompTalk {
 
     public get talkMsg(): string {
         return this._talkMsg;
-    }
-
-    localSeatToIndex(value: number): number {
-        switch (value) {
-            case 1:
-                return 0;
-            case 2:
-                return 2;
-            case 3:
-                return 1;
-            default:
-                return 0;
-        }
     }
 }
 fgui.UIObjectFactory.setExtension(CompTalk.URL, CompTalk);

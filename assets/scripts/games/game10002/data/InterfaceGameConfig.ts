@@ -160,19 +160,6 @@ export enum CTRL_BTN_INDEX {
 export const GAME_MODE_TXT = ["3局2胜", "5局3胜", "7局4胜", "无限对局"];
 
 /**
- * @description 自身本地位置常量
- */
-export const SELF_LOCAL = 1;
-/**
- * @description 座位 1
- */
-export const SEAT_1 = 1;
-/**
- * @description 座位 2
- */
-export const SEAT_2 = 2;
-
-/**
  * @interface GAME_DATA
  * @description 游戏数据
  */
@@ -180,12 +167,6 @@ export interface GAME_DATA {
     robots?: number[];
     rule?: string;
 }
-
-export const ROOM_PLAYER_INDEX: { [key: number]: number } = {
-    2: 0,
-    3: 1,
-    4: 2,
-};
 
 // 消息转发类型
 export enum FORWARD_MESSAGE_TYPE {}
