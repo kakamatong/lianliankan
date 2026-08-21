@@ -62,9 +62,7 @@ export class CompPropPanel extends FGUICompPropPanel {
                 .setEase(fgui.EaseType.Linear)
                 .onUpdate((tween) => {
                     if (mask && !mask.isDisposed) {
-                        Logger.log("冷却遮罩动画更新:", tween.value.x);
                         mask.fillAmount = tween.value.x;
-                        Logger.log("冷却遮罩动画更新2:", mask.fillAmount);
                     }
                 })
                 .onComplete(() => {
