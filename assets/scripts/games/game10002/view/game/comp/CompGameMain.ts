@@ -1,4 +1,5 @@
 import FGUICompGameMain from "@fgui/game10002/FGUICompGameMain";
+import { SoundManager } from "@frameworks/SoundManager";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { AddEventListener, ChangeScene, LogColors, RemoveEventListener, ViewClass } from "@frameworks/Framework";
 import { DataCenter } from "@datacenter/Datacenter";
@@ -1012,6 +1013,8 @@ export class CompGameMain extends FGUICompGameMain {
                 }
             }
 
+            // 播放开局动画音效
+            SoundManager.instance.playSoundEffect("game10002/readygo");
             this.UI_COMP_GAME_START.visible = true;
             this.UI_COMP_GAME_START.act.play(() => {
                 this.UI_COMP_GAME_START.visible = false;
