@@ -62,7 +62,9 @@ export class CompPropPanel extends FGUICompPropPanel {
                 .setEase(fgui.EaseType.Linear)
                 .onUpdate((tween) => {
                     if (mask && !mask.isDisposed) {
+                        Logger.log("冷却遮罩动画更新:", tween.value.x);
                         mask.fillAmount = tween.value.x;
+                        Logger.log("冷却遮罩动画更新2:", mask.fillAmount);
                     }
                 })
                 .onComplete(() => {
@@ -101,14 +103,6 @@ export class CompPropPanel extends FGUICompPropPanel {
 
         const autoRemoveNums = DataCenter.instance.getRichByType(RICH_TYPE.AUTO_REMOVE);
         this.showNums(this.UI_BTN_AUTO_REMOVE, autoRemoveNums?.richNums || 0);
-
-        // 默认隐藏冷却遮罩
-        const masks = this._getMasks();
-        for (const mask of masks) {
-            if (mask) {
-                mask.visible = false;
-            }
-        }
     }
 
     /**
