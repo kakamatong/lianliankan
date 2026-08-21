@@ -9,7 +9,7 @@ import { ViewClass, AddEventListener, RemoveEventListener } from "@frameworks/Fr
 import * as fgui from "fairygui-cc";
 import { BagView } from "../BagView";
 import { DataCenter } from "@datacenter/Datacenter";
-import FGUIComProp from "@fgui/props/FGUIComProp";
+import FGUICompProp from "@fgui/props/FGUICompProp";
 import { Prop } from "@modules/Prop";
 
 /**
@@ -92,7 +92,7 @@ export class CompBag extends FGUICompBag {
      * @param richType 财富类型
      */
     initDis(richType: number): void {
-        const iconNode = this.UI_COMP_ICON as FGUIComProp;
+        const iconNode = this.UI_COMP_ICON as FGUICompProp;
         iconNode.UI_LOADER_ICON.url = `ui://props/prop_${richType}`;
         iconNode.ctrl_num.selectedIndex = 0;
 
@@ -108,7 +108,7 @@ export class CompBag extends FGUICompBag {
      */
     itemRenderer(index: number, obj: fgui.GObject): void {
         const propConfig = this._richList[index];
-        const itemNode = obj as FGUIComProp;
+        const itemNode = obj as FGUICompProp;
         itemNode.UI_LOADER_ICON.url = `ui://props/prop_${propConfig.richType}`;
         itemNode.UI_TXT_NUM.text = `X ${propConfig.richNums || 0}`;
         itemNode.clearClick();

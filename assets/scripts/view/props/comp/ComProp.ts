@@ -1,4 +1,4 @@
-import FGUIComProp from "@fgui/props/FGUIComProp";
+import FGUICompProp from "@fgui/props/FGUICompProp";
 import { ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
 import { PropInfo } from "../data/PropConfig";
@@ -9,7 +9,7 @@ import { Prop } from "@modules/Prop";
  */
 
 @ViewClass()
-export class ComProp extends FGUIComProp {
+export class ComProp extends FGUICompProp {
     /**
      * 显示
      * @param info

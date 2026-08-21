@@ -19,9 +19,58 @@ export class CompPropPanel extends FGUICompPropPanel {
     /** 冷却状态：true=冷却中，所有道具禁止点击 */
     private _inCooldown: boolean = false;
 
+    /** 两个道具按钮的冷却遮罩（UI_IMG_MASK），懒加载缓存 */
+    private _masks: fgui.GImage[] | null = null;
+
     protected onConstruct(): void {
         super.onConstruct();
         this.init();
+    }
+
+    /**
+     * @method _getMasks
+     * @description 获取两个道具按钮的冷却遮罩 UI_IMG_MASK（懒加载并缓存）
+     * @returns {fgui.GImage[]} 遮罩图片数组（打乱、自动移除）
+     * @private
+     */
+    private _getMasks(): fgui.GImage[] {
+        if (!this._masks) {
+            this._masks = [
+                this.UI_BTN_UPSET.getChild("UI_IMG_MASK") as fgui.GImage,
+                this.UI_BTN_AUTO_REMOVE.getChild("UI_IMG_MASK") as fgui.GImage,
+            ];
+        }
+        return this._masks;
+    }
+
+    /**
+     * @method playCooldownAnimation
+     * @description 播放冷却遮罩动画：显示两个 UI_IMG_MASK，fillAmount 从 1 降到 0（与冷却时长一致），动画结束后隐藏
+     * @private
+     */
+    private playCooldownAnimation(): void {
+        const masks = this._getMasks();
+        for (const mask of masks) {
+            if (!mask) {
+                continue;
+            }
+            fgui.GTween.kill(mask);
+            mask.fillAmount = 1;
+            mask.visible = true;
+            fgui.GTween.to(1, 0, CompPropPanel.PROP_COOLDOWN_MS / 1000)
+                .setTarget(mask)
+                .setEase(fgui.EaseType.Linear)
+                .onUpdate((tween) => {
+                    if (mask && !mask.isDisposed) {
+                        mask.fillAmount = tween.value.x;
+                    }
+                })
+                .onComplete(() => {
+                    if (mask && !mask.isDisposed) {
+                        mask.visible = false;
+                    }
+                });
+        }
     }
 
     /**
@@ -39,6 +88,7 @@ export class CompPropPanel extends FGUICompPropPanel {
         this.scheduleOnce(() => {
             this._inCooldown = false;
         }, CompPropPanel.PROP_COOLDOWN_MS / 1000);
+        this.playCooldownAnimation();
         return false;
     }
 
@@ -51,6 +101,28 @@ export class CompPropPanel extends FGUICompPropPanel {
 
         const autoRemoveNums = DataCenter.instance.getRichByType(RICH_TYPE.AUTO_REMOVE);
         this.showNums(this.UI_BTN_AUTO_REMOVE, autoRemoveNums?.richNums || 0);
+
+        // 默认隐藏冷却遮罩
+        const masks = this._getMasks();
+        for (const mask of masks) {
+            if (mask) {
+                mask.visible = false;
+            }
+        }
+    }
+
+    /**
+     * @method onDestroy
+     * @description 组件销毁时清理冷却遮罩动画
+     * @protected
+     */
+    protected onDestroy(): void {
+        if (this._masks) {
+            for (const mask of this._masks) {
+                fgui.GTween.kill(mask);
+            }
+        }
+        super.onDestroy();
     }
 
     showNums(obj: fgui.GComponent, nums: number): void {

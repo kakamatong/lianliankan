@@ -6,11 +6,12 @@ import * as fgui from "fairygui-cc";
 import { PackageManager } from "@frameworks/PackageManager";
 import { Logger } from "@frameworks/utils/Utils";
 
-export default class FGUIComProp extends fgui.GButton {
+export default class FGUICompProp extends fgui.GButton {
 
 	public ctrl_num:fgui.Controller;
 	public UI_LOADER_ICON:fgui.GLoader;
 	public UI_TXT_NUM:fgui.GTextField;
+	public UI_IMG_MASK:fgui.GImage;
 	public static URL:string = "ui://fwundh2cpz9v1b";
 
 	public static packageName:string = "props";
@@ -20,17 +21,17 @@ export default class FGUIComProp extends fgui.GButton {
 	public enableAnimation: boolean = false;
 
 	public static showView(params?:any, callBack?:(b:boolean)=>void):void {
-		if(FGUIComProp.instance) {
+		if(FGUICompProp.instance) {
 			console.log("allready show");
 			callBack&&callBack(false);
 			return;
 		}
 		PackageManager.instance.loadPackage("fgui", this.packageName).then(()=> {
 
-			const view = fgui.UIPackage.createObject("props", "ComProp") as FGUIComProp;
+			const view = fgui.UIPackage.createObject("props", "CompProp") as FGUICompProp;
 
 			view.makeFullScreen();
-			FGUIComProp.instance = view;
+			FGUICompProp.instance = view;
 			fgui.GRoot.inst.addChild(view);
 			view.show && view.show(params);
 			callBack&&callBack(true);
@@ -40,10 +41,10 @@ export default class FGUIComProp extends fgui.GButton {
 
 	protected onDestroy():void {
 		super.onDestroy();
-		FGUIComProp.instance = null;
+		FGUICompProp.instance = null;
 	}
 	public static hideView():void {
-		FGUIComProp.instance && FGUIComProp.instance.dispose();
+		FGUICompProp.instance && FGUICompProp.instance.dispose();
 	}
 
 	show(data?:any):void{};
@@ -69,14 +70,15 @@ export default class FGUIComProp extends fgui.GButton {
 		    });
 	}
 
-	public static createInstance():FGUIComProp {
-		return <FGUIComProp>(fgui.UIPackage.createObject("props", "ComProp"));
+	public static createInstance():FGUICompProp {
+		return <FGUICompProp>(fgui.UIPackage.createObject("props", "CompProp"));
 	}
 
 	protected onConstruct():void {
 		this.ctrl_num = this.getControllerAt(0);
 		this.UI_LOADER_ICON = <fgui.GLoader>(this.getChildAt(1));
 		this.UI_TXT_NUM = <fgui.GTextField>(this.getChildAt(3));
+		this.UI_IMG_MASK = <fgui.GImage>(this.getChildAt(4));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
@@ -84,4 +86,4 @@ export default class FGUIComProp extends fgui.GButton {
 	unschedule(callback: () => void):void{};
 	schedule(callback: () => void, interval: number):void{};
 }
-fgui.UIObjectFactory.setExtension(FGUIComProp.URL, FGUIComProp);
+fgui.UIObjectFactory.setExtension(FGUICompProp.URL, FGUICompProp);

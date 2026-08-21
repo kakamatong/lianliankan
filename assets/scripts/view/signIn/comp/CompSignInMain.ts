@@ -13,7 +13,7 @@ import { REWORD_VIDEOAD_CODE } from "@frameworks/config/Config";
 import { LoadingView } from "../../common/LoadingView";
 import { Logger } from "@frameworks/utils/Utils";
 import { SoundManager } from "@frameworks/SoundManager";
-import FGUIComProp from "@fgui/props/FGUIComProp";
+import FGUICompProp from "@fgui/props/FGUICompProp";
 
 /**
  * 签到视图
@@ -90,7 +90,7 @@ export class CompSignInMain extends FGUICompSignInMain {
             const richType = config.richTypes[i];
             const richNum = config.richNums[i];
             const richNum2 = config.richNums2[i];
-            const subItem = item.UI_LV_PROPS.addItem() as FGUIComProp;
+            const subItem = item.UI_LV_PROPS.addItem() as FGUICompProp;
             subItem.UI_LOADER_ICON.url = `ui://props/prop_${richType}`;
             subItem.UI_TXT_NUM.text = `X ${richNum}`;
         }
