@@ -13,9 +13,33 @@ import { SprotoLocalGameUseProps } from "../../../../../../types/protocol/lobby/
 
 @ViewClass()
 export class CompPropPanel extends FGUICompPropPanel {
+    /** 道具冷却时长（毫秒），冷却期间所有道具不可点击 */
+    private static readonly PROP_COOLDOWN_MS: number = 500;
+
+    /** 冷却状态：true=冷却中，所有道具禁止点击 */
+    private _inCooldown: boolean = false;
+
     protected onConstruct(): void {
         super.onConstruct();
         this.init();
+    }
+
+    /**
+     * @method checkCooldown
+     * @description 检查道具是否处于冷却中：冷却中弹出提示并拦截，否则开始冷却计时
+     * @returns {boolean} true=冷却中，禁止使用道具
+     * @private
+     */
+    private checkCooldown(): boolean {
+        if (this._inCooldown) {
+            TipsView.showView({ content: "冷却中" });
+            return true;
+        }
+        this._inCooldown = true;
+        this.scheduleOnce(() => {
+            this._inCooldown = false;
+        }, CompPropPanel.PROP_COOLDOWN_MS / 1000);
+        return false;
     }
 
     /**
@@ -101,6 +125,9 @@ export class CompPropPanel extends FGUICompPropPanel {
      * 使用道具: 打乱
      */
     onBtnUpset(): void {
+        if (this.checkCooldown()) {
+            return;
+        }
         Logger.log("使用道具: 打乱");
         if (this.isLocalGame()) {
             this.useLocalGameProp(RICH_TYPE.UPSET, (b, response) => {
@@ -122,6 +149,9 @@ export class CompPropPanel extends FGUICompPropPanel {
     }
 
     onBtnAutoRemove(): void {
+        if (this.checkCooldown()) {
+            return;
+        }
         Logger.log("使用道具: 自动移除");
         if (this.isLocalGame()) {
             this.useLocalGameProp(RICH_TYPE.AUTO_REMOVE, (b, response) => {
