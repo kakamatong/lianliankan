@@ -119,10 +119,24 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @property {Array<() => void>} _deferredOps
-     * @description 移动动画批次期间延迟执行的操作队列（如服务器确认的消除，需等待批次完成后再处理，避免 _cubeMap 数据错位）
+     * @description 移动动画批次期间延迟执行的操作队列（如服务器确认的消除，需等待批次完成后再处理，避免 _cubeMap 数据错位），最多容纳 1 个待执行操作，超限时新操作被丢弃
      * @private
      */
     private _deferredOps: Array<() => void> = [];
+
+    /**
+     * @method _pushDeferredOp
+     * @description 入队延迟操作：队列中最多只保留一个待执行操作，已有操作未执行时丢弃新操作
+     * @param {() => void} op - 待执行的延迟操作
+     * @private
+     */
+    private _pushDeferredOp(op: () => void): void {
+        if (this._deferredOps.length > 0) {
+            Logger.warn("延迟操作队列已满，丢弃新操作");
+            return;
+        }
+        this._deferredOps.push(op);
+    }
 
     /**
      * @property {Map<string, number>} _allreadyRemoved
@@ -695,7 +709,7 @@ export class CompMap extends FGUICompMap {
     removeTilesWithShift(p1: Point, p2: Point): void {
         // 移动动画播放期间延迟处理，避免 _cubeMap 坐标错位
         if (this._isShifting) {
-            this._deferredOps.push(() => {
+            this._pushDeferredOp(() => {
                 this.removeTilesWithShift(p1, p2);
             });
             return;
@@ -993,7 +1007,7 @@ export class CompMap extends FGUICompMap {
     removeTilesWithAnimation(p1: Point, p2: Point, lines: LineSegment[]): void {
         // 移动动画播放期间延迟处理，避免 _cubeMap 坐标错位
         if (this._isShifting) {
-            this._deferredOps.push(() => {
+            this._pushDeferredOp(() => {
                 this.removeTilesWithAnimation(p1, p2, lines);
             });
             return;
@@ -1018,7 +1032,7 @@ export class CompMap extends FGUICompMap {
         this.scheduleOnce(() => {
             // 延迟执行期间可能开始了移动动画批次，此时需要延迟处理，避免坐标错位
             if (this._isShifting) {
-                this._deferredOps.push(() => {
+                this._pushDeferredOp(() => {
                     this._finishRemoveTilesWithAnimation(p1, p2);
                 });
                 return;
