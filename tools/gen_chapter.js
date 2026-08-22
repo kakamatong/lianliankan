@@ -1,6 +1,6 @@
 /**
  * @file gen_chapter.js
- * @description 闯关章节配置生成脚本：根据模板库、逐关映射与数值公式，确定性生成 4 个章节配置文件
+ * @description 闯关章节配置生成脚本：根据模板库、逐关映射与数值公式，确定性生成 5 个章节配置文件
  * @category 工具脚本
  *
  * 运行方式：
@@ -11,15 +11,19 @@
  *   config/chapter/chapter_1.json（章2：40 关，type=1，boss 39/49/59/69）
  *   config/chapter/chapter_2.json（章3：50 关，type 每 10 关轮换，boss 79/89/99/109/119）
  *   config/chapter/chapter_3.json（章4：60 关，type 每 10 关轮换，boss 129/139/149/159/169/179，开启挤压玩法）
+ *   config/chapter/chapter_4.json（章5：60 关，type 每 10 关轮换，每组末 2 关 boss，仅 boss 开启挤压玩法）
  *
  * 规则：
  *  - 模板最小 48 块，外圈恒 0，1 恒双数
  *  - 章1-3 iconTypes = clamp(round(p*0.35)+boss*3, 6, 22)
  *  - 章4 iconTypes 顶格 22，对子数 36 起步，全部开启 shiftDir（固定 seed 随机 2-5）+ shiftEdge=2
+ *  - 章5 iconTypes 顶格 22，对子数 40 起步，仅 Boss 开启 shiftDir（固定 seed 随机 2-5）+ shiftEdge=2，Boss 体力 10
  *  - 章1-3 type=2: starScore=[p, p+round(0.5p), 2p]；boss [p, p+round(0.7p), round(2.5p)]；targetScore=p / round(1.2p)
  *  - 章4 type=2: starScore=[round(1.1p), p+round(0.6p), round(2.2p)]；boss [round(1.3p), p+round(0.8p), round(2.8p)]
+ *  - 章5 type=2: starScore=[2.5p, 3.5p, 4.5p]；boss [3p, 4p, 5p]；targetScore=2.5p / 3p
  *  - 章1-3 type=1: totalTime=6p+15, starTime=[15, 2p+15, 4p+15]；boss 5p+15 / [15, 2p+15, 3p+15]
  *  - 章4 type=1: totalTime=4p+15, starTime=[15, 1.5p+15, 2.5p+15]；boss 3p+15 / [15, p+15, 1.5p+15]
+ *  - 章5 type=1: totalTime=4.5p, starTime=[p, 2p+15, 3p]；boss 3p+30 / [p, p+15, 2p+10]
  *  - 生成脚本内置全部校验断言，不满足即报错退出
  */
 const fs = require("fs");
@@ -107,6 +111,41 @@ const T = {};
   m = makeMap();
   set(m, range(1, 14), C18);
   T["S"] = m;
+  // T45 大井四口 90（全满减 22 洞）
+  m = makeMap();
+  set(m, range(1, 14), C18);
+  for (let r = 6; r <= 9; r++) for (let c = 3; c <= 6; c++) m[r][c] = 0; // 中央 4×4 洞
+  for (const c of [4, 5]) {
+    m[5][c] = 0;
+    m[10][c] = 0; // 上/下小口
+  }
+  m[7][2] = 0;
+  m[7][7] = 0; // 左/右小口
+  T["T45"] = m;
+  // T46 井字 92（全满减 20 洞）
+  m = makeMap();
+  set(m, range(1, 14), C18);
+  for (let r = 6; r <= 9; r++) for (let c = 3; c <= 6; c++) m[r][c] = 0; // 中央 4×4 洞
+  for (const c of [4, 5]) {
+    m[5][c] = 0;
+    m[10][c] = 0; // 上/下小口
+  }
+  T["T46"] = m;
+  // T48 中央方井 96（全满减 16 洞）
+  m = makeMap();
+  set(m, range(1, 14), C18);
+  for (let r = 6; r <= 9; r++) for (let c = 3; c <= 6; c++) m[r][c] = 0;
+  T["T48"] = m;
+  // T52 八孔 104（全满减 8 洞）
+  m = makeMap();
+  set(m, range(1, 14), C18);
+  for (let r = 6; r <= 7; r++) for (const c of [2, 4, 5, 7]) m[r][c] = 0;
+  T["T52"] = m;
+  // T54 四窗 108（全满减 4 洞）
+  m = makeMap();
+  set(m, range(1, 14), C18);
+  for (const r of [5, 10]) for (const c of [2, 7]) m[r][c] = 0;
+  T["T54"] = m;
 }
 
 // ============ 每关映射 [模板, boss] ============
@@ -142,6 +181,19 @@ const CH4_GROUP = [
   { type: 1, levels: [["O", 0], ["P", 0], ["Q", 0], ["R", 0], ["S", 0], ["R", 0], ["Q", 0], ["R", 0], ["Q", 0], ["S", 1]] },
   { type: 2, levels: [["Q", 0], ["R", 0], ["S", 0], ["R", 0], ["Q", 0], ["R", 0], ["S", 0], ["R", 0], ["Q", 0], ["S", 1]] },
   { type: 1, levels: [["R", 0], ["Q", 0], ["R", 0], ["S", 0], ["R", 0], ["Q", 0], ["R", 0], ["S", 0], ["R", 0], ["S", 1]] },
+];
+
+// ============ 章5（chapter_4.json）：60 关，index 180-239，Boss p=56，仅 Boss 关开启挤压玩法 ============
+// 6 组每 10 关轮换 type=2/1（180-189 type2 ... 230-239 type1），每组末 2 关 Boss（8 普通 + 2 Boss）
+// 对子数爬坡：组1-2 40 起步、组3-4 45 起步、组5-6 50 起步，Boss 全 56
+// iconTypes 顶格 22；Boss 关体力 10（普通 5）；公式见 calcScoring5/calcTiming5
+const CH5_GROUP = [
+  { type: 2, levels: [["P", 0], ["O", 0], ["Q", 0], ["T46", 0], ["T48", 0], ["R", 0], ["T52", 0], ["T54", 0], ["S", 1], ["S", 1]] },
+  { type: 1, levels: [["P", 0], ["O", 0], ["Q", 0], ["T46", 0], ["T48", 0], ["R", 0], ["T52", 0], ["T54", 0], ["S", 1], ["S", 1]] },
+  { type: 2, levels: [["T45", 0], ["T46", 0], ["T48", 0], ["R", 0], ["T52", 0], ["T54", 0], ["S", 0], ["S", 0], ["S", 1], ["S", 1]] },
+  { type: 1, levels: [["T45", 0], ["T46", 0], ["T48", 0], ["R", 0], ["T52", 0], ["T54", 0], ["S", 0], ["S", 0], ["S", 1], ["S", 1]] },
+  { type: 2, levels: [["R", 0], ["T52", 0], ["T54", 0], ["S", 0], ["S", 0], ["S", 0], ["S", 0], ["S", 0], ["S", 1], ["S", 1]] },
+  { type: 1, levels: [["R", 0], ["T52", 0], ["T54", 0], ["S", 0], ["S", 0], ["S", 0], ["S", 0], ["S", 0], ["S", 1], ["S", 1]] },
 ];
 
 /**
@@ -197,6 +249,19 @@ function calcTiming4(p, boss) {
   }
   return { totalTime: 4 * p + 15, starTime: [15, 1.5 * p + 15, 2.5 * p + 15] };
 }
+// 章5 公式
+function calcScoring5(p, boss) {
+  if (boss) {
+    return { starScore: [3 * p, 4 * p, 5 * p], targetScore: 3 * p };
+  }
+  return { starScore: [2.5 * p, 3.5 * p, 4.5 * p], targetScore: 2.5 * p };
+}
+function calcTiming5(p, boss) {
+  if (boss) {
+    return { totalTime: 3 * p + 30, starTime: [p, p + 15, 2 * p + 10] };
+  }
+  return { totalTime: 4.5 * p, starTime: [p, 2 * p + 15, 3 * p] };
+}
 
 // ============ 校验 ============
 function countOnes(m) {
@@ -218,7 +283,7 @@ function validateMap(name, m) {
   return n;
 }
 
-const expectedTiles = { I: 48, K: 48, H: 56, L: 64, M: 72, N: 72, P: 80, O: 84, Q: 88, R: 100, S: 112 };
+const expectedTiles = { I: 48, K: 48, H: 56, L: 64, M: 72, N: 72, P: 80, O: 84, Q: 88, R: 100, S: 112, T45: 90, T46: 92, T48: 96, T52: 104, T54: 108 };
 for (const [k, m] of Object.entries(T)) {
   const n = validateMap(`模板${k}`, m);
   if (n !== expectedTiles[k]) throw new Error(`模板${k}: 方块数 ${n} != 期望 ${expectedTiles[k]}`);
@@ -265,6 +330,37 @@ function buildEntry4(index, tmplName, boss, type) {
     return { ...e, totalTime, starTime };
   } else {
     const s = calcScoring4(p, boss);
+    const starScore = s.starScore.map((x) => Math.round(x));
+    if (!(starScore[0] < starScore[1] && starScore[1] < starScore[2])) throw new Error(`L${index}: starScore 未严格递增`);
+    if (iconTypes > p) throw new Error(`L${index}: iconTypes(${iconTypes}) > p(${p})`);
+    return { ...e, starScore, targetScore: Math.round(s.targetScore) };
+  }
+}
+
+const rand5 = seededRandom(20260813); // 章5 独立固定 seed，不影响章4 随机序列
+
+/**
+ * 章5 关卡构建：Boss 关开启挤压玩法（shiftDir 随机 2-5，shiftEdge=2）且体力 10，普通关不移动且体力 5
+ */
+function buildEntry5(index, tmplName, boss, type) {
+  const map = T[tmplName].map((r) => r.slice());
+  const p = countOnes(map) / 2;
+  const iconTypes = 22; // 顶格
+  const e = { chapter: 4, index, map, iconTypes, type, boss, energy: boss ? 10 : 5 };
+  if (boss) {
+    e.shiftDir = 2 + Math.floor(rand5() * 4);
+    e.shiftEdge = 2;
+  }
+  if (type === 1) {
+    const t = calcTiming5(p, boss);
+    const starTime = t.starTime.map((x) => Math.round(x));
+    const totalTime = Math.round(t.totalTime);
+    if (!(starTime[0] < starTime[1] && starTime[1] < starTime[2])) throw new Error(`L${index}: starTime 未递增`);
+    if (!(starTime[2] < totalTime)) throw new Error(`L${index}: starTime[2] >= totalTime`);
+    if (iconTypes > p) throw new Error(`L${index}: iconTypes(${iconTypes}) > p(${p})`);
+    return { ...e, totalTime, starTime };
+  } else {
+    const s = calcScoring5(p, boss);
     const starScore = s.starScore.map((x) => Math.round(x));
     if (!(starScore[0] < starScore[1] && starScore[1] < starScore[2])) throw new Error(`L${index}: starScore 未严格递增`);
     if (iconTypes > p) throw new Error(`L${index}: iconTypes(${iconTypes}) > p(${p})`);
@@ -320,12 +416,25 @@ const allIndexes = [];
   });
   files.push({ file: "chapter_3.json", list });
 }
+{
+  const list = [];
+  let base = 180;
+  CH5_GROUP.forEach((g) => {
+    g.levels.forEach(([t, b], i) => {
+      const idx = base + i;
+      allIndexes.push(idx);
+      list.push(buildEntry5(idx, t, b, g.type));
+    });
+    base += 10;
+  });
+  files.push({ file: "chapter_4.json", list });
+}
 
 // index 全局连续性校验
 for (let i = 0; i < allIndexes.length; i++) {
   if (allIndexes[i] !== i) throw new Error(`index 不连续: ${allIndexes[i]} != ${i}`);
 }
-if (allIndexes.length !== 180) throw new Error(`关卡总数 ${allIndexes.length} != 180`);
+if (allIndexes.length !== 240) throw new Error(`关卡总数 ${allIndexes.length} != 240`);
 
 // 写入
 for (const f of files) {
