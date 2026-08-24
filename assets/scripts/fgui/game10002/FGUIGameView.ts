@@ -9,10 +9,6 @@ import { Logger } from "@frameworks/utils/Utils";
 
 export default class FGUIGameView extends fgui.GComponent {
 
-	public ctrl_select:fgui.Controller;
-	public ctrl_btn:fgui.Controller;
-	public ctrl_roomtype:fgui.Controller;
-	public ctrl_playerCnt:fgui.Controller;
 	public UI_COMP_MAIN:FGUICompGameMain;
 	public static URL:string = "ui://2zsfe53xis911";
 
@@ -77,10 +73,6 @@ export default class FGUIGameView extends fgui.GComponent {
 	}
 
 	protected onConstruct():void {
-		this.ctrl_select = this.getControllerAt(0);
-		this.ctrl_btn = this.getControllerAt(1);
-		this.ctrl_roomtype = this.getControllerAt(2);
-		this.ctrl_playerCnt = this.getControllerAt(3);
 		this.UI_COMP_MAIN = <FGUICompGameMain>(this.getChildAt(1));
 		if (this.enableAnimation) this.enterAnimation();
 	}
