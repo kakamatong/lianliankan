@@ -125,6 +125,17 @@ export class CompMap extends FGUICompMap {
     private _deferredOps: Array<() => void> = [];
 
     /**
+     * @method _setMapMoving
+     * @description 设置方块移动动画进行中状态（同步维护 CompMap 与 GameData，供其他模块读取）
+     * @param {boolean} flag - 是否正在播放移动动画
+     * @private
+     */
+    private _setMapMoving(flag: boolean): void {
+        this._isShifting = flag;
+        GameData.instance.isMapMoving = flag;
+    }
+
+    /**
      * @method _pushDeferredOp
      * @description 入队延迟操作：队列中最多只保留一个待执行操作，已有操作未执行时丢弃新操作
      * @param {() => void} op - 待执行的延迟操作
@@ -594,7 +605,7 @@ export class CompMap extends FGUICompMap {
             return;
         }
 
-        this._isShifting = true;
+        this._setMapMoving(true);
 
         // 动画前解绑所有参与移动方块的点击事件（需求：动画期间不可点击）
         for (const move of moves) {
@@ -635,7 +646,7 @@ export class CompMap extends FGUICompMap {
 
         // 参与动画的方块数为0（理论上不会发生，防御性处理）
         if (totalCount === 0) {
-            this._isShifting = false;
+            this._setMapMoving(false);
             this._processShiftPending();
         }
     }
@@ -658,7 +669,7 @@ export class CompMap extends FGUICompMap {
      * @private
      */
     private _onShiftBatchComplete(): void {
-        this._isShifting = false;
+        this._setMapMoving(false);
 
         // 执行延迟操作（如服务器确认的消除），操作内部可能启动新的动画批次
         const ops = this._deferredOps;
@@ -728,7 +739,7 @@ export class CompMap extends FGUICompMap {
      */
     private _resetAllCubes(): void {
         // 清空移动动画队列与状态（新一局开始，丢弃未播放的移动批次）
-        this._isShifting = false;
+        this._setMapMoving(false);
         this._shiftPendingCount = 0;
 
         // 停止所有移动动画并重置位置、解除点击事件

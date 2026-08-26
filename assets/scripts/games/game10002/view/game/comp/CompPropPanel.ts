@@ -186,9 +186,26 @@ export class CompPropPanel extends FGUICompPropPanel {
     }
 
     /**
+     * @method checkMapMoving
+     * @description 检查地图方块是否正在移动：移动中弹出提示并拦截使用道具
+     * @returns {boolean} true=方块移动中，禁止使用道具
+     * @private
+     */
+    private checkMapMoving(): boolean {
+        if (GameData.instance.isMapMoving) {
+            TipsView.showView({ content: "方块移动中，无法使用道具" });
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 使用道具: 打乱
      */
     onBtnUpset(): void {
+        if (this.checkMapMoving()) {
+            return;
+        }
         if (this.checkCooldown()) {
             return;
         }
@@ -213,6 +230,9 @@ export class CompPropPanel extends FGUICompPropPanel {
     }
 
     onBtnAutoRemove(): void {
+        if (this.checkMapMoving()) {
+            return;
+        }
         if (this.checkCooldown()) {
             return;
         }

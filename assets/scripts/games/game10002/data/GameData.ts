@@ -51,6 +51,8 @@ export class GameData {
     private _shiftDir: number = SHIFT_DIR.OFF;
     /** 消除后方块移动的最边边位置（默认 2，由服务器 logicInfo.ext 下发） */
     private _shiftEdge: number = 2;
+    /** 地图方块是否正在移动（移动动画批次进行中），供其他模块读取 */
+    private _isMapMoving: boolean = false;
 
     /**
      * @description 是否是本地游戏
@@ -101,6 +103,7 @@ export class GameData {
         this._itemEnabled = false;
         this._shiftDir = SHIFT_DIR.OFF;
         this._shiftEdge = 2;
+        this._isMapMoving = false;
     }
 
     get gameStep(): ENUM_GAME_STEP {
@@ -440,5 +443,21 @@ export class GameData {
      */
     get shiftEdge(): number {
         return this._shiftEdge;
+    }
+
+    /**
+     * @description 设置地图方块是否正在移动
+     * @param {boolean} flag - 是否正在移动
+     */
+    set isMapMoving(flag: boolean) {
+        this._isMapMoving = flag;
+    }
+
+    /**
+     * @description 获取地图方块是否正在移动
+     * @returns {boolean} 是否正在移动
+     */
+    get isMapMoving(): boolean {
+        return this._isMapMoving;
     }
 }
