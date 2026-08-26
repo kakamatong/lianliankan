@@ -12,6 +12,7 @@ import { GameChallengeResultView } from "../GameChallengeResultView";
 import { SoundManager } from "@frameworks/SoundManager";
 import { ChallengeData } from "@datacenter/ChallengeData";
 import { MiniGameUtils } from "@frameworks/utils/sdk/MiniGameUtils";
+import { Logger } from "@frameworks/utils/Utils";
 
 export type CompResultData = {
     score: number; // 得分
@@ -49,8 +50,17 @@ export class CompResult extends FGUICompResult {
     playStar(number: number): void {
         const actNode = this.UI_COMP_STAR as CompStarAni;
         actNode.play(number, () => {
-            console.log("All stars animation completed.");
+            Logger.log("星星动画播放完成，弹出插屏广告");
+            this.showAd();
         });
+    }
+
+    /**
+     * 弹出插屏广告
+     * @private
+     */
+    private showAd(): void {
+        MiniGameUtils.instance.showInterstitialAd("adunit-60af440d294b0df5");
     }
 
     initUI(): void {
@@ -62,8 +72,8 @@ export class CompResult extends FGUICompResult {
             this.playStar(this._data.stars);
         } else {
             this.ctrl_result.selectedIndex = 0;
+            this.showAd();
         }
-        MiniGameUtils.instance.showInterstitialAd("adunit-60af440d294b0df5");
     }
 
     onBtnNext(): void {
