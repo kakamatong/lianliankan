@@ -14,7 +14,7 @@
 | `chapter_3.json` | 4 | 60 | 120-179 | 每 10 关轮换 type=2/1（120-129 起） | 129, 139, 149, 159, 169, 179 |
 | `chapter_4.json` | 5 | 60 | 180-239 | 每 10 关轮换 type=2/1（180-189 起） | 每组末 2 关：188, 189, 198, 199, 208, 209, 218, 219, 228, 229, 238, 239 |
 
-所有关卡 `energy = 5`，`chapter` 字段与文件名章节号一致。第四章（chapter_3）额外开启「消除后挤压移动」玩法（`shiftDir`/`shiftEdge`），难度在第三章基础上再增一档。第五章（chapter_4）Boss 关 `energy = 10`，且仅 Boss 关开启挤压移动，难度再增一档。
+所有关卡 `energy = 5`，`chapter` 字段与文件名章节号一致。章1-3（chapter_0/1/2）Boss 关开启「消除后挤压移动」玩法（`shiftDir`/`shiftEdge`，方向按模板图形，移动时尽量不破坏图形形状），普通关不移动。第四章（chapter_3）难度在第三章基础上再增一档，仅 Boss 关开启挤压玩法（普通关不移动）。第五章（chapter_4）Boss 关 `energy = 10`，且仅 Boss 关开启挤压移动，难度再增一档。
 
 ## 2. 关卡字段说明
 
@@ -33,7 +33,7 @@
 | `starTime` | number[] | 星级剩余时间阈值（秒），仅 type=1 使用，索引 0/1/2 对应 1/2/3 颗星 |
 | `starScore` | number[] | 星级分数阈值，仅 type=2 使用，索引 0/1/2 对应 1/2/3 颗星 |
 | `targetScore` | number | 过关目标分数（type=2），总分 ≥ 该值才算过关 |
-| `shiftDir` | number | 消除后方块移动方向（可选，缺省关闭）：`0`=关闭，`2`=向上，`3`=向下，`4`=向左，`5`=向右（`1`=随机，代码中视为关闭） |
+| `shiftDir` | number | 消除后方块移动方向（可选，缺省关闭）：`0`=关闭，`2`=向上，`3`=向下，`4`=向左，`5`=向右（`1`=随机，代码中视为关闭）。章1-4 仅 Boss 关配置，方向按模板图形选定：三角模板（上窄下宽）固定 `3`（向下压缩各列保持连续填充，轮廓不变），全满等对称模板无形状约束取固定 seed 随机 2-5 |
 | `shiftEdge` | number | 方块移动的最边边位置（可选，缺省 2）：方块最多贴到第 edge 行/列，留出外圈空位供连线走位 |
 
 > 注：type=2 关卡不配置 `totalTime`/`starTime`（无倒计时，消除完即结束）。
@@ -159,10 +159,10 @@ starTime  = [15, 2p + 15, 3p + 15]
 
 ## 5.1 第四章（chapter_3）进阶数值公式
 
-第四章在第三章基础上难度再增一档，所有关卡开启挤压玩法：
+第四章在第三章基础上难度再增一档，仅 Boss 关开启挤压玩法（普通关不移动）：
 
 - `iconTypes`：全部顶格 **22**
-- `shiftDir`：全部开启，每关生成时随机指定方向（2-5，固定 seed 可复现）；`shiftEdge` 全部 2
+- `shiftDir`：仅 Boss 关开启，方向按模板图形（本章 Boss 全为全满模板，图形对称无形状约束 → 固定 seed 随机 2-5，可复现）；`shiftEdge` 全部 2
 - 对子数起步 36（≥36）
 
 **type=2（计分）**：
@@ -256,7 +256,7 @@ starTime  = [p, p + 15, 2p + 10]
 node tools/gen_chapter.js config/chapter
 ```
 
-- 生成结果可复现：第四章 `shiftDir` 使用固定 seed（20260812）伪随机
+- 生成结果可复现：章1-4 Boss 关 `shiftDir` 使用固定 seed（20260812）伪随机（三角模板固定向下，不消耗随机序列）
 - 生成脚本内置全部校验断言，不满足即报错退出；生成后建议按下列清单复核：
 
 1. 地图 16 行 × 10 列，外圈（首尾行/列）全为 0
@@ -266,5 +266,6 @@ node tools/gen_chapter.js config/chapter
 5. type=2：`starScore` 严格递增，`targetScore` 存在
 6. `index` 0-239 全局连续无重复，`chapter` 与文件名一致
 7. Boss 关标记正确（`boss=1`），`energy` 恒为 5（第五章 Boss 关为 10）
-8. 第四章（chapter_3）：全部关卡含 `shiftDir`（2-5）与 `shiftEdge`（2），`iconTypes` = 22，对子数 ≥ 36
-9. 第五章（chapter_4）：`iconTypes` = 22；每组末 2 关为 Boss（`boss=1`、`energy`=10、含 `shiftDir`/`shiftEdge`），其余关 `energy`=5 且无 `shiftDir`；对子数 ≥ 40
+8. 章1-3（chapter_0/1/2）：仅 Boss 关含 `shiftDir` 与 `shiftEdge`（2），普通关无移动；三角模板 Boss `shiftDir`=3（向下压缩保持轮廓），其余 Boss 取固定 seed 随机 2-5
+9. 第四章（chapter_3）：仅 Boss 关含 `shiftDir` 与 `shiftEdge`（2），普通关无移动（本章 Boss 全为全满模板，方向随机 2-5）；`iconTypes` = 22，对子数 ≥ 36
+10. 第五章（chapter_4）：`iconTypes` = 22；每组末 2 关为 Boss（`boss=1`、`energy`=10、含 `shiftDir`/`shiftEdge`），其余关 `energy`=5 且无 `shiftDir`；对子数 ≥ 40

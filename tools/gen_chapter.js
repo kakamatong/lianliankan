@@ -16,7 +16,8 @@
  * 规则：
  *  - 模板最小 48 块，外圈恒 0，1 恒双数
  *  - 章1-3 iconTypes = clamp(round(p*0.35)+boss*3, 6, 22)
- *  - 章4 iconTypes 顶格 22，对子数 36 起步，全部开启 shiftDir（固定 seed 随机 2-5）+ shiftEdge=2
+ *  - 章1-4 仅 Boss 关开启 shiftDir + shiftEdge=2：方向按模板图形决定（三角 R 固定向下 3 保持轮廓，其余对称模板固定 seed 随机 2-5），普通关不移动
+ *  - 章4 iconTypes 顶格 22，对子数 36 起步
  *  - 章5 iconTypes 顶格 22，对子数 40 起步，仅 Boss 开启 shiftDir（固定 seed 随机 2-5）+ shiftEdge=2，Boss 体力 10
  *  - 章1-3 type=2: starScore=[p, p+round(0.5p), 2p]；boss [p, p+round(0.7p), round(2.5p)]；targetScore=p / round(1.2p)
  *  - 章4 type=2: starScore=[round(1.1p), p+round(0.6p), round(2.2p)]；boss [round(1.3p), p+round(0.8p), round(2.8p)]
@@ -211,6 +212,17 @@ function seededRandom(seed) {
 }
 const rand = seededRandom(20260812);
 
+/**
+ * Boss 关移动方向映射：按模板图形决定，移动时尽量不破坏图形形状
+ * R（三角，上窄下宽）：各列连续填充，向下压缩（3）前后形状完全不变，向上/左右会立即破坏轮廓 → 固定向下
+ * 其余模板（如全满 S）图形对称：四个方向压缩效果等价 → 固定 seed 随机 2-5
+ */
+const BOSS_SHIFT_DIR = { R: 3 };
+function pickShiftDir(tmplName, rnd) {
+    if (BOSS_SHIFT_DIR[tmplName] !== undefined) return BOSS_SHIFT_DIR[tmplName];
+    return 2 + Math.floor(rnd() * 4);
+}
+
 // ============ 数值公式 ============
 function clamp(v, lo, hi) {
   return Math.max(lo, Math.min(hi, v));
@@ -290,11 +302,18 @@ for (const [k, m] of Object.entries(T)) {
 }
 
 // ============ 生成 ============
+/**
+ * 章1-3 关卡构建：普通关不移动，Boss 关开启挤压玩法（方向按模板图形，shiftEdge=2）
+ */
 function buildEntry(chapter, index, tmplName, boss, type) {
   const map = T[tmplName].map((r) => r.slice());
   const p = countOnes(map) / 2;
   const iconTypes = calcIcon(p, boss);
   const e = { chapter, index, map, iconTypes, type, boss, energy: 5 };
+  if (boss) {
+    e.shiftDir = pickShiftDir(tmplName, rand);
+    e.shiftEdge = 2;
+  }
   if (type === 1) {
     const t = calcTiming(p, boss);
     const starTime = t.starTime.map((x) => Math.round(x));
@@ -313,13 +332,17 @@ function buildEntry(chapter, index, tmplName, boss, type) {
 }
 
 /**
- * 章4 关卡构建：难度再增一档 + 开启挤压玩法（shiftDir 随机 2-5，shiftEdge=2）
+ * 章4 关卡构建：难度再增一档，仅 Boss 关开启挤压玩法（方向按模板图形，shiftEdge=2），普通关不移动
  */
 function buildEntry4(index, tmplName, boss, type) {
   const map = T[tmplName].map((r) => r.slice());
   const p = countOnes(map) / 2;
   const iconTypes = 22; // 顶格
-  const e = { chapter: 3, index, map, iconTypes, type, boss, energy: 5, shiftDir: 2 + Math.floor(rand() * 4), shiftEdge: 2 };
+  const e = { chapter: 3, index, map, iconTypes, type, boss, energy: 5 };
+  if (boss) {
+    e.shiftDir = pickShiftDir(tmplName, rand);
+    e.shiftEdge = 2;
+  }
   if (type === 1) {
     const t = calcTiming4(p, boss);
     const starTime = t.starTime.map((x) => Math.round(x));
@@ -435,6 +458,19 @@ for (let i = 0; i < allIndexes.length; i++) {
   if (allIndexes[i] !== i) throw new Error(`index 不连续: ${allIndexes[i]} != ${i}`);
 }
 if (allIndexes.length !== 240) throw new Error(`关卡总数 ${allIndexes.length} != 240`);
+
+// 挤压玩法校验：普通关必无 shiftDir，Boss 关必有 shiftDir(2-5) + shiftEdge=2（各章统一规则）
+for (const f of files) {
+  for (const e of f.list) {
+    if (e.boss === 0) {
+      if (e.shiftDir !== undefined || e.shiftEdge !== undefined) throw new Error(`L${e.index}: 普通关不应有 shiftDir/shiftEdge`);
+    } else {
+      if (e.shiftDir === undefined || e.shiftEdge === undefined) throw new Error(`L${e.index}: Boss 关缺少 shiftDir/shiftEdge`);
+      if (!(e.shiftDir >= 2 && e.shiftDir <= 5)) throw new Error(`L${e.index}: shiftDir ${e.shiftDir} 越界`);
+      if (e.shiftEdge !== 2) throw new Error(`L${e.index}: shiftEdge ${e.shiftEdge} != 2`);
+    }
+  }
+}
 
 // 写入
 for (const f of files) {
