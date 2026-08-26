@@ -6,20 +6,13 @@ import { DataCenter } from "@datacenter/Datacenter";
 import { ChallengeData, CHALLENGE_LEVEL_TYPE, CHALLENGE_END_TYPE } from "@datacenter/ChallengeData";
 import { GameData } from "../../../data/GameData";
 import { LocalSvr } from "@localGame/LocalSvr";
-import {
-    PLAYER_STATUS,
-    ROOM_END_FLAG,
-    ROOM_TYPE,
-    CTRL_BTN_INDEX,
-    GAME_MODE_TXT,
-    GAME_PLAYER_INFO,
-} from "../../../data/InterfaceGameConfig";
+import { PLAYER_STATUS, ROOM_END_FLAG, ROOM_TYPE, CTRL_BTN_INDEX, GAME_PLAYER_INFO } from "../../../data/InterfaceGameConfig";
 import * as fgui from "fairygui-cc";
 import { CompTimeLeft } from "./CompTimeLeft";
 import { CompScoreStar } from "./CompScoreStar";
 import { CompFinshInfo } from "./CompFinshInfo";
 import { PopMessageView } from "@view/common/PopMessageView";
-import { ENUM_POP_MESSAGE_TYPE, RICH_TYPE } from "@datacenter/InterfaceConfig";
+import { ENUM_POP_MESSAGE_TYPE } from "@datacenter/InterfaceConfig";
 import { FW_EVENT_NAMES } from "@frameworks/config/Config";
 import { ResultView } from "../../result/ResultView";
 import { UserStatus } from "@modules/UserStatus";
