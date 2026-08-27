@@ -832,7 +832,7 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method initMap
-     * @description 根据地图数据初始化所有方块资源，同时设置logic数据
+     * @description 根据地图数据初始化所有方块资源，同时设置logic数据（打乱地图/开局/换地图统一入口：第一时间设置地图数据，停止所有方块动画与移动计时器，并立即设置新位置）
      * @param {number[][]} map - 地图数据，number 代表方块资源 ID，0 表示空方块
      * @param {string} resPath - 资源前缀路径，格式如 "game10002"
      */
@@ -842,23 +842,22 @@ export class CompMap extends FGUICompMap {
             return;
         }
 
-        // 清空之前的选中状态和路径线条
+        // ① 第一时间设置地图数据
+        this._mapManager.initMap(map);
+        this._pathFinder.setMap(map);
+
+        // ② 停止所有方块动画与移动计时器：
+        //    取消本组件待执行的 scheduleOnce 回调（0.2s 消除收尾/连线清除等），防止打乱后误删新地图方块；
+        //    _resetAllCubes 内对所有方块 stopMove()（停止移动动画与延迟启动计时器）、重置位置、清空移动计数与 isMapMoving
+        this.unscheduleAllCallbacks();
         this._clearSelection();
         this._clearPathLines();
-
-        // 重置所有方块到初始位置（新一局开始）
         this._resetAllCubes();
 
         // 清空已消除记录，防止上一局残留的坐标对被误消费
         this._allreadyRemoved.clear();
 
-        // 初始化MapManager
-        this._mapManager.initMap(map);
-
-        // 初始化PathFinder
-        this._pathFinder.setMap(map);
-
-        // 遍历地图数据设置每个方块的资源
+        // ③ 遍历地图数据立即设置每个方块的资源与新位置（同网格尺寸下 resetPosition 即新格位）
         for (let row = 0; row < map.length; row++) {
             for (let col = 0; col < map[row].length; col++) {
                 const resId = map[row][col];
@@ -993,6 +992,9 @@ export class CompMap extends FGUICompMap {
      * @description 清空整个地图，将所有方块从节点移除
      */
     clearMap(): void {
+        // 取消本组件待执行的定时器（连线清除等），防止残留回调操作新地图
+        this.unscheduleAllCallbacks();
+
         // 清空选中状态和路径线条
         this._clearSelection();
         this._clearPathLines();
