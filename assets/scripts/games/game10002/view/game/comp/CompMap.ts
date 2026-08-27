@@ -2,7 +2,7 @@ import FGUICompMap from "@fgui/game10002/FGUICompMap";
 import * as fgui from "fairygui-cc";
 import { PathFinder } from "../../../logic/PathFinder";
 import { MapManager } from "../../../logic/MapManager";
-import { Point, LineSegment, SHIFT_DIR, computeShiftMoves } from "../../../logic/TileMapData";
+import { Point, LineSegment, SHIFT_DIR, ShiftMoveInfo, computeShiftMoves } from "../../../logic/TileMapData";
 import { CompCube, MoveTarget } from "./CompCube";
 import { ViewClass } from "@frameworks/Framework";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
@@ -12,6 +12,17 @@ import { GameData } from "../../../data/GameData";
 import { ENUM_GAME_STEP } from "../../../data/InterfaceGameConfig";
 import { Logger, SpinePlay } from "@frameworks/utils/Utils";
 import { SoundManager } from "@frameworks/SoundManager";
+
+/**
+ * @interface ShiftMoveTask
+ * @description 方块移动任务（含方块引用），由数据层移动计算产生，供动画层直接播放
+ * @property {ShiftMoveInfo} move - 移动路径信息
+ * @property {CompCube} cube - 对应方块对象
+ */
+interface ShiftMoveTask {
+    move: ShiftMoveInfo;
+    cube: CompCube;
+}
 
 /**
  * @class CompMap
@@ -139,50 +150,11 @@ export class CompMap extends FGUICompMap {
     private _readonly: boolean = false;
 
     /**
-     * @property {boolean} _isShifting
-     * @description 是否正在播放方块移动动画批次（用于串行处理，防止数据与动画不同步）
+     * @property {Map<CompCube, number>} _pendingMoveCounts
+     * @description 各方块待完成的移动任务计数（并发消除时同一方块可能入队多个移动），用于维护 GameData.isMapMoving 状态；方块移动被取消（stopMove）时同步清理，防止计数泄漏
      * @private
      */
-    private _isShifting: boolean = false;
-
-    /**
-     * @property {number} _shiftPendingCount
-     * @description 待处理的移动动画批次次数（前一批次未完成时累计，完成后逐次执行）
-     * @private
-     */
-    private _shiftPendingCount: number = 0;
-
-    /**
-     * @property {Array<() => void>} _deferredOps
-     * @description 移动动画批次期间延迟执行的操作队列（如服务器确认的消除，需等待批次完成后再处理，避免 _cubeMap 数据错位），最多容纳 1 个待执行操作，超限时新操作被丢弃
-     * @private
-     */
-    private _deferredOps: Array<() => void> = [];
-
-    /**
-     * @method _setMapMoving
-     * @description 设置方块移动动画进行中状态（同步维护 CompMap 与 GameData，供其他模块读取）
-     * @param {boolean} flag - 是否正在播放移动动画
-     * @private
-     */
-    private _setMapMoving(flag: boolean): void {
-        this._isShifting = flag;
-        GameData.instance.isMapMoving = flag;
-    }
-
-    /**
-     * @method _pushDeferredOp
-     * @description 入队延迟操作：队列中最多只保留一个待执行操作，已有操作未执行时丢弃新操作
-     * @param {() => void} op - 待执行的延迟操作
-     * @private
-     */
-    private _pushDeferredOp(op: () => void): void {
-        if (this._deferredOps.length > 0) {
-            Logger.warn("延迟操作队列已满，丢弃新操作");
-            return;
-        }
-        this._deferredOps.push(op);
-    }
+    private _pendingMoveCounts: Map<CompCube, number> = new Map();
 
     /**
      * @property {Map<string, number>} _allreadyRemoved
@@ -318,7 +290,7 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method _computeCellPos
-     * @description 获取指定格子的初始像素坐标，未记录时按格子间距与原点推导并回填（动态创建方块、连线绘制用）
+     * @description 获取指定格子的初始像素坐标，未记录时按格子间距推导并回填（动态方块定位、连线绘制用）
      * @param {number} row - 行索引
      * @param {number} col - 列索引
      * @returns {{x: number, y: number, cx: number, cy: number}} 格子初始像素坐标
@@ -368,8 +340,22 @@ export class CompMap extends FGUICompMap {
     }
 
     /**
+     * @method _nullCubeEntry
+     * @description 将指定格子的 _cubeMap 引用置空（仅当该格当前引用为此方块时，避免误清其他方块）
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @param {CompCube} cube - 期望的方块对象
+     * @private
+     */
+    private _nullCubeEntry(row: number, col: number, cube: CompCube): void {
+        if (this._cubeMap[row] && this._cubeMap[row][col] === cube) {
+            this._cubeMap[row][col] = null;
+        }
+    }
+
+    /**
      * @method _removeCubeFromNode
-     * @description 将方块从节点移除（不销毁，保留引用供下一局复用），并清理点击事件、动画、选中态与资源
+     * @description 将方块从节点移除（不销毁，保留引用复用），并清理点击、动画、选中态与资源
      * @param {CompCube} cube - 方块对象
      * @param {number} row - 行索引
      * @param {number} col - 列索引
@@ -385,9 +371,55 @@ export class CompMap extends FGUICompMap {
             cube.removeFromParent();
         }
         // 仅当该格当前引用为此方块时置空，避免误清其他方块
-        if (this._cubeMap[row] && this._cubeMap[row][col] === cube) {
-            this._cubeMap[row][col] = null;
+        this._nullCubeEntry(row, col, cube);
+
+        // 方块移动队列被取消（stopMove 丢弃完成回调）时清理计数，防止 isMapMoving 状态卡死
+        if (this._pendingMoveCounts.delete(cube)) {
+            this._updateMapMoving();
         }
+    }
+
+    /**
+     * @method _applyRemoveWithShift
+     * @description 立即应用一次消除的数据更新：更新地图数据、移除方块坐标引用、并计算出需移动的方块（不播动画）
+     * @param {Point} p1 - 第一个方块坐标
+     * @param {Point} p2 - 第二个方块坐标
+     * @param {CompCube} cube1 - 第一个方块对象
+     * @param {CompCube} cube2 - 第二个方块对象
+     * @returns {ShiftMoveTask[]} 需移动的方块任务数组（数据层已完成移动，动画层待播放）
+     * @private
+     */
+    private _applyRemoveWithShift(p1: Point, p2: Point, cube1: CompCube, cube2: CompCube): ShiftMoveTask[] {
+        // 更新地图数据
+        this._mapManager.removeTiles(p1, p2);
+        this._pathFinder.setMap(this._mapManager.getMap());
+
+        // 更新方块坐标引用（方块暂留节点上播放消除特效，稍后移除；先置空再移位，避免移位冲入的方块被误清）
+        this._unbindCubeClickEvent(cube1);
+        this._unbindCubeClickEvent(cube2);
+        this._nullCubeEntry(p1.row, p1.col, cube1);
+        this._nullCubeEntry(p2.row, p2.col, cube2);
+
+        // 计算消除后需要移动的方块（数据层移动已完成，_cubeMap 同步到数据空间）
+        return this._applyShiftData();
+    }
+
+    /**
+     * @method _finishRemoveVisuals
+     * @description 消除视觉收尾：移除两个方块节点并清理连线（爆炸特效播放完毕后调用）
+     * @param {CompCube} cube1 - 第一个方块对象
+     * @param {CompCube} cube2 - 第二个方块对象
+     * @param {Point} p1 - 第一个方块坐标
+     * @param {Point} p2 - 第二个方块坐标
+     * @private
+     */
+    private _finishRemoveVisuals(cube1: CompCube, cube2: CompCube, p1: Point, p2: Point): void {
+        // 从节点移除方块（保留引用，供下一局复用；内部会取消方块残留的移动队列）
+        this._removeCubeFromNode(cube1, p1.row, p1.col);
+        this._removeCubeFromNode(cube2, p2.row, p2.col);
+
+        // 清理路径线条
+        this._clearPathLines();
     }
 
     /**
@@ -432,11 +464,6 @@ export class CompMap extends FGUICompMap {
         if (GameData.instance.gameStep !== ENUM_GAME_STEP.PLAYING) {
             return;
         }
-
-        // 移动动画播放期间不处理点击（数据与画面处于过渡状态）
-        // if (this._isShifting) {
-        //     return;
-        // }
 
         SoundManager.instance.playSoundEffect("game10002/cubeClick");
 
@@ -536,20 +563,48 @@ export class CompMap extends FGUICompMap {
         const result = this._pathFinder.canConnect(p1, p2);
 
         if (result.canConnect) {
-            // 可以消除，显示路径线条，然后延迟消除
+            // 立即更新地图数据与方块坐标，并计算出消除后需要移动的方块
+            const shiftMoves = this._applyRemoveWithShift(p1, p2, first.cube, second.cube);
+
+            // 记录已经消除的方块坐标，方便服务器返回确认时消费，客户端不再重复消除
+            this._addAllreadyRemoved(p1, p2);
+
+            // 立即播放移动动画（并发消除时新任务追加到对应方块的动画队列，依次执行）
+            this._playShiftMoves(shiftMoves);
+
+            // 显示路径线条与消除特效
             this._showPathLines(result.lines);
             first.cube.UI_SP_ANI.visible = true;
             second.cube.UI_SP_ANI.visible = true;
-            this._unbindCubeClickEvent(first.cube);
-            this._unbindCubeClickEvent(second.cube);
             SpinePlay(first.cube.UI_SP_ANI, "action", false);
             SpinePlay(second.cube.UI_SP_ANI, "action", false);
             !this._readonly && SoundManager.instance.playSoundEffect("game10002/bomb");
             // 清空选中数组
             this._selectedCubes = [];
-            // 延迟0.2秒后执行消除
+
+            Logger.log(`消除方块: (${first.row},${first.col}) 和 (${second.row},${second.col})`);
+
+            // 发送消除请求给服务器
+            GameSocketManager.instance.sendToServer(
+                SprotoClickTiles,
+                {
+                    row1: first.row,
+                    col1: first.col,
+                    row2: second.row,
+                    col2: second.col,
+                },
+                (response: any) => {
+                    if (response && response.code === 0) {
+                        // 服务器返回错误，显示提示
+                        TipsView.showView({ content: response.msg || "消除失败" });
+                    }
+                    // 成功时不处理，客户端自己管理消除逻辑
+                }
+            );
+
+            // 延迟0.2秒后移除方块节点、清理连线（爆炸特效播放完毕）
             this.scheduleOnce(() => {
-                this._removeCubesWithLines(first, second, p1, p2);
+                this._finishRemoveVisuals(first.cube, second.cube, p1, p2);
             }, this._removeDelay);
         } else {
             // 不能消除，取消第一个方块的选中，保留第二个
@@ -621,88 +676,26 @@ export class CompMap extends FGUICompMap {
     }
 
     /**
-     * @method _removeCubesWithLines
-     * @description 消除两个方块并清理线条
-     * @param {Object} first - 第一个选中的方块信息
-     * @param {Object} second - 第二个选中的方块信息
-     * @param {Point} p1 - 第一个方块坐标
-     * @param {Point} p2 - 第二个方块坐标
+     * @method _shiftAndPlay
+     * @description 执行数据层移动（MapManager + PathFinder）并立即播放方块移动动画（并发消除时新任务追加到对应方块的动画队列，依次执行）
      * @private
      */
-    private _removeCubesWithLines(
-        first: { cube: CompCube; row: number; col: number },
-        second: { cube: CompCube; row: number; col: number },
-        p1: Point,
-        p2: Point
-    ): void {
-        // 在MapManager中执行消除
-        this._mapManager.removeTiles(p1, p2);
-
-        // 更新PathFinder的地图数据
-        this._pathFinder.setMap(this._mapManager.getMap());
-
-        // 记录已经消除的方块坐标，方便服务器返回确认时消费，客户端不再重复消除
-        this._addAllreadyRemoved(p1, p2);
-
-        // 从节点移除方块（保留引用，供下一局复用）
-        this._removeCubeFromNode(first.cube, first.row, first.col);
-        this._removeCubeFromNode(second.cube, second.row, second.col);
-
-        // 清理路径线条
-        this._clearPathLines();
-
-        // 消除后剩余方块移动动画
-        this._shiftAndAnimate();
-
-        Logger.log(`消除方块: (${first.row},${first.col}) 和 (${second.row},${second.col})`);
-
-        // 发送消除请求给服务器
-        GameSocketManager.instance.sendToServer(
-            SprotoClickTiles,
-            {
-                row1: first.row,
-                col1: first.col,
-                row2: second.row,
-                col2: second.col,
-            },
-            (response: any) => {
-                if (response && response.code === 0) {
-                    // 服务器返回错误，显示提示
-                    TipsView.showView({ content: response.msg || "消除失败" });
-                }
-                // 成功时不处理，客户端自己管理消除逻辑
-            }
-        );
+    private _shiftAndPlay(): void {
+        this._playShiftMoves(this._applyShiftData());
     }
 
     /**
-     * @method _shiftAndAnimate
-     * @description 消除后执行数据移动（MapManager + PathFinder），并播放方块移动动画（数据与动画均串行处理）
+     * @method _applyShiftData
+     * @description 执行数据层移动（MapManager + PathFinder）并计算方块移动任务（仅更新数据，不播放动画），同时将 _cubeMap 同步到数据空间
+     * @returns {ShiftMoveTask[]} 方块移动任务数组（含方块引用），空数组表示没有方块需要移动
      * @private
      */
-    private _shiftAndAnimate(): void {
-        // 读取移动配置，关闭或随机方向不移动
+    private _applyShiftData(): ShiftMoveTask[] {
         const shiftDir = GameData.instance.shiftDir;
         if (shiftDir <= SHIFT_DIR.RANDOM) {
-            return;
+            return [];
         }
 
-        // 当前动画批次未完成时，累计待处理次数，批次完成后自动继续（延迟处理可保证坐标空间一致）
-        if (this._isShifting) {
-            this._shiftPendingCount++;
-            return;
-        }
-
-        this._doShiftAndAnimate();
-    }
-
-    /**
-     * @method _doShiftAndAnimate
-     * @description 执行一次数据移动与移动动画批次（串行调用，动画全部完成后处理待执行批次）
-     * @private
-     */
-    private _doShiftAndAnimate(): void {
-        const shiftDir = GameData.instance.shiftDir;
         const shiftEdge = GameData.instance.shiftEdge;
 
         // 移动前的地图快照
@@ -715,119 +708,88 @@ export class CompMap extends FGUICompMap {
         this._pathFinder.setMap(this._mapManager.getMap());
 
         // 计算每个方块的移动路径
-        const newMap = this._mapManager.getMap();
-        const moves = computeShiftMoves(oldMap, newMap, shiftDir);
+        const moves = computeShiftMoves(oldMap, this._mapManager.getMap(), shiftDir);
 
-        // 没有方块需要移动，直接处理待执行批次
-        if (moves.length === 0) {
-            this._processShiftPending();
+        // 将 _cubeMap 同步到数据空间（先收集引用再写入，避免移位链中 from/dest 互相覆盖）
+        const shiftMoves: ShiftMoveTask[] = [];
+        const refs = moves.map((move) => this._cubeMap[move.from.row] && this._cubeMap[move.from.row][move.from.col]);
+        moves.forEach((move, i) => {
+            const cube = refs[i];
+            if (!cube) {
+                return;
+            }
+            if (this._cubeMap[move.from.row] && this._cubeMap[move.from.row][move.from.col] === cube) {
+                this._cubeMap[move.from.row][move.from.col] = null;
+            }
+            const last = move.path[move.path.length - 1];
+            if (!this._cubeMap[last.row]) {
+                this._cubeMap[last.row] = [];
+            }
+            this._cubeMap[last.row][last.col] = cube;
+            shiftMoves.push({ move, cube });
+        });
+
+        return shiftMoves;
+    }
+
+    /**
+     * @method _playShiftMoves
+     * @description 播放方块移动任务（数据层已移动，_cubeMap 已在数据空间）：将移动追加到对应方块的动画队列，移动期间不可点击，队列全部完成后重绑点击
+     * @param {ShiftMoveTask[]} shiftMoves - 方块移动任务数组
+     * @private
+     */
+    private _playShiftMoves(shiftMoves: ShiftMoveTask[]): void {
+        if (shiftMoves.length === 0) {
             return;
         }
 
-        this._setMapMoving(true);
+        for (const task of shiftMoves) {
+            const cube = task.cube;
+            // 移动期间不可点击
+            this._unbindCubeClickEvent(cube);
 
-        // 动画前解绑所有参与移动方块的点击事件（需求：动画期间不可点击）
-        for (const move of moves) {
-            const cube = this._cubeMap[move.from.row] && this._cubeMap[move.from.row][move.from.col];
-            if (cube) {
-                this._unbindCubeClickEvent(cube);
-            }
-        }
+            // 统计待完成移动任务数（用于维护 GameData.isMapMoving 状态）
+            this._pendingMoveCounts.set(cube, (this._pendingMoveCounts.get(cube) ?? 0) + 1);
 
-        // 统计本批次动画完成数量，全部完成后处理待执行批次
-        let doneCount = 0;
-        let totalCount = 0;
-
-        for (const move of moves) {
-            const cube = this._cubeMap[move.from.row] && this._cubeMap[move.from.row][move.from.col];
-            if (!cube) {
-                continue;
-            }
-
-            totalCount++;
-            const last = move.path[move.path.length - 1];
+            const last = task.move.path[task.move.path.length - 1];
 
             // 将逐格路径转换为像素坐标目标队列
-            const targets: MoveTarget[] = move.path.map((p) => {
+            const targets: MoveTarget[] = task.move.path.map((p) => {
                 const cellPos = this._getCellPos(p.row, p.col);
                 return { x: cellPos.x, y: cellPos.y, row: p.row, col: p.col };
             });
 
-            // 播放移动动画队列，全部完成后回调
+            // 播放移动动画队列（并发消除时新任务追加到队列尾部，依次执行，动画不交错）
             cube.playMoveQueue(targets, () => {
-                this._onCubeMoveComplete(cube, move.from, last);
-                doneCount++;
-                if (doneCount >= totalCount) {
-                    this._onShiftBatchComplete();
+                // 数据空间 _cubeMap 已在 _applyShiftData 中更新，这里只同步逻辑坐标
+                cube.setGridPos(last.row, last.col);
+
+                // 队列中还有任务（并发消除追加）时保持不可点击，全部完成后再重绑
+                if (!cube.isMoving()) {
+                    this._bindCubeClickEvent(cube, last.row, last.col);
                 }
+
+                // 待完成数递减，全部完成且无其他方块移动时恢复 isMapMoving
+                const count = (this._pendingMoveCounts.get(cube) ?? 1) - 1;
+                if (count <= 0) {
+                    this._pendingMoveCounts.delete(cube);
+                } else {
+                    this._pendingMoveCounts.set(cube, count);
+                }
+                this._updateMapMoving();
             });
         }
 
-        // 参与动画的方块数为0（理论上不会发生，防御性处理）
-        if (totalCount === 0) {
-            this._setMapMoving(false);
-            this._processShiftPending();
-        }
+        this._updateMapMoving();
     }
 
     /**
-     * @method _processShiftPending
-     * @description 处理待执行的移动批次（每处理一次执行一轮移动）
+     * @method _updateMapMoving
+     * @description 同步地图方块移动中状态到 GameData（供道具面板拦截使用道具）
      * @private
      */
-    private _processShiftPending(): void {
-        if (this._shiftPendingCount > 0) {
-            this._shiftPendingCount--;
-            this._doShiftAndAnimate();
-        }
-    }
-
-    /**
-     * @method _onShiftBatchComplete
-     * @description 当前移动动画批次全部完成后，执行延迟操作并处理待执行批次
-     * @private
-     */
-    private _onShiftBatchComplete(): void {
-        this._setMapMoving(false);
-
-        // 执行延迟操作（如服务器确认的消除），操作内部可能启动新的动画批次
-        const ops = this._deferredOps;
-        this._deferredOps = [];
-        for (const op of ops) {
-            op();
-        }
-
-        // 若延迟操作已启动新批次，则等待其完成后再处理待执行批次（保持批次串行）
-        if (!this._isShifting) {
-            this._processShiftPending();
-        }
-    }
-
-    /**
-     * @method _onCubeMoveComplete
-     * @description 单个方块移动动画队列全部完成后的回调：以新坐标更新 _cubeMap，并重新绑定点击事件
-     * @param {CompCube} cube - 移动完成的方块
-     * @param {Point} from - 移动前坐标
-     * @param {Point} to - 移动后坐标
-     * @private
-     */
-    private _onCubeMoveComplete(cube: CompCube, from: Point, to: Point): void {
-        // 清空旧位置引用
-        if (this._cubeMap[from.row] && this._cubeMap[from.row][from.col] === cube) {
-            this._cubeMap[from.row][from.col] = null;
-        }
-
-        // 写入新位置引用
-        if (!this._cubeMap[to.row]) {
-            this._cubeMap[to.row] = [];
-        }
-        this._cubeMap[to.row][to.col] = cube;
-
-        // 同步方块逻辑坐标
-        cube.setGridPos(to.row, to.col);
-
-        // 重新绑定点击事件（新坐标）
-        this._bindCubeClickEvent(cube, to.row, to.col);
+    private _updateMapMoving(): void {
+        GameData.instance.isMapMoving = this._pendingMoveCounts.size > 0;
     }
 
     /**
@@ -837,18 +799,11 @@ export class CompMap extends FGUICompMap {
      * @param {Point} p2 - 第二个方块坐标
      */
     removeTilesWithShift(p1: Point, p2: Point): void {
-        // 移动动画播放期间延迟处理，避免 _cubeMap 坐标错位
-        if (this._isShifting) {
-            this._pushDeferredOp(() => {
-                this.removeTilesWithShift(p1, p2);
-            });
-            return;
-        }
         this.hideCube(p1.row, p1.col);
         this.hideCube(p2.row, p2.col);
         this._mapManager.removeTiles(p1, p2);
         this._pathFinder.setMap(this._mapManager.getMap());
-        this._shiftAndAnimate();
+        this._shiftAndPlay();
     }
 
     /**
@@ -857,9 +812,9 @@ export class CompMap extends FGUICompMap {
      * @private
      */
     private _resetAllCubes(): void {
-        // 清空移动动画队列与状态（新一局开始，丢弃未播放的移动批次）
-        this._setMapMoving(false);
-        this._shiftPendingCount = 0;
+        // 清空移动动画队列与状态（新一局开始，丢弃未播放的移动任务）
+        this._pendingMoveCounts.clear();
+        GameData.instance.isMapMoving = false;
 
         // 停止所有移动动画并重置位置、解除点击事件（已从节点移除的方块重新挂回）
         for (const cube of this._allCubes) {
@@ -1197,20 +1152,12 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method removeTilesWithAnimation
-     * @description 服务器确认自己消除时，执行消除动画（连线 + 特效 + 隐藏方块），不发送网络请求
+     * @description 服务器确认消除时，立即更新地图数据与方块坐标、计算出要移动的方块，再执行消除动画，不发送网络请求
      * @param {Point} p1 - 第一个方块坐标
      * @param {Point} p2 - 第二个方块坐标
      * @param {LineSegment[]} lines - 连接路径
      */
     removeTilesWithAnimation(p1: Point, p2: Point, lines: LineSegment[]): void {
-        // 移动动画播放期间延迟处理，避免 _cubeMap 坐标错位
-        if (this._isShifting) {
-            this._pushDeferredOp(() => {
-                this.removeTilesWithAnimation(p1, p2, lines);
-            });
-            return;
-        }
-
         const firstCube = this.getCube(p1.row, p1.col);
         const secondCube = this.getCube(p2.row, p2.col);
 
@@ -1219,6 +1166,13 @@ export class CompMap extends FGUICompMap {
 
         this._clearSelection();
 
+        // 立即更新地图数据与方块坐标，并计算出消除后需要移动的方块
+        const shiftMoves = this._applyRemoveWithShift(p1, p2, firstCube, secondCube);
+
+        // 立即播放移动动画（并发消除时新任务追加到对应方块的动画队列，依次执行）
+        this._playShiftMoves(shiftMoves);
+
+        // 显示路径线条与消除特效
         this._showPathLines(lines);
 
         firstCube.UI_SP_ANI.visible = true;
@@ -1227,43 +1181,10 @@ export class CompMap extends FGUICompMap {
         SpinePlay(secondCube.UI_SP_ANI, "action", false);
         SoundManager.instance.playSoundEffect("game10002/bomb");
 
+        // 延迟0.2秒后移除方块节点、清理连线（爆炸特效播放完毕）
         this.scheduleOnce(() => {
-            // 延迟执行期间可能开始了移动动画批次，此时需要延迟处理，避免坐标错位
-            if (this._isShifting) {
-                this._pushDeferredOp(() => {
-                    this._finishRemoveTilesWithAnimation(p1, p2);
-                });
-                return;
-            }
-            this._finishRemoveTilesWithAnimation(p1, p2);
+            this._finishRemoveVisuals(firstCube, secondCube, p1, p2);
         }, this._removeDelay);
-    }
-
-    /**
-     * @method _finishRemoveTilesWithAnimation
-     * @description 消除动画延迟后真正执行消除与数据移动
-     * @param {Point} p1 - 第一个方块坐标
-     * @param {Point} p2 - 第二个方块坐标
-     * @private
-     */
-    private _finishRemoveTilesWithAnimation(p1: Point, p2: Point): void {
-        // 重新按坐标获取方块，避免延迟期间方块已移动导致引用错位
-        const firstCube = this.getCube(p1.row, p1.col);
-        const secondCube = this.getCube(p2.row, p2.col);
-        if (!firstCube || !secondCube) return;
-        if (!firstCube.visible || !secondCube.visible) return;
-
-        this._mapManager.removeTiles(p1, p2);
-        this._pathFinder.setMap(this._mapManager.getMap());
-
-        // 从节点移除方块（保留引用，供下一局复用）
-        this._removeCubeFromNode(firstCube, p1.row, p1.col);
-        this._removeCubeFromNode(secondCube, p2.row, p2.col);
-
-        this._clearPathLines();
-
-        // 消除后剩余方块移动动画
-        this._shiftAndAnimate();
     }
 
     /**
