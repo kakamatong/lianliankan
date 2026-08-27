@@ -43,7 +43,7 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
-        shiftDir: 4,
+        shiftDir: 2,
         shiftEdge: 2,
     },
     {
