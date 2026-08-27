@@ -21,10 +21,17 @@ import { SoundManager } from "@frameworks/SoundManager";
 export class CompMap extends FGUICompMap {
     /**
      * @property {CompCube[][]} _cubeMap
-     * @description 存储所有方块的二维数组
+     * @description 存储所有方块的二维数组（从节点移除的方块对应项为 null）
      * @private
      */
     private _cubeMap: CompCube[][] = [];
+
+    /**
+     * @property {CompCube[]} _allCubes
+     * @description 所有方块引用表（无论是否挂在节点上），从节点移除的方块保留在此，供下一局复用
+     * @private
+     */
+    private _allCubes: CompCube[] = [];
 
     /**
      * @property {Array<Array<{x: number, y: number, cx: number, cy: number}>>} _cellPositions
@@ -46,6 +53,34 @@ export class CompMap extends FGUICompMap {
      * @private
      */
     private _cols: number = 0;
+
+    /**
+     * @property {number} _cellW
+     * @description 格子横向间距（像素），由初始布局中相邻格子推导，用于动态创建方块时定位
+     * @private
+     */
+    private _cellW: number = 0;
+
+    /**
+     * @property {number} _cellH
+     * @description 格子纵向间距（像素），由初始布局中相邻格子推导，用于动态创建方块时定位
+     * @private
+     */
+    private _cellH: number = 0;
+
+    /**
+     * @property {number} _originX
+     * @description 格子 (0,0) 的初始像素 x 坐标，用于动态创建方块时定位
+     * @private
+     */
+    private _originX: number = 0;
+
+    /**
+     * @property {number} _originY
+     * @description 格子 (0,0) 的初始像素 y 坐标，用于动态创建方块时定位
+     * @private
+     */
+    private _originY: number = 0;
 
     /**
      * @property {MapManager} _mapManager
@@ -192,6 +227,10 @@ export class CompMap extends FGUICompMap {
         // 清空现有数据
         this._cubeMap = [];
         this._cellPositions = [];
+        this._allCubes = [];
+
+        const nums = this.numChildren;
+        Logger.log(`CompMap 初始化方块，子节点数量: ${nums}`);
 
         // 遍历所有子节点，提取 CUTE_X_Y 格式的方块
         for (let i = 0; i < this.numChildren; i++) {
@@ -210,8 +249,9 @@ export class CompMap extends FGUICompMap {
                         this._cellPositions[row] = [];
                     }
 
-                    // 存储方块引用
+                    // 存储方块引用（同时记录到全量表中，供从节点移除后复用）
                     this._cubeMap[row][col] = child;
+                    this._allCubes.push(child);
 
                     // 记录格子初始像素坐标（布局坐标，不随方块移动改变；x/y 为左上角，cx/cy 为格子中心）
                     this._cellPositions[row][col] = {
@@ -233,6 +273,21 @@ export class CompMap extends FGUICompMap {
                 }
             }
         }
+
+        // 根据相邻格子推导格子间距与原点坐标（动态创建方块时定位用）
+        const p00 = this._cellPositions[0] && this._cellPositions[0][0];
+        const p01 = this._cellPositions[0] && this._cellPositions[0][1];
+        const p10 = this._cellPositions[1] && this._cellPositions[1][0];
+        if (p00) {
+            this._originX = p00.x;
+            this._originY = p00.y;
+        }
+        if (p00 && p01) {
+            this._cellW = p01.x - p00.x;
+        }
+        if (p00 && p10) {
+            this._cellH = p10.y - p00.y;
+        }
     }
 
     /**
@@ -244,10 +299,8 @@ export class CompMap extends FGUICompMap {
      * @private
      */
     private _getCellPos(row: number, col: number): { x: number; y: number } {
-        if (this._cellPositions[row] && this._cellPositions[row][col]) {
-            return this._cellPositions[row][col];
-        }
-        return { x: 0, y: 0 };
+        const pos = this._computeCellPos(row, col);
+        return { x: pos.x, y: pos.y };
     }
 
     /**
@@ -259,11 +312,35 @@ export class CompMap extends FGUICompMap {
      * @private
      */
     private _getCellCenter(row: number, col: number): { x: number; y: number } {
+        const pos = this._computeCellPos(row, col);
+        return { x: pos.cx, y: pos.cy };
+    }
+
+    /**
+     * @method _computeCellPos
+     * @description 获取指定格子的初始像素坐标，未记录时按格子间距与原点推导并回填（动态创建方块、连线绘制用）
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @returns {{x: number, y: number, cx: number, cy: number}} 格子初始像素坐标
+     * @private
+     */
+    private _computeCellPos(row: number, col: number): { x: number; y: number; cx: number; cy: number } {
         if (this._cellPositions[row] && this._cellPositions[row][col]) {
-            const pos = this._cellPositions[row][col];
-            return { x: pos.cx, y: pos.cy };
+            return this._cellPositions[row][col];
         }
-        return { x: 0, y: 0 };
+
+        // 按格子间距与原点推导（间距未推导出时回退为方块宽高）
+        const cellW = this._cellW || (this._allCubes[0] ? this._allCubes[0].width : 0);
+        const cellH = this._cellH || (this._allCubes[0] ? this._allCubes[0].height : 0);
+        const x = this._originX + col * cellW;
+        const y = this._originY + row * cellH;
+
+        const pos = { x, y, cx: x + cellW / 2, cy: y + cellH / 2 };
+        if (!this._cellPositions[row]) {
+            this._cellPositions[row] = [];
+        }
+        this._cellPositions[row][col] = pos;
+        return pos;
     }
 
     /**
@@ -288,6 +365,53 @@ export class CompMap extends FGUICompMap {
      */
     private _unbindCubeClickEvent(cube: CompCube): void {
         cube.clearClick();
+    }
+
+    /**
+     * @method _removeCubeFromNode
+     * @description 将方块从节点移除（不销毁，保留引用供下一局复用），并清理点击事件、动画、选中态与资源
+     * @param {CompCube} cube - 方块对象
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @private
+     */
+    private _removeCubeFromNode(cube: CompCube, row: number, col: number): void {
+        this._unbindCubeClickEvent(cube);
+        cube.stopMove();
+        cube.ctrl_selected.selectedIndex = 0;
+        cube.UI_LOADER_ICOM.url = "";
+        cube.UI_SP_ANI.visible = false;
+        if (cube.parent) {
+            cube.removeFromParent();
+        }
+        // 仅当该格当前引用为此方块时置空，避免误清其他方块
+        if (this._cubeMap[row] && this._cubeMap[row][col] === cube) {
+            this._cubeMap[row][col] = null;
+        }
+    }
+
+    /**
+     * @method _reattachCube
+     * @description 从全量表中查找已被移除且网格坐标相同的方块并重新挂回节点
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @returns {CompCube | null} 重新挂回的方块，未找到返回 null
+     * @private
+     */
+    private _reattachCube(row: number, col: number): CompCube | null {
+        for (const cube of this._allCubes) {
+            if (!cube.parent && cube.getRow() === row && cube.getCol() === col) {
+                this.addChild(cube);
+                cube.visible = true;
+                cube.UI_SP_ANI.visible = false;
+                if (!this._cubeMap[row]) {
+                    this._cubeMap[row] = [];
+                }
+                this._cubeMap[row][col] = cube;
+                return cube;
+            }
+        }
+        return null;
     }
 
     /**
@@ -520,14 +644,9 @@ export class CompMap extends FGUICompMap {
         // 记录已经消除的方块坐标，方便服务器返回确认时消费，客户端不再重复消除
         this._addAllreadyRemoved(p1, p2);
 
-        // 隐藏方块（重置为初始状态）
-        first.cube.visible = false;
-        first.cube.ctrl_selected.selectedIndex = 0;
-        first.cube.UI_LOADER_ICOM.url = "";
-
-        second.cube.visible = false;
-        second.cube.ctrl_selected.selectedIndex = 0;
-        second.cube.UI_LOADER_ICOM.url = "";
+        // 从节点移除方块（保留引用，供下一局复用）
+        this._removeCubeFromNode(first.cube, first.row, first.col);
+        this._removeCubeFromNode(second.cube, second.row, second.col);
 
         // 清理路径线条
         this._clearPathLines();
@@ -742,14 +861,14 @@ export class CompMap extends FGUICompMap {
         this._setMapMoving(false);
         this._shiftPendingCount = 0;
 
-        // 停止所有移动动画并重置位置、解除点击事件
-        for (let i = 0; i < this.numChildren; i++) {
-            const child = this.getChildAt(i) as CompCube;
-            if (child && child.name && child.name.startsWith("CUTE_")) {
-                child.stopMove();
-                child.resetPosition();
-                this._unbindCubeClickEvent(child);
+        // 停止所有移动动画并重置位置、解除点击事件（已从节点移除的方块重新挂回）
+        for (const cube of this._allCubes) {
+            if (!cube.parent) {
+                this.addChild(cube);
             }
+            cube.stopMove();
+            cube.resetPosition();
+            this._unbindCubeClickEvent(cube);
         }
 
         // 重建 _cubeMap 并重新绑定点击事件（按名称初始坐标）
@@ -792,18 +911,80 @@ export class CompMap extends FGUICompMap {
 
                 if (cube) {
                     if (resId === 0) {
-                        // 空方块，隐藏或清空
-                        cube.visible = false;
-                        cube.UI_LOADER_ICOM.url = "";
+                        // 空方块，从节点移除
+                        this._removeCubeFromNode(cube, row, col);
                     } else {
                         // 设置资源路径，格式: ui://resPath/80_resId
                         cube.visible = true;
                         cube.UI_SP_ANI.visible = false;
                         cube.UI_LOADER_ICOM.url = `ui://${resPath}/80_${resId}`;
                     }
+                } else if (resId !== 0) {
+                    // 布局中不存在该格（地图比布局大），动态创建方块
+                    const newCube = this.createCube(row, col);
+                    if (newCube) {
+                        newCube.UI_SP_ANI.visible = false;
+                        newCube.UI_LOADER_ICOM.url = `ui://${resPath}/80_${resId}`;
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * @method createCube
+     * @description 创建指定格子的方块（地图比布局大时动态补充，供下一局使用），优先复用已被移除且网格坐标相同的方块，否则通过 FGUI 包新建
+     * @param {number} row - 行索引
+     * @param {number} col - 列索引
+     * @returns {CompCube | null} 方块对象，创建失败返回 null
+     */
+    createCube(row: number, col: number): CompCube | null {
+        // 该格已有方块，直接返回
+        const exist = this.getCube(row, col);
+        if (exist) {
+            return exist;
+        }
+
+        // 优先复用已被移除且网格坐标相同的方块
+        const reused = this._reattachCube(row, col);
+        if (reused) {
+            return reused;
+        }
+
+        // 从 FGUI 包创建新方块
+        const cube = fgui.UIPackage.createObject("game10002", "CompCube") as CompCube;
+        if (!cube) {
+            Logger.error(`创建方块失败: (${row}, ${col})`);
+            return null;
+        }
+
+        cube.name = `CUTE_${row}_${col}`;
+
+        // 按格子像素坐标定位（布局未覆盖的格子按间距推导）
+        const pos = this._computeCellPos(row, col);
+        cube.x = pos.x;
+        cube.y = pos.y;
+
+        // 记录初始坐标，方便一局结束后重置
+        cube.setInitPosition(row, col);
+
+        cube.visible = true;
+        cube.UI_SP_ANI.visible = false;
+
+        // 挂到节点并登记
+        this.addChild(cube);
+        this._bindCubeClickEvent(cube, row, col);
+        this._allCubes.push(cube);
+        if (!this._cubeMap[row]) {
+            this._cubeMap[row] = [];
+        }
+        this._cubeMap[row][col] = cube;
+
+        // 更新地图尺寸
+        if (row >= this._rows) this._rows = row + 1;
+        if (col >= this._cols) this._cols = col + 1;
+
+        return cube;
     }
 
     /**
@@ -829,24 +1010,32 @@ export class CompMap extends FGUICompMap {
      * @param {string} resPath - 资源前缀路径
      */
     setCube(row: number, col: number, resId: number, resPath: string): void {
-        const cube = this.getCube(row, col);
+        let cube = this.getCube(row, col);
         if (!cube) {
-            Logger.log(`方块位置 [${row}, ${col}] 不存在`);
-            return;
+            if (resId === 0) {
+                Logger.log(`方块位置 [${row}, ${col}] 不存在`);
+                return;
+            }
+            // 布局中不存在该格，动态创建方块
+            cube = this.createCube(row, col);
+            if (!cube) {
+                return;
+            }
         }
 
         if (resId === 0) {
-            cube.visible = false;
-            cube.UI_LOADER_ICOM.url = "";
+            // 空方块，从节点移除
+            this._removeCubeFromNode(cube, row, col);
         } else {
             cube.visible = true;
+            cube.UI_SP_ANI.visible = false;
             cube.UI_LOADER_ICOM.url = `ui://${resPath}/80_${resId}`;
         }
     }
 
     /**
      * @method clearMap
-     * @description 清空整个地图，隐藏所有方块
+     * @description 清空整个地图，将所有方块从节点移除
      */
     clearMap(): void {
         // 清空选中状态和路径线条
@@ -856,14 +1045,9 @@ export class CompMap extends FGUICompMap {
         // 重置所有方块到初始位置
         this._resetAllCubes();
 
-        for (let row = 0; row < this._rows; row++) {
-            for (let col = 0; col < this._cols; col++) {
-                const cube = this.getCube(row, col);
-                if (cube) {
-                    cube.visible = false;
-                    cube.UI_LOADER_ICOM.url = "";
-                }
-            }
+        // 将所有方块从节点移除
+        for (const cube of this._allCubes) {
+            this._removeCubeFromNode(cube, cube.getRow(), cube.getCol());
         }
 
         // 重置MapManager
@@ -872,20 +1056,20 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method hideCube
-     * @description 隐藏指定位置的方块
+     * @description 移除指定位置的方块（从节点移除，不销毁，下一局可复用）
      * @param {number} row - 行索引
      * @param {number} col - 列索引
      */
     hideCube(row: number, col: number): void {
         const cube = this.getCube(row, col);
         if (cube) {
-            cube.visible = false;
+            this._removeCubeFromNode(cube, row, col);
         }
     }
 
     /**
      * @method showCube
-     * @description 显示指定位置的方块
+     * @description 显示指定位置的方块（已被移除的方块重新挂回节点）
      * @param {number} row - 行索引
      * @param {number} col - 列索引
      */
@@ -893,7 +1077,10 @@ export class CompMap extends FGUICompMap {
         const cube = this.getCube(row, col);
         if (cube) {
             cube.visible = true;
+            return;
         }
+        // 方块已从节点移除，从全量表中按网格坐标查找并重新挂回
+        this._reattachCube(row, col);
     }
 
     /**
@@ -1069,13 +1256,9 @@ export class CompMap extends FGUICompMap {
         this._mapManager.removeTiles(p1, p2);
         this._pathFinder.setMap(this._mapManager.getMap());
 
-        firstCube.visible = false;
-        firstCube.ctrl_selected.selectedIndex = 0;
-        firstCube.UI_LOADER_ICOM.url = "";
-
-        secondCube.visible = false;
-        secondCube.ctrl_selected.selectedIndex = 0;
-        secondCube.UI_LOADER_ICOM.url = "";
+        // 从节点移除方块（保留引用，供下一局复用）
+        this._removeCubeFromNode(firstCube, p1.row, p1.col);
+        this._removeCubeFromNode(secondCube, p2.row, p2.col);
 
         this._clearPathLines();
 
