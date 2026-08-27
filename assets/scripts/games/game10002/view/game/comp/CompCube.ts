@@ -136,12 +136,34 @@ export class CompCube extends FGUICompCube {
     private _onMoveFrameHandler: () => void = null;
 
     /**
+     * @property {number} _startDelay
+     * @description 空闲方块首次开始移动前的额外延迟（秒），用于等待消除特效播放
+     * @private
+     */
+    private readonly _startDelay: number = 0.1;
+
+    /**
+     * @property {() => void} _onStartMoveHandler
+     * @description 绑定 this 的延迟启动移动回调（空闲时延迟 _startDelay 秒后再真正开始移动）
+     * @private
+     */
+    private _onStartMoveHandler: () => void = null;
+
+    /**
+     * @property {number} _startDelayElapsed
+     * @description 延迟启动移动已等待的时长（秒）
+     * @private
+     */
+    private _startDelayElapsed: number = 0;
+
+    /**
      * @method onConstruct
      * @description 组件构造完成时的初始化
      */
     protected onConstruct(): void {
         super.onConstruct();
         this._onMoveFrameHandler = this._onMoveFrame.bind(this);
+        this._onStartMoveHandler = this._onStartMove.bind(this);
     }
 
     /**
@@ -224,11 +246,16 @@ export class CompCube extends FGUICompCube {
         if (this._onMoveFrameHandler) {
             this.unschedule(this._onMoveFrameHandler);
         }
+        // 取消未开始的延迟启动（防止方块被移除后延迟回调仍触发移动）
+        if (this._onStartMoveHandler) {
+            this.unschedule(this._onStartMoveHandler);
+        }
+        this._startDelayElapsed = 0;
     }
 
     /**
      * @method playMoveQueue
-     * @description 播放移动动画队列，队列中的目标点会逐个播放（可多次调用，追加到队列尾部）
+     * @description 播放移动动画队列，队列中的目标点会逐个播放（可多次调用，追加到队列尾部）；当前未在移动时额外延迟 _startDelay 秒再开始
      * @param {MoveTarget[]} targets - 移动目标点数组（按播放顺序）
      * @param {() => void} onAllDone - 该批次队列全部播放完成后的回调
      */
@@ -239,8 +266,26 @@ export class CompCube extends FGUICompCube {
         this._moveQueue.push(...targets);
 
         if (!this._moving) {
-            this._startNextMove();
+            // 空闲时额外延迟 _startDelay 秒再开始移动（期间 _moving 置 true，新任务追加到队列尾部，依次执行）
+            this._moving = true;
+            this._startDelayElapsed = 0;
+            this.schedule(this._onStartMoveHandler, 0);
         }
+    }
+
+    /**
+     * @method _onStartMove
+     * @description 延迟启动移动：等待 _startDelay 秒后真正开始播放队列
+     * @param {number} dt - 帧间隔（秒），由调度器传入
+     * @private
+     */
+    private _onStartMove(dt?: number): void {
+        this._startDelayElapsed += dt ?? 0;
+        if (this._startDelayElapsed < this._startDelay) {
+            return;
+        }
+        this.unschedule(this._onStartMoveHandler);
+        this._startNextMove();
     }
 
     /**
