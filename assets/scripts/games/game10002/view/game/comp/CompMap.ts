@@ -140,7 +140,7 @@ export class CompMap extends FGUICompMap {
      * @description 消除延迟时间（秒）
      * @private
      */
-    private readonly _removeDelay: number = 0.2;
+    private readonly _removeDelay: number = 0.3;
 
     /**
      * @property {number} _waitIdleInterval
