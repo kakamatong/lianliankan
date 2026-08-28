@@ -53,6 +53,8 @@ export class GameData {
     private _shiftEdge: number = 2;
     /** 地图方块是否正在移动（移动动画批次进行中），供其他模块读取 */
     private _isMapMoving: boolean = false;
+    /** 开局入场动画是否播放中（initMap 整图入场动画期间置 true），供其他模块读取拦截操作 */
+    private _isMapEntering: boolean = false;
 
     /**
      * @description 是否是本地游戏
@@ -104,6 +106,7 @@ export class GameData {
         this._shiftDir = SHIFT_DIR.OFF;
         this._shiftEdge = 2;
         this._isMapMoving = false;
+        this._isMapEntering = false;
     }
 
     get gameStep(): ENUM_GAME_STEP {
@@ -459,5 +462,21 @@ export class GameData {
      */
     get isMapMoving(): boolean {
         return this._isMapMoving;
+    }
+
+    /**
+     * @description 设置开局入场动画是否播放中
+     * @param {boolean} flag - 是否播放中
+     */
+    set isMapEntering(flag: boolean) {
+        this._isMapEntering = flag;
+    }
+
+    /**
+     * @description 获取开局入场动画是否播放中
+     * @returns {boolean} 是否播放中
+     */
+    get isMapEntering(): boolean {
+        return this._isMapEntering;
     }
 }

@@ -157,6 +157,13 @@ export class CompMap extends FGUICompMap {
     private readonly _enterRowInterval: number = 0.05;
 
     /**
+     * @property {number} _enterAnimDuration
+     * @description 入场过渡动画单次播放总时长（秒），与 FGUI enter 过渡一致（9 帧，24fps 约 0.375s），用于恢复 GameData.isMapEntering 状态
+     * @private
+     */
+    private readonly _enterAnimDuration: number = 0.4;
+
+    /**
      * @property {Map<CompCube, number>} _pendingMoveCounts
      * @description 各方块待完成的移动任务计数（并发消除时同一方块可能入队多个移动），用于维护 GameData.isMapMoving 状态；方块移动被取消（stopMove）时同步清理，防止计数泄漏
      * @private
@@ -822,6 +829,7 @@ export class CompMap extends FGUICompMap {
         // 清空移动动画队列与状态（新一局开始，丢弃未播放的移动任务）
         this._pendingMoveCounts.clear();
         GameData.instance.isMapMoving = false;
+        GameData.instance.isMapEntering = false;
 
         // 停止所有移动动画并重置位置、解除点击事件（已从节点移除的方块重新挂回）
         for (const cube of this._allCubes) {
@@ -897,10 +905,13 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method _playEnterAnimation
-     * @description 播放整图入场动画：先将所有在节点上的方块隐藏，再按行从上到下逐行显示并播放 enter 过渡动画，行间隔 _enterRowInterval 秒；initMap 开头的 unscheduleAllCallbacks 会取消未播完的延时回调，中断安全
+     * @description 播放整图入场动画：先将所有在节点上的方块隐藏，再按行从上到下逐行显示并播放 enter 过渡动画，行间隔 _enterRowInterval 秒；initMap 开头的 unscheduleAllCallbacks 会取消未播完的延时回调，中断安全；播放期间置 GameData.isMapEntering 为 true，最后一行入场动画结束后恢复
      * @private
      */
     private _playEnterAnimation(): void {
+        // 开局入场动画播放中，供道具面板等模块拦截操作
+        GameData.instance.isMapEntering = true;
+
         // 按行收集当前在节点上的方块（空方块已被移除），并先全部隐藏
         const rowCubes: CompCube[][] = [];
         for (let row = 0; row < this._rows; row++) {
@@ -924,6 +935,15 @@ export class CompMap extends FGUICompMap {
                     cube.playEnter();
                 }
             }, i * this._enterRowInterval);
+        }
+
+        // 最后一行开始播放入场动画后再等待 _enterAnimDuration 秒，恢复状态（无方块时立即恢复）
+        if (rowCubes.length > 0) {
+            this.scheduleOnce(() => {
+                GameData.instance.isMapEntering = false;
+            }, (rowCubes.length - 1) * this._enterRowInterval + this._enterAnimDuration);
+        } else {
+            GameData.instance.isMapEntering = false;
         }
     }
 

@@ -189,6 +189,10 @@ export class CompPropPanel extends FGUICompPropPanel {
      * 使用道具: 打乱
      */
     onBtnUpset(): void {
+        // 开局入场动画播放中，禁止使用道具
+        if (GameData.instance.isMapEntering) {
+            return;
+        }
         if (this.checkCooldown()) {
             return;
         }
@@ -216,6 +220,10 @@ export class CompPropPanel extends FGUICompPropPanel {
      * 使用道具： 自动移除
      */
     onBtnAutoRemove(): void {
+        // 开局入场动画播放中，禁止使用道具
+        if (GameData.instance.isMapEntering) {
+            return;
+        }
         if (this.checkCooldown()) {
             return;
         }

@@ -106,7 +106,7 @@ export function generateRandomMap(): { map: number[][]; design: (typeof MAP_DESI
     let index = Math.floor(Math.random() * MAP_DESIGN_CONFIG.length);
     Logger.log(`随机选择地图设计索引: ${index}`);
     //index = MAP_DESIGN_CONFIG.length - 1
-    const design = MAP_DESIGN_CONFIG[index];
+    const design = MAP_DESIGN_CONFIG[0];
     const map = generateFromDesign(design.map, design.defaultRows, design.defaultCols, design.iconTypes);
     return { map, design };
 }
