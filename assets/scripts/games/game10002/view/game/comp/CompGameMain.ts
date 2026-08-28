@@ -216,6 +216,8 @@ export class CompGameMain extends FGUICompGameMain {
     onSvrMapShuffled(data: SprotoMapShuffled.Request): void {
         const selfSeat = GameData.instance.getSelfSeat();
         if (data.seat === selfSeat) {
+            // 置为待打乱状态：若地图动画播放中，则延迟到动画结束后再执行打乱
+            GameData.instance.isMapShufflePending = true;
             // 处理自己的地图打乱逻辑
             TipsView.showView({ content: `地图已自动打乱` });
         }
@@ -600,7 +602,17 @@ export class CompGameMain extends FGUICompGameMain {
                     compMap.visible = true;
                     const scale = 1.0;
                     compMap.node.setScale(scale, scale);
-                    compMap.initMap(map, "resFruit");
+
+                    // 打乱地图执行：地图动画播放中则延迟到动画结束后再打乱（执行后置回待打乱状态）
+                    const doInit = () => {
+                        compMap.initMap(map, "resFruit");
+                        GameData.instance.isMapShufflePending = false;
+                    };
+                    if (GameData.instance.isMapShufflePending && compMap.isAnimating()) {
+                        compMap.waitUntilIdle(doInit);
+                    } else {
+                        doInit();
+                    }
                 }
             } else {
                 // 其他玩家的地图，渲染到对应的小地图

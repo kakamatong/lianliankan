@@ -55,6 +55,10 @@ export class GameData {
     private _isMapMoving: boolean = false;
     /** 开局入场动画是否播放中（initMap 整图入场动画期间置 true），供其他模块读取拦截操作 */
     private _isMapEntering: boolean = false;
+    /** 爆炸动画是否播放中（消除方块 Spine 爆炸特效期间置 true），供其他模块读取拦截操作 */
+    private _isMapExploding: boolean = false;
+    /** 是否待执行地图打乱（收到打乱通知时置 true，打乱执行后置回 false），供打乱延迟执行使用 */
+    private _isMapShufflePending: boolean = false;
 
     /**
      * @description 是否是本地游戏
@@ -107,6 +111,8 @@ export class GameData {
         this._shiftEdge = 2;
         this._isMapMoving = false;
         this._isMapEntering = false;
+        this._isMapExploding = false;
+        this._isMapShufflePending = false;
     }
 
     get gameStep(): ENUM_GAME_STEP {
@@ -478,5 +484,37 @@ export class GameData {
      */
     get isMapEntering(): boolean {
         return this._isMapEntering;
+    }
+
+    /**
+     * @description 设置爆炸动画是否播放中
+     * @param {boolean} flag - 是否播放中
+     */
+    set isMapExploding(flag: boolean) {
+        this._isMapExploding = flag;
+    }
+
+    /**
+     * @description 获取爆炸动画是否播放中
+     * @returns {boolean} 是否播放中
+     */
+    get isMapExploding(): boolean {
+        return this._isMapExploding;
+    }
+
+    /**
+     * @description 设置是否待执行地图打乱
+     * @param {boolean} flag - 是否待执行打乱
+     */
+    set isMapShufflePending(flag: boolean) {
+        this._isMapShufflePending = flag;
+    }
+
+    /**
+     * @description 获取是否待执行地图打乱
+     * @returns {boolean} 是否待执行打乱
+     */
+    get isMapShufflePending(): boolean {
+        return this._isMapShufflePending;
     }
 }

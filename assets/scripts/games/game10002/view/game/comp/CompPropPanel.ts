@@ -193,6 +193,10 @@ export class CompPropPanel extends FGUICompPropPanel {
         if (GameData.instance.isMapEntering) {
             return;
         }
+        // 待执行打乱期间，禁止使用道具
+        if (GameData.instance.isMapShufflePending) {
+            return;
+        }
         if (this.checkCooldown()) {
             return;
         }
@@ -222,6 +226,10 @@ export class CompPropPanel extends FGUICompPropPanel {
     onBtnAutoRemove(): void {
         // 开局入场动画播放中，禁止使用道具
         if (GameData.instance.isMapEntering) {
+            return;
+        }
+        // 待执行打乱期间，禁止使用道具
+        if (GameData.instance.isMapShufflePending) {
             return;
         }
         if (this.checkCooldown()) {

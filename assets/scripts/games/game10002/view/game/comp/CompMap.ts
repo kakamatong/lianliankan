@@ -143,6 +143,20 @@ export class CompMap extends FGUICompMap {
     private readonly _removeDelay: number = 0.2;
 
     /**
+     * @property {number} _waitIdleInterval
+     * @description 等待地图空闲的轮询间隔（秒），用于打乱延迟执行时检测动画是否全部播放完毕
+     * @private
+     */
+    private readonly _waitIdleInterval: number = 0.05;
+
+    /**
+     * @property {number} _waitIdleMaxTime
+     * @description 等待地图空闲的最大时长（秒），超过后强制回调，防止状态异常导致打乱永远不执行
+     * @private
+     */
+    private readonly _waitIdleMaxTime: number = 3;
+
+    /**
      * @property {boolean} _readonly
      * @description 是否只读模式（仅显示，不可交互）
      * @private
@@ -169,6 +183,13 @@ export class CompMap extends FGUICompMap {
      * @private
      */
     private _pendingMoveCounts: Map<CompCube, number> = new Map();
+
+    /**
+     * @property {Set<CompCube>} _explodingCubes
+     * @description 爆炸特效播放中的方块集合（消除后延迟移除节点前），用于维护 GameData.isMapExploding 状态；方块被提前移除时同步清理，防止状态卡死
+     * @private
+     */
+    private _explodingCubes: Set<CompCube> = new Set();
 
     /**
      * @property {Map<string, number>} _allreadyRemoved
@@ -391,6 +412,11 @@ export class CompMap extends FGUICompMap {
         if (this._pendingMoveCounts.delete(cube)) {
             this._updateMapMoving();
         }
+
+        // 方块爆炸特效被提前中断（移除节点）时清理记录，防止 isMapExploding 状态卡死
+        if (this._explodingCubes.delete(cube)) {
+            this._updateExploding();
+        }
     }
 
     /**
@@ -471,6 +497,11 @@ export class CompMap extends FGUICompMap {
     private _onCubeClick(cube: CompCube, row: number, col: number): void {
         // 只读模式下不处理点击事件
         if (this._readonly) {
+            return;
+        }
+
+        // 待执行打乱期间不处理点击事件（地图即将被打乱，旧视觉图与服务器新地图不一致）
+        if (GameData.instance.isMapShufflePending) {
             return;
         }
 
@@ -592,6 +623,7 @@ export class CompMap extends FGUICompMap {
             second.cube.UI_SP_ANI.visible = true;
             SpinePlay(first.cube.UI_SP_ANI, "action", false);
             SpinePlay(second.cube.UI_SP_ANI, "action", false);
+            this._startExplosion(first.cube, second.cube);
             !this._readonly && SoundManager.instance.playSoundEffect("game10002/bomb");
             // 清空选中数组
             this._selectedCubes = [];
@@ -807,6 +839,63 @@ export class CompMap extends FGUICompMap {
     }
 
     /**
+     * @method _startExplosion
+     * @description 登记两个方块进入爆炸特效状态（消除时调用），维护 GameData.isMapExploding 状态
+     * @param {CompCube} cube1 - 第一个方块
+     * @param {CompCube} cube2 - 第二个方块
+     * @private
+     */
+    private _startExplosion(cube1: CompCube, cube2: CompCube): void {
+        this._explodingCubes.add(cube1);
+        this._explodingCubes.add(cube2);
+        this._updateExploding();
+    }
+
+    /**
+     * @method _updateExploding
+     * @description 同步爆炸特效播放中状态到 GameData（供打乱延迟执行等模块判断地图是否空闲）
+     * @private
+     */
+    private _updateExploding(): void {
+        GameData.instance.isMapExploding = this._explodingCubes.size > 0;
+    }
+
+    /**
+     * @method isAnimating
+     * @description 判断地图是否正在播放动画（爆炸/移动/入场任意一种），动画期间不执行打乱
+     * @returns {boolean} 是否正在播放动画
+     */
+    isAnimating(): boolean {
+        return GameData.instance.isMapMoving || GameData.instance.isMapEntering || GameData.instance.isMapExploding;
+    }
+
+    /**
+     * @method waitUntilIdle
+     * @description 等待地图动画全部播放完毕（爆炸/移动/入场）后执行回调，期间每帧轮询；超过最大等待时长后强制回调，防止状态异常导致回调永远不执行
+     * @param {() => void} callback - 动画全部结束后执行的回调
+     */
+    waitUntilIdle(callback: () => void): void {
+        this._waitUntilIdle(callback, 0);
+    }
+
+    /**
+     * @method _waitUntilIdle
+     * @description waitUntilIdle 的内部轮询实现
+     * @param {() => void} callback - 动画全部结束后执行的回调
+     * @param {number} elapsed - 已等待时长（秒）
+     * @private
+     */
+    private _waitUntilIdle(callback: () => void, elapsed: number): void {
+        if (!this.isAnimating() || elapsed >= this._waitIdleMaxTime) {
+            callback();
+            return;
+        }
+        this.scheduleOnce(() => {
+            this._waitUntilIdle(callback, elapsed + this._waitIdleInterval);
+        }, this._waitIdleInterval);
+    }
+
+    /**
      * @method removeTilesWithShift
      * @description 消除两个方块并执行数据移动与移动动画（用于其他玩家小地图等只读场景），不发送网络请求
      * @param {Point} p1 - 第一个方块坐标
@@ -830,6 +919,8 @@ export class CompMap extends FGUICompMap {
         this._pendingMoveCounts.clear();
         GameData.instance.isMapMoving = false;
         GameData.instance.isMapEntering = false;
+        this._explodingCubes.clear();
+        GameData.instance.isMapExploding = false;
 
         // 停止所有移动动画并重置位置、解除点击事件（已从节点移除的方块重新挂回）
         for (const cube of this._allCubes) {
@@ -939,9 +1030,12 @@ export class CompMap extends FGUICompMap {
 
         // 最后一行开始播放入场动画后再等待 _enterAnimDuration 秒，恢复状态（无方块时立即恢复）
         if (rowCubes.length > 0) {
-            this.scheduleOnce(() => {
-                GameData.instance.isMapEntering = false;
-            }, (rowCubes.length - 1) * this._enterRowInterval + this._enterAnimDuration);
+            this.scheduleOnce(
+                () => {
+                    GameData.instance.isMapEntering = false;
+                },
+                (rowCubes.length - 1) * this._enterRowInterval + this._enterAnimDuration
+            );
         } else {
             GameData.instance.isMapEntering = false;
         }
@@ -1243,6 +1337,7 @@ export class CompMap extends FGUICompMap {
         secondCube.UI_SP_ANI.visible = true;
         SpinePlay(firstCube.UI_SP_ANI, "action", false);
         SpinePlay(secondCube.UI_SP_ANI, "action", false);
+        this._startExplosion(firstCube, secondCube);
         SoundManager.instance.playSoundEffect("game10002/bomb");
 
         // 延迟0.2秒后移除方块节点、清理连线（爆炸特效播放完毕）
