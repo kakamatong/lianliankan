@@ -16,6 +16,7 @@ import { DataCenter } from "@datacenter/Datacenter";
 import { UserEnergy } from "@modules/UserEnergy";
 import { ConnectGameSvr } from "@modules/ConnectGameSvr";
 import { TipsView } from "@view/common/TipsView";
+import { LoadingView } from "@view/common/LoadingView";
 
 @ViewClass()
 export class CompChapter extends FGUICompChapter {
@@ -49,6 +50,7 @@ export class CompChapter extends FGUICompChapter {
      */
     private init() {
         this.UI_LV_ITEMS.itemRenderer = this.itemRenderer.bind(this);
+        LoadingView.showView({ content: "载入中...", time: 12 });
         Challenge.instance.getConfig((success) => {
             if (success) {
                 this._chapterCount = ChallengeData.instance.chapterCount;
@@ -65,6 +67,7 @@ export class CompChapter extends FGUICompChapter {
                 Logger.log("闯关配置获取成功");
             } else {
                 Logger.warn("闯关配置获取失败");
+                LoadingView.hideView();
             }
         });
     }
@@ -76,21 +79,26 @@ export class CompChapter extends FGUICompChapter {
      * @private
      */
     private async showChapter(index: number) {
-        const configPromise = ChallengeData.instance.loadChapterConfig(index);
+        LoadingView.showView({ content: "载入中...", time: 12 });
+        try {
+            const configPromise = ChallengeData.instance.loadChapterConfig(index);
 
-        const hasData = !!ChallengeData.instance.getChapterData(index);
-        const levelDataPromise = hasData
-            ? Promise.resolve()
-            : new Promise<void>((resolve) => {
-                  Challenge.instance.getChapterData(index, () => resolve());
-              });
+            const hasData = !!ChallengeData.instance.getChapterData(index);
+            const levelDataPromise = hasData
+                ? Promise.resolve()
+                : new Promise<void>((resolve) => {
+                      Challenge.instance.getChapterData(index, () => resolve());
+                  });
 
-        const [config] = await Promise.all([configPromise, levelDataPromise]);
-        this._chapterConfig = config ?? [];
-        this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
-        //this.UI_LV_ITEMS.scrollPane.scrollToView(ChallengeData.instance.curLevel, true, true);
-        this.updateButtons();
-        this.checkPendingDirectChallenge();
+            const [config] = await Promise.all([configPromise, levelDataPromise]);
+            this._chapterConfig = config ?? [];
+            this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
+            //this.UI_LV_ITEMS.scrollPane.scrollToView(ChallengeData.instance.curLevel, true, true);
+            this.updateButtons();
+            this.checkPendingDirectChallenge();
+        } finally {
+            LoadingView.hideView();
+        }
     }
 
     /**
