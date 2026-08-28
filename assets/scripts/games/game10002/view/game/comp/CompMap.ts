@@ -446,20 +446,21 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method _finishRemoveVisuals
-     * @description 消除视觉收尾：移除两个方块节点并清理连线（爆炸特效播放完毕后调用）
+     * @description 消除视觉收尾：移除两个方块节点并清理本次连线（爆炸特效播放完毕后调用）
      * @param {CompCube} cube1 - 第一个方块对象
      * @param {CompCube} cube2 - 第二个方块对象
      * @param {Point} p1 - 第一个方块坐标
      * @param {Point} p2 - 第二个方块坐标
+     * @param {fgui.GComponent[]} linesBatch - 本次消除创建的连线数组（未传时清理全部，兜底用）
      * @private
      */
-    private _finishRemoveVisuals(cube1: CompCube, cube2: CompCube, p1: Point, p2: Point): void {
+    private _finishRemoveVisuals(cube1: CompCube, cube2: CompCube, p1: Point, p2: Point, linesBatch?: fgui.GComponent[]): void {
         // 从节点移除方块（保留引用，供下一局复用；内部会取消方块残留的移动队列）
         this._removeCubeFromNode(cube1, p1.row, p1.col);
         this._removeCubeFromNode(cube2, p2.row, p2.col);
 
-        // 清理路径线条
-        this._clearPathLines();
+        // 清理路径线条（只清理本次的，避免误清其他并发的消除连线）
+        this._clearPathLines(linesBatch);
     }
 
     /**
@@ -618,7 +619,7 @@ export class CompMap extends FGUICompMap {
             this._playShiftMoves(shiftMoves);
 
             // 显示路径线条与消除特效
-            this._showPathLines(result.lines);
+            const linesBatch = this._showPathLines(result.lines);
             first.cube.UI_SP_ANI.visible = true;
             second.cube.UI_SP_ANI.visible = true;
             SpinePlay(first.cube.UI_SP_ANI, "action", false);
@@ -648,9 +649,9 @@ export class CompMap extends FGUICompMap {
                 }
             );
 
-            // 延迟0.2秒后移除方块节点、清理连线（爆炸特效播放完毕）
+            // 延迟0.2秒后移除方块节点、清理本次连线（爆炸特效播放完毕）
             this.scheduleOnce(() => {
-                this._finishRemoveVisuals(first.cube, second.cube, p1, p2);
+                this._finishRemoveVisuals(first.cube, second.cube, p1, p2, linesBatch);
             }, this._removeDelay);
         } else {
             // 不能消除，取消第一个方块的选中，保留第二个
@@ -660,15 +661,15 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method _showPathLines
-     * @description 显示连接路径线条（使用静态格位中心坐标绘制，方块移动后仍准确，不依赖方块对象）
+     * @description 显示连接路径线条（使用静态格位中心坐标绘制，方块移动后仍准确，不依赖方块对象），返回本次创建的线条数组，由调用方单独清理，不影响其他并发的消除连线
      * @param {LineSegment[]} lines - 路径线段数组
+     * @returns {fgui.GComponent[]} 本次创建的线条数组
      * @private
      */
-    private _showPathLines(lines: LineSegment[]): void {
-        // 先清理之前的路径线条
-        this._clearPathLines();
-
+    private _showPathLines(lines: LineSegment[]): fgui.GComponent[] {
         const lineThickness = 15; // 线条粗细固定
+
+        const linesBatch: fgui.GComponent[] = [];
 
         for (const line of lines) {
             // 获取起点和终点对应的格子中心坐标（格位固定，方块移动不影响）
@@ -703,22 +704,37 @@ export class CompMap extends FGUICompMap {
             // 添加到地图
             this.addChild(lineNode);
             this._pathLines.push(lineNode);
+            linesBatch.push(lineNode);
         }
+
+        return linesBatch;
     }
 
     /**
      * @method _clearPathLines
-     * @description 清理所有路径线条
+     * @description 清理路径线条：传入批次时只清理该批次（并从总表剔除），未传时清理全部（打乱/换图等兜底用）
+     * @param {fgui.GComponent[]} linesBatch - 要清理的线条数组（可选）
      * @private
      */
-    private _clearPathLines(): void {
-        for (const line of this._pathLines) {
+    private _clearPathLines(linesBatch?: fgui.GComponent[]): void {
+        const targets = linesBatch ?? this._pathLines;
+        for (const line of targets) {
             if (line && !line.isDisposed) {
                 line.removeFromParent();
                 line.dispose();
             }
         }
-        this._pathLines = [];
+        if (linesBatch) {
+            // 从总表中剔除已清理的批次线条
+            for (const line of linesBatch) {
+                const index = this._pathLines.indexOf(line);
+                if (index >= 0) {
+                    this._pathLines.splice(index, 1);
+                }
+            }
+        } else {
+            this._pathLines = [];
+        }
     }
 
     /**
@@ -1331,7 +1347,7 @@ export class CompMap extends FGUICompMap {
         this._playShiftMoves(shiftMoves);
 
         // 显示路径线条与消除特效
-        this._showPathLines(lines);
+        const linesBatch = this._showPathLines(lines);
 
         firstCube.UI_SP_ANI.visible = true;
         secondCube.UI_SP_ANI.visible = true;
@@ -1340,9 +1356,9 @@ export class CompMap extends FGUICompMap {
         this._startExplosion(firstCube, secondCube);
         SoundManager.instance.playSoundEffect("game10002/bomb");
 
-        // 延迟0.2秒后移除方块节点、清理连线（爆炸特效播放完毕）
+        // 延迟0.2秒后移除方块节点、清理本次连线（爆炸特效播放完毕）
         this.scheduleOnce(() => {
-            this._finishRemoveVisuals(firstCube, secondCube, p1, p2);
+            this._finishRemoveVisuals(firstCube, secondCube, p1, p2, linesBatch);
         }, this._removeDelay);
     }
 
@@ -1355,11 +1371,11 @@ export class CompMap extends FGUICompMap {
      */
     showOtherPlayerRemoveAnimation(p1: Point, p2: Point, lines: LineSegment[]): void {
         // 显示连线动画
-        this._showPathLines(lines);
+        const linesBatch = this._showPathLines(lines);
 
-        // 延迟后清除连线
+        // 延迟后清除本次连线
         this.scheduleOnce(() => {
-            this._clearPathLines();
+            this._clearPathLines(linesBatch);
         }, this._removeDelay + 0.1);
     }
 }
