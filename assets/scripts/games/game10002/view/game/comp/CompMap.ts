@@ -150,6 +150,13 @@ export class CompMap extends FGUICompMap {
     private _readonly: boolean = false;
 
     /**
+     * @property {number} _enterRowInterval
+     * @description 入场动画行间隔（秒）：整图显示时从上到下逐行播放入场动画，每行间隔该时长
+     * @private
+     */
+    private readonly _enterRowInterval: number = 0.05;
+
+    /**
      * @property {Map<CompCube, number>} _pendingMoveCounts
      * @description 各方块待完成的移动任务计数（并发消除时同一方块可能入队多个移动），用于维护 GameData.isMapMoving 状态；方块移动被取消（stopMove）时同步清理，防止计数泄漏
      * @private
@@ -882,6 +889,41 @@ export class CompMap extends FGUICompMap {
                     }
                 }
             }
+        }
+
+        // ④ 播放入场动画：先隐藏所有方块，再从上到下逐行显示并播放 enter 过渡动画
+        this._playEnterAnimation();
+    }
+
+    /**
+     * @method _playEnterAnimation
+     * @description 播放整图入场动画：先将所有在节点上的方块隐藏，再按行从上到下逐行显示并播放 enter 过渡动画，行间隔 _enterRowInterval 秒；initMap 开头的 unscheduleAllCallbacks 会取消未播完的延时回调，中断安全
+     * @private
+     */
+    private _playEnterAnimation(): void {
+        // 按行收集当前在节点上的方块（空方块已被移除），并先全部隐藏
+        const rowCubes: CompCube[][] = [];
+        for (let row = 0; row < this._rows; row++) {
+            const cubes: CompCube[] = [];
+            for (let col = 0; col < this._cols; col++) {
+                const cube = this._cubeMap[row] && this._cubeMap[row][col];
+                if (cube && cube.parent === this) {
+                    cube.visible = false;
+                    cubes.push(cube);
+                }
+            }
+            if (cubes.length > 0) {
+                rowCubes.push(cubes);
+            }
+        }
+
+        // 从上到下逐行延时显示并播放动画（行间隔 _enterRowInterval 秒）
+        for (let i = 0; i < rowCubes.length; i++) {
+            this.scheduleOnce(() => {
+                for (const cube of rowCubes[i]) {
+                    cube.playEnter();
+                }
+            }, i * this._enterRowInterval);
         }
     }
 

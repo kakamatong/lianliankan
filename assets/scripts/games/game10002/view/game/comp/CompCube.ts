@@ -167,6 +167,16 @@ export class CompCube extends FGUICompCube {
     }
 
     /**
+     * @method playEnter
+     * @description 显示方块并播放进入过渡动画（整图入场时由 CompMap 按行调用）
+     */
+    playEnter(): void {
+        this.visible = true;
+        this.enter.stop();
+        this.enter.play();
+    }
+
+    /**
      * @method setInitPosition
      * @description 记录初始坐标（由 CompMap 在初始化时调用），用于一局结束后重置
      * @param {number} row - 初始行

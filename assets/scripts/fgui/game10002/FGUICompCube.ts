@@ -12,6 +12,7 @@ export default class FGUICompCube extends fgui.GComponent {
 	public UI_LOADER_ICOM:fgui.GLoader;
 	public UI_SP_ANI:fgui.GLoader3D;
 	public act:fgui.Transition;
+	public enter:fgui.Transition;
 	public static URL:string = "ui://2zsfe53xhs3tr";
 
 	public static packageName:string = "game10002";
@@ -79,6 +80,7 @@ export default class FGUICompCube extends fgui.GComponent {
 		this.UI_LOADER_ICOM = <fgui.GLoader>(this.getChildAt(2));
 		this.UI_SP_ANI = <fgui.GLoader3D>(this.getChildAt(3));
 		this.act = this.getTransitionAt(0);
+		this.enter = this.getTransitionAt(1);
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
