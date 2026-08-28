@@ -140,7 +140,7 @@ export class CompCube extends FGUICompCube {
      * @description 空闲方块首次开始移动前的额外延迟（秒），用于等待消除特效播放
      * @private
      */
-    private readonly _startDelay: number = 0.1;
+    private readonly _startDelay: number = 0.2;
 
     /**
      * @property {() => void} _onStartMoveHandler
