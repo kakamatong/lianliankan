@@ -62,7 +62,7 @@ export class MatchView extends FGUIMatchView {
     onBtnCancel(): void {
         if (this._beCheck) {
             const callBack = (data: any) => {
-                if ((data.code = 1)) {
+                if ((data.code == 1)) {
                     MatchView.hideView();
                 } else {
                     TipsView.showView({ content: "错误" });
@@ -180,7 +180,7 @@ export class MatchView extends FGUIMatchView {
      */
     onBtnJoin(): void {
         const callBack = (data: any) => {
-            if ((data.code = 1)) {
+            if ((data.code == 1)) {
                 this.ctrl_enter.selectedIndex = 1;
             }
         };
