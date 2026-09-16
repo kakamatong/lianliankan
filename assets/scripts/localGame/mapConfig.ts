@@ -464,7 +464,7 @@ export const MAP_DESIGN_CONFIG = [
         iconTypes: 22,
         totalTime: 0,
         endTime: 10,
-        shiftDir: 0,
+        shiftDir: 3,
         shiftEdge: 2,
     },
     // {

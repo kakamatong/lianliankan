@@ -190,7 +190,9 @@ export enum SHIFT_DIR {
  * 规则：
  * 1. 采用分段提取-重放：全行/全列扫描，所有方块（含边缘行/列内的方块）都参与压缩，
  *    方块最多贴到第 edge 行/列（0 基第 edge-1 行/列），外圈（0..edge-2）留空供连线走位
- * 2. 装饰物(>=100)固定不动，方块不能穿过装饰物：按装饰物分段，每段独立提取并独立压缩
+ * 2. 装饰物/障碍物(>=100)固定不动，方块不能穿过障碍物：按障碍物分段，每段独立提取并独立压缩
+ *    每段的压缩起点 w 由障碍物决定——左/上取「段首边界」（初始留白或前一个障碍物的下一格，扫描到障碍物时即可确定），
+ *    右/下取「段尾边界」（后一个障碍物的前一格，必须扫到该障碍物时才能确定），末段取末尾留白（cols/rows - edge）
  */
 export function shiftMap(map: number[][], dir: number, edge: number = 2): void {
     // 关闭或随机方向不移动
@@ -217,7 +219,7 @@ export function shiftMap(map: number[][], dir: number, edge: number = 2): void {
     if (dir === SHIFT_DIR.LEFT || dir === SHIFT_DIR.RIGHT) {
         // 水平移动：逐行处理（全行扫描，保证边缘列内方块也参与压缩）
         for (let row = 0; row < rows; row++) {
-            // 1. 按装饰物分段提取该行方块（保持相对顺序），清空该行（装饰物保留原位）
+            // 1. 按障碍物分段提取该行方块（保持相对顺序），清空该行（障碍物保留原位）
             const segments: Array<{ w: number; blocks: number[] }> = [];
             let curBlocks: number[] = [];
             let w = dir === SHIFT_DIR.LEFT ? edge - 1 : cols - edge;
@@ -227,11 +229,22 @@ export function shiftMap(map: number[][], dir: number, edge: number = 2): void {
                     curBlocks.push(value);
                     map[row][col] = 0;
                 } else if (TileUtils.isDecoration(value)) {
-                    // 装饰物固定不动，作为分段屏障：当前段结束，下一段从装饰物后重新开始
+                    // 障碍物固定不动，作为分段屏障：当前段结束，下一段从障碍物后重新开始
+                    // 右移：本段右边界 = 本段右侧障碍物的左侧一格（扫到该障碍物时才能确定）
+                    if (dir === SHIFT_DIR.RIGHT) {
+                        w = col - 1;
+                    }
                     segments.push({ w, blocks: curBlocks });
                     curBlocks = [];
-                    w = dir === SHIFT_DIR.LEFT ? col + 1 : col - 1;
+                    // 左移：下一段左边界 = 本障碍物的右侧一格
+                    if (dir === SHIFT_DIR.LEFT) {
+                        w = col + 1;
+                    }
                 }
+            }
+            // 末段：右移贴右边界，左移沿用最后一次确定（或初始）的左边界
+            if (dir === SHIFT_DIR.RIGHT) {
+                w = cols - edge;
             }
             segments.push({ w, blocks: curBlocks });
 
@@ -263,7 +276,7 @@ export function shiftMap(map: number[][], dir: number, edge: number = 2): void {
     } else {
         // 垂直移动：逐列处理（全列扫描，保证边缘行内方块也参与压缩）
         for (let col = 0; col < cols; col++) {
-            // 1. 按装饰物分段提取该列方块（保持相对顺序），清空该列（装饰物保留原位）
+            // 1. 按障碍物分段提取该列方块（保持相对顺序），清空该列（障碍物保留原位）
             const segments: Array<{ w: number; blocks: number[] }> = [];
             let curBlocks: number[] = [];
             let w = dir === SHIFT_DIR.UP ? edge - 1 : rows - edge;
@@ -273,11 +286,22 @@ export function shiftMap(map: number[][], dir: number, edge: number = 2): void {
                     curBlocks.push(value);
                     map[row][col] = 0;
                 } else if (TileUtils.isDecoration(value)) {
-                    // 装饰物固定不动，作为分段屏障：当前段结束，下一段从装饰物后重新开始
+                    // 障碍物固定不动，作为分段屏障：当前段结束，下一段从障碍物后重新开始
+                    // 下移：本段下边界 = 本段下方障碍物的上一格（扫到该障碍物时才能确定）
+                    if (dir === SHIFT_DIR.DOWN) {
+                        w = row - 1;
+                    }
                     segments.push({ w, blocks: curBlocks });
                     curBlocks = [];
-                    w = dir === SHIFT_DIR.UP ? row + 1 : row - 1;
+                    // 上移：下一段上边界 = 本障碍物的下一格
+                    if (dir === SHIFT_DIR.UP) {
+                        w = row + 1;
+                    }
                 }
+            }
+            // 末段：下移贴下边界，上移沿用最后一次确定（或初始）的上边界
+            if (dir === SHIFT_DIR.DOWN) {
+                w = rows - edge;
             }
             segments.push({ w, blocks: curBlocks });
 
