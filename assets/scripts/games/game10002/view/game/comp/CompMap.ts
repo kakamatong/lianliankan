@@ -9,7 +9,7 @@ import { GameSocketManager } from "@frameworks/GameSocketManager";
 import { SprotoClickTiles } from "../../../../../../types/protocol/game10002/c2s";
 import { TipsView } from "@view/common/TipsView";
 import { GameData } from "../../../data/GameData";
-import { ENUM_GAME_STEP } from "../../../data/InterfaceGameConfig";
+import { ENUM_GAME_STEP, CTRL_SELECTED_INDEX } from "../../../data/InterfaceGameConfig";
 import { Logger, SpinePlay } from "@frameworks/utils/Utils";
 import { SoundManager } from "@frameworks/SoundManager";
 
@@ -399,7 +399,7 @@ export class CompMap extends FGUICompMap {
     private _removeCubeFromNode(cube: CompCube, row: number, col: number): void {
         this._unbindCubeClickEvent(cube);
         cube.stopMove();
-        cube.ctrl_selected.selectedIndex = 0;
+        cube.ctrl_selected.selectedIndex = CTRL_SELECTED_INDEX.NORMAL;
         cube.UI_LOADER_ICOM.url = "";
         cube.UI_SP_ANI.visible = false;
         if (cube.parent) {
@@ -555,7 +555,7 @@ export class CompMap extends FGUICompMap {
         this._selectedCubes.push({ cube, row, col });
 
         // 设置选中控制器
-        cube.ctrl_selected.selectedIndex = 1;
+        cube.ctrl_selected.selectedIndex = CTRL_SELECTED_INDEX.SELECTED;
         cube.act.play();
     }
 
@@ -573,7 +573,7 @@ export class CompMap extends FGUICompMap {
         const selected = this._selectedCubes[index];
 
         // 取消选中控制器
-        selected.cube.ctrl_selected.selectedIndex = 0;
+        selected.cube.ctrl_selected.selectedIndex = CTRL_SELECTED_INDEX.NORMAL;
 
         // 从选中数组中移除
         this._selectedCubes.splice(index, 1);
@@ -587,7 +587,7 @@ export class CompMap extends FGUICompMap {
     private _clearSelection(): void {
         // 恢复所有选中方块的状态
         for (const selected of this._selectedCubes) {
-            selected.cube.ctrl_selected.selectedIndex = 0;
+            selected.cube.ctrl_selected.selectedIndex = CTRL_SELECTED_INDEX.NORMAL;
         }
 
         // 清空选中数组
@@ -958,6 +958,23 @@ export class CompMap extends FGUICompMap {
     }
 
     /**
+     * @method _applyCubeAppearance
+     * @description 设置方块的资源与控制器状态：障碍物（值 > 100）使用状态 2（不显示背景），普通方块恢复状态 0
+     * @param {CompCube} cube - 方块对象
+     * @param {number} resId - 方块资源 ID（障碍物为其配置值）
+     * @param {string} resPath - 资源前缀路径
+     * @private
+     */
+    private _applyCubeAppearance(cube: CompCube, resId: number, resPath: string): void {
+        cube.visible = true;
+        cube.UI_SP_ANI.visible = false;
+        cube.UI_LOADER_ICOM.url = `ui://${resPath}/80_${resId}`;
+
+        // 障碍物不显示背景（ctrl_selected 状态 2）
+        cube.ctrl_selected.selectedIndex = TileUtils.isDecoration(resId) ? CTRL_SELECTED_INDEX.OBSTACLE : CTRL_SELECTED_INDEX.NORMAL;
+    }
+
+    /**
      * @method initMap
      * @description 根据地图数据初始化所有方块资源，同时设置logic数据（打乱地图/开局/换地图统一入口：第一时间设置地图数据，停止所有方块动画与移动计时器，并立即设置新位置）
      * @param {number[][]} map - 地图数据，number 代表方块资源 ID，0 表示空方块
@@ -995,17 +1012,14 @@ export class CompMap extends FGUICompMap {
                         // 空方块，从节点移除
                         this._removeCubeFromNode(cube, row, col);
                     } else {
-                        // 设置资源路径，格式: ui://resPath/80_resId
-                        cube.visible = true;
-                        cube.UI_SP_ANI.visible = false;
-                        cube.UI_LOADER_ICOM.url = `ui://${resPath}/80_${resId}`;
+                        // 设置资源路径（格式 ui://resPath/80_resId）与控制器状态
+                        this._applyCubeAppearance(cube, resId, resPath);
                     }
                 } else if (resId !== 0) {
                     // 布局中不存在该格（地图比布局大），动态创建方块
                     const newCube = this.createCube(row, col);
                     if (newCube) {
-                        newCube.UI_SP_ANI.visible = false;
-                        newCube.UI_LOADER_ICOM.url = `ui://${resPath}/80_${resId}`;
+                        this._applyCubeAppearance(newCube, resId, resPath);
                     }
                 }
             }
@@ -1158,9 +1172,7 @@ export class CompMap extends FGUICompMap {
             // 空方块，从节点移除
             this._removeCubeFromNode(cube, row, col);
         } else {
-            cube.visible = true;
-            cube.UI_SP_ANI.visible = false;
-            cube.UI_LOADER_ICOM.url = `ui://${resPath}/80_${resId}`;
+            this._applyCubeAppearance(cube, resId, resPath);
         }
     }
 

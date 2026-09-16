@@ -155,6 +155,16 @@ export enum CTRL_BTN_INDEX {
 }
 
 /**
+ * @enum CTRL_SELECTED_INDEX
+ * @description 方块选中控制器（ctrl_selected）显示状态
+ */
+export enum CTRL_SELECTED_INDEX {
+    NORMAL = 0, // 普通显示（带背景）
+    SELECTED = 1, // 选中
+    OBSTACLE = 2, // 障碍物（不显示背景）
+}
+
+/**
  * @description 游戏模式文本
  */
 export const GAME_MODE_TXT = ["3局2胜", "5局3胜", "7局4胜", "无限对局"];
