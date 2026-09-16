@@ -186,11 +186,23 @@ export class LocalSvr {
 
     /**
      * 方块消除请求
-     * 本地模式不做合法性校验，直接放行
+     * 本地模式不做寻路校验（交给客户端判定），但会拦截不可消除的目标：
+     * 障碍物（地图配置 >100 的值）与空位直接返回失败，避免障碍物被误清除
      */
     onClickTiles(data: SprotoClickTiles.Request): void {
         const { row1, col1, row2, col2 } = data;
         const selfSeat = 1;
+
+        // 障碍物/空位/越界不可消除
+        if (!this._isRemovable(row1, col1) || !this._isRemovable(row2, col2)) {
+            this.dispatchEventResp(SprotoClickTiles.Name, {
+                code: 0,
+                msg: "障碍物不可消除",
+                eliminated: this._eliminated,
+                remaining: this._totalBlocks - this._eliminated,
+            });
+            return;
+        }
 
         // 更新服务器端地图
         this._map[row1][col1] = 0;
@@ -276,6 +288,19 @@ export class LocalSvr {
         if (remaining <= 0) {
             this.onGameFinished();
         }
+    }
+
+    /**
+     * 判断指定位置是否为可消除方块（越界、空位、障碍物均返回 false）
+     * @param row 行坐标
+     * @param col 列坐标
+     */
+    private _isRemovable(row: number, col: number): boolean {
+        if (row < 0 || row >= this._rows || col < 0 || col >= this._cols) return false;
+        const rowData = this._map[row];
+        if (!rowData) return false;
+        const value = rowData[col];
+        return value > 0 && value < LocalSvr.DECORATION_VALUE;
     }
 
     /**

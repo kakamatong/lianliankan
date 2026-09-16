@@ -6,28 +6,29 @@
 
 import { MAP_DESIGN_CONFIG } from "./mapConfig";
 import { Logger } from "@frameworks/utils/Utils";
+import { OBSTACLE_VALUE_BASE } from "../games/game10002/logic/TileMapData";
 
 // ============================================
 // 地图生成
 // ============================================
 
-/** 障碍物初始值（障碍物编号以此为基准递增，避免与图标类型冲突） */
-const DECORATION_VALUE = 100;
+/** 设计地图标记：可填充方块位置 */
+const DESIGN_FILL = 1;
 
 /**
  * 根据设计配置生成连连看地图
  *
  * 算法流程：
- * 1. 扫描设计地图，收集可填充位置
+ * 1. 扫描设计地图，收集可填充位置，并原样写入障碍物
  * 2. 按图标类型数量平均分配图标（确保每种为偶数）
  * 3. Fisher-Yates 洗牌（3 轮）打乱顺序
- * 4. 按位置填充图标和障碍物编号
+ * 4. 按位置填充图标
  *
- * @param designMap - 设计地图 10×10（0=边界, 1=填充位, 9=障碍）
- * @param rows - 地图行数
- * @param cols - 地图列数
+ * @param designMap - 设计地图（0=空白, 1=可填充位, >100=障碍物，障碍物值即配置值）
+ * @param rows - 地图行数（保留参数，实际尺寸以设计地图为准）
+ * @param cols - 地图列数（保留参数，实际尺寸以设计地图为准）
  * @param iconTypes - 图标类型数量
- * @returns 生成的地图（0=空, 1~iconTypes=图标, 100+=障碍）
+ * @returns 生成的地图（0=空, 1~iconTypes=图标, >100=障碍物）
  */
 export function generateFromDesign(designMap: number[][], rows: number, cols: number, iconTypes: number): number[][] {
     // 收集可填充位置
@@ -37,17 +38,40 @@ export function generateFromDesign(designMap: number[][], rows: number, cols: nu
     const map: number[][] = [];
 
     const mapLength = designMap ? designMap.length : 0;
+    let obstacleCount = 0;
+    let unknownCount = 0;
     for (let row = 0; row < mapLength; row++) {
         map[row] = [];
         for (let col = 0; col < designMap[row].length; col++) {
+            const design = designMap[row][col];
             map[row][col] = 0; // 默认空
-            if (designMap[row][col] === 1) {
+            if (design === DESIGN_FILL) {
                 fillPositions.push({ row, col });
+            } else if (design > OBSTACLE_VALUE_BASE) {
+                // 障碍物：值直接取配置值，不做二次加工（配置 101 → 障碍物值 101 → 资源 80_101）
+                map[row][col] = design;
+                obstacleCount++;
+            } else if (design !== 0) {
+                // 其他标记（如旧版障碍物标记 9）不支持，按空处理
+                unknownCount++;
             }
         }
     }
 
+    if (unknownCount > 0) {
+        Logger.warn(
+            `[mapGenerator] 设计地图存在 ${unknownCount} 个无法识别的标记（已按空处理），障碍物请直接配置大于 ${OBSTACLE_VALUE_BASE} 的值（如 101）`
+        );
+    }
+
+    if (obstacleCount > 0) {
+        Logger.log(`[mapGenerator] 设计地图障碍物数量: ${obstacleCount}`);
+    }
+
     const totalBlocks = fillPositions.length;
+    if (totalBlocks % 2 !== 0) {
+        Logger.warn(`[mapGenerator] 可填充位置数量为奇数: ${totalBlocks}，将有方块无法配对消除，请检查设计地图`);
+    }
 
     // 平均分配图标（每种图标数量尽可能接近，且必须为偶数）
     let baseCount = Math.floor(totalBlocks / iconTypes);
@@ -78,21 +102,13 @@ export function generateFromDesign(designMap: number[][], rows: number, cols: nu
         }
     }
 
-    // 填充可消除方块
+    // 填充可消除方块（图标池不足时留空，避免写入 undefined）
     for (let i = 0; i < fillPositions.length; i++) {
+        if (i >= iconPool.length) {
+            break;
+        }
         const pos = fillPositions[i];
         map[pos.row][pos.col] = iconPool[i];
-    }
-
-    // 填充障碍物（编号从 101 开始）
-    let obstacleIdx = 0;
-    for (let row = 0; row < mapLength; row++) {
-        for (let col = 0; col < designMap[row].length; col++) {
-            if (designMap[row][col] === 9) {
-                map[row][col] = DECORATION_VALUE + (obstacleIdx + 1);
-                obstacleIdx++;
-            }
-        }
     }
 
     return map;
@@ -105,7 +121,7 @@ export function generateFromDesign(designMap: number[][], rows: number, cols: nu
 export function generateRandomMap(): { map: number[][]; design: (typeof MAP_DESIGN_CONFIG)[number] } {
     let index = Math.floor(Math.random() * MAP_DESIGN_CONFIG.length);
     Logger.log(`随机选择地图设计索引: ${index}`);
-    //index = MAP_DESIGN_CONFIG.length - 1
+    index = MAP_DESIGN_CONFIG.length - 1;
     const design = MAP_DESIGN_CONFIG[index];
     const map = generateFromDesign(design.map, design.defaultRows, design.defaultCols, design.iconTypes);
     return { map, design };

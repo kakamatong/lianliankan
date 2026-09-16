@@ -66,7 +66,7 @@ export interface MAP_LEVEL_CONFIG {
     chapter: number;
     /** 关卡索引 */
     index: number;
-    /** 地图二维数组 0=边界 1=可放置 */
+    /** 地图二维数组 0=边界 1=可放置 >100=障碍物（值即障碍物编号，资源 80_值，如 101 → 80_101） */
     map: number[][];
     /** 图标种类数 */
     iconTypes: number;

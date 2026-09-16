@@ -2,7 +2,7 @@ import FGUICompMap from "@fgui/game10002/FGUICompMap";
 import * as fgui from "fairygui-cc";
 import { PathFinder } from "../../../logic/PathFinder";
 import { MapManager } from "../../../logic/MapManager";
-import { Point, LineSegment, SHIFT_DIR, ShiftMoveInfo, computeShiftMoves } from "../../../logic/TileMapData";
+import { Point, LineSegment, SHIFT_DIR, ShiftMoveInfo, TileUtils, computeShiftMoves } from "../../../logic/TileMapData";
 import { CompCube, MoveTarget } from "./CompCube";
 import { ViewClass } from "@frameworks/Framework";
 import { GameSocketManager } from "@frameworks/GameSocketManager";
@@ -489,13 +489,18 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method _onCubeClick
-     * @description 处理方块点击事件
+     * @description 处理方块点击事件（障碍物点击直接忽略：不选中、不处理）
      * @param {CompCube} cube - 被点击的方块
      * @param {number} row - 行索引
      * @param {number} col - 列索引
      * @private
      */
     private _onCubeClick(cube: CompCube, row: number, col: number): void {
+        // 障碍物（地图配置值 > 100）不可选中、不可消除，点击直接 return
+        if (TileUtils.isDecoration(this._mapManager.getTile(row, col))) {
+            return;
+        }
+
         // 只读模式下不处理点击事件
         if (this._readonly) {
             return;

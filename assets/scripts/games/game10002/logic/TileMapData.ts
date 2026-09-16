@@ -38,6 +38,13 @@ export interface PathResult {
 }
 
 /**
+ * @constant OBSTACLE_VALUE_BASE
+ * @description 障碍物判定基准值：地图配置中坐标值大于该值的格子即为障碍物，且该值本身就是障碍物编号
+ *              （障碍物资源名格式为 80_值，例：配置值 101 → 障碍物值 101 → 资源 ui://resFruit/80_101）
+ */
+export const OBSTACLE_VALUE_BASE = 100;
+
+/**
  * @class TileUtils
  * @description 方块类型判断工具类
  * @category 工具类
@@ -45,24 +52,24 @@ export interface PathResult {
 export class TileUtils {
     /**
      * @method isBlock
-     * @description 判断是否为可消除方块（值在1-99之间）
+     * @description 判断是否为可消除方块（值在 1 ~ 99 之间，即小于障碍物基准值）
      * @param {number} value - 方块值
      * @returns {boolean} 是否为可消除方块
      * @static
      */
     public static isBlock(value: number): boolean {
-        return value > 0 && value < 100;
+        return value > 0 && value < OBSTACLE_VALUE_BASE;
     }
 
     /**
      * @method isDecoration
-     * @description 判断是否为装饰方块（值大于等于100）
+     * @description 判断是否为障碍物（值大于等于基准值 100）：障碍物不可消除、不可选中、不可穿越，也不参与位移
      * @param {number} value - 方块值
-     * @returns {boolean} 是否为装饰方块
+     * @returns {boolean} 是否为障碍物
      * @static
      */
     public static isDecoration(value: number): boolean {
-        return value >= 100;
+        return value >= OBSTACLE_VALUE_BASE;
     }
 
     /**
