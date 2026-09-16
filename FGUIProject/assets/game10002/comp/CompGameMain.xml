@@ -8,7 +8,7 @@
     <remark page="4" value="准备"/>
     <remark page="5" value="重新开始"/>
   </controller>
-  <controller name="ctrl_roomtype" pages="0,,1,,2,,3," selected="0">
+  <controller name="ctrl_roomtype" pages="0,,1,,2,,3," selected="1">
     <remark page="0" value="普通房"/>
     <remark page="1" value="私人房"/>
     <remark page="2" value="单机房"/>
@@ -124,8 +124,10 @@
       <gearDisplay controller="ctrl_roomtype" pages="3"/>
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <component id="n89_gnq2" name="UI_COMP_SPE_RULE_HINT" src="gnq222" fileName="comp/CompSpeRuleHint.xml" xy="256,32" pivot="0.5,0.5" visible="false">
+    <component id="n89_gnq2" name="UI_COMP_SPE_RULE_HINT" src="gnq222" fileName="comp/CompSpeRuleHint.xml" xy="301,19" pivot="0.5,0.5" visible="false">
+      <gearXY controller="ctrl_roomtype" pages="1" values="301,19" default="256,29"/>
       <relation target="" sidePair="center-center,top-top"/>
+      <Label title="游戏有特殊规则"/>
     </component>
   </displayList>
 </component>
