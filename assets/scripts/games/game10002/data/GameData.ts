@@ -51,6 +51,8 @@ export class GameData {
     private _shiftDir: number = SHIFT_DIR.OFF;
     /** 消除后方块移动的最边边位置（默认 2，由服务器 logicInfo.ext 下发） */
     private _shiftEdge: number = 2;
+    /** 本局是否有障碍物（由服务器 logicInfo.ext.hasObstacle 下发，1=有） */
+    private _hasObstacle: boolean = false;
     /** 地图方块是否正在移动（移动动画批次进行中），供其他模块读取 */
     private _isMapMoving: boolean = false;
     /** 开局入场动画是否播放中（initMap 整图入场动画期间置 true），供其他模块读取拦截操作 */
@@ -109,6 +111,7 @@ export class GameData {
         this._itemEnabled = false;
         this._shiftDir = SHIFT_DIR.OFF;
         this._shiftEdge = 2;
+        this._hasObstacle = false;
         this._isMapMoving = false;
         this._isMapEntering = false;
         this._isMapExploding = false;
@@ -452,6 +455,22 @@ export class GameData {
      */
     get shiftEdge(): number {
         return this._shiftEdge;
+    }
+
+    /**
+     * @description 设置本局是否有障碍物
+     * @param {boolean} flag - 是否有障碍物
+     */
+    set hasObstacle(flag: boolean) {
+        this._hasObstacle = flag;
+    }
+
+    /**
+     * @description 获取本局是否有障碍物
+     * @returns {boolean} 是否有障碍物
+     */
+    get hasObstacle(): boolean {
+        return this._hasObstacle;
     }
 
     /**

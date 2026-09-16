@@ -477,23 +477,40 @@ export class CompGameMain extends FGUICompGameMain {
             GameData.instance.playingStepTime = data.playingStepTime;
         }
 
-        // 解析方块移动配置（ext = {"shiftDir": 2, "edge": 3}），兼容服务端字段名差异：shiftDir/dir、shiftEdge/edge/shift_edge
+        // 解析本局规则配置（ext = {"shiftDir": 2, "shiftEdge": 2, "hasObstacle": 0}）
+        // 兼容服务端字段名差异：shiftDir/dir、shiftEdge/edge/shift_edge、hasObstacle/has_obstacle
+        // 字段不存在或解析不到时一律按"无特殊规则"处理（shiftDir=0、shiftEdge=2、hasObstacle=false），避免沿用上一局的值
+        let shiftDir: number = SHIFT_DIR.OFF;
+        let shiftEdge: number = 2;
+        let hasObstacle: boolean = false;
         if (data.ext) {
             try {
                 const ext = JSON.parse(data.ext);
                 const dir = ext.shiftDir ?? ext.dir ?? ext.shift_dir;
                 const edge = ext.shiftEdge ?? ext.edge ?? ext.shift_edge;
+                const obstacle = ext.hasObstacle ?? ext.has_obstacle;
                 if (typeof dir === "number") {
-                    GameData.instance.shiftDir = dir;
+                    shiftDir = dir;
                 }
                 if (typeof edge === "number") {
-                    GameData.instance.shiftEdge = edge;
+                    shiftEdge = edge;
                 }
-                Logger.log(`方块移动配置: shiftDir=${GameData.instance.shiftDir}, shiftEdge=${GameData.instance.shiftEdge}`);
+                if (typeof obstacle === "number") {
+                    hasObstacle = obstacle === 1;
+                } else if (typeof obstacle === "boolean") {
+                    hasObstacle = obstacle;
+                }
             } catch (e) {
                 Logger.error("解析 logicInfo.ext 失败:", e);
             }
+        } else {
+            Logger.warn("logicInfo 缺少 ext，本局按无特殊规则处理");
         }
+
+        GameData.instance.shiftDir = shiftDir;
+        GameData.instance.shiftEdge = shiftEdge;
+        GameData.instance.hasObstacle = hasObstacle;
+        Logger.log(`本局规则配置: shiftDir=${shiftDir}, shiftEdge=${shiftEdge}, hasObstacle=${hasObstacle}`);
 
         // 根据特殊规则更新提示组件显示
         this._setupSpeRuleHint();
@@ -501,18 +518,68 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * @method _setupSpeRuleHint
-     * @description 根据特殊规则（shiftDir）更新特殊规则提示组件的显示：无特殊规则时隐藏，否则显示并设置标题
+     * @description 根据特殊规则（方块移动 / 障碍物）更新特殊规则提示组件的显示：无特殊规则时隐藏，有则显示（不做文本赋值）
      * @private
      */
     private _setupSpeRuleHint(): void {
-        const shiftDir = GameData.instance.shiftDir;
-        const dirText = this._getShiftDirText(shiftDir);
-        if (!dirText) {
-            this.UI_COMP_SPE_RULE_HINT.visible = false;
+        this.UI_COMP_SPE_RULE_HINT.visible = this._hasSpecialRule();
+    }
+
+    /**
+     * @method _hasSpecialRule
+     * @description 本局是否存在特殊规则：方块移动（shiftDir 有效）或含障碍物（logicInfo.ext.hasObstacle）
+     * @returns {boolean} 是否存在特殊规则
+     * @private
+     */
+    private _hasSpecialRule(): boolean {
+        return this._getShiftDirText(GameData.instance.shiftDir) !== "" || GameData.instance.hasObstacle;
+    }
+
+    /**
+     * @method _buildSpecialRuleContent
+     * @description 拼接特殊规则说明文案：方块移动用原有文案，障碍物用「石头障碍物不会移动，且会阻碍连线」
+     * @returns {string} 说明文案，无特殊规则时返回空字符串
+     * @private
+     */
+    private _buildSpecialRuleContent(): string {
+        const lines: string[] = [];
+        const dirText = this._getShiftDirText(GameData.instance.shiftDir);
+        if (dirText) {
+            lines.push(`1. 消除后，所有方块会${dirText}移动压缩`);
+        }
+        if (GameData.instance.hasObstacle) {
+            lines.push("2. 石头障碍物不会移动，且会阻碍连线");
+        }
+        return lines.join("\n");
+    }
+
+    /**
+     * @method _showSpecialRuleMessage
+     * @description 弹出特殊规则说明弹窗（开局自动弹出与点击特殊规则提示按钮共用）
+     * @private
+     */
+    private _showSpecialRuleMessage(): void {
+        const content = this._buildSpecialRuleContent();
+        if (!content) {
             return;
         }
-        this.UI_COMP_SPE_RULE_HINT.title = `消除后${dirText}移动`;
-        this.UI_COMP_SPE_RULE_HINT.visible = true;
+        PopMessageView.showView({
+            content: content,
+            type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
+        });
+    }
+
+    /**
+     * @method _showSpecialRuleTip
+     * @description 开局弹出本局特殊规则说明：有特殊规则才弹（无特殊规则不弹）
+     *              特殊规则取自 logicInfo（先于 gameStart 到达），因此无需额外标记
+     * @private
+     */
+    private _showSpecialRuleTip(): void {
+        this._setupSpeRuleHint();
+        if (this._hasSpecialRule()) {
+            this._showSpecialRuleMessage();
+        }
     }
 
     /**
@@ -539,17 +606,10 @@ export class CompGameMain extends FGUICompGameMain {
 
     /**
      * @method onSpeRuleHintClick
-     * @description 特殊规则提示点击事件：弹出规则说明弹窗
+     * @description 特殊规则提示点击事件：弹出特殊规则说明弹窗
      */
     onSpeRuleHintClick(): void {
-        const dirText = this._getShiftDirText(GameData.instance.shiftDir);
-        if (!dirText) {
-            return;
-        }
-        PopMessageView.showView({
-            content: `消除后，所有方块会${dirText}移动压缩`,
-            type: ENUM_POP_MESSAGE_TYPE.NUM1SURE,
-        });
+        this._showSpecialRuleMessage();
     }
 
     /**
@@ -1009,6 +1069,9 @@ export class CompGameMain extends FGUICompGameMain {
 
         // 非重连情况
         if (!data.brelink) {
+            // 开局弹出本局特殊规则说明（重连回补时不重复弹）
+            this._showSpecialRuleTip();
+
             // 私人房：新一局开始时权威重置其他玩家组件状态（完成标识、名次、小地图）
             // 无论玩家通过何种路径进入准备状态，开局时状态必然干净
             if (GameData.instance.isPrivateRoom) {
@@ -1031,6 +1094,7 @@ export class CompGameMain extends FGUICompGameMain {
             // 地图数据通过 mapData 协议单独下发
             // 清除本地地图数据缓存，等待 mapData 协议重新下发所有玩家地图
             GameData.instance.clearAllPlayerMaps();
+            this._setupSpeRuleHint();
         }
 
         // 单机显示重新开始按钮
