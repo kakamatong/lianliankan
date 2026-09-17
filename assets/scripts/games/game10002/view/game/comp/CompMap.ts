@@ -1031,23 +1031,30 @@ export class CompMap extends FGUICompMap {
 
     /**
      * @method _playEnterAnimation
-     * @description 播放整图入场动画：先将所有在节点上的方块隐藏，再按行从上到下逐行显示并播放 enter 过渡动画，行间隔 _enterRowInterval 秒；initMap 开头的 unscheduleAllCallbacks 会取消未播完的延时回调，中断安全；播放期间置 GameData.isMapEntering 为 true，最后一行入场动画结束后恢复
+     * @description 播放整图入场动画：先将所有在节点上的可消除方块隐藏，再按行从上到下逐行显示并播放 enter 过渡动画，行间隔 _enterRowInterval 秒；障碍物不参与动画，开局直接显示；initMap 开头的 unscheduleAllCallbacks 会取消未播完的延时回调，中断安全；播放期间置 GameData.isMapEntering 为 true，最后一行入场动画结束后恢复
      * @private
      */
     private _playEnterAnimation(): void {
         // 开局入场动画播放中，供道具面板等模块拦截操作
         GameData.instance.isMapEntering = true;
 
-        // 按行收集当前在节点上的方块（空方块已被移除），并先全部隐藏
+        // 按行收集当前在节点上的可消除方块（空方块已被移除）并先隐藏；
+        // 障碍物不参与入场动画，直接显示（不隐藏、不入动画队列）
         const rowCubes: CompCube[][] = [];
         for (let row = 0; row < this._rows; row++) {
             const cubes: CompCube[] = [];
             for (let col = 0; col < this._cols; col++) {
                 const cube = this._cubeMap[row] && this._cubeMap[row][col];
-                if (cube && cube.parent === this) {
-                    cube.visible = false;
-                    cubes.push(cube);
+                if (!cube || cube.parent !== this) {
+                    continue;
                 }
+                if (this._mapManager.isDecoration(row, col)) {
+                    // 障碍物直接显示，不播放 enter 动画
+                    cube.visible = true;
+                    continue;
+                }
+                cube.visible = false;
+                cubes.push(cube);
             }
             if (cubes.length > 0) {
                 rowCubes.push(cubes);
