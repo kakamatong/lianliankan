@@ -13,6 +13,7 @@ import { LobbySocketManager } from "@frameworks/LobbySocketManager";
 import {
     SprotoGetChallengeChapterData,
     SprotoGetCurChallengeChapterData,
+    SprotoGetUserStars,
     SprotoUpdateChallengeLevelData,
 } from "../../types/protocol/lobby/c2s";
 import { ConnectSvr } from "./ConnectSvr";
@@ -73,6 +74,24 @@ export class Challenge extends BaseModule {
                 Logger.warn(LogColors.red(`challenge config request failed: ${error.message}`));
                 callBack(false, error);
             });
+    }
+
+    /**
+     * @method getUserStars
+     * @description 获取玩家总星星数与各章节星星数
+     * @param {(success:boolean, data?:SprotoGetUserStars.Response)=>void} callBack - 回调函数，返回总星星数与分章列表
+     */
+    getUserStars(callBack?: (success: boolean, data?: SprotoGetUserStars.Response) => void) {
+        this.reqLobby(SprotoGetUserStars, {}, (data: SprotoGetUserStars.Response) => {
+            if (data) {
+                const chapterCount = data.list ? data.list.length : 0;
+                Logger.log(LogColors.green(`星星统计获取成功, 总星星数 ${data.totalStars}, 章节数 ${chapterCount}`));
+                callBack && callBack(true, data);
+            } else {
+                Logger.warn(LogColors.red("星星统计获取失败"));
+                callBack && callBack(false);
+            }
+        });
     }
 
     /**

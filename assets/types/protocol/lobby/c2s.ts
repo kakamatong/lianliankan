@@ -20,6 +20,13 @@ export interface ChallengeLevelData {
     challengeCount: number;
 }
 
+/** ChapterStar 结构体定义 */
+export interface ChapterStar {
+    chapter: number;
+    stars: number;
+    clearedCount: number;
+}
+
 /** 调用接口 - 请求参数 */
 export interface CallRequest {
     serverName: string;
@@ -317,6 +324,12 @@ export interface GetcurchallengechapterdataResponse {
     list: ChallengeLevelData[];
 }
 
+/** 获取总星星数与各章节星星数 - 响应参数 */
+export interface GetuserstarsResponse {
+    totalStars: number;
+    list: ChapterStar[];
+}
+
 export namespace SprotoCall {
     export const Name = "call";
     export type Request = CallRequest;
@@ -459,4 +472,10 @@ export namespace SprotoGetCurChallengeChapterData {
     export const Name = "getCurChallengeChapterData";
     export type Request = undefined;  // getCurChallengeChapterData 协议没有请求参数
     export type Response = GetcurchallengechapterdataResponse;
+}
+
+export namespace SprotoGetUserStars {
+    export const Name = "getUserStars";
+    export type Request = undefined;  // getUserStars 协议没有请求参数
+    export type Response = GetuserstarsResponse;
 }
