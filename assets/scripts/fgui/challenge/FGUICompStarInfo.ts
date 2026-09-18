@@ -1,0 +1,105 @@
+/** This is an automatically generated class by FairyGUI. Please do not modify it. **/
+
+import { assetManager, AssetManager } from "cc";
+import * as fgui from "fairygui-cc";
+
+import { PackageManager } from "@frameworks/PackageManager";
+import { Logger } from "@frameworks/utils/Utils";
+
+export default class FGUICompStarInfo extends fgui.GComponent {
+
+	public UI_TXT_TITLE:fgui.GTextField;
+	public UI_BTN_CLOSE:fgui.GButton;
+	public UI_TXT_NOW_NUM:fgui.GTextField;
+	public UI_TXT_TOTAL_NUM:fgui.GTextField;
+	public static URL:string = "ui://22u2b061jdezl";
+
+	public static packageName:string = "challenge";
+
+	public static instance:any | null = null;
+
+	public enableAnimation: boolean = false;
+
+	public static showView(params?: any, callBack?: (b: boolean) => void): void {
+		if (FGUICompStarInfo.instance) {
+			console.log("allready show");
+			callBack && callBack(false);
+			return;
+		}
+		const createView = () => {
+			const view = fgui.UIPackage.createObject("challenge", "CompStarInfo") as FGUICompStarInfo;
+
+			view.makeFullScreen();
+			FGUICompStarInfo.instance = view;
+			fgui.GRoot.inst.addChild(view);
+			view.show && view.show(params);
+			callBack && callBack(true);
+		};
+
+		if (PackageManager.instance.hasPackage("fgui", this.packageName)) {
+			createView();
+			return;
+		}
+
+		PackageManager.instance
+			.loadPackage("fgui", this.packageName)
+			.then(() => {
+				createView();
+			})
+			.catch((error) => {
+				Logger.error("showView error", error);
+				callBack && callBack(false);
+				return;
+			});
+	}
+
+	protected onDestroy():void {
+		super.onDestroy();
+		FGUICompStarInfo.instance = null;
+	}
+	public static hideView():void {
+		FGUICompStarInfo.instance && FGUICompStarInfo.instance.dispose();
+	}
+
+	show(data?:any):void{};
+
+	enterAnimation(): void {
+		fgui.GTween.to2(0, 0, 1, 1, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackOut)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    });
+	}
+
+	hideAnimation(onComplete?: () => void): void {
+		fgui.GTween.to2(1, 1, 0, 0, 0.3)
+		    .setTarget(this)
+		    .setEase(fgui.EaseType.BackIn)
+		    .onUpdate((tween) => {
+		        this.setScale(tween.value.x, tween.value.y);
+		    })
+		    .onComplete(() => {
+		        onComplete && onComplete();
+		    });
+	}
+
+	public static createInstance():FGUICompStarInfo {
+		return <FGUICompStarInfo>(fgui.UIPackage.createObject("challenge", "CompStarInfo"));
+	}
+
+	protected onConstruct():void {
+		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(1));
+		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(2));
+		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
+		this.UI_TXT_NOW_NUM = <fgui.GTextField>(this.getChildAt(6));
+		this.UI_TXT_TOTAL_NUM = <fgui.GTextField>(this.getChildAt(10));
+		if (this.enableAnimation) this.enterAnimation();
+	}
+	scheduleOnce(callback: () => void, delay: number):void{};
+	unscheduleAllCallbacks():void{};
+	unschedule(callback: () => void):void{};
+	schedule(callback: () => void, interval: number):void{};
+	onBtnClose():void{};
+}
+fgui.UIObjectFactory.setExtension(FGUICompStarInfo.URL, FGUICompStarInfo);

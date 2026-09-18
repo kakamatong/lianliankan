@@ -18,9 +18,6 @@ import { ConnectGameSvr } from "@modules/ConnectGameSvr";
 import { TipsView } from "@view/common/TipsView";
 import { LoadingView } from "@view/common/LoadingView";
 
-/** 单个关卡最多可获得的星星数 */
-const MAX_LEVEL_STARS = 3;
-
 @ViewClass()
 export class CompChapter extends FGUICompChapter {
     /**
@@ -67,6 +64,7 @@ export class CompChapter extends FGUICompChapter {
         Challenge.instance.getConfig((success) => {
             if (success) {
                 this._chapterCount = ChallengeData.instance.chapterCount;
+                this.fetchUserStars();
                 Challenge.instance.getCurChapterData((ok, curChapter) => {
                     if (ok && curChapter !== undefined) {
                         this._chapterIndex = curChapter;
@@ -118,6 +116,19 @@ export class CompChapter extends FGUICompChapter {
     }
 
     /**
+     * @method fetchUserStars
+     * @description 拉取玩家总星星数并缓存到数据中心，供星星进度弹窗展示
+     * @private
+     */
+    private fetchUserStars(): void {
+        Challenge.instance.getUserStars((success, data) => {
+            if (success && data) {
+                ChallengeData.instance.totalStars = data.totalStars;
+            }
+        });
+    }
+
+    /**
      * @method notifyStarCount
      * @description 统计当前章节已获得星星数与总星星数（章节关卡数 × 单关最高星级），并通知父组件刷新星星数量展示
      * @private
@@ -125,7 +136,7 @@ export class CompChapter extends FGUICompChapter {
     private notifyStarCount(): void {
         const levelData = ChallengeData.instance.getChapterData(this._chapterIndex) ?? [];
         const obtained = levelData.reduce((sum, data) => sum + (data.stars ?? 0), 0);
-        const total = ChallengeData.instance.getChapterNums(this._chapterIndex) * MAX_LEVEL_STARS;
+        const total = ChallengeData.instance.getChapterStarMax(this._chapterIndex);
         this.onChapterStarChanged?.(obtained, total);
     }
 

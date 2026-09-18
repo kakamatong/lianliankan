@@ -12,6 +12,7 @@ import { BezierTween, Logger } from "@frameworks/utils/Utils";
 import FGUICompStar from "@fgui/challenge/FGUICompStar";
 import { CompChapter } from "./CompChapter";
 import { ChallengeData } from "@datacenter/ChallengeData";
+import { ChallengeStarView } from "../ChallengeStarView";
 
 /**
  * @class CompChallenge
@@ -20,6 +21,18 @@ import { ChallengeData } from "@datacenter/ChallengeData";
  */
 @ViewClass({ curveScreenAdapt: true })
 export class CompChallenge extends FGUICompChallenge {
+    /**
+     * @property {number} _chapterStars - 当前章节已获得的星星数
+     * @private
+     */
+    private _chapterStars: number = 0;
+
+    /**
+     * @property {number} _chapterStarTotal - 当前章节的总星星数
+     * @private
+     */
+    private _chapterStarTotal: number = 0;
+
     onConstruct() {
         super.onConstruct();
         const chapterComp = this.UI_COMP_CHAPTER as CompChapter;
@@ -27,6 +40,8 @@ export class CompChallenge extends FGUICompChallenge {
         chapterComp.onChapterChanged = this.updateTitle.bind(this);
         // 监听章节星星统计，刷新星星数量展示
         chapterComp.onChapterStarChanged = this.updateStarLabel.bind(this);
+        // 点击星星数量展示，弹出星星进度弹窗
+        this.UI_LABEL_STAR.onClick(this.onBtnStarInfo, this);
         this.show();
     }
 
@@ -60,8 +75,24 @@ export class CompChallenge extends FGUICompChallenge {
      * @private
      */
     private updateStarLabel(obtained: number, total: number): void {
+        this._chapterStars = obtained;
+        this._chapterStarTotal = total;
         if (!this.UI_LABEL_STAR) return;
         this.UI_LABEL_STAR.title = `${obtained}/${total}`;
+    }
+
+    /**
+     * @method onBtnStarInfo
+     * @description 点击星星数量展示：弹出星星进度弹窗，展示当前章节与总章节的星星进度
+     * @private
+     */
+    private onBtnStarInfo(): void {
+        ChallengeStarView.showView({
+            chapterStars: this._chapterStars,
+            chapterStarTotal: this._chapterStarTotal,
+            totalStars: ChallengeData.instance.totalStars,
+            totalStarTotal: ChallengeData.instance.totalStarMax,
+        });
     }
 
     testBezier() {

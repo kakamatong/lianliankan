@@ -4,5 +4,6 @@
     <graph id="n0_jdez" name="n0" xy="0,0" size="776,1688" type="rect" lineSize="0" lineColor="#00000000" fillColor="#b2000000">
       <relation target="" sidePair="width-width,height-height"/>
     </graph>
+    <component id="n1_jdez" name="UI_COMP_MAIN" src="jdezl" fileName="comp/CompStarInfo.xml" xy="58,592"/>
   </displayList>
 </component>

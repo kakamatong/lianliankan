@@ -9,6 +9,9 @@ import { sys } from "cc";
 import { LOCAL_KEY } from "./InterfaceConfig";
 import { ChallengeLevelData } from "../../types/protocol/lobby/c2s";
 
+/** 单个关卡最多可获得的星星数 */
+const MAX_LEVEL_STARS = 3;
+
 /**
  * @enum CHALLENGE_LEVEL_TYPE
  * @description 闯关关卡类型
@@ -167,6 +170,12 @@ export class ChallengeData {
     private _pendingDirectLevel: number = -1;
 
     /**
+     * @property {number} _totalStars - 玩家所有章节已获得的星星总数（由 getUserStars 接口同步）
+     * @private
+     */
+    private _totalStars: number = 0;
+
+    /**
      * @property {ChallengeData} _instance - 单例实例
      * @private
      * @static
@@ -247,6 +256,35 @@ export class ChallengeData {
      */
     get totalLevelCount(): number {
         return this._config?.chapter.reduce((sum, c) => sum + (c.nums ?? 0), 0) ?? 0;
+    }
+
+    /**
+     * @method getChapterStarMax
+     * @description 获取指定章节的总星星数（章节关卡数 × 单关最高星级）
+     * @param {number} index - 章节索引
+     * @returns {number} 章节总星星数
+     */
+    getChapterStarMax(index: number): number {
+        return this.getChapterNums(index) * MAX_LEVEL_STARS;
+    }
+
+    /**
+     * @method totalStarMax
+     * @description 获取所有章节的总星星数（关卡总数 × 单关最高星级）
+     * @returns {number} 总星星数
+     */
+    get totalStarMax(): number {
+        return this.totalLevelCount * MAX_LEVEL_STARS;
+    }
+
+    /**
+     * @property {number} totalStars - 玩家所有章节已获得的星星总数
+     */
+    get totalStars(): number {
+        return this._totalStars;
+    }
+    set totalStars(v: number) {
+        this._totalStars = v;
     }
 
     /**
