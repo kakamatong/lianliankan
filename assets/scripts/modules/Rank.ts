@@ -23,6 +23,9 @@ export class Rank extends BaseModule {
     /** 回调函数 */
     private _callBack: ((b: boolean, data: any) => void) | null = null;
 
+    /** 星星周榜回调函数 */
+    private _starRankCallBack: ((b: boolean, data: any) => void) | null = null;
+
     /**
      * @description 请求排行榜数据
      * @param callBack 回调函数
@@ -53,6 +56,44 @@ export class Rank extends BaseModule {
             }
         } else {
             this._callBack && this._callBack(false, null);
+        }
+    }
+
+    /**
+     * @description 请求星星周榜数据（本周/上周）
+     * @param {number} weekOffset - 周偏移：0=本周，-1=上周
+     * @param {(b: boolean, data: any) => void} callBack - 回调函数，返回 { rank, rankList }
+     */
+    reqStarRank(weekOffset: number, callBack?: (b: boolean, data: any) => void) {
+        if (callBack) {
+            this._starRankCallBack = callBack;
+        }
+        this.reqLobby(
+            SprotoCallActivityFunc,
+            {
+                moduleName: "starRank",
+                funcName: "getRankList",
+                args: JSON.stringify({ gameid: MAIN_GAME_ID, weekOffset: weekOffset ?? 0 }),
+            },
+            this.respStarRank.bind(this)
+        );
+    }
+
+    /**
+     * @description 处理星星周榜数据响应
+     * @param result 服务器返回的星星周榜数据
+     */
+    respStarRank(result: SprotoCallActivityFunc.Response) {
+        if (result && result.code == 1) {
+            const res = JSON.parse(result.result);
+            if (res.error) {
+                Logger.log(LogColors.red(res.error));
+                this._starRankCallBack && this._starRankCallBack(false, res);
+            } else {
+                this._starRankCallBack && this._starRankCallBack(true, res);
+            }
+        } else {
+            this._starRankCallBack && this._starRankCallBack(false, null);
         }
     }
 }
