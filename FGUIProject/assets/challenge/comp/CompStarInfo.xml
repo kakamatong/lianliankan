@@ -2,17 +2,17 @@
 <component size="660,503">
   <displayList>
     <component id="n0_kq4j" name="n0" src="axf11l" fileName="comp/CompPopBg.xml" pkg="gj0r6g5i" xy="0,0" size="660,503"/>
-    <text id="n1_kq4j" name="UI_TXT_TITLE" xy="208,39" pivot="0.5,0.5" size="244,79" fontSize="60" color="#ffffff" align="center" vAlign="middle" strokeColor="#3d4b61" strokeSize="4" singleLine="true" text="温馨提示"/>
+    <text id="n1_kq4j" name="UI_TXT_TITLE" xy="208,39" pivot="0.5,0.5" size="244,79" fontSize="60" color="#ffffff" align="center" vAlign="middle" strokeColor="#3d4b61" strokeSize="4" singleLine="true" text="星星统计"/>
     <component id="n4_kq4j" name="UI_BTN_CLOSE" src="muz3h" fileName="comp/CompBtnClose.xml" pkg="gj0r6g5i" xy="553,12"/>
-    <image id="n10_jdez" name="n10" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="64,153" size="541,145" group="n11_jdez"/>
-    <image id="n7_jdez" name="n7" src="jdezj" fileName="imgs/challengeWinStar.png" xy="121,216" size="81,78" group="n11_jdez" aspect="true"/>
-    <text id="n9_jdez" name="n9" xy="91,160" size="160,53" group="n11_jdez" fontSize="39" color="#ffffff" align="center" vAlign="middle" text="当前章节"/>
-    <text id="n12_jdez" name="UI_TXT_NOW_NUM" xy="355,197" pivot="0.5,0.5" size="237,62" group="n11_jdez" fontSize="46" color="#ff0000" align="center" vAlign="middle" autoSize="none" text="100/100"/>
-    <group id="n11_jdez" name="n11" xy="64,153" size="541,145"/>
-    <image id="n23_jdez" name="n23" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="64,321" size="541,145" group="n27_jdez"/>
-    <image id="n24_jdez" name="n24" src="jdezj" fileName="imgs/challengeWinStar.png" xy="121,384" size="81,78" group="n27_jdez" aspect="true"/>
-    <text id="n25_jdez" name="n25" xy="103,328" size="121,53" group="n27_jdez" fontSize="39" color="#ffffff" align="center" vAlign="middle" text="总章节"/>
-    <text id="n26_jdez" name="UI_TXT_TOTAL_NUM" xy="355,364" pivot="0.5,0.5" size="237,62" group="n27_jdez" fontSize="46" color="#ff0000" align="center" vAlign="middle" autoSize="none" text="100/100"/>
-    <group id="n27_jdez" name="n27" xy="64,321" size="541,145"/>
+    <image id="n10_jdez" name="n10" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="64,145" size="541,145" group="n11_jdez"/>
+    <image id="n7_jdez" name="n7" src="jdezj" fileName="imgs/challengeWinStar.png" xy="121,208" size="81,78" group="n11_jdez" aspect="true"/>
+    <text id="n9_jdez" name="n9" xy="91,152" size="160,53" group="n11_jdez" fontSize="39" color="#ffffff" align="center" vAlign="middle" text="当前章节"/>
+    <text id="n12_jdez" name="UI_TXT_NOW_NUM" xy="355,189" pivot="0.5,0.5" size="237,62" group="n11_jdez" fontSize="46" color="#ff0000" align="center" vAlign="middle" autoSize="none" text="100/100"/>
+    <group id="n11_jdez" name="n11" xy="64,145" size="541,145"/>
+    <image id="n23_jdez" name="n23" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="64,302" size="541,145" group="n27_jdez"/>
+    <image id="n24_jdez" name="n24" src="jdezj" fileName="imgs/challengeWinStar.png" xy="121,365" size="81,78" group="n27_jdez" aspect="true"/>
+    <text id="n25_jdez" name="n25" xy="103,309" size="121,53" group="n27_jdez" fontSize="39" color="#ffffff" align="center" vAlign="middle" text="总章节"/>
+    <text id="n26_jdez" name="UI_TXT_TOTAL_NUM" xy="355,345" pivot="0.5,0.5" size="237,62" group="n27_jdez" fontSize="46" color="#ff0000" align="center" vAlign="middle" autoSize="none" text="100/100"/>
+    <group id="n27_jdez" name="n27" xy="64,302" size="541,145"/>
   </displayList>
 </component>
