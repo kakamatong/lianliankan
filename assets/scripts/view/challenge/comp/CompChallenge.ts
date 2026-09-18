@@ -22,8 +22,11 @@ import { ChallengeData } from "@datacenter/ChallengeData";
 export class CompChallenge extends FGUICompChallenge {
     onConstruct() {
         super.onConstruct();
+        const chapterComp = this.UI_COMP_CHAPTER as CompChapter;
         // 监听章节切换，实时刷新章节标题
-        (this.UI_COMP_CHAPTER as CompChapter).onChapterChanged = this.updateTitle.bind(this);
+        chapterComp.onChapterChanged = this.updateTitle.bind(this);
+        // 监听章节星星统计，刷新星星数量展示
+        chapterComp.onChapterStarChanged = this.updateStarLabel.bind(this);
         this.show();
     }
 
@@ -47,6 +50,18 @@ export class CompChallenge extends FGUICompChallenge {
     private updateTitle(chapter: number): void {
         if (!this.UI_TXT_TITLE) return;
         this.UI_TXT_TITLE.text = ChallengeData.instance.getChapterName(chapter) || `第${chapter + 1}章`;
+    }
+
+    /**
+     * @method updateStarLabel
+     * @description 更新当前章节的星星数量文本，格式为"已获得/总数"，例如 20/100
+     * @param {number} obtained - 当前章节已获得的星星数
+     * @param {number} total - 当前章节的总星星数
+     * @private
+     */
+    private updateStarLabel(obtained: number, total: number): void {
+        if (!this.UI_LABEL_STAR) return;
+        this.UI_LABEL_STAR.title = `${obtained}/${total}`;
     }
 
     testBezier() {

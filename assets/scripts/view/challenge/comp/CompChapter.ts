@@ -4,7 +4,7 @@
  * @category 闯关视图
  */
 
-import { ChallengeData, MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
+import { CHALLENGE_LEVEL_TYPE, ChallengeData, MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
 import FGUICompChapter from "@fgui/challenge/FGUICompChapter";
 import { ChangeScene, ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
@@ -17,6 +17,9 @@ import { UserEnergy } from "@modules/UserEnergy";
 import { ConnectGameSvr } from "@modules/ConnectGameSvr";
 import { TipsView } from "@view/common/TipsView";
 import { LoadingView } from "@view/common/LoadingView";
+
+/** 单个关卡最多可获得的星星数 */
+const MAX_LEVEL_STARS = 3;
 
 @ViewClass()
 export class CompChapter extends FGUICompChapter {
@@ -42,6 +45,11 @@ export class CompChapter extends FGUICompChapter {
      * @property {(chapter: number) => void} onChapterChanged - 章节切换回调，参数为切换后的章节索引，由父组件 CompChallenge 设置
      */
     public onChapterChanged?: (chapter: number) => void;
+
+    /**
+     * @property {(obtained: number, total: number) => void} onChapterStarChanged - 章节星星统计回调，参数为已获得星星数与总星星数，由父组件 CompChallenge 设置
+     */
+    public onChapterStarChanged?: (obtained: number, total: number) => void;
 
     onConstruct() {
         super.onConstruct();
@@ -102,10 +110,35 @@ export class CompChapter extends FGUICompChapter {
             this.UI_LV_ITEMS.numItems = this._chapterConfig.length;
             //this.UI_LV_ITEMS.scrollPane.scrollToView(ChallengeData.instance.curLevel, true, true);
             this.updateButtons();
+            this.notifyStarCount();
             this.checkPendingDirectChallenge();
         } finally {
             LoadingView.hideView();
         }
+    }
+
+    /**
+     * @method getLevelMaxStars
+     * @description 获取单个关卡可获得的最高星星数（按星级阈值数量计算，最多 3 星）
+     * @param {MAP_LEVEL_CONFIG} config - 关卡配置
+     * @returns {number} 该关卡的星星总数
+     * @private
+     */
+    private getLevelMaxStars(config: MAP_LEVEL_CONFIG): number {
+        const thresholds = config.type === CHALLENGE_LEVEL_TYPE.TIMING ? config.starTime : config.starScore;
+        return Math.min(thresholds?.length ?? 0, MAX_LEVEL_STARS);
+    }
+
+    /**
+     * @method notifyStarCount
+     * @description 统计当前章节已获得星星数与总星星数，并通知父组件刷新星星数量展示
+     * @private
+     */
+    private notifyStarCount(): void {
+        const levelData = ChallengeData.instance.getChapterData(this._chapterIndex) ?? [];
+        const obtained = levelData.reduce((sum, data) => sum + (data.stars ?? 0), 0);
+        const total = this._chapterConfig.reduce((sum, config) => sum + this.getLevelMaxStars(config), 0);
+        this.onChapterStarChanged?.(obtained, total);
     }
 
     /**

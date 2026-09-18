@@ -19,5 +19,8 @@
     <group id="n9_jdez" name="n9" xy="245,140" size="286,87" advanced="true">
       <relation target="" sidePair="center-center,middle-middle"/>
     </group>
+    <component id="n10_jdez" name="UI_LABEL_STAR" src="jdezi" fileName="comp/LabelTotalStar.xml" xy="509,42">
+      <relation target="" sidePair="left-left,top-top"/>
+    </component>
   </displayList>
 </component>

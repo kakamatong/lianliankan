@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="252,67" extention="Label">
+  <displayList>
+    <image id="n3_jdez" name="n3" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="0,0" size="252,64"/>
+    <text id="n2_jdez" name="title" xy="79,7" size="166,49" fontSize="36" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="100/100"/>
+    <image id="n4_jdez" name="n4" src="jdezj" fileName="imgs/challengeWinStar.png" xy="3,-9" size="80,77" aspect="true"/>
+  </displayList>
+</component>
