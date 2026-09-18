@@ -40,6 +40,8 @@ export interface CHALLENGE_CHAPTER {
     index: number;
     /** 章节名称 */
     name: string;
+    /** 章节关卡数量 */
+    nums: number;
     /** 配置文件路径 */
     path: string;
     /** 配置版本 */
@@ -226,6 +228,25 @@ export class ChallengeData {
      */
     getChapterName(index: number): string {
         return this._config?.chapter.find((c) => c.index === index)?.name ?? "";
+    }
+
+    /**
+     * @method getChapterNums
+     * @description 获取指定章节的关卡数量
+     * @param {number} index - 章节索引
+     * @returns {number} 关卡数量，章节配置不存在时返回 0
+     */
+    getChapterNums(index: number): number {
+        return this._config?.chapter.find((c) => c.index === index)?.nums ?? 0;
+    }
+
+    /**
+     * @method totalLevelCount
+     * @description 获取所有章节的关卡总数
+     * @returns {number} 关卡总数
+     */
+    get totalLevelCount(): number {
+        return this._config?.chapter.reduce((sum, c) => sum + (c.nums ?? 0), 0) ?? 0;
     }
 
     /**

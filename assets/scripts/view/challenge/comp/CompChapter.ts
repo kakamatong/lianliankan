@@ -4,7 +4,7 @@
  * @category 闯关视图
  */
 
-import { CHALLENGE_LEVEL_TYPE, ChallengeData, MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
+import { ChallengeData, MAP_LEVEL_CONFIG } from "@datacenter/ChallengeData";
 import FGUICompChapter from "@fgui/challenge/FGUICompChapter";
 import { ChangeScene, ViewClass } from "@frameworks/Framework";
 import * as fgui from "fairygui-cc";
@@ -118,26 +118,14 @@ export class CompChapter extends FGUICompChapter {
     }
 
     /**
-     * @method getLevelMaxStars
-     * @description 获取单个关卡可获得的最高星星数（按星级阈值数量计算，最多 3 星）
-     * @param {MAP_LEVEL_CONFIG} config - 关卡配置
-     * @returns {number} 该关卡的星星总数
-     * @private
-     */
-    private getLevelMaxStars(config: MAP_LEVEL_CONFIG): number {
-        const thresholds = config.type === CHALLENGE_LEVEL_TYPE.TIMING ? config.starTime : config.starScore;
-        return Math.min(thresholds?.length ?? 0, MAX_LEVEL_STARS);
-    }
-
-    /**
      * @method notifyStarCount
-     * @description 统计当前章节已获得星星数与总星星数，并通知父组件刷新星星数量展示
+     * @description 统计当前章节已获得星星数与总星星数（章节关卡数 × 单关最高星级），并通知父组件刷新星星数量展示
      * @private
      */
     private notifyStarCount(): void {
         const levelData = ChallengeData.instance.getChapterData(this._chapterIndex) ?? [];
         const obtained = levelData.reduce((sum, data) => sum + (data.stars ?? 0), 0);
-        const total = this._chapterConfig.reduce((sum, config) => sum + this.getLevelMaxStars(config), 0);
+        const total = ChallengeData.instance.getChapterNums(this._chapterIndex) * MAX_LEVEL_STARS;
         this.onChapterStarChanged?.(obtained, total);
     }
 
@@ -205,8 +193,8 @@ export class CompChapter extends FGUICompChapter {
     private itemRenderer(index: number, item: fgui.GObject) {
         const chapterItem = item as CompLevel;
         const config = this._chapterConfig[index];
-        const levelData = ChallengeData.instance.getLevelData(this._chapterIndex, config.index);
         if (!config || !chapterItem) return;
+        const levelData = ChallengeData.instance.getLevelData(this._chapterIndex, config.index);
 
         chapterItem.setLevelName(`${config.index + 1}`);
         chapterItem.clearClick();

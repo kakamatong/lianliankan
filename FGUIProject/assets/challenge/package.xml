@@ -17,6 +17,8 @@
     <component id="kq4jg" name="CompBtnChallenge.xml" path="/comp/"/>
     <component id="jdezi" name="LabelTotalStar.xml" path="/comp/"/>
     <image id="jdezj" name="challengeWinStar.png" path="/imgs/"/>
+    <component id="jdezk" name="ChallengeStarView.xml" path="/" exported="true"/>
+    <component id="jdezl" name="CompStarInfo.xml" path="/comp/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>
