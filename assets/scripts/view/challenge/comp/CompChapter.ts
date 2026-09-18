@@ -38,6 +38,11 @@ export class CompChapter extends FGUICompChapter {
      */
     private _chapterCount: number = 0;
 
+    /**
+     * @property {(chapter: number) => void} onChapterChanged - 章节切换回调，参数为切换后的章节索引，由父组件 CompChallenge 设置
+     */
+    public onChapterChanged?: (chapter: number) => void;
+
     onConstruct() {
         super.onConstruct();
         this.init();
@@ -80,6 +85,8 @@ export class CompChapter extends FGUICompChapter {
      */
     private async showChapter(index: number) {
         LoadingView.showView({ content: "载入中...", time: 12 });
+        // 立即通知父组件刷新章节标题
+        this.onChapterChanged?.(index);
         try {
             const configPromise = ChallengeData.instance.loadChapterConfig(index);
 

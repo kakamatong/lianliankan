@@ -11,6 +11,7 @@ export default class FGUICompChallenge extends fgui.GComponent {
 
 	public UI_BTN_CLOSE:fgui.GButton;
 	public UI_COMP_CHAPTER:FGUICompChapter;
+	public UI_TXT_TITLE:fgui.GTextField;
 	public static URL:string = "ui://22u2b061hot01";
 
 	public static packageName:string = "challenge";
@@ -91,6 +92,7 @@ export default class FGUICompChallenge extends fgui.GComponent {
 		this.UI_BTN_CLOSE = <fgui.GButton>(this.getChildAt(2));
 		this.UI_BTN_CLOSE.onClick(this.onBtnClose, this);
 		this.UI_COMP_CHAPTER = <FGUICompChapter>(this.getChildAt(3));
+		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(5));
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};

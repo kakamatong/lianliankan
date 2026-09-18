@@ -219,6 +219,16 @@ export class ChallengeData {
     }
 
     /**
+     * @method getChapterName
+     * @description 获取指定章节的名称（用于展示章节标题）
+     * @param {number} index - 章节索引
+     * @returns {string} 章节名称，章节配置不存在时返回空字符串
+     */
+    getChapterName(index: number): string {
+        return this._config?.chapter.find((c) => c.index === index)?.name ?? "";
+    }
+
+    /**
      * @property {number} curChapter - 当前对战的章节ID
      */
     get curChapter(): number {

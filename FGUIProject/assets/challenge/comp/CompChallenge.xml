@@ -14,5 +14,10 @@
     <component id="n5_vcww" name="UI_COMP_CHAPTER" src="vcww3" fileName="comp/CompChapter.xml" xy="37,257">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
+    <image id="n7_jdez" name="n7" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="245,140" size="286,87" group="n9_jdez"/>
+    <text id="n8_jdez" name="UI_TXT_TITLE" xy="249,142" pivot="0.5,0.5" size="278,82" group="n9_jdez" fontSize="46" color="#ffffff" align="center" vAlign="middle" autoSize="shrink" text=""/>
+    <group id="n9_jdez" name="n9" xy="245,140" size="286,87" advanced="true">
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </group>
   </displayList>
 </component>
