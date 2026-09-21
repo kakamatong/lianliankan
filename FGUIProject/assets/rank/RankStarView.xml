@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="776,1688">
+  <displayList>
+    <graph id="n8_is91" name="n8" xy="0,0" size="776,1688" type="rect" lineSize="0" lineColor="#00000000" fillColor="#b2000000">
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+    <component id="n13_jdez" name="UI_COMP_MAIN" src="jdez3" fileName="comp/CompRankStar.xml" xy="58,412"/>
+  </displayList>
+</component>

@@ -34,6 +34,9 @@
     <image id="vcww9" name="starGray.png" path="/imgs/" exported="true"/>
     <image id="ddk11q" name="add.png" path="/imgs/" exported="true"/>
     <image id="gnq21r" name="wenhao.png" path="/imgs/" exported="true"/>
+    <image id="jdez1s" name="btnG2.png" path="/imgs/" exported="true" scale="9grid" scale9grid="34,24,68,48"/>
+    <image id="jdez1t" name="btnY2.png" path="/imgs/" exported="true" scale="9grid" scale9grid="34,24,68,48"/>
+    <image id="jdez1u" name="btnB2.png" path="/imgs/" exported="true" scale="9grid" scale9grid="34,24,68,48"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

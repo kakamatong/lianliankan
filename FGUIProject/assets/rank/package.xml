@@ -3,6 +3,9 @@
   <resources>
     <component id="is910" name="RankView.xml" path="/" exported="true"/>
     <component id="is911" name="CompRankInfo.xml" path="/comp/"/>
+    <component id="jdez2" name="RankStarView.xml" path="/" exported="true"/>
+    <component id="jdez3" name="CompRankStar.xml" path="/comp/"/>
+    <component id="jdez4" name="BtnSelect.xml" path="/comp/"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

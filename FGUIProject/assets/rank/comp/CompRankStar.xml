@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="660,863">
+  <controller name="ctrl_day" pages="0,,1," selected="0">
+    <remark page="0" value="本周"/>
+    <remark page="1" value="上周"/>
+  </controller>
+  <displayList>
+    <component id="n0_jdez" name="n0" src="axf11l" fileName="comp/CompPopBg.xml" pkg="gj0r6g5i" xy="0,0" size="660,863"/>
+    <image id="n1_jdez" name="n1" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="32,282" size="595,440" alpha="0.5"/>
+    <list id="n2_jdez" name="UI_LV_RANK" xy="33,280" size="595,436" overflow="scroll" defaultItem="ui://2a32uf5yis911" align="center" autoClearItems="true">
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
+    <component id="n3_jdez" name="UI_BTN_CLOSE" src="muz3h" fileName="comp/CompBtnClose.xml" pkg="gj0r6g5i" xy="568,13"/>
+    <text id="n4_jdez" name="n4" xy="40,730" size="254,66" fontSize="50" color="#ffffff" strokeColor="#000000" strokeSize="2" text="您的排名："/>
+    <text id="n5_jdez" name="UI_TXT_SELF_RANK" xy="292,731" size="178,66" fontSize="50" color="#ff0000" singleLine="true" text="000000"/>
+    <text id="n6_jdez" name="n6" xy="179,37" size="304,79" fontSize="60" color="#ffffff" strokeColor="#3d4b61" strokeSize="4" text="本周排行榜">
+      <gearText controller="ctrl_day" pages="1" values="上周排行榜" default="本周排行榜"/>
+    </text>
+    <text id="n7_jdez" name="n7" xy="56,802" size="317,20" alpha="0.7" fontSize="13" color="#333333" text="匹配模式按排名进行得分，未完成不加分，每日0点清0"/>
+    <component id="n9_jdez" name="n9" src="nomuz" fileName="comp/CompBtnSingleCheck.xml" pkg="gj0r6g5i" xy="38,135" size="130,75" controller="ctrl_color,1">
+      <Button checked="true" title="本周" icon="ui://gj0r6g5ijdez1u" controller="ctrl_day" page="0"/>
+    </component>
+    <component id="n10_jdez" name="n10" src="nomuz" fileName="comp/CompBtnSingleCheck.xml" pkg="gj0r6g5i" xy="177,135" size="130,75" controller="ctrl_color,3">
+      <Button title="上周" icon="ui://gj0r6g5ijdez1s" controller="ctrl_day" page="1"/>
+    </component>
+    <text id="n11_jdez" name="n11" xy="40,221" size="78,50" fontSize="37" color="#7e6547" text="名次"/>
+    <text id="n12_jdez" name="n12" xy="224,221" size="78,50" fontSize="37" color="#7e6547" text="玩家"/>
+    <text id="n13_jdez" name="n13" xy="510,221" size="115,50" fontSize="37" color="#7e6547" text="总星星"/>
+  </displayList>
+</component>
