@@ -13,6 +13,7 @@ export default class FGUICompChallenge extends fgui.GComponent {
 	public UI_COMP_CHAPTER:FGUICompChapter;
 	public UI_TXT_TITLE:fgui.GTextField;
 	public UI_LABEL_STAR:fgui.GLabel;
+	public UI_BTN_STAR_RANK:fgui.GButton;
 	public static URL:string = "ui://22u2b061hot01";
 
 	public static packageName:string = "challenge";
@@ -95,6 +96,8 @@ export default class FGUICompChallenge extends fgui.GComponent {
 		this.UI_COMP_CHAPTER = <FGUICompChapter>(this.getChildAt(3));
 		this.UI_TXT_TITLE = <fgui.GTextField>(this.getChildAt(5));
 		this.UI_LABEL_STAR = <fgui.GLabel>(this.getChildAt(7));
+		this.UI_BTN_STAR_RANK = <fgui.GButton>(this.getChildAt(8));
+		this.UI_BTN_STAR_RANK.onClick(this.onBtnStarRank, this);
 		if (this.enableAnimation) this.enterAnimation();
 	}
 	scheduleOnce(callback: () => void, delay: number):void{};
@@ -102,5 +105,6 @@ export default class FGUICompChallenge extends fgui.GComponent {
 	unschedule(callback: () => void):void{};
 	schedule(callback: () => void, interval: number):void{};
 	onBtnClose():void{};
+	onBtnStarRank():void{};
 }
 fgui.UIObjectFactory.setExtension(FGUICompChallenge.URL, FGUICompChallenge);

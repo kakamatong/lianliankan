@@ -19,7 +19,7 @@
     <text id="n6_jdez" name="n6" xy="179,37" size="304,79" fontSize="60" color="#ffffff" strokeColor="#3d4b61" strokeSize="4" text="本周排行榜">
       <gearText controller="ctrl_day" pages="1" values="上周排行榜" default="本周排行榜"/>
     </text>
-    <text id="n7_jdez" name="n7" xy="56,802" size="317,20" alpha="0.7" fontSize="13" color="#333333" text="匹配模式按排名进行得分，未完成不加分，每日0点清0"/>
+    <text id="n7_jdez" name="n7" xy="56,802" size="235,30" alpha="0.7" fontSize="21" color="#333333" text="每周需完成一局闯关对战"/>
     <component id="n9_jdez" name="n9" src="nomuz" fileName="comp/CompBtnSingleCheck.xml" pkg="gj0r6g5i" xy="38,135" size="130,75" controller="ctrl_color,1">
       <Button checked="true" title="本周" icon="ui://gj0r6g5ijdez1u" controller="ctrl_day" page="0"/>
     </component>
