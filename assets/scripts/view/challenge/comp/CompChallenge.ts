@@ -13,6 +13,7 @@ import FGUICompStar from "@fgui/challenge/FGUICompStar";
 import { CompChapter } from "./CompChapter";
 import { ChallengeData } from "@datacenter/ChallengeData";
 import { ChallengeStarView } from "../ChallengeStarView";
+import { RankStarView } from "../../rank/RankStarView";
 
 /**
  * @class CompChallenge
@@ -51,6 +52,15 @@ export class CompChallenge extends FGUICompChallenge {
 
     onBtnClose() {
         ChallengeView.hideView();
+    }
+
+    /**
+     * @method onBtnStarRank
+     * @description 点击星星排行榜按钮：弹出星星周榜弹窗（本周/上周），数据由弹窗内部按 5 分钟缓存拉取
+     * @private
+     */
+    onBtnStarRank(): void {
+        RankStarView.showView();
     }
 
     show(data?: any): void {

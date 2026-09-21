@@ -20,42 +20,34 @@ export class Rank extends BaseModule {
         return this._getInstance<Rank>(Rank);
     }
 
-    /** 回调函数 */
-    private _callBack: ((b: boolean, data: any) => void) | null = null;
-
-    /** 星星周榜回调函数 */
-    private _starRankCallBack: ((b: boolean, data: any) => void) | null = null;
-
     /**
      * @description 请求排行榜数据
      * @param callBack 回调函数
      */
     req(callBack?: (b: boolean, data: any) => void) {
-        if (callBack) {
-            this._callBack = callBack;
-        }
         this.reqLobby(
             SprotoCallActivityFunc,
             { moduleName: "gameRank", funcName: "getRankList", args: JSON.stringify({ gameid: MAIN_GAME_ID }) },
-            this.resp.bind(this)
+            (result) => this.resp(result, callBack)
         );
     }
 
     /**
      * @description 处理排行榜数据响应
      * @param result 服务器返回的排行榜数据
+     * @param callBack 本次请求的回调（按请求传递，避免并发时回调串号）
      */
-    resp(result: SprotoCallActivityFunc.Response) {
+    resp(result: SprotoCallActivityFunc.Response, callBack?: (b: boolean, data: any) => void) {
         if (result && result.code == 1) {
             const res = JSON.parse(result.result);
             if (res.error) {
                 Logger.log(LogColors.red(res.error));
-                this._callBack && this._callBack(false, res);
+                callBack && callBack(false, res);
             } else {
-                this._callBack && this._callBack(true, res);
+                callBack && callBack(true, res);
             }
         } else {
-            this._callBack && this._callBack(false, null);
+            callBack && callBack(false, null);
         }
     }
 
@@ -65,9 +57,6 @@ export class Rank extends BaseModule {
      * @param {(b: boolean, data: any) => void} callBack - 回调函数，返回 { rank, rankList }
      */
     reqStarRank(weekOffset: number, callBack?: (b: boolean, data: any) => void) {
-        if (callBack) {
-            this._starRankCallBack = callBack;
-        }
         this.reqLobby(
             SprotoCallActivityFunc,
             {
@@ -75,25 +64,26 @@ export class Rank extends BaseModule {
                 funcName: "getRankList",
                 args: JSON.stringify({ gameid: MAIN_GAME_ID, weekOffset: weekOffset ?? 0 }),
             },
-            this.respStarRank.bind(this)
+            (result) => this.respStarRank(result, callBack)
         );
     }
 
     /**
      * @description 处理星星周榜数据响应
      * @param result 服务器返回的星星周榜数据
+     * @param callBack 本次请求的回调（按请求传递，避免本周/上周切换时回调串号）
      */
-    respStarRank(result: SprotoCallActivityFunc.Response) {
+    respStarRank(result: SprotoCallActivityFunc.Response, callBack?: (b: boolean, data: any) => void) {
         if (result && result.code == 1) {
             const res = JSON.parse(result.result);
             if (res.error) {
                 Logger.log(LogColors.red(res.error));
-                this._starRankCallBack && this._starRankCallBack(false, res);
+                callBack && callBack(false, res);
             } else {
-                this._starRankCallBack && this._starRankCallBack(true, res);
+                callBack && callBack(true, res);
             }
         } else {
-            this._starRankCallBack && this._starRankCallBack(false, null);
+            callBack && callBack(false, null);
         }
     }
 }

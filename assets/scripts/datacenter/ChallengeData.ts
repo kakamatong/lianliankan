@@ -12,6 +12,20 @@ import { ChallengeLevelData } from "../../types/protocol/lobby/c2s";
 /** 单个关卡最多可获得的星星数 */
 const MAX_LEVEL_STARS = 3;
 
+/** 星星周榜客户端缓存时长（秒），与服务端 starRank 缓存保持一致 */
+const STAR_RANK_CACHE_SECONDS = 5 * 60;
+
+/**
+ * @interface STAR_RANK_CACHE
+ * @description 星星周榜缓存条目
+ */
+export interface STAR_RANK_CACHE {
+    /** 服务端返回的 { rank, rankList } */
+    data: any;
+    /** 写入时间（秒） */
+    time: number;
+}
+
 /**
  * @enum CHALLENGE_LEVEL_TYPE
  * @description 闯关关卡类型
@@ -174,6 +188,12 @@ export class ChallengeData {
      * @private
      */
     private _totalStars: number = 0;
+
+    /**
+     * @property {Map<number, STAR_RANK_CACHE>} _starRankCache - 星星周榜全局缓存，本周(0)/上周(-1)各存一份
+     * @private
+     */
+    private _starRankCache: Map<number, STAR_RANK_CACHE> = new Map();
 
     /**
      * @property {ChallengeData} _instance - 单例实例
@@ -495,5 +515,32 @@ export class ChallengeData {
         }
 
         return data as MAP_LEVEL_CONFIG[];
+    }
+
+    /**
+     * @method getStarRank
+     * @description 读取星星周榜缓存：命中且未超过 5 分钟直接返回，无缓存或已过期返回 null（由调用方重新拉取）
+     * @param {number} weekOffset - 周偏移：0=本周，-1=上周
+     * @returns {any | null} 缓存的榜单数据，未命中或已过期返回 null
+     */
+    getStarRank(weekOffset: number): any | null {
+        const cached = this._starRankCache.get(weekOffset);
+        if (!cached) {
+            return null;
+        }
+        if (Math.floor(Date.now() / 1000) - cached.time >= STAR_RANK_CACHE_SECONDS) {
+            return null;
+        }
+        return cached.data;
+    }
+
+    /**
+     * @method setStarRank
+     * @description 写入星星周榜缓存（本周/上周各一份，互不覆盖）
+     * @param {number} weekOffset - 周偏移：0=本周，-1=上周
+     * @param {any} data - 服务端返回的 { rank, rankList }
+     */
+    setStarRank(weekOffset: number, data: any): void {
+        this._starRankCache.set(weekOffset, { data, time: Math.floor(Date.now() / 1000) });
     }
 }
