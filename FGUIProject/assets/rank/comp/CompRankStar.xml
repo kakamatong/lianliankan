@@ -7,7 +7,7 @@
   <displayList>
     <component id="n0_jdez" name="n0" src="axf11l" fileName="comp/CompPopBg.xml" pkg="gj0r6g5i" xy="0,0" size="660,863"/>
     <image id="n1_jdez" name="n1" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="32,282" size="595,440" alpha="0.5"/>
-    <list id="n2_jdez" name="UI_LV_RANK" xy="33,280" size="595,436" overflow="scroll" defaultItem="ui://2a32uf5yis911" align="center" autoClearItems="true">
+    <list id="n2_jdez" name="UI_LV_RANK" xy="33,287" size="595,429" overflow="scroll" defaultItem="ui://2a32uf5yis911" align="center" autoClearItems="true">
       <item/>
       <item/>
       <item/>

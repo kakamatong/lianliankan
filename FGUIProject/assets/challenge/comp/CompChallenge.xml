@@ -14,15 +14,15 @@
     <component id="n5_vcww" name="UI_COMP_CHAPTER" src="vcww3" fileName="comp/CompChapter.xml" xy="37,257">
       <relation target="" sidePair="center-center,middle-middle"/>
     </component>
-    <image id="n7_jdez" name="n7" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="245,149" size="286,87" group="n9_jdez"/>
-    <text id="n8_jdez" name="UI_TXT_TITLE" xy="249,151" pivot="0.5,0.5" size="278,82" group="n9_jdez" fontSize="46" color="#ffffff" align="center" vAlign="middle" autoSize="shrink" text=""/>
-    <group id="n9_jdez" name="n9" xy="245,149" size="286,87" advanced="true">
+    <image id="n7_jdez" name="n7" src="jin6a" fileName="imgs/mask.png" pkg="gj0r6g5i" xy="245,177" size="286,63" group="n9_jdez"/>
+    <text id="n8_jdez" name="UI_TXT_TITLE" xy="249,176" pivot="0.5,0.5" size="278,62" group="n9_jdez" fontSize="46" color="#ffffff" align="center" vAlign="middle" autoSize="shrink" text="苹果章节"/>
+    <group id="n9_jdez" name="n9" xy="245,176" size="286,64" advanced="true">
       <relation target="" sidePair="center-center,middle-middle"/>
     </group>
     <component id="n10_jdez" name="UI_LABEL_STAR" src="jdezi" fileName="comp/LabelTotalStar.xml" xy="509,42">
       <relation target="" sidePair="left-left,top-top"/>
     </component>
-    <component id="n11_gztk" name="UI_BTN_STAR_RANK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="547,1565" size="203,95">
+    <component id="n11_gztk" name="UI_BTN_STAR_RANK" src="is91n" fileName="comp/CompBtnCommon.xml" pkg="gj0r6g5i" xy="547,1565" size="203,95" controller="ctrl_color,3">
       <relation target="" sidePair="right-right,bottom-bottom"/>
       <Button title="排行榜" icon="ui://gj0r6g5ijorf1g"/>
     </component>
