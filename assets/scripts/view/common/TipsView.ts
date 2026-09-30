@@ -10,6 +10,7 @@ import FGUICompTips from "@fgui/common/FGUICompTips";
 import * as fgui from "fairygui-cc";
 import { ViewClass } from "@frameworks/Framework";
 import { Logger } from "@frameworks/utils/Utils";
+import { PackageManager } from "@frameworks/PackageManager";
 
 /**
  * @class TipsView
@@ -25,25 +26,42 @@ export class TipsView extends FGUITipsView {
      * @description 显示提示视图
      * @param params 提示配置数据
      */
-    public static showView(params?: any): void {
-        if (FGUITipsView.instance) {
-            FGUITipsView.instance.createTip(params);
+    public static showView(params?: any, callBack?: (b: boolean) => void): void {
+        if (TipsView.instance) {
+            TipsView.instance.createTip(params);
             return;
         }
-        const bundle = assetManager.getBundle("fgui") as AssetManager.Bundle;
-        fgui.UIPackage.loadPackage(bundle, this.packageName, (error, pkg) => {
-            if (error) {
-                Logger.error("loadPackage error", error);
-                return;
-            }
+
+        const createView = () => {
             const view = fgui.UIPackage.createObject("common", "TipsView") as TipsView;
 
             view.makeFullScreen();
-            FGUITipsView.instance = view;
+            TipsView.instance = view;
             view.sortingOrder = 9999;
             fgui.GRoot.inst.addChild(view);
             view.createTip && view.createTip(params);
-        });
+            view.show && view.show(params);
+            callBack && callBack(true);
+        };
+        if (PackageManager.instance.hasPackage("fgui", this.packageName)) {
+            createView();
+            return;
+        }
+
+        PackageManager.instance
+            .loadPackage("fgui", this.packageName)
+            .then(() => {
+                createView();
+            })
+            .catch((error) => {
+                Logger.error("showView error", error);
+                callBack && callBack(false);
+                return;
+            });
+    }
+
+    public static hideView(): void {
+        TipsView.instance && TipsView.instance.dispose();
     }
 
     /**
@@ -54,14 +72,17 @@ export class TipsView extends FGUITipsView {
         const tip = fgui.UIPackage.createObject("common", "CompTips") as FGUICompTips;
         this._tipList.push(tip);
         tip.title.text = data.content;
-        fgui.GTween.to(1, 0, 1)
-            .setDelay(2)
-            .setTarget(tip, "alpha")
-            .onComplete(() => {
-                tip && tip.dispose();
-                this._tipList = this._tipList.filter((t) => t !== tip);
-            });
         this.UI_LV_TIPS.addChild(tip);
+        // 延迟0.1秒后开始动画，否则动画会不执行
+        this.scheduleOnce(() => {
+            fgui.GTween.to(1, 0, 1)
+                .setDelay(2)
+                .setTarget(tip, "alpha")
+                .onComplete(() => {
+                    tip && tip.dispose();
+                    this._tipList = this._tipList.filter((t) => t !== tip);
+                });
+        }, 0.05);
     }
 
     /**
@@ -72,7 +93,7 @@ export class TipsView extends FGUITipsView {
             fgui.GTween.kill(tip);
         }
         this._tipList = [];
-        FGUITipsView.instance = null;
+        TipsView.instance = null;
     }
 }
 fgui.UIObjectFactory.setExtension(TipsView.URL, TipsView);
