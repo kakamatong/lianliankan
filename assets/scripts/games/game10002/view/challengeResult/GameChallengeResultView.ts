@@ -8,13 +8,14 @@ import FGUIGameChallengeResultView from "@fgui/gameChallengeResult/FGUIGameChall
 import * as fgui from "fairygui-cc";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import { CompResultData } from "./comp/CompResult";
+import { FGUI_PACKAGE } from "@datacenter/PackageConfig";
 
 /**
  * @class GameChallengeResultView
  * @description 挑战赛胜利视图，继承自 FGUI 自动生成的 FGUIGameChallengeResultView
  * @category 游戏 10002 - 连连看
  */
-@PackageLoad(["gameCommon", "gameChallengeResult"])
+@PackageLoad([FGUI_PACKAGE.GAME_COMMON, FGUI_PACKAGE.GAME_CHALLENGE_RESULT])
 @ViewClass()
 export class GameChallengeResultView extends FGUIGameChallengeResultView {
     show(data?: CompResultData): void {

@@ -9,9 +9,10 @@ import FGUICompHead from "@fgui/common/FGUICompHead";
 import FGUICompMedal from "@fgui/gameCommon/FGUICompMedal";
 import { DataCenter } from "@datacenter/Datacenter";
 import { TruncateString } from "@frameworks/utils/Utils";
+import { FGUI_PACKAGE } from "@datacenter/PackageConfig";
 
 @ViewClass()
-@PackageLoad(["gameCommon"])
+@PackageLoad([FGUI_PACKAGE.GAME_COMMON])
 export class ResultView extends FGUIResultView {
     private _continueFunc: (() => void) | null = null;
     private _scoreData: Array<{

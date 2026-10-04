@@ -17,6 +17,7 @@ import { CompMatchAct } from "./comp/CompMatchAct";
 import { sys } from "cc";
 import { SprotoMatchOnSure, SprotoMatchOnSureFail } from "../../../types/protocol/lobby/s2c";
 import { Logger } from "@frameworks/utils/Utils";
+import { FGUI_PACKAGE } from "@datacenter/PackageConfig";
 
 /**
  * @class MatchView
@@ -24,7 +25,7 @@ import { Logger } from "@frameworks/utils/Utils";
  * @category 匹配视图
  */
 @ViewClass()
-@PackageLoad(["resFruit"])
+@PackageLoad([FGUI_PACKAGE.RES_FRUIT])
 export class MatchView extends FGUIMatchView {
     /** 匹配确认ID */
     private _checkID: number = 0;

@@ -8,13 +8,14 @@ import FGUICompBgCubeLine from "@fgui/lobbyBg/FGUICompBgCubeLine";
 import * as fgui from "fairygui-cc";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import { CompBgCube } from "./CompBgCube";
+import { FGUI_PACKAGE } from "@datacenter/PackageConfig";
 
 /**
  * @class CompBgCubeLine
  * @description 大厅背景方块行，包含 14 个方块（工厂注册后实际实例为 CompBgCube）
  * @category 大厅背景
  */
-@PackageLoad(["lobbyBg"])
+@PackageLoad([FGUI_PACKAGE.LOBBY_BG])
 @ViewClass()
 export class CompBgCubeLine extends FGUICompBgCubeLine {
     /** 本行的 14 个方块引用 @private */

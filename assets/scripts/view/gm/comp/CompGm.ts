@@ -10,8 +10,9 @@ import * as fgui from "fairygui-cc";
 import { UserEnergy } from "@modules/UserEnergy";
 import { GmView } from "../GmView";
 import { GameChallengeResultView } from "@game10002/view/challengeResult/GameChallengeResultView";
+import { FGUI_PACKAGE } from "@datacenter/PackageConfig";
 
-@PackageLoad(["gm"])
+@PackageLoad([FGUI_PACKAGE.GM])
 @ViewClass()
 export class CompGm extends FGUICompGm {
     onBtnEnergyAdd(): void {

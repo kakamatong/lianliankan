@@ -14,6 +14,7 @@ import { CompChapter } from "./CompChapter";
 import { ChallengeData } from "@datacenter/ChallengeData";
 import { ChallengeStarView } from "../ChallengeStarView";
 import { RankStarView } from "../../rank/RankStarView";
+import { FGUI_PACKAGE } from "@datacenter/PackageConfig";
 
 /**
  * @class CompChallenge
@@ -106,7 +107,7 @@ export class CompChallenge extends FGUICompChallenge {
     }
 
     testBezier() {
-        const node = fgui.UIPackage.createObject("challenge", "CompStar") as FGUICompStar;
+        const node = fgui.UIPackage.createObject(FGUI_PACKAGE.CHALLENGE, "CompStar") as FGUICompStar;
         node.ctrl_status.selectedIndex = 1;
         this.addChild(node);
         BezierTween(node, 0, 0, 500, 500, 1, 300);

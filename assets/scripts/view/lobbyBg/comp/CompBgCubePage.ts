@@ -9,13 +9,14 @@ import * as fgui from "fairygui-cc";
 import FGUICompBgCubePage from "@fgui/lobbyBg/FGUICompBgCubePage";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
 import { CompBgCubeLine } from "./CompBgCubeLine";
+import { FGUI_PACKAGE } from "@datacenter/PackageConfig";
 
 /**
  * @class CompBgCubePage
  * @description 大厅背景动画主体，驱动 26 条方块行匀速下移并无缝循环回卷
  * @category 大厅背景
  */
-@PackageLoad(["lobbyBg"])
+@PackageLoad([FGUI_PACKAGE.LOBBY_BG])
 @ViewClass()
 export class CompBgCubePage extends FGUICompBgCubePage {
     /** 移动速度（px/s），可动态修改以配置动效快慢 */

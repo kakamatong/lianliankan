@@ -7,13 +7,14 @@
 import FGUICompBgCube from "@fgui/lobbyBg/FGUICompBgCube";
 import * as fgui from "fairygui-cc";
 import { PackageLoad, ViewClass } from "@frameworks/Framework";
+import { FGUI_PACKAGE } from "@datacenter/PackageConfig";
 
 /**
  * @class CompBgCube
  * @description 大厅背景单个方块，ctrl_img 控制器 index 0-21 对应 22 种图片
  * @category 大厅背景
  */
-@PackageLoad(["lobbyBg"])
+@PackageLoad([FGUI_PACKAGE.LOBBY_BG])
 @ViewClass()
 export class CompBgCube extends FGUICompBgCube {
     /**
