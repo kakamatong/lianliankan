@@ -17,14 +17,6 @@ export enum FGUI_PACKAGE {
     CHALLENGE = "challenge",
     /** 通用 */
     COMMON = "common",
-    /** 游戏 10001 主包 */
-    GAME_10001 = "game10001",
-    /** 游戏 10001 玩家信息 */
-    GAME_10001_PLAYER_INFO = "game10001PlayerInfo",
-    /** 游戏 10001 结果 */
-    GAME_10001_RESULT = "game10001Result",
-    /** 游戏 10001 聊天 */
-    GAME_10001_TALK = "game10001Talk",
     /** 连连看游戏主包 */
     GAME_10002 = "game10002",
     /** 游戏 10002 玩家信息 */
@@ -57,8 +49,6 @@ export enum FGUI_PACKAGE {
     PROPS = "props",
     /** 排行榜 */
     RANK = "rank",
-    /** 表情资源 */
-    RES_EMOJI = "resEmoji",
     /** 水果资源 */
     RES_FRUIT = "resFruit",
     /** 签到 */
